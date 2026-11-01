@@ -1,0 +1,231 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "canvas-quiz-analysis-ppt",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/canvas-quiz-analysis-ppt.task.md",
+    "oracle166_sha256": "b5633c42ee9186948c88296eab2e06ebf5a0ec237a0ded0a2004a8de903ee8c9"
+  },
+  "label_cache_keys": [
+    "ee0ca1b159c91672fa6f5ac3cbdc93181ea59fac0fdbc9b8106f4e06deedd1ad"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): Collector for course_id=7 \"Creative Computing & Culture (Fall 2014)\": fetch the full quiz-submission records for every quiz in its course (canvas quiz-submission listing, per_page=100, follow pagination.has_page/pagination.has_more, and always read the FULL JSON from the output_path file when the chat preview is truncated); count every recorded submission regardless of date; compute per quiz Submissions (count), Avg_Score, Min_Score, Max_Score over the submission scores; aggregate at course level Total_Quizzes, Total_Submissions, and Overall_Avg_Score = sum(avg_score * submissions) / sum(submissions); and return ONLY the compact JSON {course_id, course_name, quizzes: [{quiz_title, submissions, avg_score, min_score, max_score}], total_quizzes, total_submissions, overall_avg_score}. Strictly read-only with respect to Canvas; do not write workspace files, do not return the raw row set.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 1): Collector for course_id=17 \"Foundations of Finance (Fall 2014)\" — same literal recipe, only its assignment string substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (enterprise-data-analyst 2): Collector for course_id=21 \"Global Governance & Geopolitics (Fall 2014)\" — same literal recipe, only its assignment string substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): Collector for course_id=7 \"Creative Computing & Culture (Fall 2014)\": fetch the full quiz-submission records for every quiz in its course (canvas quiz-submission listing, per_page=100, follow pagination.has_page/pagination.has_more, and always read the FULL JSON from the output_path file when the chat preview is truncated); count every recorded submission regardless of date; compute per quiz Submissions (count), Avg_Score, Min_Score, Max_Score over the submission scores; aggregate at course level Total_Quizzes, Total_Submissions, and Overall_Avg_Score = sum(avg_score * submissions) / sum(submissions); and return ONLY the compact JSON {course_id, course_name, quizzes: [{quiz_title, submissions, avg_score, min_score, max_score}], total_quizzes, total_submissions, overall_avg_score}. Strictly read-only with respect to Canvas; do not write workspace files, do not return the raw row set.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 1): Collector for course_id=17 \"Foundations of Finance (Fall 2014)\" — same literal recipe, only its assignment string substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (enterprise-data-analyst 2): Collector for course_id=21 \"Global Governance & Geopolitics (Fall 2014)\" — same literal recipe, only its assignment string substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "read:wave_1:canvas",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "canvas",
+      "source_nodes": [
+        0,
+        1,
+        2
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {},
+    "read": {
+      "canvas": 1
+    }
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 3,
+    "units": 1,
+    "write_units": 0,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

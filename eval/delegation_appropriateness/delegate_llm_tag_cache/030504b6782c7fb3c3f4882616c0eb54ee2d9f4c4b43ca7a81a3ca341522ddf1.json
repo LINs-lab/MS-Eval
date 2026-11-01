@@ -1,0 +1,58 @@
+{
+  "input_hash": "030504b6782c7fb3c3f4882616c0eb54ee2d9f4c4b43ca7a81a3ca341522ddf1",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "howtocook-catering-gform-notion-excel",
+    "task_text": "You are a catering planner for a company team lunch event. The event is for 20 people with a budget of $25 per person. You need to plan a diverse menu, collect dietary preferences from attendees, document the menu, and track the budget.\n\nYour task has four parts.\n\nPart 1: Search the recipe database for 6 to 8 recipes suitable for a team lunch catering event. Select a mix of main dishes and side dishes. For each recipe, note the recipe name, category (such as meat, vegetable, staple, or similar), and estimated number of servings.\n\nPart 2: Create a Google Forms survey titled \"Team Lunch Dietary Preferences\" to collect dietary information from the 20 attendees. The survey must contain at least 3 questions covering the following topics: dietary restrictions or preferences (such as vegetarian, vegan, nut allergy, gluten-free, or none), any specific food allergies to be aware of, and any additional comments or requests. Use appropriate question types for each question (for example, a multiple-choice question for dietary preferences, and short-answer text questions for allergies and comments).\n\nPart 3: Create a Notion page titled \"Team Lunch Menu\" documenting the catering plan. The page must include a description of the event (20 people, $25 per person budget), a list of all selected recipes with their categories and serving information, and any notes about accommodating dietary restrictions.\n\nPart 4: Create an Excel file called Catering_Budget.xlsx in the workspace with two sheets. The first sheet must be named \"Menu\" with the following columns in this exact order: Recipe_Name, Category, Servings, Estimated_Cost_Per_Person. Add one row for each of your selected recipes with a reasonable estimated cost per person. (You may append a \"Total\" summary row after the recipe rows if you wish; it is not counted as a recipe row.) The second sheet must be named \"Summary\" with two columns: Metric and Value. Include the following rows: Total_Dishes (number of recipes selected), Total_Budget (total budget for 20 people, which is 500), Budget_Per_Person (which is 25). Write every value in the Summary \"Value\" column and every Estimated_Cost_Per_Person as a literal number (for example, 500 and 25) — do not write Excel formulas for these cells.\n\nThe initial workspace contains Event_Brief.md describing the event details and requirements.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Read `Event_Brief.md`, create the fixed Google Form once, and query the necessary HowToCook categories with native-parallel read calls. Select one explicit set of 6–8 recipes containing mains and sides, retrieve only those selected recipes, and reuse exactly that set in both `Team Lunch Menu` and `Catering_Budget.xlsx`. The Form must contain a dietary-preference multiple-choice question plus text questions whose titles explicitly contain `allergy` and `additional comments or requests`. In the workbook, write the exact two sheets and headers, exactly one recipe row per selected dish, literal numeric per-person costs, and literal Summary values `Total_Dishes`, `500`, and `25`; do not use formulas. Create the Notion page and workbook as independent output branches after the recipe set is fixed, and verify the Form, page, and workbook once each.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_19",
+        "text": "You are a catering planner assistant. Create a Google Forms survey using the available Google Forms tools (mcp__google_forms__*).\n\nCONTEXT: We are organizing a company team lunch for 20 people (budget $25/person, buffet style). We need to collect dietary information from the 20 attendees before finalizing the menu.\n\nTASK: Create a Google Form titled exactly \"Team Lunch Dietary Preferences\" with at least 3 questions covering these topics:\n1. Dietary restrictions or preferences (options should include: Vegetarian, Vegan, Nut Allergy, Gluten-Free, None, Other) — use a MULTIPLE CHOICE question (use mcp__google_forms__add_multiple_choice_question).\n2. Specific food allergies to be aware of — use a SHORT ANSWER TEXT question (use mcp__google_forms__add_text_question). Suggested title: \"Do you have any specific food allergies we should be aware of?\"\n3. Additional comments or requests — use a SHORT ANSWER TEXT question (use mcp__google_forms__add_text_question). Suggested title: \"Any additional comments or requests?\"\n\nSTEPS:\n1. Call mcp__google_forms__create_form with title \"Team Lunch Dietary Preferences\" and a brief description like \"Please complete this survey so we can accommodate everyone's dietary needs at the team lunch.\"\n2. Add the three questions above (question 1 multiple choice, questions 2 and 3 text questions). You may mark them required or not as you see fit.\n3. Verify by calling mcp__google_forms__get_form with the form ID.\n\nDELIVERABLE: Report the form ID and the form URL (if available), plus the list of questions you added with their types. Do NOT create any other external artifacts.\nCreate Google Form survey",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_19",
+        "text": "You are a catering planner assistant. Create a Notion page using the available Notion tools (mcp__notion__API-*).\n\nCONTEXT: We are organizing a company team lunch for 20 people with a budget of $25 per person (total $500), served buffet style for a Q1 team celebration. We selected 8 recipes from a cooking recipe database and need to document the catering plan in Notion.\n\nTASK: Create a Notion page titled exactly \"Team Lunch Menu\". The page must include:\n1. A description of the event: 20 people, $25 per person budget (total $500), buffet-style company team lunch.\n2. A list of all selected recipes with their categories and serving information. Use exactly these 8 recipes:\n\n- 宫保鸡丁 (Kung Pao Chicken) | Category: Meat (荤菜) | Servings: 20\n- 可乐鸡翅 (Cola Chicken Wings) | Category: Meat (荤菜) | Servings: 20\n- 糖醋里脊 (Sweet and Sour Pork) | Category: Meat (荤菜) | Servings: 20\n- 麻婆豆腐 (Mapo Tofu) | Category: Meat (荤菜) | Servings: 20\n- 地三鲜 (Di San Xian) | Category: Vegetable (素菜) | Servings: 20\n- 酸辣土豆丝 (Hot and Sour Potato Shreds) | Category: Vegetable (素菜) | Servings: 20\n- 蒜蓉西兰花 (Garlic Broccoli) | Category: Vegetable (素菜) | Servings: 20\n- 蛋炒饭 (Egg Fried Rice) | Category: Staple (主食) | Servings: 20\n\n3. Notes about accommodating dietary restrictions: mention that we are collecting dietary preferences from all attendees (vegetarian, vegan, nut allergy, gluten-free) and will adjust the menu / provide alternatives accordingly; note that most meat dishes contain meat, while the vegetable dishes are vegetarian-friendly; egg fried rice contains egg.\n\nSTEPS:\n1. Use mcp__notion__API-post-search to find a suitable parent page if needed, or create the page under an appropriate parent. If you cannot find an existing parent, create the page using mcp__notion__API-post-page with parent type \"page_id\" — first check what pages exist via mcp__notion__API-post-search with no query to find any accessible parent page; if none found, use mcp__notion__API-get-self and create the page as a child of the user/bot page if supported, otherwise report clearly.\n2. Create the page with the title \"Team Lunch Menu\" and children blocks: a heading + paragraphs for event description, a bulleted/numbered list of the 8 recipes (name, category, servings), and a section for dietary accommodation notes.\n3. Verify by retrieving the page (mcp__notion__API-retrieve-a-page) and report the page ID and URL.\n\nDELIVERABLE: Report the Notion page ID and URL, and confirm the page title and content sections. Do NOT create any other external artifacts.\nCreate Notion menu page",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_19",
+        "text": "You are a catering planner assistant. Create an Excel file at exactly this path:\n\n/workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-howtocook-catering-gform-notion-excel/workspace/Catering_Budget.xlsx\n\nUse the mcp__excel__* tools (create_workbook, create_worksheet, rename_worksheet, write_data_to_excel) or mcp__filesystem__/mcp__local__python_execute if needed.\n\nThe workbook must contain TWO sheets:\n\nSHEET 1: named \"Menu\" with columns in this EXACT order:\nRecipe_Name | Category | Servings | Estimated_Cost_Per_Person\n\nAdd one row for EACH of these 8 recipes (recipe names and category labels exactly as given below; servings and cost as literal numbers, cost as a number like 4 or 2.5 — NOT a formula):\n\n1. 宫保鸡丁 (Kung Pao Chicken) | Meat | 20 | 4\n2. 可乐鸡翅 (Cola Chicken Wings) | Meat | 20 | 4\n3. 糖醋里脊 (Sweet and Sour Pork) | Meat | 20 | 4\n4. 麻婆豆腐 (Mapo Tofu) | Meat | 20 | 3\n5. 地三鲜 (Di San Xian) | Vegetable | 20 | 2.5\n6. 酸辣土豆丝 (Hot and Sour Potato Shreds) | Vegetable | 20 | 2\n7. 蒜蓉西兰花 (Garlic Broccoli) | Vegetable | 20 | 2.5\n8. 蛋炒饭 (Egg Fried Rice) | Staple | 20 | 3\n\nYou MAY append a \"Total\" summary row after the 8 recipe rows (e.g., Total | - | - | 25) — this is optional and NOT counted as a recipe row. Do not write any Excel formulas; write all values as literal numbers/text.\n\nSHEET 2: named \"Summary\" with two columns: Metric | Value\nInclude these rows with literal values (numbers as numbers, NOT formulas):\nTotal_Dishes | 8\nTotal_Budget | 500\nBudget_Per_Person | 25\n\nSTEPS:\n1. Create the workbook at the path above (mcp__excel__create_workbook).\n2. Ensure the first sheet is named \"Menu\" (rename if needed, e.g., if a default \"Sheet1\" exists, rename it to \"Menu\" or create/rename as needed).\n3. Write the Menu data (header + 8 rows + optional Total row).\n4. Create the \"Summary\" sheet and write its data.\n5. Verify with mcp__excel__get_workbook_metadata and mcp__excel__read_data_from_excel on both sheets; confirm the file exists via mcp__filesystem__get_file_info.\n\nDELIVERABLE: Report the absolute file path, the two sheet names, the exact rows written in each sheet, and confirmation that all Summary values and cost values are literal numbers (not formulas).\nBuild Catering_Budget.xlsx",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "gform",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "notion",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

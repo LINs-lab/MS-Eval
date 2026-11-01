@@ -1,0 +1,45 @@
+{
+  "input_hash": "6036b5264cd1688eaa89a89b0ab2fc8f9f21cc8e721e44d689a3cbc72912d6b0",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "sf-sales-customer-loyalty",
+    "task_text": "I need a customer loyalty analysis broken down by both segment and region. Pull data from the sales data warehouse showing customer lifetime value patterns across different segment-region combinations.\n\nCreate an Excel file called Customer_Loyalty_Report.xlsx with two sheets. The \"Customer Loyalty\" sheet should have Segment_Region (formatted as \"Segment - Region\"), Customers count, Avg_LTV (average lifetime value) rounded to 2 decimals, and Total_Orders. Sort by Segment alphabetically then Avg_LTV descending within each segment.\n\nThe \"Summary\" should have Total_Combinations, Highest_LTV_Group (the segment-region combo with highest avg LTV), and Overall_Avg_LTV as a weighted average by customer count. Include a header row with columns `Metric` and `Value`, with one data row per metric below it. Base all metrics on ALL orders in the data warehouse — do not filter orders by status unless explicitly asked.\n\nSend an email to marketing@company.com with subject \"Customer Loyalty Analysis\" highlighting the highest-value segment-region combinations.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete this compact warehouse aggregation directly in the main agent; do not dispatch any sub-agent. First aggregate all order rows by `CUSTOMER_ID` without a status filter. Left-join those per-customer order counts to the customer table, then group customers by their exact `SEGMENT` and `REGION`. For every group return `Customers = count of customer rows`, `Avg_LTV = average of customer LIFETIME_VALUE`, and `Total_Orders = sum of the joined per-customer order counts`; this avoids multiplying lifetime value by the number of orders. Format the key as `Segment - Region`, sort by Segment alphabetically and raw Avg_LTV descending within each segment, choose the highest-LTV group deterministically, and compute Overall_Avg_LTV from the customer-level values, equivalently weighting each group average by its customer count.\n\nAfter freezing the complete group rows and summary, freeze the task-visible agent-workspace absolute path from the Visible Boundary/current working directory. Start creation of `<agent_workspace>/Customer_Loyalty_Report.xlsx` and the single required email in the same native-parallel response. Create only `Customer Loyalty(Segment_Region,Customers,Avg_LTV,Total_Orders)` and `Summary(Metric,Value)` with exactly `Total_Combinations`, `Highest_LTV_Group`, and `Overall_Avg_LTV`; use literal numeric cells, two-decimal LTV values, and read both sheets back once. Send exactly one email to `marketing@company.com` with subject `Customer Loyalty Analysis`, highlighting the verified highest-value groups. Reconcile counts, sort order, and summary values before completion; do not add Sent-folder discovery/readback or a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_34",
+        "text": "Create an Excel workbook at exactly this path:\n/workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-sales-customer-loyalty/workspace/Customer_Loyalty_Report.xlsx\n\nThe workbook must contain exactly two worksheets with the exact names, headers, and data below. Use the excel MCP tools (create_workbook, rename_worksheet/create_worksheet, write_data_to_excel). Make header rows bold for readability (optional formatting).\n\nSHEET 1 — name: \"Customer Loyalty\"\nHeader row: Segment_Region | Customers | Avg_LTV | Total_Orders\nData rows (exactly 20, in this exact order — already sorted by Segment alphabetically then Avg_LTV descending within each segment). Avg_LTV values are already rounded to 2 decimals; write them as numbers:\n\nConsumer - Latin America, 98, 1585.79, 1008\nConsumer - Europe, 110, 1565.44, 1132\nConsumer - North America, 113, 1534.77, 1134\nConsumer - Asia Pacific, 105, 1486.14, 1068\nConsumer - Middle East, 106, 1437.42, 1081\nEnterprise - Asia Pacific, 107, 1587.31, 1098\nEnterprise - Europe, 104, 1570.11, 1018\nEnterprise - Latin America, 93, 1515.69, 932\nEnterprise - Middle East, 92, 1400.96, 913\nEnterprise - North America, 117, 1271.73, 1097\nGovernment - Middle East, 94, 1498.65, 902\nGovernment - North America, 95, 1470.05, 975\nGovernment - Latin America, 85, 1462.40, 836\nGovernment - Asia Pacific, 103, 1381.88, 1023\nGovernment - Europe, 97, 1350.96, 943\nSMB - Middle East, 101, 1565.65, 976\nSMB - Europe, 99, 1522.52, 1007\nSMB - Asia Pacific, 101, 1434.06, 1009\nSMB - North America, 88, 1261.67, 927\nSMB - Latin America, 92, 1161.79, 921\n\nSHEET 2 — name: \"Summary\"\nHeader row: Metric | Value\nData rows (exactly 3):\nTotal_Combinations, 20\nHighest_LTV_Group, Enterprise - Asia Pacific\nOverall_Avg_LTV, 1455.52\n\nAcceptance criteria: the file exists at the given path; the \"Customer Loyalty\" sheet has 4 columns and 21 rows (1 header + 20 data); the \"Summary\" sheet has 2 columns and 4 rows (1 header + 3 data). Report back the final file path and confirm the sheet names and row/column counts after writing.\nBuild Customer_Loyalty_Report.xlsx",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_34",
+        "text": "Send one email using the email MCP tools (mcp__emails__send_email) with these exact parameters:\n\nTo: marketing@company.com\nSubject: Customer Loyalty Analysis\n\nBody (plain text, use exactly this content):\n\nHi Marketing Team,\n\nWe've completed a customer loyalty analysis across segment-region combinations from the sales data warehouse, covering 20 segment-region combinations and 2,000 customers.\n\nHighest-value segment-region combination:\n- Enterprise - Asia Pacific leads with an average customer lifetime value (LTV) of $1,587.31 (107 customers, 1,098 orders).\n\nTop 5 segment-region combinations by average LTV:\n1. Enterprise - Asia Pacific - $1,587.31 (107 customers, 1,098 orders)\n2. Consumer - Latin America - $1,585.79 (98 customers, 1,008 orders)\n3. Enterprise - Europe - $1,570.11 (104 customers, 1,018 orders)\n4. SMB - Middle East - $1,565.65 (101 customers, 976 orders)\n5. Consumer - Europe - $1,565.44 (110 customers, 1,132 orders)\n\nAcross all combinations, the overall weighted-average LTV (weighted by customer count) is $1,455.52. The full segment-region breakdown is available in the attached report, Customer_Loyalty_Report.xlsx.\n\nBest regards,\nAnalytics Team\n\nDo not attach any file (the report will be shared separately). Confirm the send succeeded (e.g., message id or success status) in your report back.\nSend loyalty analysis email",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

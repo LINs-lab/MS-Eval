@@ -1,0 +1,32 @@
+{
+  "input_hash": "06016dcdfef46324076e22a775f8c68799f5682a4d8ef6e421bf7e74425d862e",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-hr-education-notion",
+    "task_text": "I am an HR analyst and I need to prepare a workforce education analysis report for our leadership team. We have an HR data warehouse that contains employee records across all departments, and I need you to analyze the education level distribution.\n\nPlease query the employee data from the HR analytics system to understand the education breakdown by department. I need to know how many employees hold each level of education in each department and what percentage of each department that represents.\n\nCreate an Excel file called Education_Analysis.xlsx in the workspace with two sheets. The first sheet should be named \"By Department\" and have the following columns: Department, Total_Employees, Bachelors_Count, Masters_Count, PhD_Count, Bachelors_Pct (rounded to 1 decimal place), Masters_Pct (rounded to 1 decimal place), and PhD_Pct (rounded to 1 decimal place). Sort the rows alphabetically by Department.\n\nThe second sheet should be named \"Summary\" and have two columns, Metric and Value, with the following rows: Total_Employees (total headcount across all departments), Most_Common_Education (the education level with the highest count overall), Department_Highest_PhD_Pct (the department name with the highest percentage of PhD holders), Avg_Salary_PhD (average salary for PhD holders, rounded to 0 decimal places), and Avg_Salary_Bachelors (average salary for employees with a bachelor's degree, rounded to 0 decimal places).\n\nAdditionally, create a page in Notion titled \"Workforce Education Analysis\" that summarizes the key findings. Include a heading for each department followed by a paragraph noting that department's total headcount and PhD percentage. At the end, add a paragraph highlighting which department has the highest proportion of PhD holders and what the overall most common education level is across the company.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent. Dispatching sub-agents is not necessary. Run the compact education and department aggregates, freeze one verified analysis, then create Education_Analysis.xlsx and the required knowledge-base page with native parallel tool calls in the same response and reconcile both against the same rows.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are helping plan a task for an HR analyst. Decompose the following task into an ordered list of subtasks. For each subtask specify: (1) dispatch decision: `self` (main agent), `explore`, or `coder`; (2) whether it is independent (parallelizable) or must wait for another subtask's output.\n\nTASK DESCRIPTION:\nThe user is an HR analyst preparing a workforce education analysis report. There is an HR data warehouse (Snowflake) containing employee records across all departments. The analyst needs:\n1. Query employee data from the HR analytics system to understand education breakdown by department: how many employees hold each level of education in each department and what percentage of each department that represents.\n2. Create an Excel file called `Education_Analysis.xlsx` in the workspace directory (path: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-hr-education-notion/workspace) with two sheets:\n   - Sheet 1 named \"By Department\": columns Department, Total_Employees, Bachelors_Count, Masters_Count, PhD_Count, Bachelors_Pct (rounded to 1 decimal), Masters_Pct (rounded to 1 decimal), PhD_Pct (rounded to 1 decimal). Rows sorted alphabetically by Department.\n   - Sheet 2 named \"Summary\": columns Metric and Value, with rows: Total_Employees (total headcount), Most_Common_Education (education level with highest count overall), Department_Highest_PhD_Pct (department with highest percentage of PhD holders), Avg_Salary_PhD (average salary for PhD holders rounded to 0 decimals), Avg_Salary_Bachelors (average salary for bachelors rounded to 0 decimals).\n3. Create a page in Notion titled \"Workforce Education Analysis\" summarizing key findings: a heading for each department followed by a paragraph noting that department's total headcount and PhD percentage; at the end, a paragraph highlighting which department has the highest proportion of PhD holders and what the overall most common education level is.\n\nAVAILABLE CONTEXT:\n- Tools available: Snowflake MCP (list_databases, list_schemas, list_tables, describe_table, read_query), Excel MCP (create_workbook, create_worksheet, write_data_to_excel, rename_worksheet, etc.), Notion MCP (API-post-search, API-post-page, API-patch-block-children, etc.), filesystem MCP (write/read within workspace only).\n- The data source is Snowflake; the exact database/schema/table names are not yet known and must be discovered (likely via list_databases -> list_schemas -> list_tables -> describe_table -> read_query). The education level may be stored in a column like education/education_level with values like Bachelor, Master, PhD; salary column likely salary. This must be verified empirically.\n- The Excel file must be created in the workspace directory. The Notion page must be created via Notion API (a page titled \"Workforce Education Analysis\" — likely as a child of an existing page found via search, or standalone; determine reasonable approach).\n\nDELIVERABLE: Return the ordered subtask list with dispatch decisions and dependency/parallelism notes, plus a recommended verification strategy (how to confirm the Excel file contents, the Notion page contents, and correct rounding). Keep it concise and actionable. Do not execute anything — planning only.\nPlan workforce education analysis",
+        "is_plan": true
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      }
+    ]
+  }
+}

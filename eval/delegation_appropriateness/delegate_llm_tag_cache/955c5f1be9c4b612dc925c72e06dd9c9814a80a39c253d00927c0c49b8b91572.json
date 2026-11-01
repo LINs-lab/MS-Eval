@@ -1,0 +1,90 @@
+{
+  "input_hash": "955c5f1be9c4b612dc925c72e06dd9c9814a80a39c253d00927c0c49b8b91572",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "gt",
+    "task": "howtocook-scholarly-health-study",
+    "task_text": "I am a wellness researcher studying the nutritional value of traditional Chinese cooking. A nutrition reference file called nutrition_reference.json is available in the workspace, containing calorie and macronutrient data for common Chinese cooking ingredients.\n\nPlease browse the recipe database and select 5 dishes from at least 3 different categories. Then search for academic papers related to Chinese diet and health or traditional Asian cuisine nutrition. I expect to find about 4 relevant papers. For each selected dish, estimate its nutritional content using the ingredient data from the reference file.\n\nCreate an Excel spreadsheet called Health_Diet_Analysis.xlsx with the following three sheets. The first sheet should be named \"Recipe Nutrition\" with columns Dish_Name, Category, Estimated_Calories, Protein_g, Fat_g, Carbs_g, and Health_Rating. The Health_Rating should be Low, Medium, or High based on the calorie density of the dish. The second sheet should be named \"Research Summary\" with columns Paper_Title, Authors, Year, Citation_Count, and Key_Finding. The third sheet should be named \"Combined Analysis\" with columns Dish_Name, Health_Rating, and Supporting_Research, linking the dishes to relevant research findings.\n\nAlso create a Word document called Chinese_Cuisine_Health_Report.docx. The document should have the title \"Nutritional Analysis of Traditional Chinese Cuisine\" and include the following sections: Introduction, Recipe Analysis, Literature Review, and Conclusions.\n\nNotes on expected output format:\n- All numeric values in the spreadsheet (Estimated_Calories, Protein_g, Fat_g, Carbs_g, Citation_Count, Year) must be written as literal numbers, not as Excel formulas.\n- \"About 4 papers\" is flexible: a Research Summary with 3 to 5 papers is acceptable. Only include papers that are genuinely related to Chinese diet and health or Asian cuisine nutrition.\n- Assign Health_Rating as Low, Medium, or High based on the calorie density of each dish (e.g., Low for low-calorie dishes, Medium for moderate, High for calorie-dense dishes).\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, run the three genuinely independent read branches (nutrition reference, recipe database, scholarly literature) in one parallel wave, then the two independent artifact writers in a second wave. No planning sub-agent.\n\nWave 1 — dispatch exactly 3 explore sub-agents in parallel:\n\n1. explore 0 (enterprise-data-analyst 0): The nutrition-reference explorer lists the workspace to confirm nutrition_reference.json, reads and parses it completely, and returns its exact ingredient schema (per-100g calories, protein, fat, carbs keys) plus the count of covered ingredients and any missing/ambiguous entries. Read-only; do not write artifacts.\n2. explore 1 (web-domain-researcher 0): The recipe explorer browses the Chinese recipe database via the howtocook tools (getAllRecipes / getRecipesByCategory; categories such as 水产, 早餐, 调料, 甜品, 饮品, 荤菜, 素菜, 汤羹), selects exactly five suitable dishes from at least three different categories, and returns each dish's full Chinese name, category, and complete ingredient list with quantities, plus category/count controls. Read-only; do not write artifacts.\n3. explore 2 (academic-literature-researcher 0): The literature explorer searches the scholarly tools (search-arxiv / search-google-scholar) for papers on Chinese diet and health or traditional Asian cuisine nutrition, targets about 4 relevant papers (3-5 acceptable, ONLY genuinely diet/nutrition/health-related), and returns exact title, authors, year, citation count, key finding, identifier, and relevance evidence for each paper. Read-only; do not write artifacts.\n\nAfter Wave 1, the main agent reconciles all three handoffs in one pass: joins the five dishes to the nutrition reference to compute per-dish calories, protein, fat and carbohydrates (per-100g basis with quantity scaling, calculation notes retained), and assigns source-supported Low/Medium/High calorie-density ratings. It freezes one canonical packet of five dish rows, the nutrition schema, and the paper list.\n\nWave 2 — dispatch exactly 2 coder sub-agents in parallel:\n\n1. coder 0 (office-report-builder 0): The workbook coder sole-writes Health_Diet_Analysis.xlsx in the workspace (python openpyxl preferred, Excel MCP tools as fallback) with EXACTLY three sheets in order — the dish nutrition table (dish, category, calories, protein, fat, carbs, calorie-density rating), the paper evidence table, and a summary sheet — using literal numeric values from the frozen packet, then reads the file back and returns sheet names, row counts and validation.\n2. coder 1 (office-report-builder 1): The document coder sole-writes Chinese_Cuisine_Health_Report.docx in the workspace (python-docx preferred, Word MCP tools as fallback) with the required title, methodology, per-dish findings, literature support and conclusion sections, citing only frozen papers, then reads the document text/outline back and returns validation.\n\nAfter Wave 2, the main agent reconciles both read-backs against the same canonical packet and calls claim_done. Do not dispatch any further agent and do not add a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "wave_1",
+        "text": "explore 0 (enterprise-data-analyst 0): The nutrition-reference explorer lists the workspace to confirm nutrition_reference.json, reads and parses it completely, and returns its exact ingredient schema (per-100g calories, protein, fat, carbs keys) plus the count of covered ingredients and any missing/ambiguous entries. Read-only; do not write artifacts.",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "wave_1",
+        "text": "explore 1 (web-domain-researcher 0): The recipe explorer browses the Chinese recipe database via the howtocook tools (getAllRecipes / getRecipesByCategory; categories such as 水产, 早餐, 调料, 甜品, 饮品, 荤菜, 素菜, 汤羹), selects exactly five suitable dishes from at least three different categories, and returns each dish's full Chinese name, category, and complete ingredient list with quantities, plus category/count controls. Read-only; do not write artifacts.",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "wave_1",
+        "text": "explore 2 (academic-literature-researcher 0): The literature explorer searches the scholarly tools (search-arxiv / search-google-scholar) for papers on Chinese diet and health or traditional Asian cuisine nutrition, targets about 4 relevant papers (3-5 acceptable, ONLY genuinely diet/nutrition/health-related), and returns exact title, authors, year, citation count, key finding, identifier, and relevance evidence for each paper. Read-only; do not write artifacts.",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "wave_2",
+        "text": "coder 0 (office-report-builder 0): The workbook coder sole-writes Health_Diet_Analysis.xlsx in the workspace (python openpyxl preferred, Excel MCP tools as fallback) with EXACTLY three sheets in order — the dish nutrition table (dish, category, calories, protein, fat, carbs, calorie-density rating), the paper evidence table, and a summary sheet — using literal numeric values from the frozen packet, then reads the file back and returns sheet names, row counts and validation.",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "wave_2",
+        "text": "coder 1 (office-report-builder 1): The document coder sole-writes Chinese_Cuisine_Health_Report.docx in the workspace (python-docx preferred, Word MCP tools as fallback) with the required title, methodology, per-dish findings, literature support and conclusion sections, citing only frozen papers, then reads the document text/outline back and returns validation.",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "filesystem-workspace"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "howtocook"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "write",
+        "role": "word",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

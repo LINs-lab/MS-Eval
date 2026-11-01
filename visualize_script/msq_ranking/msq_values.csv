@@ -1,0 +1,12 @@
+model,mode,msq_percent
+DeepSeek-V4-Flash-0731,Oracle,39.16
+GLM-5.3,Auto (Spec),24.6
+Qwen-3.8-Max,Auto (Spec),22.7
+DeepSeek-V4-Flash-0731,Auto (Spec),20.82
+Kimi-K3,Auto (Spec),17.98
+DeepSeek-V4-Flash-0731,Plan-1st,17.6
+GLM-5.3-Flash,Auto (Spec),16.98
+GPT-5.6-Sol,Auto (Spec),15.63
+Claude-Sonnet-5,Auto (Spec),13.29
+DeepSeek-V4-Flash-0731,Auto (Gen),11.65
+MiniMax-M3,Auto (Spec),6.39

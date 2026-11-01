@@ -1,0 +1,79 @@
+{
+  "input_hash": "cb297bc06e63fb095f388bfb4739bd327f8d08e23e920e00c9031b9966aa97a0",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "scholarly-arxiv-cross-reference",
+    "task_text": "I am a research librarian doing a cross-reference analysis between two academic databases. I need to compare the papers available in the Scholarly database (specifically the arxiv_papers collection) with those in the arxiv database to find overlapping papers and understand coverage differences.\n\nPlease create an Excel file called \"Citation_Cross_Reference.xlsx\" in my workspace with three sheets.\n\nThe first sheet, \"Scholarly_Papers\", should list all papers from the Scholarly arxiv_papers collection with columns: Paper_ID, Title, Authors, Published_Year, Journal_Ref. Published_Year is the four-digit year of the paper's published date. Authors should be listed as a single comma-separated string.\n\nThe second sheet, \"Arxiv_Papers\", should list all papers from the arxiv database with columns: Paper_ID, Title, Authors, Published_Year, Categories. Published_Year is the four-digit year of the paper's published date. Categories should be a comma-separated string.\n\nThe third sheet, \"Overlap_Analysis\", should contain every paper that appears in either database (the union), matched by paper ID, with columns: Paper_ID, Title, In_Scholarly (Yes/No), In_Arxiv (Yes/No). A paper present in both is marked Yes/Yes; a paper only in Scholarly is Yes/No; a paper only in arxiv is No/Yes.\n\nAfter creating the spreadsheet, please send an email summarizing the findings to research-lead@university.edu with the subject \"Cross-Reference Analysis: Scholarly vs Arxiv Paper Databases\". The email body should mention the total number of papers in each database, the number of overlapping papers, and highlight any papers that are unique to one database.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. The task-scoped collections are smaller than the exposed per-call bounds, so make exactly two native-parallel source calls: `search-arxiv(keyword=\"\")` for the complete Scholarly `arxiv_papers` collection and `search_papers(query=\"\", max_results=50)` for the complete local arXiv collection. Do not issue topic-by-topic searches. Normalize authors and years, deduplicate only by exact Paper_ID, and construct the exact source rows plus the exact-ID union and Yes/No flags in memory. Create `Citation_Cross_Reference.xlsx` once with sheets named exactly `Scholarly_Papers`, `Arxiv_Papers`, and `Overlap_Analysis`, using one bulk write per sheet and one read-back. Then send exactly one email to `research-lead@university.edu` with subject `Cross-Reference Analysis: Scholarly vs Arxiv Paper Databases` and the three verified population counts plus unique-paper highlights.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_150",
+        "text": "You are helping exhaustively enumerate two small academic paper databases. Both databases appear to be tiny curated collections (~5-15 papers each) of arXiv papers. Your job: probe them with many search keywords and report ALL distinct papers you find, especially any NOT already in the known list below.\n\nTOOLS YOU MUST USE:\n1. `mcp__scholarly__search-arxiv` — takes one parameter `keyword` (a string). This searches the \"Scholarly\" database's arxiv_papers collection. Use single words or short phrases (one keyword at a time per call).\n2. `mcp__arxiv_local__search_papers` — takes `query` (a string) and `max_results` (integer, use 50). This searches the local \"arxiv\" database. IMPORTANT: wrap single terms in double quotes, e.g. query: \"\\\"learning\\\"\" — i.e. the query string value should be `\"learning\"` including the quote characters. Multi-term queries are treated as AND and often return nothing, so prefer ONE quoted word per query.\n\nThe searches do literal word matching over title + abstract. Empty output means no match.\n\nYOUR KEYWORD LIST (probe each one against BOTH tools, running independent calls in parallel where possible):\nML/DL core vocabulary: neural, network, networks, deep, learning, training, model, models, gradient, backpropagation, optimizer, adam, sgd, regularization, dropout, normalization, batch, layer, activation, convolutional, recurrent, lstm, transformer, attention, embedding, representation, autoencoder, generative, adversarial, diffusion, gan, vae, classifier, classification, regression, clustering, supervised, unsupervised, self-supervised, reinforcement, policy, reward, agent, exploration, architecture, hyperparameter, feature, detector, detectors, overfitting, generalization\n\nALREADY-KNOWN PAPERS (do not re-report these as \"new\", but do confirm if you see them):\narxiv_local database: 1207.00580, 1502.03167, 1602.05629, 1812.06127, 1908.07873, 1912.04977\nScholarly arxiv_papers collection: 1602.05629, 1812.06127, 1908.07873, 2001.08361, 2005.14165\n\nDELIVERABLE — report back:\n(a) A list of any NEW paper IDs discovered (not in the known lists above), with for each: the arXiv ID, exact title, full author list as returned, published date, categories (arxiv_local only) or journal reference (scholarly only), and which database(s) it was found in.\n(b) A count of distinct papers you saw in each database.\n(c) Any keyword from your list that returned results, so we know coverage.\n\nDo NOT write any files. Do not download papers. Just search and report. Be concise but complete.\nSweep databases for papers",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_150",
+        "text": "You are helping exhaustively enumerate two small academic paper databases. Both databases appear to be tiny curated collections (~5-15 papers each) of arXiv papers. Your job: probe them with many search keywords and report ALL distinct papers you find, especially any NOT already in the known list below.\n\nTOOLS YOU MUST USE:\n1. `mcp__scholarly__search-arxiv` — takes one parameter `keyword` (a string). This searches the \"Scholarly\" database's arxiv_papers collection. Use single words or short phrases (one keyword at a time per call).\n2. `mcp__arxiv_local__search_papers` — takes `query` (a string) and `max_results` (integer, use 50). This searches the local \"arxiv\" database. IMPORTANT: wrap single terms in double quotes, e.g. query: \"\\\"learning\\\"\" — i.e. the query string value should be `\"learning\"` including the quote characters. Multi-term queries are treated as AND and often return nothing, so prefer ONE quoted word per query.\n\nThe searches do literal word matching over title + abstract. Empty output means no match.\n\nYOUR KEYWORD LIST (probe each one against BOTH tools, running independent calls in parallel where possible):\nNLP / language-model vocabulary: language, linguistic, text, token, tokens, vocabulary, prompt, context, few-shot, zero-shot, one-shot, in-context, translation, summarization, question, answering, bert, gpt, llm, pretraining, pretrain, fine-tuning, finetune, transfer, knowledge, retrieval, scaling, laws, compute, parameters, billion, trillion, cross-entropy, perplexity, benchmark, evaluation, emergent, reasoning, instruction, dialogue, chat, comprehension, generation, decoder, encoder\n\nALREADY-KNOWN PAPERS (do not re-report these as \"new\", but do confirm if you see them):\narxiv_local database: 1207.00580, 1502.03167, 1602.05629, 1812.06127, 1908.07873, 1912.04977\nScholarly arxiv_papers collection: 1602.05629, 1812.06127, 1908.07873, 2001.08361, 2005.14165\n\nDELIVERABLE — report back:\n(a) A list of any NEW paper IDs discovered (not in the known lists above), with for each: the arXiv ID, exact title, full author list as returned, published date, categories (arxiv_local only) or journal reference (scholarly only), and which database(s) it was found in.\n(b) A count of distinct papers you saw in each database.\n(c) Any keyword from your list that returned results, so we know coverage.\n\nDo NOT write any files. Do not download papers. Just search and report. Be concise but complete.\nSweep databases for papers",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_150",
+        "text": "You are helping exhaustively enumerate two small academic paper databases. Both databases appear to be tiny curated collections (~5-15 papers each) of arXiv papers. Your job: probe them with many search keywords and report ALL distinct papers you find, especially any NOT already in the known list below.\n\nTOOLS YOU MUST USE:\n1. `mcp__scholarly__search-arxiv` — takes one parameter `keyword` (a string). This searches the \"Scholarly\" database's arxiv_papers collection. Use single words or short phrases (one keyword at a time per call).\n2. `mcp__arxiv_local__search_papers` — takes `query` (a string) and `max_results` (integer, use 50). This searches the local \"arxiv\" database. IMPORTANT: wrap single terms in double quotes, e.g. query: \"\\\"learning\\\"\" — i.e. the query string value should be `\"learning\"` including the quote characters. Multi-term queries are treated as AND and often return nothing, so prefer ONE quoted word per query.\n\nThe searches do literal word matching over title + abstract. Empty output means no match.\n\nYOUR KEYWORD LIST (probe each one against BOTH tools, running independent calls in parallel where possible):\nSystems / distributed / security vocabulary: security, privacy, cryptography, encryption, blockchain, distributed, systems, hardware, cloud, edge, server, client, communication, bandwidth, latency, federated, decentralized, aggregation, wireless, sensor, protocol, database, query, storage, memory, cache, parallel, scalable, optimization, heterogeneous, mobile, devices, robust, convergence, statistical, methods, challenges, future, directions, advances, open, problems, survey, review, efficient, communication-efficient, heterogeneous networks, local, localized, remote, siloed, centers, paradigm, enables, task-agnostic, empirical, demonstrate, performance\n\nALREADY-KNOWN PAPERS (do not re-report these as \"new\", but do confirm if you see them):\narxiv_local database: 1207.00580, 1502.03167, 1602.05629, 1812.06127, 1908.07873, 1912.04977\nScholarly arxiv_papers collection: 1602.05629, 1812.06127, 1908.07873, 2001.08361, 2005.14165\n\nDELIVERABLE — report back:\n(a) A list of any NEW paper IDs discovered (not in the known lists above), with for each: the arXiv ID, exact title, full author list as returned, published date, categories (arxiv_local only) or journal reference (scholarly only), and which database(s) it was found in.\n(b) A count of distinct papers you saw in each database.\n(c) Any keyword from your list that returned results, so we know coverage.\n\nDo NOT write any files. Do not download papers. Just search and report. Be concise but complete.\nSweep databases for papers",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_150",
+        "text": "You are helping exhaustively enumerate two small academic paper databases. Both databases appear to be tiny curated collections (~5-15 papers each) of arXiv papers. Your job: probe them with many search keywords and report ALL distinct papers you find, especially any NOT already in the known list below.\n\nTOOLS YOU MUST USE:\n1. `mcp__scholarly__search-arxiv` — takes one parameter `keyword` (a string). This searches the \"Scholarly\" database's arxiv_papers collection. Use single words or short phrases (one keyword at a time per call).\n2. `mcp__arxiv_local__search_papers` — takes `query` (a string) and `max_results` (integer, use 50). This searches the local \"arxiv\" database. IMPORTANT: wrap single terms in double quotes, e.g. query: \"\\\"learning\\\"\" — i.e. the query string value should be `\"learning\"` including the quote characters. Multi-term queries are treated as AND and often return nothing, so prefer ONE quoted word per query.\n\nThe searches do literal word matching over title + abstract. Empty output means no match.\n\nYOUR KEYWORD LIST (probe each one against BOTH tools, running independent calls in parallel where possible):\nSciences / general academic vocabulary: physics, chemistry, biology, medicine, clinical, health, genomics, protein, molecular, material, energy, climate, weather, ocean, astronomy, cosmology, galaxy, star, particle, quantum, gravitation, economics, finance, social, psychology, neuroscience, brain, cognition, education, policy, ethics, fairness, bias, interpretability, safety, alignment, human, robot, control, autonomous, vision, image, video, speech, audio, medical, disease, drug, discovery, simulation, theorem, proof, bound, complexity, sample, estimation, inference, bayesian, causal, graph, network science, epidemiology, pandemic\n\nALREADY-KNOWN PAPERS (do not re-report these as \"new\", but do confirm if you see them):\narxiv_local database: 1207.00580, 1502.03167, 1602.05629, 1812.06127, 1908.07873, 1912.04977\nScholarly arxiv_papers collection: 1602.05629, 1812.06127, 1908.07873, 2001.08361, 2005.14165\n\nDELIVERABLE — report back:\n(a) A list of any NEW paper IDs discovered (not in the known lists above), with for each: the arXiv ID, exact title, full author list as returned, published date, categories (arxiv_local only) or journal reference (scholarly only), and which database(s) it was found in.\n(b) A count of distinct papers you saw in each database.\n(c) Any keyword from your list that returned results, so we know coverage.\n\nDo NOT write any files. Do not download papers. Just search and report. Be concise but complete.\nSweep databases for papers",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

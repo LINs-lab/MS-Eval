@@ -1,0 +1,188 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "sf-workforce-compensation-sheet",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/sf-workforce-compensation-sheet.task.md",
+    "oracle166_sha256": "a13347a894ae93e4b6a6e5604cbe49cedfd2837f2b61b129d9b28c92473f22d9"
+  },
+  "label_cache_keys": [
+    "68d7a38a50b309fb65a023a754786f13fdc60fb34a8b2d065ab01d79e7cb2531"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The Excel coder is the sole writer of Compensation_Report.xlsx in the dynamically discovered task workspace. It creates exactly Department Compensation and Summary with the requested headers/order, literal rounded numbers, reads both populated ranges back, and returns row/count/value controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "gsheet",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): The Google-Sheet coder is the sole owner of exact title Workforce Compensation Dashboard. It searches/reuses one exact-title spreadsheet or creates once, blocks on duplicates, creates or reuses a single Overview tab, batch-writes the exact Department Compensation rows from the canonical packet, and reads the complete range back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The Excel coder is the sole writer of Compensation_Report.xlsx in the dynamically discovered task workspace. It creates exactly Department Compensation and Summary with the requested headers/order, literal rounded numbers, reads both populated ranges back, and returns row/count/value controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "gsheet",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): The Google-Sheet coder is the sole owner of exact title Workforce Compensation Dashboard. It searches/reuses one exact-title spreadsheet or creates once, blocks on duplicates, creates or reuses a single Overview tab, batch-writes the exact Department Compensation rows from the canonical packet, and reads the complete range back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:gsheet",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "gsheet",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "gsheet": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 2,
+    "units": 2,
+    "write_units": 2,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

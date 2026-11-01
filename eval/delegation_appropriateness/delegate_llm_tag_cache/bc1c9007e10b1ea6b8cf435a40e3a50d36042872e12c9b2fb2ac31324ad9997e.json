@@ -1,0 +1,58 @@
+{
+  "input_hash": "bc1c9007e10b1ea6b8cf435a40e3a50d36042872e12c9b2fb2ac31324ad9997e",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "gt",
+    "task": "sf-sales-product-ranking-ppt",
+    "task_text": "You are a business analyst preparing materials for a quarterly product performance review meeting with the sales leadership team.\n\nYour goal is to analyze product sales data from the company database and create a comprehensive set of deliverables for the board presentation.\n\nFirst, query the product and order data to determine which products generated the most revenue. Look at all orders and join them with product information to calculate total revenue and units sold per product.\n\nCreate an Excel file called \"Product_Rankings.xlsx\" in your workspace with two sheets:\n\nThe first sheet should be named \"Top Products\" and contain columns: Rank, Product_Name, Category, Total_Revenue, Units_Sold, Avg_Order_Value. Include the top 20 products ranked by total revenue in descending order. The Rank column should be numbered 1 through 20. For Product_Name, use the product base name as it appears in the data source; promotional or offer suffixes (such as \"with No Cost EMI ...\") are not required. Aggregate revenue and units by the product base name (PRODUCT_NAME): several distinct product IDs may share the same base product name, and those must be combined into one row — do not aggregate by PRODUCT_ID.\n\nThe second sheet should be named \"Category Summary\" and contain columns: Category, Product_Count, Total_Revenue, Avg_Revenue_Per_Product. This sheet should group products by category and show aggregate statistics.\n\nNext, create a PowerPoint presentation called \"Product_Performance_Review.pptx\" in your workspace. The presentation should have at least 4 slides:\nThe first slide should be a title slide with the text \"Q1 2026 Product Performance Review\".\nThe second slide should show the top 10 products by revenue.\nThe third slide should show a category breakdown of sales.\nThe fourth slide should be a summary with key metrics such as total revenue across all products, number of products sold, and top performing product.\n\nFinally, create a Google Sheet titled \"Product Rankings Dashboard\" with a sheet named \"Top 20\" that contains the same top 20 product data as the Excel file.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent should first run set-based SQL over all orders, aggregate by PRODUCT_NAME across duplicate product IDs, compute the complete category summary, and freeze the top 20 rows with deterministic ranks and reconciled revenue/units. Then create the three independent deliverables in one wave.\n\n1. Wave 1 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One coder sub-agent owns `Product_Rankings.xlsx` and writes the exact Top Products and Category Summary sheets with literal values. It must aggregate by `PRODUCT_NAME` rather than product ID, produce exactly ranks 1–20 in revenue-descending order, and write the complete category totals. Use one bulk write per sheet and one read-back.\n\n   2. coder 1 (office-report-builder 1): One coder sub-agent owns `Product_Performance_Review.pptx` under one presentation ID and creates exactly the requested title, top-10, category-breakdown, and numeric-summary content. Use at most one bounded populate operation per slide, save once, and extract the complete deck text once for validation.\n\n   3. coder 2 (external-workflow-operator 0): One coder sub-agent owns exactly one `Product Rankings Dashboard`. Search the exact title, create only if absent, ensure one `Top 20` sheet, bulk-write the same frozen rank block, and read it back once.\n\nAfter Wave 1, the main agent performs one compact cross-output check of the 20 product names/ranks, category totals, and headline metrics and then finishes without another wave or repair agent.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "wave_1",
+        "text": "coder 0 (office-report-builder 0): One coder sub-agent owns `Product_Rankings.xlsx` and writes the exact Top Products and Category Summary sheets with literal values. It must aggregate by `PRODUCT_NAME` rather than product ID, produce exactly ranks 1–20 in revenue-descending order, and write the complete category totals. Use one bulk write per sheet and one read-back.",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "wave_1",
+        "text": "coder 1 (office-report-builder 1): One coder sub-agent owns `Product_Performance_Review.pptx` under one presentation ID and creates exactly the requested title, top-10, category-breakdown, and numeric-summary content. Use at most one bounded populate operation per slide, save once, and extract the complete deck text once for validation.",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "wave_1",
+        "text": "coder 2 (external-workflow-operator 0): One coder sub-agent owns exactly one `Product Rankings Dashboard`. Search the exact title, create only if absent, ensure one `Top 20` sheet, bulk-write the same frozen rank block, and read it back once.",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "ppt",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

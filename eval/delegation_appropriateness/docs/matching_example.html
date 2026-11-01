@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>严判踩点率 · 算完一个例子</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f4ead6;
+      --paper-2: #efe2c8;
+      --ink: #1b1712;
+      --muted: #6b5e4e;
+      --rule: #d4c4a8;
+      --gt: #1d4a63;
+      --gt-soft: #d7e6ef;
+      --act: #8a4f12;
+      --act-soft: #f3e0c4;
+      --hit: #1d6a48;
+      --hit-soft: #d7efe4;
+      --miss: #a43328;
+      --miss-soft: #f6d8d3;
+      --read: #3f3a78;
+      --read-soft: #e4e1f4;
+      --stamp: #b42318;
+      --shadow: 0 18px 40px rgba(40, 28, 12, .12);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255,255,255,.45), transparent 28%),
+        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(140,110,70,.08) 28px),
+        var(--paper);
+      font-family: "Source Serif 4", "Songti SC", serif;
+      line-height: 1.55;
+    }
+
+    .grain {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: .08;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 36px 0 80px;
+    }
+
+    header.hero {
+      display: grid;
+      grid-template-columns: 1.4fr .8fr;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .kicker {
+      font-family: "IBM Plex Mono", monospace;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--stamp);
+    }
+
+    h1 {
+      font-family: Fraunces, "Songti SC", serif;
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: .95;
+      margin: 8px 0 12px;
+      font-weight: 700;
+    }
+
+    .lede {
+      font-size: 19px;
+      max-width: 42rem;
+      color: var(--muted);
+    }
+
+    .score-slip {
+      background: #fffaf0;
+      border: 1px solid var(--ink);
+      box-shadow: var(--shadow);
+      padding: 18px 18px 14px;
+      transform: rotate(1.2deg);
+    }
+
+    .score-slip h2 {
+      margin: 0 0 10px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .score-cell {
+      border: 1px dashed var(--rule);
+      padding: 8px 8px 6px;
+      min-height: 72px;
+    }
+
+    .score-cell b {
+      display: block;
+      font-family: Fraunces, serif;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .score-cell span {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .score-note {
+      margin-top: 10px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+    }
+
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 22px;
+    }
+
+    .step-btn {
+      appearance: none;
+      border: 1px solid var(--ink);
+      background: transparent;
+      color: var(--ink);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+
+    .step-btn.active {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .nav-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .nav-row button {
+      appearance: none;
+      border: 1px solid var(--ink);
+      background: #fffaf0;
+      font-family: Fraunces, serif;
+      font-size: 16px;
+      padding: 8px 14px;
+      cursor: pointer;
+    }
+
+    .nav-row button:disabled { opacity: .35; cursor: not-allowed; }
+
+    .panel {
+      display: none;
+      background: rgba(255,250,240,.72);
+      border: 1px solid var(--rule);
+      padding: 22px 22px 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel.on { display: block; }
+
+    .panel h3 {
+      font-family: Fraunces, serif;
+      font-size: 28px;
+      margin: 0 0 6px;
+    }
+
+    .why {
+      color: var(--muted);
+      margin: 0 0 18px;
+      max-width: 62rem;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .side {
+      border: 1px solid var(--ink);
+      background: #fffdf7;
+      min-height: 100%;
+    }
+
+    .side.gt { border-color: var(--gt); }
+    .side.act { border-color: var(--act); }
+
+    .side-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 10px 14px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .side.gt .side-head { background: var(--gt-soft); color: var(--gt); }
+    .side.act .side-head { background: var(--act-soft); color: var(--act); }
+
+    .wave {
+      margin: 12px;
+      padding: 10px;
+      border: 1px dashed var(--rule);
+    }
+
+    .wave-label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .nodes { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .chip {
+      border: 1px solid var(--ink);
+      padding: 7px 9px 6px;
+      font-size: 13px;
+      background: #fff;
+      min-width: 92px;
+      transition: transform .25s ease, opacity .35s ease, background .25s ease;
+    }
+
+    .chip.read { background: var(--read-soft); border-color: var(--read); }
+    .chip.write { background: #fff3d8; }
+    .chip.cluster {
+      background: var(--read-soft);
+      border: 2px solid var(--read);
+      font-weight: 600;
+    }
+    .chip.hit { background: var(--hit-soft); border-color: var(--hit); }
+    .chip.miss { background: var(--miss-soft); border-color: var(--miss); opacity: .72; }
+    .chip.hide { opacity: .18; transform: scale(.96); }
+    .chip small {
+      display: block;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .match-stage {
+      position: relative;
+      margin-top: 18px;
+    }
+
+    .match-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .unit {
+      border: 1px solid var(--ink);
+      background: #fff;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .unit .tag {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .unit h4 { margin: 2px 0 0; font-family: Fraunces, serif; font-size: 20px; }
+    .unit.hit { background: var(--hit-soft); border-color: var(--hit); }
+    .unit.miss { background: var(--miss-soft); border-color: var(--miss); }
+    .unit.dim { opacity: .38; }
+
+    svg.wires {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .formula {
+      margin-top: 18px;
+      padding: 14px 16px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 14px;
+      overflow-x: auto;
+    }
+
+    .formula .ok { color: #9be7c4; }
+    .formula .bad { color: #ffb4aa; }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .dot { width: 10px; height: 10px; display: inline-block; margin-right: 6px; border: 1px solid var(--ink); vertical-align: -1px; }
+    .dot.hit { background: var(--hit); border-color: var(--hit); }
+    .dot.miss { background: var(--miss); border-color: var(--miss); }
+    .dot.compat { background: transparent; border-style: dashed; }
+
+    .contrast {
+      margin-top: 34px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      background: #fffdf7;
+      border: 1px solid var(--ink);
+      padding: 16px;
+    }
+
+    .card h3 { font-family: Fraunces, serif; margin: 0 0 8px; font-size: 24px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 12px; }
+    .pill {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      border: 1px solid var(--read);
+      color: var(--read);
+      padding: 3px 6px;
+      background: var(--read-soft);
+    }
+
+    .result {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      background: var(--paper-2);
+      padding: 10px;
+    }
+
+    footer.note {
+      margin-top: 36px;
+      border-top: 1px solid var(--rule);
+      padding-top: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 860px) {
+      header.hero, .board, .match-cols, .contrast { grid-template-columns: 1fr; }
+      .score-slip { transform: none; }
+      .match-cols { gap: 16px; }
+      svg.wires { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="wrap">
+    <header class="hero">
+      <div>
+        <div class="kicker">clean-guide · 严判 · 可视化例题</div>
+        <h1>严判踩点率<br />算完一个例子</h1>
+        <p class="lede">
+          计划是一张派工单，实际是一次真正的委派。严判先把两边收成「评测单元」，再按类型做一对一匹配。
+          下面用官方方法说明里的同一道例题，把每一步摊开。
+        </p>
+      </div>
+      <aside class="score-slip" id="slip">
+        <h2>本题记分条</h2>
+        <div class="score-grid">
+          <div class="score-cell"><span>Recall</span><b id="slip-r">—</b></div>
+          <div class="score-cell"><span>Precision</span><b id="slip-p">—</b></div>
+          <div class="score-cell"><span>F1</span><b id="slip-f">—</b></div>
+        </div>
+        <div class="score-note" id="slip-note">先看两侧派工，分数还没开始算。</div>
+      </aside>
+    </header>
+
+    <div class="steps" id="tabs"></div>
+    <div class="nav-row">
+      <button id="prev" type="button">上一步</button>
+      <button id="next" type="button">下一步</button>
+    </div>
+
+    <section class="panel on" data-step="0">
+      <h3>0. 这道题在比什么</h3>
+      <p class="why">
+        GT 计划两波：先派 3 个 WooCommerce 读者，再派 1 个 Google Sheet 写手和 1 个 Word 写手。
+        模型实际也开了两波，但写手换成了 Excel + Word，读者只派了 2 个、且挤在同一波。
+        两侧节点先经过 LLM 功能标签复核，再按 sub-task unit 比较「派的是什么人、干什么活」。
+      </p>
+      <div class="board">
+        <article class="side gt">
+          <div class="side-head"><span>计划 GT</span><span>2 waves · 5 nodes</span></div>
+          <div class="wave">
+            <div class="wave-label">Wave 1 · 并行读</div>
+            <div class="nodes">
+              <div class="chip read">读者 A<small>woocommerce</small></div>
+              <div class="chip read">读者 B<small>woocommerce</small></div>
+              <div class="chip read">读者 C<small>woocommerce</small></div>
+            </div>
+          </div>
+          <div class="wave">
+            <div class="wave-label">Wave 2 · 并行写</div>
+            <div class="nodes">
+              <div class="chip write">写手 1<small>gsheet</small></div>
+              <div class="chip write">写手 2<small>word</small></div>
+            </div>
+          </div>
+        </article>
+        <article class="side act">
+          <div class="side-head"><span>实际 Actual</span><span>2 waves · 4 nodes</span></div>
+          <div class="wave">
+            <div class="wave-label">A1 · 并行读</div>
+            <div class="nodes">
+              <div class="chip read">读者 a<small>woocommerce</small></div>
+              <div class="chip read">读者 b<small>woocommerce</small></div>
+            </div>
+          </div>
+          <div class="wave">
+            <div class="wave-label">A2 · 并行写</div>
+            <div class="nodes">
+              <div class="chip write">写手 x<small>excel</small></div>
+              <div class="chip write">写手 y<small>word</small></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" data-step="1">
+      <h3>1. 抽出评测单元</h3>
+      <p class="why">
+        写节点每个单独计数。读节点先按 <code>(wave, domain)</code> 合成语义簇：
+        同一波里 3 个 WooCommerce 读者只算 1 个簇，2 个也只算 1 个。
+        无领域的读不进严判分母；<code>other-write</code> 会进分母，但后面永不命中。
+      </p>
+      <div class="board">
+        <article class="side gt">
+          <div class="side-head"><span>GT 单元 |G| = 3</span><span>1 读簇 + 2 写</span></div>
+          <div class="wave">
+            <div class="wave-label">读：合簇</div>
+            <div class="nodes">
+              <div class="chip read hide" data-merge="g">读者 A</div>
+              <div class="chip read hide" data-merge="g">读者 B</div>
+              <div class="chip read hide" data-merge="g">读者 C</div>
+              <div class="chip cluster">W1 : woocommerce<small>3 个读者 → 1 个簇</small></div>
+            </div>
+          </div>
+          <div class="wave">
+            <div class="wave-label">写：不合并</div>
+            <div class="nodes">
+              <div class="chip write">gsheet</div>
+              <div class="chip write">word</div>
+            </div>
+          </div>
+        </article>
+        <article class="side act">
+          <div class="side-head"><span>实际单元 |A| = 3</span><span>1 读簇 + 2 写</span></div>
+          <div class="wave">
+            <div class="wave-label">读：合簇</div>
+            <div class="nodes">
+              <div class="chip read hide">读者 a</div>
+              <div class="chip read hide">读者 b</div>
+              <div class="chip cluster">A1 : woocommerce<small>2 个读者 → 1 个簇</small></div>
+            </div>
+          </div>
+          <div class="wave">
+            <div class="wave-label">写：不合并</div>
+            <div class="nodes">
+              <div class="chip write">excel</div>
+              <div class="chip write">word</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" data-step="2">
+      <h3>2. 谁能和谁连</h3>
+      <p class="why">
+        兼容边是 0/1 的：写角色必须同属 8 种闭集且完全一致；读只看领域相同，允许跨 wave。
+        所以 <b>word—word</b>、<b>woocommerce—woocommerce</b> 能连；<b>gsheet—excel</b> 不能连。
+        把鼠标放到单元上，只看它的兼容对象。
+      </p>
+      <div class="match-stage" id="compat-stage">
+        <svg class="wires" id="compat-svg"></svg>
+        <div class="match-cols">
+          <div>
+            <div class="unit" data-id="g-woo" data-kind="read" data-type="woocommerce"><div class="tag">GT 读簇</div><h4>woocommerce</h4></div>
+            <div class="unit" data-id="g-gsheet" data-kind="write" data-type="gsheet"><div class="tag">GT 写</div><h4>gsheet</h4></div>
+            <div class="unit" data-id="g-word" data-kind="write" data-type="word"><div class="tag">GT 写</div><h4>word</h4></div>
+          </div>
+          <div>
+            <div class="unit" data-id="a-woo" data-kind="read" data-type="woocommerce"><div class="tag">实际 读簇</div><h4>woocommerce</h4></div>
+            <div class="unit" data-id="a-excel" data-kind="write" data-type="excel"><div class="tag">实际 写</div><h4>excel</h4></div>
+            <div class="unit" data-id="a-word" data-kind="write" data-type="word"><div class="tag">实际 写</div><h4>word</h4></div>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <span><i class="dot compat"></i>虚线 = 兼容，还没选定匹配</span>
+        <span><i class="dot miss"></i>gsheet 与 excel 角色不同，没有边</span>
+      </div>
+    </section>
+
+    <section class="panel" data-step="3">
+      <h3>3. 最大一对一匹配</h3>
+      <p class="why">
+        一个 GT 单元最多占一个实际单元。本题图按类型切开，匹配数就是各类 <code>min(GT数量, 实际数量)</code> 之和。
+        命中 2 条：读簇对上了，word 对上了；gsheet 和 excel 各剩一个，算未命中。
+      </p>
+      <div class="match-stage" id="match-stage">
+        <svg class="wires" id="match-svg"></svg>
+        <div class="match-cols">
+          <div>
+            <div class="unit hit" data-id="mg-woo"><div class="tag">命中</div><h4>woocommerce</h4></div>
+            <div class="unit miss" data-id="mg-gsheet"><div class="tag">未匹配</div><h4>gsheet</h4></div>
+            <div class="unit hit" data-id="mg-word"><div class="tag">命中</div><h4>word</h4></div>
+          </div>
+          <div>
+            <div class="unit hit" data-id="ma-woo"><div class="tag">命中</div><h4>woocommerce</h4></div>
+            <div class="unit miss" data-id="ma-excel"><div class="tag">未匹配</div><h4>excel</h4></div>
+            <div class="unit hit" data-id="ma-word"><div class="tag">命中</div><h4>word</h4></div>
+          </div>
+        </div>
+      </div>
+      <div class="formula">
+        |M*| = min(gsheet 1,0) + min(word 1,1) + min(excel 0,1) + min(woo 1,1)
+        = <span class="bad">0</span> + <span class="ok">1</span> + <span class="bad">0</span> + <span class="ok">1</span>
+        = 2
+      </div>
+    </section>
+
+    <section class="panel" data-step="4">
+      <h3>4. 套上 P / R / F1</h3>
+      <p class="why">
+        这就是 CEAF-e 在 0/1 类型相似度下的公式：召回看计划点踩到了多少，精确看实际派的有多少是计划要的。
+        匹配按复核后的功能标签进行；计划要求 gsheet，实际产出 excel，因此这两个写入单元不能匹配。
+      </p>
+      <div class="formula">
+        R = |M*| / |G| = 2 / 3 = 66.7%<br />
+        P = |M*| / |A| = 2 / 3 = 66.7%<br />
+        F1 = 2|M*| / (|G| + |A|) = 4 / 6 = 66.7%
+      </div>
+      <div class="legend">
+        <span><i class="dot hit"></i>踩中：woocommerce 簇、word</span>
+        <span><i class="dot miss"></i>扣分：计划要 gsheet，实际写成 excel</span>
+      </div>
+    </section>
+
+    <section class="contrast">
+      <article class="card">
+        <h3>对照：同波派 10 个读者</h3>
+        <p>GT 只有 1 个 <code>woocommerce</code> 簇。实际把 10 个同类读者塞进同一 wave，仍只形成 1 个簇。</p>
+        <div class="pills">
+          <span class="pill">A1 × 10 readers → 1 cluster</span>
+        </div>
+        <div class="result">|G|=1, |A|=1, |M*|=1<br />R=1, P=1, F1=1<br />严判不惩罚「同波多派几个同类读者」。</div>
+      </article>
+      <article class="card">
+        <h3>对照：拆成 10 个 wave</h3>
+        <p>同样 10 个读者，若分散在 10 波，就变成 10 个簇。GT 只有 1 个，一对一只能中 1 个。</p>
+        <div class="pills">
+          <span class="pill">A1..A10 → 10 clusters</span>
+        </div>
+        <div class="result">|G|=1, |A|=10, |M*|=1<br />R=1, P=0.1, F1≈0.18<br />严判惩罚的是「跨波重复开同类读」。</div>
+      </article>
+    </section>
+
+    <footer class="note">
+      本例使用 expanded-20260912-v2 的 LLM 复核标签与 sub-task unit 匹配口径。主 agent 自己的读写不计踩点；plan 节点预先剔除；
+      跨题汇总是先加总 |G|、|A|、|M*| 再算 micro F1，不是把逐题 F1 再平均。
+      本页演示 LLM 复核后的 sub-agent hit 计算。
+    </footer>
+  </div>
+
+  <script>
+    const steps = [
+      { r: "—", p: "—", f: "—", note: "先看两侧派工，分数还没开始算。" },
+      { r: "—", p: "—", f: "—", note: "单元已抽出：|G|=3，|A|=3。读侧已经合簇。" },
+      { r: "—", p: "—", f: "—", note: "兼容边只有 2 条。gsheet 与 excel 不相连。" },
+      { r: "2/3", p: "2/3", f: "—", note: "最大匹配 |M*|=2。一对一占住了读簇和 word。" },
+      { r: "66.7%", p: "66.7%", f: "66.7%", note: "R=2/3，P=2/3，F1=2/3。" }
+    ];
+
+    const tabs = document.getElementById("tabs");
+    const labels = ["0 对照", "1 抽单元", "2 连兼容边", "3 一对一", "4 算分"];
+    labels.forEach((label, i) => {
+      const b = document.createElement("button");
+      b.className = "step-btn" + (i === 0 ? " active" : "");
+      b.textContent = label;
+      b.addEventListener("click", () => show(i));
+      tabs.appendChild(b);
+    });
+
+    let cur = 0;
+    const panels = [...document.querySelectorAll(".panel")];
+
+    function show(i) {
+      cur = i;
+      panels.forEach((p, idx) => p.classList.toggle("on", idx === i));
+      [...tabs.children].forEach((b, idx) => b.classList.toggle("active", idx === i));
+      document.getElementById("prev").disabled = i === 0;
+      document.getElementById("next").disabled = i === steps.length - 1;
+      document.getElementById("slip-r").textContent = steps[i].r;
+      document.getElementById("slip-p").textContent = steps[i].p;
+      document.getElementById("slip-f").textContent = steps[i].f;
+      document.getElementById("slip-note").textContent = steps[i].note;
+      requestAnimationFrame(drawWires);
+    }
+
+    document.getElementById("prev").addEventListener("click", () => show(Math.max(0, cur - 1)));
+    document.getElementById("next").addEventListener("click", () => show(Math.min(steps.length - 1, cur + 1)));
+
+    const compat = [
+      ["g-woo", "a-woo"],
+      ["g-word", "a-word"]
+    ];
+    const matched = [
+      ["mg-woo", "ma-woo"],
+      ["mg-word", "ma-word"]
+    ];
+
+    function cardCenter(id, stage) {
+      const el = document.querySelector('[data-id="' + id + '"]');
+      if (!el) return null;
+      const a = el.getBoundingClientRect();
+      const b = stage.getBoundingClientRect();
+      return { x: a.left - b.left + a.width / 2, y: a.top - b.top + a.height / 2 };
+    }
+
+    function path(svg, pairs, stage, solid) {
+      svg.innerHTML = "";
+      const box = stage.getBoundingClientRect();
+      svg.setAttribute("viewBox", "0 0 " + box.width + " " + box.height);
+      pairs.forEach(([l, r]) => {
+        const A = cardCenter(l, stage);
+        const B = cardCenter(r, stage);
+        if (!A || !B) return;
+        const d = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const mid = (A.x + B.x) / 2;
+        d.setAttribute("d", `M ${A.x} ${A.y} C ${mid} ${A.y}, ${mid} ${B.y}, ${B.x} ${B.y}`);
+        d.setAttribute("fill", "none");
+        d.setAttribute("stroke", solid ? "#1d6a48" : "#1b1712");
+        d.setAttribute("stroke-width", solid ? "3" : "1.4");
+        d.setAttribute("stroke-dasharray", solid ? "0" : "6 5");
+        d.setAttribute("opacity", solid ? "0.9" : "0.45");
+        d.dataset.left = l;
+        d.dataset.right = r;
+        svg.appendChild(d);
+      });
+    }
+
+    function drawWires() {
+      const cStage = document.getElementById("compat-stage");
+      const mStage = document.getElementById("match-stage");
+      if (cStage && cStage.offsetParent) path(document.getElementById("compat-svg"), compat, cStage, false);
+      if (mStage && mStage.offsetParent) path(document.getElementById("match-svg"), matched, mStage, true);
+    }
+
+    document.querySelectorAll("#compat-stage .unit").forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        const id = el.dataset.id;
+        const related = new Set([id]);
+        compat.forEach(([a, b]) => {
+          if (a === id) related.add(b);
+          if (b === id) related.add(a);
+        });
+        document.querySelectorAll("#compat-stage .unit").forEach((u) => {
+          u.classList.toggle("dim", !related.has(u.dataset.id));
+        });
+        document.querySelectorAll("#compat-svg path").forEach((p) => {
+          const keep = related.has(p.dataset.left) && related.has(p.dataset.right);
+          p.setAttribute("opacity", keep ? "0.95" : "0.08");
+          p.setAttribute("stroke-width", keep ? "2.4" : "1.2");
+        });
+      });
+      el.addEventListener("mouseleave", () => {
+        document.querySelectorAll("#compat-stage .unit").forEach((u) => u.classList.remove("dim"));
+        drawWires();
+      });
+    });
+
+    window.addEventListener("resize", drawWires);
+    show(0);
+  </script>
+</body>
+</html>

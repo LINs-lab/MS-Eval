@@ -1,0 +1,346 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-arxiv-scholarly-notion-word-excel",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-arxiv-scholarly-notion-word-excel.task.md",
+    "oracle166_sha256": "a0fc2d1f885ff6aba4a5c27569e6190a498b3ea5249a0410356d93d06338614b"
+  },
+  "label_cache_keys": [
+    "901fca59f42450ce85ce317d533159e077b973d8101a25d3d0e415714fbf08a1"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (academic-literature-researcher 0): One explore sub-agent calls the Scholarly search-arxiv tool exactly twice, once for transformer and once for attention mechanism. It returns the complete responses available from those two calls, normalized arXiv-style paper IDs, titles, authors, years, journal references, abstracts, query membership, duplicate IDs, and missing-field controls. It is strictly read-only.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "filesystem-workspace",
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (academic-literature-researcher 1): One explore sub-agent owns the local-arXiv branch. It calls search_papers exactly twice for transformer and neural network with the service's largest safe result limit, deduplicates normalized IDs, then uses download_paper and read_paper for each unique result as needed to verify its abstract. It writes no final artifact; if the corpus is large, it persists one runtime-unique JSON in the discovered task workspace and returns only path/hash/counts plus compact metadata controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (external-workflow-operator 0): Sole owner of the exact-title Notion database Research Paper Tracker. Fully paginate search before create/reuse, block on duplicate exact-title databases/pages, enforce Title, Paper_ID, Authors, Year, Category, Source, Abstract_Summary with exact types/options, upsert one page per Paper_ID, and query/read all managed pages back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 0): Sole writer of Transformer_Literature_Review.docx. Follow lit_review_template.md, use the exact title and category sections, cover every unique paper with abstract-grounded text, add evidence-based gaps, and read the document back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (office-report-builder 1): Sole writer of Research_Paper_Analysis.xlsx. Create exactly Paper_Catalog, Method_Comparison, Citation_Matrix; use plain-text IDs and literal values, preserve every source flag/category, and read all populated ranges back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (academic-literature-researcher 0): One explore sub-agent calls the Scholarly search-arxiv tool exactly twice, once for transformer and once for attention mechanism. It returns the complete responses available from those two calls, normalized arXiv-style paper IDs, titles, authors, years, journal references, abstracts, query membership, duplicate IDs, and missing-field controls. It is strictly read-only.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "filesystem-workspace",
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (academic-literature-researcher 1): One explore sub-agent owns the local-arXiv branch. It calls search_papers exactly twice for transformer and neural network with the service's largest safe result limit, deduplicates normalized IDs, then uses download_paper and read_paper for each unique result as needed to verify its abstract. It writes no final artifact; if the corpus is large, it persists one runtime-unique JSON in the discovered task workspace and returns only path/hash/counts plus compact metadata controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (external-workflow-operator 0): Sole owner of the exact-title Notion database Research Paper Tracker. Fully paginate search before create/reuse, block on duplicate exact-title databases/pages, enforce Title, Paper_ID, Authors, Year, Category, Source, Abstract_Summary with exact types/options, upsert one page per Paper_ID, and query/read all managed pages back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 0): Sole writer of Transformer_Literature_Review.docx. Follow lit_review_template.md, use the exact title and category sections, cover every unique paper with abstract-grounded text, add evidence-based gaps, and read the document back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (office-report-builder 1): Sole writer of Research_Paper_Analysis.xlsx. Create exactly Paper_Catalog, Method_Comparison, Citation_Matrix; use plain-text IDs and literal values, preserve every source flag/category, and read all populated ranges back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:2:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:3:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:4:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 4,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:filesystem-workspace",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "filesystem-workspace",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        0,
+        1
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "notion": 1,
+      "word": 1
+    },
+    "read": {
+      "filesystem-workspace": 1,
+      "scholarly-arxiv": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 5,
+    "units": 5,
+    "write_units": 3,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

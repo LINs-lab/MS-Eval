@@ -1,0 +1,233 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "gform-snowflake-feedback",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/gform-snowflake-feedback.task.md",
+    "oracle166_sha256": "0700395a6a5eb0c14d32ebe0db8e91218769f877141e9a522cd9a823e3eed18d"
+  },
+  "label_cache_keys": [
+    "a90b68c863da18fa871d3325680e258e7c222b0466ddb9422ae98bb21509196f"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): One Coder solely writes Support_Feedback_Analysis.xlsx in the dynamically resolved workspace. Create exactly Ticket Analysis, Priority Breakdown, and Improvement Plan with the task's exact headers/order, literal numeric values, rounding and all canonical rows; read every populated range back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): One Coder solely writes Support_Improvement_Report.docx from the canonical payload. Include the exact title, executive summary with total/overall satisfaction, key findings covering all top-five issues and satisfaction values, and one specific recommendation per issue; read full text/headings back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "gform",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): One Coder owns exactly one Google Form creation. Call create_form with title Customer Feedback Survey and description Help us improve our support services by sharing your feedback on recent issues. exactly once and retain formId. Sequentially add: a multiple-choice issue question with the literal top-five issue options; a multiple-choice satisfaction question with options 1, 2, 3, 4, 5; a free-text improvement question; a short-text recommendation-likelihood question explicitly asking for 1-10; and a free-text additional-comments question. Then call get_form(formId) and verify the ordered titles/types/options. Never search for a form through unsupported tools or retry an ambiguous creation.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): One Coder solely writes Support_Feedback_Analysis.xlsx in the dynamically resolved workspace. Create exactly Ticket Analysis, Priority Breakdown, and Improvement Plan with the task's exact headers/order, literal numeric values, rounding and all canonical rows; read every populated range back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): One Coder solely writes Support_Improvement_Report.docx from the canonical payload. Include the exact title, executive summary with total/overall satisfaction, key findings covering all top-five issues and satisfaction values, and one specific recommendation per issue; read full text/headings back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "gform",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): One Coder owns exactly one Google Form creation. Call create_form with title Customer Feedback Survey and description Help us improve our support services by sharing your feedback on recent issues. exactly once and retain formId. Sequentially add: a multiple-choice issue question with the literal top-five issue options; a multiple-choice satisfaction question with options 1, 2, 3, 4, 5; a free-text improvement question; a short-text recommendation-likelihood question explicitly asking for 1-10; and a free-text additional-comments question. Then call get_form(formId) and verify the ordered titles/types/options. Never search for a form through unsupported tools or retry an ambiguous creation.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:word",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:2:gform",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 2,
+      "role": "gform",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "gform": 1,
+      "word": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 3,
+    "units": 3,
+    "write_units": 3,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

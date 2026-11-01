@@ -1,0 +1,1524 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "train-route-analysis-excel-word-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/train-route-analysis-excel-word-email.task.md",
+    "oracle166_sha256": "0848718017f8efb166240dfb516e8e6a96ba664ee2bcdf8127edcf0d1e7bc5c1"
+  },
+  "label_cache_keys": [
+    "0d5f2199945d6e06c20e7f4994c334fd571afca98b7e71d1370b7601a956ab8a",
+    "9094b64be844fe59ea08a8baa3df509f4a387eceb250b2aacff243578ec12838",
+    "f94ba6ed611183a9def71c3f69ff0a3baafe9708c3d1f546af4b3fbd12f48b46"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 31,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (web-domain-researcher 0): Destination owner for to_telecode=BJP: query from_telecode=VNP to only BJP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (web-domain-researcher 1): Destination owner for to_telecode=VNP: query from_telecode=VNP to only VNP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (web-domain-researcher 2): Destination owner for to_telecode=VAP: query from_telecode=VNP to only VAP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (web-domain-researcher 3): Destination owner for to_telecode=BOP: query from_telecode=VNP to only BOP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (web-domain-researcher 4): Destination owner for to_telecode=AOH: query from_telecode=VNP to only AOH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 5 (web-domain-researcher 5): Destination owner for to_telecode=SHH: query from_telecode=VNP to only SHH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 6,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 6 (web-domain-researcher 6): Destination owner for to_telecode=GZQ: query from_telecode=VNP to only GZQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 7,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 7 (web-domain-researcher 7): Destination owner for to_telecode=GGQ: query from_telecode=VNP to only GGQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 8,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 8 (web-domain-researcher 8): Destination owner for to_telecode=SZQ: query from_telecode=VNP to only SZQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 9,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 9 (web-domain-researcher 9): Destination owner for to_telecode=IOQ: query from_telecode=VNP to only IOQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 10,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 10 (web-domain-researcher 10): Destination owner for to_telecode=CDW: query from_telecode=VNP to only CDW for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 11,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 11 (web-domain-researcher 11): Destination owner for to_telecode=WEI: query from_telecode=VNP to only WEI for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 12,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 12 (web-domain-researcher 12): Destination owner for to_telecode=XIY: query from_telecode=VNP to only XIY for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 13,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 13 (web-domain-researcher 13): Destination owner for to_telecode=EAY: query from_telecode=VNP to only EAY for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 14,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 14 (web-domain-researcher 14): Destination owner for to_telecode=WHN: query from_telecode=VNP to only WHN for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 15,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 15 (web-domain-researcher 15): Destination owner for to_telecode=WGQ: query from_telecode=VNP to only WGQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 16,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 16 (web-domain-researcher 16): Destination owner for to_telecode=NJH: query from_telecode=VNP to only NJH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 17,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 17 (web-domain-researcher 17): Destination owner for to_telecode=NKH: query from_telecode=VNP to only NKH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 18,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 18 (web-domain-researcher 18): Destination owner for to_telecode=HGH: query from_telecode=VNP to only HGH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 19,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 19 (web-domain-researcher 19): Destination owner for to_telecode=HHH: query from_telecode=VNP to only HHH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 20,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 20 (web-domain-researcher 20): Destination owner for to_telecode=TJP: query from_telecode=VNP to only TJP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 21,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 21 (web-domain-researcher 21): Destination owner for to_telecode=TJN: query from_telecode=VNP to only TJN for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 22,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 22 (web-domain-researcher 22): Destination owner for to_telecode=SYT: query from_telecode=VNP to only SYT for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 23,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 23 (web-domain-researcher 23): Destination owner for to_telecode=SYB: query from_telecode=VNP to only SYB for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 24,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 24 (web-domain-researcher 24): Destination owner for to_telecode=ZZF: query from_telecode=VNP to only ZZF for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 25,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 25 (web-domain-researcher 25): Destination owner for to_telecode=ZGE: query from_telecode=VNP to only ZGE for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 26,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 26 (web-domain-researcher 26): Destination owner for to_telecode=CSQ: query from_telecode=VNP to only CSQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 27,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 27 (web-domain-researcher 27): Destination owner for to_telecode=CWQ: query from_telecode=VNP to only CWQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 28,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 28 (web-domain-researcher 28): Destination owner for to_telecode=KMM: query from_telecode=VNP to only KMM for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 29,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 29 (web-domain-researcher 29): Destination owner for to_telecode=KMY: query from_telecode=VNP to only KMY for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 30,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 30 (web-domain-researcher 30): Destination owner for to_telecode=QFB: query from_telecode=VNP to only QFB for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 31,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole writer of Route_Analysis.xlsx with exact Routes and Summary rows/order, literal prices/availability and full read-back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 32,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): Sole writer of Route_Analysis_Report.docx with exact four headings, one paragraph per frozen train, fastest-route recommendation, all-route cost comparison and document read-back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 33,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "email",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): Sole owner of logistics@company.com email with exact subject Beijing Train Route Analysis 2026-03-10, frozen route count/recommended schedule and every second-class price. Paginate Sent search/read recipients, send at most once and read back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (web-domain-researcher 0): Destination owner for to_telecode=BJP: query from_telecode=VNP to only BJP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (web-domain-researcher 1): Destination owner for to_telecode=VNP: query from_telecode=VNP to only VNP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (web-domain-researcher 2): Destination owner for to_telecode=VAP: query from_telecode=VNP to only VAP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (web-domain-researcher 3): Destination owner for to_telecode=BOP: query from_telecode=VNP to only BOP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (web-domain-researcher 4): Destination owner for to_telecode=AOH: query from_telecode=VNP to only AOH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 5 (web-domain-researcher 5): Destination owner for to_telecode=SHH: query from_telecode=VNP to only SHH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 6,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 6 (web-domain-researcher 6): Destination owner for to_telecode=GZQ: query from_telecode=VNP to only GZQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 7,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 7 (web-domain-researcher 7): Destination owner for to_telecode=GGQ: query from_telecode=VNP to only GGQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 8,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 8 (web-domain-researcher 8): Destination owner for to_telecode=SZQ: query from_telecode=VNP to only SZQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 9,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 9 (web-domain-researcher 9): Destination owner for to_telecode=IOQ: query from_telecode=VNP to only IOQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 10,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 10 (web-domain-researcher 10): Destination owner for to_telecode=CDW: query from_telecode=VNP to only CDW for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 11,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 11 (web-domain-researcher 11): Destination owner for to_telecode=WEI: query from_telecode=VNP to only WEI for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 12,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 12 (web-domain-researcher 12): Destination owner for to_telecode=XIY: query from_telecode=VNP to only XIY for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 13,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 13 (web-domain-researcher 13): Destination owner for to_telecode=EAY: query from_telecode=VNP to only EAY for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 14,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 14 (web-domain-researcher 14): Destination owner for to_telecode=WHN: query from_telecode=VNP to only WHN for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 15,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 15 (web-domain-researcher 15): Destination owner for to_telecode=WGQ: query from_telecode=VNP to only WGQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 16,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 16 (web-domain-researcher 16): Destination owner for to_telecode=NJH: query from_telecode=VNP to only NJH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 17,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 17 (web-domain-researcher 17): Destination owner for to_telecode=NKH: query from_telecode=VNP to only NKH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 18,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 18 (web-domain-researcher 18): Destination owner for to_telecode=HGH: query from_telecode=VNP to only HGH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 19,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 19 (web-domain-researcher 19): Destination owner for to_telecode=HHH: query from_telecode=VNP to only HHH for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 20,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 20 (web-domain-researcher 20): Destination owner for to_telecode=TJP: query from_telecode=VNP to only TJP for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 21,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 21 (web-domain-researcher 21): Destination owner for to_telecode=TJN: query from_telecode=VNP to only TJN for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 22,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 22 (web-domain-researcher 22): Destination owner for to_telecode=SYT: query from_telecode=VNP to only SYT for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 23,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 23 (web-domain-researcher 23): Destination owner for to_telecode=SYB: query from_telecode=VNP to only SYB for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 24,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 24 (web-domain-researcher 24): Destination owner for to_telecode=ZZF: query from_telecode=VNP to only ZZF for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 25,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 25 (web-domain-researcher 25): Destination owner for to_telecode=ZGE: query from_telecode=VNP to only ZGE for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 26,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 26 (web-domain-researcher 26): Destination owner for to_telecode=CSQ: query from_telecode=VNP to only CSQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 27,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 27 (web-domain-researcher 27): Destination owner for to_telecode=CWQ: query from_telecode=VNP to only CWQ for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 28,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 28 (web-domain-researcher 28): Destination owner for to_telecode=KMM: query from_telecode=VNP to only KMM for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 29,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 29 (web-domain-researcher 29): Destination owner for to_telecode=KMY: query from_telecode=VNP to only KMY for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 30,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 30 (web-domain-researcher 30): Destination owner for to_telecode=QFB: query from_telecode=VNP to only QFB for depart_date=2026-03-10 through the actual route-query tool, not get-station-by-telecode alone. Return every train with literal train code, actual departure/arrival station and telecode, times, duration, first-class price, second-class price and second-class availability, plus query controls; write nothing.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 31,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole writer of Route_Analysis.xlsx with exact Routes and Summary rows/order, literal prices/availability and full read-back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 32,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): Sole writer of Route_Analysis_Report.docx with exact four headings, one paragraph per frozen train, fastest-route recommendation, all-route cost comparison and document read-back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 33,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "email",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): Sole owner of logistics@company.com email with exact subject Beijing Train Route Analysis 2026-03-10, frozen route count/recommended schedule and every second-class price. Paginate Sent search/read recipients, send at most once and read back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:31:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 31,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:32:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 32,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:33:email",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 33,
+      "role": "email",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:rail_12306",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "rail_12306",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "email": 1,
+      "excel": 1,
+      "word": 1
+    },
+    "read": {
+      "rail_12306": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 34,
+    "units": 4,
+    "write_units": 3,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

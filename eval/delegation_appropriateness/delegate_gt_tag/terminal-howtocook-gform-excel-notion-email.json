@@ -1,0 +1,389 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-howtocook-gform-excel-notion-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-howtocook-gform-excel-notion-email.task.md",
+    "oracle166_sha256": "1eb3184222c4dd5b368a953912e235d69e91af9d294734a96cbcc0546096224d"
+  },
+  "label_cache_keys": [
+    "a5cee8911db09d703657cbb4de8696d43bb8efbab373b42a98d35bf9ee0d0df0"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "howtocook"
+          ],
+          "is_plan": false,
+          "declared": null,
+          "text": "explore 0 (web-domain-researcher 0): Recipe owner. Retrieve at least 7 recipes from the recipe database — at least 2 Chinese Meat Dishes, 2 Chinese Vegetable Dishes, 1 Chinese Staple Foods, 1 Soups, and 1 Seafood — recording each recipe's name, category, difficulty, and ingredients exactly as returned. Return the compact recipe rows plus category/count controls. Do not write files, create the form, or run the planner.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "gform",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (external-workflow-operator 0): Sole owner of the Google Form `Employee Lunch Program Preferences`. Search the exact title first, create it once only when absent, and block on duplicates. Add, in order, three multiple-choice questions — preferred cuisine type (Chinese Meat Dishes / Chinese Vegetable Dishes / Chinese Staple Foods / Soups / Seafood), spice tolerance (Mild / Medium / Spicy), and dietary restrictions (Vegetarian / No Pork / No Seafood / Gluten Free / No Restrictions) — and two short-text questions on the importance of variety (rate 1 to 5) and any other food preferences or allergies. Retrieve the form to verify the title, question wording, options, and question types. Do not query recipes or write the planner.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "processor",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole owner of `menu_planner.py`. It receives the frozen recipes, budget, and dietary restrictions. Write and run the script embedding this data and selecting exactly 5 recipes for Monday through Friday, with difficulty <= 4, no category repeating on consecutive days, and dietary restrictions honored where possible (avoid pork if No Pork, avoid seafood if No Seafood); apply frozen per-serving costs of 8 USD for meat and seafood dishes, 5 USD for vegetable dishes, 6 USD for staple foods, and 4 USD for soups. Return the selected weekly menu, per-day costs, and total weekly cost (sum of the 5 per-serving costs times 50 servings per day). Do not create the workbook, Notion database, form, or email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_3",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 3,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 1): Sole writer of `Meal_Program_Plan.xlsx`. Read only the frozen recipes, menu, and survey question list. Create exactly four worksheets: `Survey_Questions` holds `question_num/text/type` with exactly the 5 survey questions; `Recipe_Selection` holds `recipe_name/category/difficulty` with at least 7 rows (2 meat, 2 vegetable, 1 staple, 1 soup, 1 seafood, names and categories exactly as retrieved); `Weekly_Menu` holds `day/lunch_recipe/estimated_cost` with exactly 5 rows for Monday-Friday, costs entered as literal numbers per the pricing (meat/seafood 8, vegetable 5, staple 6, soup 4 USD); `Program_Summary` holds metric/value rows — `total_weekly_cost` (sum of daily estimated_cost x 50 servings), `avg_daily_cost_per_person` (total / (5 days x 50 servings)), `survey_question_count` = 5, `recipes_evaluated` (count of Recipe_Selection rows), and `menu_days` = 5 — all as literal numbers rather than formulas. Read every populated range back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 1): Sole Notion owner of the database `Recipe Knowledge Base`. Search the exact title first, create it once only when absent, and reuse without duplicating. Require properties Recipe Name (title), Category (select: Chinese Meat Dishes, Chinese Vegetable Dishes, Chinese Staple Foods, Soups, Seafood), Difficulty (number), and Suitable For (multi-select: Lunch, Dinner, Quick Meal). Add exactly 5 entries — one per recipe from the frozen Monday-Friday weekly menu — with recipe name, category, and difficulty (<= 4) copied exactly and Suitable For including at least `Lunch`. Read back and require exactly 5 pages.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "email",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 2): Sole email owner. Search Sent mail for exact To `all_staff@company.com` / subject `New Employee Lunch Program - Take Our Survey`, send at most once, then read it back. The body introduces the lunch program, mentions the planned weekly menu with dishes across meat, vegetable, staple, soup, and seafood categories, and encourages employees to complete `Employee Lunch Program Preferences`, including the survey link if available, otherwise referencing the survey by its exact title.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "howtocook"
+      ],
+      "is_plan": false,
+      "declared": null,
+      "text": "explore 0 (web-domain-researcher 0): Recipe owner. Retrieve at least 7 recipes from the recipe database — at least 2 Chinese Meat Dishes, 2 Chinese Vegetable Dishes, 1 Chinese Staple Foods, 1 Soups, and 1 Seafood — recording each recipe's name, category, difficulty, and ingredients exactly as returned. Return the compact recipe rows plus category/count controls. Do not write files, create the form, or run the planner.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "gform",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (external-workflow-operator 0): Sole owner of the Google Form `Employee Lunch Program Preferences`. Search the exact title first, create it once only when absent, and block on duplicates. Add, in order, three multiple-choice questions — preferred cuisine type (Chinese Meat Dishes / Chinese Vegetable Dishes / Chinese Staple Foods / Soups / Seafood), spice tolerance (Mild / Medium / Spicy), and dietary restrictions (Vegetarian / No Pork / No Seafood / Gluten Free / No Restrictions) — and two short-text questions on the importance of variety (rate 1 to 5) and any other food preferences or allergies. Retrieve the form to verify the title, question wording, options, and question types. Do not query recipes or write the planner.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "processor",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole owner of `menu_planner.py`. It receives the frozen recipes, budget, and dietary restrictions. Write and run the script embedding this data and selecting exactly 5 recipes for Monday through Friday, with difficulty <= 4, no category repeating on consecutive days, and dietary restrictions honored where possible (avoid pork if No Pork, avoid seafood if No Seafood); apply frozen per-serving costs of 8 USD for meat and seafood dishes, 5 USD for vegetable dishes, 6 USD for staple foods, and 4 USD for soups. Return the selected weekly menu, per-day costs, and total weekly cost (sum of the 5 per-serving costs times 50 servings per day). Do not create the workbook, Notion database, form, or email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 1): Sole writer of `Meal_Program_Plan.xlsx`. Read only the frozen recipes, menu, and survey question list. Create exactly four worksheets: `Survey_Questions` holds `question_num/text/type` with exactly the 5 survey questions; `Recipe_Selection` holds `recipe_name/category/difficulty` with at least 7 rows (2 meat, 2 vegetable, 1 staple, 1 soup, 1 seafood, names and categories exactly as retrieved); `Weekly_Menu` holds `day/lunch_recipe/estimated_cost` with exactly 5 rows for Monday-Friday, costs entered as literal numbers per the pricing (meat/seafood 8, vegetable 5, staple 6, soup 4 USD); `Program_Summary` holds metric/value rows — `total_weekly_cost` (sum of daily estimated_cost x 50 servings), `avg_daily_cost_per_person` (total / (5 days x 50 servings)), `survey_question_count` = 5, `recipes_evaluated` (count of Recipe_Selection rows), and `menu_days` = 5 — all as literal numbers rather than formulas. Read every populated range back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 1): Sole Notion owner of the database `Recipe Knowledge Base`. Search the exact title first, create it once only when absent, and reuse without duplicating. Require properties Recipe Name (title), Category (select: Chinese Meat Dishes, Chinese Vegetable Dishes, Chinese Staple Foods, Soups, Seafood), Difficulty (number), and Suitable For (multi-select: Lunch, Dinner, Quick Meal). Add exactly 5 entries — one per recipe from the frozen Monday-Friday weekly menu — with recipe name, category, and difficulty (<= 4) copied exactly and Suitable For including at least `Lunch`. Read back and require exactly 5 pages.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "email",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 2): Sole email owner. Search Sent mail for exact To `all_staff@company.com` / subject `New Employee Lunch Program - Take Our Survey`, send at most once, then read it back. The body introduces the lunch program, mentions the planned weekly menu with dishes across meat, vegetable, staple, soup, and seafood categories, and encourages employees to complete `Employee Lunch Program Preferences`, including the survey link if available, otherwise referencing the survey by its exact title.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:1:gform",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "gform",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:2:processor",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "processor",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:3:excel",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 3,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:4:notion",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 4,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:5:email",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 5,
+      "role": "email",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:howtocook",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "howtocook",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "email": 1,
+      "excel": 1,
+      "gform": 1,
+      "notion": 1,
+      "processor": 1
+    },
+    "read": {
+      "howtocook": 1
+    }
+  },
+  "counts": {
+    "waves": 3,
+    "nodes": 6,
+    "units": 6,
+    "write_units": 5,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

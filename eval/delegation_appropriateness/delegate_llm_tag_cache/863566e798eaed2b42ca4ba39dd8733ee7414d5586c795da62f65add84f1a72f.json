@@ -1,0 +1,58 @@
+{
+  "input_hash": "863566e798eaed2b42ca4ba39dd8733ee7414d5586c795da62f65add84f1a72f",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "research-data-archival-compliance",
+    "task_text": "Your research institution must establish comprehensive data archival and compliance procedures to ensure research data integrity and meets regulatory requirements. The first phase involves conducting a complete inventory of all research datasets and associated documentation. Identify all active research projects and their data files. Document dataset characteristics including file format, size, creation date, and data type. Organize documentation including study protocols, data collection procedures, and analytical methods. Create a centralized registry of all research datasets with essential metadata for each.\n\nIn the second phase, you will verify compliance of all datasets with applicable retention policies and funding agency requirements. Review institutional data retention policies specifying how long different data types must be retained. Check funding agency requirements including National Science Foundation, National Institutes of Health, and other sponsor mandates. Assess whether datasets meet funder requirements for data sharing and open access. Document any datasets with sensitive data requiring restricted access or deidentification. Verify that datasets include required documentation and metadata for reproducibility.\n\nThe third phase requires creating comprehensive archival metadata and preservation plans for each dataset. Develop standardized metadata documentation following relevant community standards for the research domain. Create detailed data dictionaries defining all variables and coding schemes. Document data provenance including collection methods, preprocessing steps, and quality assurance procedures. Create preservation plans addressing long-term storage, format migration, and access preservation for each dataset.\n\nIn the fourth phase, you will organize all research data in a compliant repository structure. Establish standardized directory hierarchies and naming conventions for all datasets. Ensure all files are in acceptable formats suitable for long-term preservation. Create backup copies of all datasets with off-site replication. Establish access controls ensuring appropriate security for sensitive data. Document all datasets in the institutional research data management system.\n\nThe fifth phase involves generating comprehensive compliance documentation. Create detailed archival plans for each dataset documenting retention requirements and preservation procedures. Verify that all documentation required by funders is complete and properly organized. Generate compliance checklists for each funding source. Create institutional compliance certifications confirming that data meets all applicable requirements.\n\nThe sixth phase requires finalizing archival and communicating with stakeholders. Document all archival procedures and create training materials for researchers. Send compliance verification communications to institutional leadership and funding agencies. Store all archival documentation with version control in the institutional repository. Schedule meetings with research teams to confirm data organization and compliance with requirements.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly as the main agent without dispatching any sub-agents. The three task-provided datasets are small enough to inventory directly: in one native-parallel read-only batch, inspect these exact task-visible source objects — raw_datasets/NSF-2021-CLIM-001/{metadata.json,temperature_records.csv,study_protocol.txt}, raw_datasets/NIH-2022-HLTH-002/{metadata.json,patient_outcomes.csv,study_protocol.txt}, and raw_datasets/DOE-2023-ENRG-003/{metadata.json,measurements.csv,study_protocol.txt}. For each dataset freeze its exact project key, funder, PI, retention years, sensitivity, data file format/size/header/row count, protocol coverage, variable dictionary, provenance evidence, sharing/access constraints, documentation gaps, and preservation risks; treat unrelated top-level sample/config files as workspace context, not research datasets, and preserve every source unchanged. Then directly: create one explicit directory per frozen dataset with preservation copies of every mapped data/documentation file (originals untouched, workspace-only backups labeled as local simulations, and an off-site capability blocker recorded unless an authorized remote target is actually visible) plus the centralized dataset registry; create the compliance documentation package (archival plan, data dictionary, provenance/preservation/access procedure, sponsor checklist, researcher training guidance, version-control instructions, and a certification separating verified compliance from gaps) for every dataset and sponsor. Reconcile the three dataset keys across registry, copies and documents; resolve email recipients and meeting dates/times only from task-visible evidence, reporting the precise missing-parameter blocker instead of guessing, and complete the remaining side effects exactly once. Call claim_done; do not add a separate verification phase.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_5",
+        "text": "Create the complete local research data archival/compliance package in /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-research-data-archival-compliance/workspace. Motivation: fulfill all six phases except actual external email/calendar writes. Inspect README.md, config.json, data.csv and all raw_datasets contents/metadata/protocols. Work only inside this workspace; preserve originals.\n\nDeliverables/acceptance criteria:\n1) Complete inventory of every active project and every associated file, with format, byte size, filesystem creation/birth date if available (otherwise clearly label best available timestamp), data type, checksum, sensitivity, and role; centralized machine-readable registry (CSV and JSON).\n2) Review and document institutional retention policy plus NSF, NIH, DOE/other sponsor requirements using supplied inputs; do not invent certainty—distinguish supplied requirements from assumptions. Per-dataset compliance matrix covering retention, sharing/open access, sensitive/restricted/deidentification, required docs/metadata, reproducibility; gaps and remediation owners/status.\n3) Per-project archival metadata following an appropriate standard (DataCite/Dublin Core plus domain notes), detailed data dictionary from actual CSV headers/values, provenance (collection, preprocessing, QA from supplied evidence, marking unknowns), and preservation plan (storage, fixity, migration, access).\n4) Create a compliant institutional_repository/ hierarchy with standardized naming, README, originals copied byte-for-byte, preservation/access/documentation areas, SHA-256 manifests. Add an offsite_replica directory as a clearly labeled simulated off-site replication copy within the permitted workspace, with independent checksum verification report. Do not claim real off-site storage. Include access control policy and access matrix; sensitive project restricted. Keep preservation-suitable originals; document format assessment/migration recommendations. Add VERSION and CHANGELOG and repository catalog/RDM-system import file to document all datasets.\n5) Detailed archival plan per dataset, funder checklists, documentation completeness verification, and conditional institutional compliance certifications that accurately state gaps/conditions rather than falsely asserting compliance.\n6) Archival SOP and researcher training material. Also draft stakeholder email messages and a meeting schedule proposal containing all recipient/team/address/time information found in inputs, suitable for later external execution. Include citations/traceability to supplied files for policy claims.\n7) Provide a concise verification report listing files created, checksums/copy integrity, and any unresolved limitations.\n\nPrefer open formats (Markdown/CSV/JSON/TXT). Ensure filenames are clear and all outputs are actually written. Return artifact paths, identified recipients, proposed meeting event details, and verification result.\nBuild archival compliance package",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_15",
+        "text": "Create one Google Calendar event for the archival compliance review. Context: local evidence identifies Dr. Alice Martinez (NSF-2021-CLIM-001), Dr. Bob Chen (NIH-2022-HLTH-002), and Dr. Carol Wu (DOE-2023-ENRG-003), but no email addresses, availability, institutional contacts, or timezone were supplied. Calendar check found no events from 2026-09-10 through 2026-10-10. Use a reasonable placeholder slot: 2026-09-17 10:00–11:00 UTC. Title: \"Research Data Archival Compliance Review — NSF/NIH/DOE Projects\". Location: \"Virtual — meeting link TBD\". No attendees because no valid addresses are available. Description must name the three PIs/project IDs, explain attendee invitations are pending addresses, include agenda: evidence/scope; retention and funder/DMP checks; NIH PHI controls; metadata/reproducibility gaps; owners/deadlines/deposit/replication/sign-off. State that the NIH data remains restricted and the local replica is not a true off-site copy. Create the event and return its ID/link/details. Do not send email, fabricate addresses, or create additional events.\nSchedule archival review meeting",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_21",
+        "text": "Finalize and re-verify the package after external scheduling. A Google Calendar event was created and meeting_schedule_proposal.md was updated. Event ID 75b39316-f1a1-4a30-9b4d-97a9e37b64f1, scheduled 2026-09-17 10:00–11:00 UTC, no attendees due to missing email addresses. Update relevant version-control documentation (CHANGELOG/VERSION if appropriate), verification_report.md, and created_files.csv/checksums so they are current after this modification. Preserve the accurate limitation that stakeholder/funder communications were drafted but not sent because no addresses were supplied, and that no attendees were invited. Re-run source-to-original, primary manifest, and primary-to-simulated-replica verification. Ensure report counts are internally consistent. Work only within the workspace. Return final validation counts and any unresolved issue.\nFinalize package after calendar",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "other-write",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "calendar",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "other-write",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

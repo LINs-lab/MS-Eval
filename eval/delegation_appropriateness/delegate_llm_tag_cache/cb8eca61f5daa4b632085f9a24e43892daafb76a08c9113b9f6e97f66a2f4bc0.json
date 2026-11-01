@@ -1,0 +1,45 @@
+{
+  "input_hash": "cb8eca61f5daa4b632085f9a24e43892daafb76a08c9113b9f6e97f66a2f4bc0",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-workforce-compensation-sheet",
+    "task_text": "The HR leadership team is requesting a compensation analysis across all departments in the company. Please connect to the data warehouse and pull employee records from the human resources database, then calculate key salary statistics for each department.\n\nCreate an Excel file called Compensation_Report.xlsx in the workspace with two sheets. The first sheet should be named \"Department Compensation\" and contain columns Department, Headcount, Avg_Salary (average salary rounded to two decimal places), Min_Salary (rounded to two decimal places), Max_Salary (rounded to two decimal places), and Total_Payroll (sum of all salaries rounded to two decimal places). Sort the rows alphabetically by department name.\n\nThe second sheet should be named \"Summary\" with columns Metric and Value. Include the following entries: Total_Employees (total headcount across all departments), Total_Payroll (total payroll across all departments rounded to two decimal places), Company_Avg_Salary (overall average salary rounded to two decimal places), Highest_Avg_Department (department with the highest average salary), and Lowest_Avg_Department (department with the lowest average salary).\n\nAlso create a Google Sheet spreadsheet titled \"Workforce Compensation Dashboard\" with a sheet called \"Overview\" containing the same Department Compensation data so the HR team can collaborate on it online.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, use one true dependency wave. The department aggregate is compact, so the main agent performs it directly instead of inserting a one-agent source wave.\n\nInspect the HR schema, confirm `HR_ANALYTICS.PUBLIC.EMPLOYEES` and its `DEPARTMENT` and `SALARY` fields, then run one server-side department aggregate over the full table plus one company control query. Freeze alphabetically ordered Department, Headcount, raw Avg_Salary, Min_Salary, Max_Salary, Total_Payroll; company headcount/payroll and `Company_Avg_Salary=company payroll/company headcount`; and deterministic highest/lowest raw-average departments with alphabetical ties. Require department headcounts and payrolls to reconcile exactly to company controls and return no employee rows.\n\nWave 1 — dispatch exactly two coder sub-agents in parallel in the same response:\n1. coder 0 (office-report-builder 0): The Excel coder is the sole writer of Compensation_Report.xlsx in the dynamically discovered task workspace. It creates exactly Department Compensation and Summary with the requested headers/order, literal rounded numbers, reads both populated ranges back, and returns row/count/value controls.\n2. coder 1 (external-workflow-operator 0): The Google-Sheet coder is the sole owner of exact title Workforce Compensation Dashboard. It searches/reuses one exact-title spreadsheet or creates once, blocks on duplicates, creates or reuses a single Overview tab, batch-writes the exact Department Compensation rows from the canonical packet, and reads the complete range back.\n\nEach writer must correct its own artifact before returning. The main agent only compares the two receipts to the frozen packet; it must not launch sequential repair agents or reread either artifact.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_18",
+        "text": "Create an Excel workbook at exactly this path:\n/workspace/dumps/kimi-code_Qwen3.8-Max/SingleUserTurn-sf-workforce-compensation-sheet/workspace/Compensation_Report.xlsx\n\nThe workbook must contain exactly two sheets (rename or remove any default sheet if needed so that no extra sheets remain):\n\nSHEET 1 — name exactly: \"Department Compensation\"\nRow 1 header: Department | Headcount | Avg_Salary | Min_Salary | Max_Salary | Total_Payroll\nThen 7 data rows, already sorted alphabetically by department. Write these values EXACTLY as shown (all salary figures are already rounded to two decimal places; write them as real numbers, do not format them as text):\n\nEngineering | 7096 | 58991.61 | 15360.00 | 695267.00 | 418604451.00\nFinance     | 7148 | 57878.19 | 15760.00 | 638897.00 | 413713333.00\nHR          | 7077 | 58920.45 | 18307.00 | 692232.00 | 416980025.00\nOperations  | 7120 | 57808.74 | 17168.00 | 656505.00 | 411598247.00\nR&D         | 7083 | 57905.93 | 15128.00 | 680490.00 | 410147671.00\nSales       | 7232 | 58864.79 | 15885.00 | 652806.00 | 425710161.00\nSupport     | 7244 | 58400.48 | 15916.00 | 608157.00 | 423053067.00\n\nSHEET 2 — name exactly: \"Summary\"\nRow 1 header: Metric | Value\nThen these 5 rows, values exactly as shown:\n\nTotal_Employees       | 50000\nTotal_Payroll         | 2919806955.00\nCompany_Avg_Salary    | 58396.14\nHighest_Avg_Department| Engineering\nLowest_Avg_Department | Operations\n\nRequirements:\n- Values must be stored as numbers (numeric type), not strings, except department/metric labels.\n- You may optionally apply a 0.00 number format to the salary columns; the underlying values must remain the numbers above.\n- Header order must be exactly as specified.\n- After writing, read the file back to verify both sheets exist with correct names, headers and values, and report any discrepancy.\n\nReport back: confirmation the file exists at that path, sheet names found, and a snapshot of both sheets' contents.\nBuild Compensation_Report.xlsx",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_18",
+        "text": "Create a new Google Spreadsheet titled exactly: \"Workforce Compensation Dashboard\"\n\nIt must contain a sheet (tab) named exactly \"Overview\" with the following data. Google Sheets creates a default first sheet (usually \"Sheet1\") — rename that default sheet to \"Overview\" rather than adding an extra tab, so the spreadsheet ends up with the Overview sheet containing this data.\n\nCell A1 header row: Department | Headcount | Avg_Salary | Min_Salary | Max_Salary | Total_Payroll\nRows 2-8, already sorted alphabetically by department, values exactly as shown:\n\nRow 2: Engineering | 7096 | 58991.61 | 15360.00 | 695267.00 | 418604451.00\nRow 3: Finance     | 7148 | 57878.19 | 15760.00 | 638897.00 | 413713333.00\nRow 4: HR          | 7077 | 58920.45 | 18307.00 | 692232.00 | 416980025.00\nRow 5: Operations  | 7120 | 57808.74 | 17168.00 | 656505.00 | 411598247.00\nRow 6: R&D         | 7083 | 57905.93 | 15128.00 | 680490.00 | 410147671.00\nRow 7: Sales       | 7232 | 58864.79 | 15885.00 | 652806.00 | 425710161.00\nRow 8: Support     | 7244 | 58400.48 | 15916.00 | 608157.00 | 423053067.00\n\nRequirements:\n- Write numeric values as real numbers (headcount and salaries), department name as text.\n- Data occupies range A1:F8 on sheet \"Overview\".\n- After writing, read back the Overview sheet (range A1:F8) to verify headers and all values were written correctly; report any discrepancy.\n\nReport back: the spreadsheet ID, spreadsheet URL (if available), confirmation of the \"Overview\" sheet name, and the verified A1:F8 contents.\nCreate Google compensation dashboard",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

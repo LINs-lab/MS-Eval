@@ -1,0 +1,200 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-yf-canvas-excel-gcal-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-yf-canvas-excel-gcal-email.task.md",
+    "oracle166_sha256": "5322e6709a8ec2a95bee643ef01f12e31e46ca940f9a673cc16b29729fa06c93"
+  },
+  "label_cache_keys": [
+    "fef404ada4649734eb3cb77918e87f433320213858b624fcb1d363cc443fada6"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": null,
+          "text": "explore 0 (enterprise-data-analyst 0): Canvas tiering collector (strictly read-only on Canvas): for course 16 \"Foundations of Finance (Fall 2013)\" and course 17 \"Foundations of Finance (Fall 2014)\", call canvas_list_student_submissions(course_id=<literal>, per_page=100, page=1..) following pagination.has_more, always reading the FULL JSON from the output_path file when the preview is truncated. Keep every submission with a user_id. For each graded submission (numeric score AND numeric points_possible) compute the percentage 100*score/points_possible; skip ungraded/nil-score rows. Average per student within each course. Tier by average: \"Needs Support\" < 60, \"Developing\" 60-74.99, \"Proficient\" >= 75. Return ONLY the compact JSON {courses: [{course_id, course_name, tier_counts: {needs_support, developing, proficient}, total_students}], students: [{course_id, user_id, avg_pct, tier}]}. Do not write workspace files or modify Canvas.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": null,
+          "text": "explore 1 (financial-market-analyst 0): Market events collector (strictly read-only on the price service): fetch complete daily OHLC histories for GOOGL, AMZN and JPM via the historical-prices tool (interval 1d, enough history such as 6mo, consistent auto_adjust). Find the latest trading date present across the three symbols — the window is the 30 most recent trading days ending on that date, NOT wall-clock based. Compute pct = 100*(Close-Open)/Open per daily row inside the window and take the global top 3 by ABSOLUTE change (deterministic tie-break by date then symbol). Return ONLY the compact JSON {window: {start, end}, events: [{date, symbol, change_pct (2 decimals), description}]} where description states the factual direction and magnitude only (e.g. \"GOOGL surged 6.10%\", \"JPM dropped -3.84%\"); do not invent news causes. Do not write workspace files.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": null,
+      "text": "explore 0 (enterprise-data-analyst 0): Canvas tiering collector (strictly read-only on Canvas): for course 16 \"Foundations of Finance (Fall 2013)\" and course 17 \"Foundations of Finance (Fall 2014)\", call canvas_list_student_submissions(course_id=<literal>, per_page=100, page=1..) following pagination.has_more, always reading the FULL JSON from the output_path file when the preview is truncated. Keep every submission with a user_id. For each graded submission (numeric score AND numeric points_possible) compute the percentage 100*score/points_possible; skip ungraded/nil-score rows. Average per student within each course. Tier by average: \"Needs Support\" < 60, \"Developing\" 60-74.99, \"Proficient\" >= 75. Return ONLY the compact JSON {courses: [{course_id, course_name, tier_counts: {needs_support, developing, proficient}, total_students}], students: [{course_id, user_id, avg_pct, tier}]}. Do not write workspace files or modify Canvas.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": null,
+      "text": "explore 1 (financial-market-analyst 0): Market events collector (strictly read-only on the price service): fetch complete daily OHLC histories for GOOGL, AMZN and JPM via the historical-prices tool (interval 1d, enough history such as 6mo, consistent auto_adjust). Find the latest trading date present across the three symbols — the window is the 30 most recent trading days ending on that date, NOT wall-clock based. Compute pct = 100*(Close-Open)/Open per daily row inside the window and take the global top 3 by ABSOLUTE change (deterministic tie-break by date then symbol). Return ONLY the compact JSON {window: {start, end}, events: [{date, symbol, change_pct (2 decimals), description}]} where description states the factual direction and magnitude only (e.g. \"GOOGL surged 6.10%\", \"JPM dropped -3.84%\"); do not invent news causes. Do not write workspace files.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "read:wave_1:canvas",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "canvas",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:yahoo-finance",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "yahoo-finance",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {},
+    "read": {
+      "canvas": 1,
+      "yahoo-finance": 1
+    }
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 2,
+    "units": 2,
+    "write_units": 0,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

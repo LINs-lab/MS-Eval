@@ -1,0 +1,13 @@
+# Descriptive Statistics
+scope: all need_subagent cases
+case_count: 89
+
+| metric | min | max | mean |
+|---|---:|---:|---:|
+| wave_count | 1 | 3 | 1.58 |
+| subagent_count | 1 | 34 | 6.25 |
+
+Definitions:
+- wave_count = number of entries in the case JSON `waves` array.
+- subagent_count = number of entries in the case JSON `nodes` array.
+- Classification uses the subagent type in each node: readonly = explore, academic-literature-researcher, enterprise-data-analyst, financial-market-analyst, web-domain-researcher; writable = coder, external-workflow-operator, office-report-builder.

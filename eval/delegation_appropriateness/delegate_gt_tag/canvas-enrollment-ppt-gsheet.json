@@ -1,0 +1,1155 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "canvas-enrollment-ppt-gsheet",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/canvas-enrollment-ppt-gsheet.task.md",
+    "oracle166_sha256": "fbd04973d5e6e1972f16db0b3f66db59b1a21d37d14246aeaa59a362cbcf7783"
+  },
+  "label_cache_keys": [
+    "2306f161d2ed63e5a0157ccb01b91ab6443336ad3ada2cede2b01911a9a167a0",
+    "c8c96f8338e9470d342d9087019d0919ff22d413178feba85e7b074fb7a26ad6",
+    "e649a02b07e76fce6a6c31121e61311ff9cd23df4a02f105d029fbea70a66095"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 22,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): Course Explore agent for course_id=1 (AAA-2013J): issue these six independent canvas_get_course_grades calls natively in parallel, all with page=1 and per_page=1: unfiltered; type=[\"StudentEnrollment\"]; type=[\"TeacherEnrollment\"]; type=[\"TaEnrollment\"]; enrollment_state=[\"active\"]; enrollment_state=[\"completed\"]. Return only {course_id:1, course_code:\"AAA-2013J\", course_name, total_enrollments, students, teachers, tas, active, completed, pagination_controls}, taking every count from the matching response's pagination.total_count. Do not fetch later pages, return enrollment rows, or modify Canvas.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 1): Course owner for course_id=2 (AAA-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (enterprise-data-analyst 2): Course owner for course_id=3 (BBB-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (enterprise-data-analyst 3): Course owner for course_id=4 (BBB-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (enterprise-data-analyst 4): Course owner for course_id=5 (BBB-2013B) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 5 (enterprise-data-analyst 5): Course owner for course_id=6 (BBB-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 6,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 6 (enterprise-data-analyst 6): Course owner for course_id=7 (CCC-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 7,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 7 (enterprise-data-analyst 7): Course owner for course_id=8 (CCC-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 8,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 8 (enterprise-data-analyst 8): Course owner for course_id=9 (DDD-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 9,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 9 (enterprise-data-analyst 9): Course owner for course_id=10 (DDD-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 10,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 10 (enterprise-data-analyst 10): Course owner for course_id=11 (DDD-2013B) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 11,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 11 (enterprise-data-analyst 11): Course owner for course_id=12 (DDD-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 12,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 12 (enterprise-data-analyst 12): Course owner for course_id=13 (EEE-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 13,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 13 (enterprise-data-analyst 13): Course owner for course_id=14 (EEE-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 14,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 14 (enterprise-data-analyst 14): Course owner for course_id=15 (EEE-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 15,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 15 (enterprise-data-analyst 15): Course owner for course_id=16 (FFF-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 16,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 16 (enterprise-data-analyst 16): Course owner for course_id=17 (FFF-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 17,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 17 (enterprise-data-analyst 17): Course owner for course_id=18 (FFF-2013B) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 18,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 18 (enterprise-data-analyst 18): Course owner for course_id=19 (FFF-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 19,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 19 (enterprise-data-analyst 19): Course owner for course_id=20 (GGG-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 20,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 20 (enterprise-data-analyst 20): Course owner for course_id=21 (GGG-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 21,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 21 (enterprise-data-analyst 21): Course owner for course_id=22 (GGG-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 22,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): One Coder is the sole writer of Enrollment_Overview.xlsx in the dynamically resolved task workspace. Create exactly Enrollment Details and Summary with the required headers, rows, literal numeric values and rounding, then read both populated ranges back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 23,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): One Coder is the sole writer of Enrollment_Overview.pptx in that workspace. Create exactly the four requested slides from the canonical summary/top-five/distribution payload and runtime date, then read back slide titles and all displayed values.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 24,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "gsheet",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): One Coder is the sole owner of the shared spreadsheet titled Enrollment Dashboard. Create or reuse one exact-title spreadsheet and write the canonical table only to sheet Course Data in the exact bounded range A1:H<row count>; do not write diagnostic cells. Read that range back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): Course Explore agent for course_id=1 (AAA-2013J): issue these six independent canvas_get_course_grades calls natively in parallel, all with page=1 and per_page=1: unfiltered; type=[\"StudentEnrollment\"]; type=[\"TeacherEnrollment\"]; type=[\"TaEnrollment\"]; enrollment_state=[\"active\"]; enrollment_state=[\"completed\"]. Return only {course_id:1, course_code:\"AAA-2013J\", course_name, total_enrollments, students, teachers, tas, active, completed, pagination_controls}, taking every count from the matching response's pagination.total_count. Do not fetch later pages, return enrollment rows, or modify Canvas.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 1): Course owner for course_id=2 (AAA-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (enterprise-data-analyst 2): Course owner for course_id=3 (BBB-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (enterprise-data-analyst 3): Course owner for course_id=4 (BBB-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (enterprise-data-analyst 4): Course owner for course_id=5 (BBB-2013B) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 5 (enterprise-data-analyst 5): Course owner for course_id=6 (BBB-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 6,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 6 (enterprise-data-analyst 6): Course owner for course_id=7 (CCC-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 7,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 7 (enterprise-data-analyst 7): Course owner for course_id=8 (CCC-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 8,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 8 (enterprise-data-analyst 8): Course owner for course_id=9 (DDD-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 9,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 9 (enterprise-data-analyst 9): Course owner for course_id=10 (DDD-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 10,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 10 (enterprise-data-analyst 10): Course owner for course_id=11 (DDD-2013B) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 11,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 11 (enterprise-data-analyst 11): Course owner for course_id=12 (DDD-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 12,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 12 (enterprise-data-analyst 12): Course owner for course_id=13 (EEE-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 13,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 13 (enterprise-data-analyst 13): Course owner for course_id=14 (EEE-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 14,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 14 (enterprise-data-analyst 14): Course owner for course_id=15 (EEE-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 15,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 15 (enterprise-data-analyst 15): Course owner for course_id=16 (FFF-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 16,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 16 (enterprise-data-analyst 16): Course owner for course_id=17 (FFF-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 17,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 17 (enterprise-data-analyst 17): Course owner for course_id=18 (FFF-2013B) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 18,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 18 (enterprise-data-analyst 18): Course owner for course_id=19 (FFF-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 19,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 19 (enterprise-data-analyst 19): Course owner for course_id=20 (GGG-2013J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 20,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 20 (enterprise-data-analyst 20): Course owner for course_id=21 (GGG-2014J) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 21,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 21 (enterprise-data-analyst 21): Course owner for course_id=22 (GGG-2014B) — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 22,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): One Coder is the sole writer of Enrollment_Overview.xlsx in the dynamically resolved task workspace. Create exactly Enrollment Details and Summary with the required headers, rows, literal numeric values and rounding, then read both populated ranges back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 23,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): One Coder is the sole writer of Enrollment_Overview.pptx in that workspace. Create exactly the four requested slides from the canonical summary/top-five/distribution payload and runtime date, then read back slide titles and all displayed values.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 24,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "gsheet",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): One Coder is the sole owner of the shared spreadsheet titled Enrollment Dashboard. Create or reuse one exact-title spreadsheet and write the canonical table only to sheet Course Data in the exact bounded range A1:H<row count>; do not write diagnostic cells. Read that range back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:22:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 22,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:23:ppt",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 23,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:24:gsheet",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 24,
+      "role": "gsheet",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:canvas",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "canvas",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "gsheet": 1,
+      "ppt": 1
+    },
+    "read": {
+      "canvas": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 25,
+    "units": 4,
+    "write_units": 3,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

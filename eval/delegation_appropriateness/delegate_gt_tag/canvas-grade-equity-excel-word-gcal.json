@@ -1,0 +1,354 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "canvas-grade-equity-excel-word-gcal",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/canvas-grade-equity-excel-word-gcal.task.md",
+    "oracle166_sha256": "53a2a544c75e9c4dc7ccf6aa6a165327a7d5b31e09a4ef38a9bab1705c681557"
+  },
+  "label_cache_keys": [
+    "4bbc31c0aa13941ada8e6c9534b98d9e06eaca0630a4ee1ff8403de3cf76f39a"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 6,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): Pair owner for AAA offerings course_id=1 and course_id=2. Request the two offerings' page 1 together in one native-parallel response with canvas_list_student_submissions(course_id=<id>, student_ids=[\"all\"], grouped=false, page=1, per_page=100), then issue both offerings' remaining literal pages revealed by total_pages together in native-parallel batches and verify every page identity. Use literal row.id as submission identity, retain only rows with a numeric score, group them by user_id, compute each included student's mean over all scored submissions, and exclude students with none. Write one compact JSON containing the two complete per-student mean arrays, grade-band counts, student counts, score sums, page identities, submission IDs/counts and duplicate controls; read it back; and return only path/hash and those controls. Do not return raw submissions in chat or use final_score/current_score in place of submission.score.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 1): Pair owner for BBB offerings course_id=3 and course_id=4 — same literal recipe, only the two offering identities and unique output path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (enterprise-data-analyst 2): Pair owner for DDD offerings course_id=9 and course_id=10 — same literal recipe, only the two offering identities and unique output path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (enterprise-data-analyst 3): Pair owner for EEE offerings course_id=13 and course_id=14 — same literal recipe, only the two offering identities and unique output path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (enterprise-data-analyst 4): Pair owner for FFF offerings course_id=16 and course_id=17 — same literal recipe, only the two offering identities and unique output path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 5 (enterprise-data-analyst 5): Pair owner for GGG offerings course_id=20 and course_id=21 — same literal recipe, only the two offering identities and unique output path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): Pair owner for AAA offerings course_id=1 and course_id=2. Request the two offerings' page 1 together in one native-parallel response with canvas_list_student_submissions(course_id=<id>, student_ids=[\"all\"], grouped=false, page=1, per_page=100), then issue both offerings' remaining literal pages revealed by total_pages together in native-parallel batches and verify every page identity. Use literal row.id as submission identity, retain only rows with a numeric score, group them by user_id, compute each included student's mean over all scored submissions, and exclude students with none. Write one compact JSON containing the two complete per-student mean arrays, grade-band counts, student counts, score sums, page identities, submission IDs/counts and duplicate controls; read it back; and return only path/hash and those controls. Do not return raw submissions in chat or use final_score/current_score in place of submission.score.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 1): Pair owner for BBB offerings course_id=3 and course_id=4 — same literal recipe, only the two offering identities and unique output path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (enterprise-data-analyst 2): Pair owner for DDD offerings course_id=9 and course_id=10 — same literal recipe, only the two offering identities and unique output path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (enterprise-data-analyst 3): Pair owner for EEE offerings course_id=13 and course_id=14 — same literal recipe, only the two offering identities and unique output path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (enterprise-data-analyst 4): Pair owner for FFF offerings course_id=16 and course_id=17 — same literal recipe, only the two offering identities and unique output path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 5 (enterprise-data-analyst 5): Pair owner for GGG offerings course_id=20 and course_id=21 — same literal recipe, only the two offering identities and unique output path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "read:wave_1:canvas",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "canvas",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {},
+    "read": {
+      "canvas": 1
+    }
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 6,
+    "units": 1,
+    "write_units": 0,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

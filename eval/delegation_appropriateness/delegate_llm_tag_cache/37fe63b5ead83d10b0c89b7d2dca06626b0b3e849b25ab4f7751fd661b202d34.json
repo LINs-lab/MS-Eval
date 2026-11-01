@@ -1,0 +1,75 @@
+{
+  "input_hash": "37fe63b5ead83d10b0c89b7d2dca06626b0b3e849b25ab4f7751fd661b202d34",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-hr-rating-distribution",
+    "task_text": "I need a breakdown of employee performance ratings across all departments. Pull the data from our HR data warehouse and show me how many employees fall into each rating level within each department.\n\nCreate an Excel file called HR_Rating_Distribution.xlsx with two sheets. The \"Rating Distribution\" sheet should have columns Dept_Rating (formatted as \"Department - Rating\", e.g. \"Engineering - 5\"), and Count. Sort by Dept_Rating alphabetically.\n\nThe \"Summary\" sheet with Metric and Value should have Total_Employees, Rating_5_Count, Rating_4_Count, Rating_1_Count, and High_Performers_Pct showing the percentage of employees with rating 4 or 5 out of total, rounded to 1 decimal.\n\nAfter creating the report, send an email to hr-analytics@company.com with subject \"Performance Rating Distribution Report\" briefly summarizing the overall distribution.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Freeze the task-visible agent-workspace absolute path from the Visible Boundary/current working directory. Run one set-based query grouping the employee source by exact department and rating and returning all group counts plus company-wide counts for total employees, ratings 5, 4, 1, and combined 4-or-5. Build literal `Dept_Rating = Department - Rating`, sort alphabetically, and compute `High_Performers_Pct` from raw counts once.\n\nFrom that frozen result, create `<agent_workspace>/HR_Rating_Distribution.xlsx` with only the two exact sheets/headers and five summary metrics in the task, literal numeric cells, and the requested one-decimal percentage; in the same native-parallel response send exactly one email to `hr-analytics@company.com` with subject `Performance Rating Distribution Report`. Read both populated ranges back once, reconcile totals, and finish. Do not search Sent folders, retry folder aliases, send a second message, read the sent message back, or add a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Plan this multi-system task: query HR data warehouse for employee performance ratings across all departments; aggregate count by department and rating; create /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-rating-distribution/workspace/HR_Rating_Distribution.xlsx with exact two-sheet structure and summary metrics; then email hr-analytics@company.com with subject 'Performance Rating Distribution Report' and brief overall summary. Use only read-oriented tools. Identify likely Snowflake database/schema/tables and give exact validation strategy. Do not write files or send email. Return concise executable plan and any discovered schema facts.\nPlan HR rating report",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "Read HR Snowflake data and return authoritative aggregates needed for the requested report. Query HR_ANALYTICS.PUBLIC.EMPLOYEES. Deliver: (1) all counts grouped by DEPARTMENT and PERFORMANCE_RATING, sorted by department and numeric rating; (2) Total_Employees; counts for ratings 5, 4, and 1; high performers percentage = ratings 4 or 5 / total * 100 rounded to 1 decimal; (3) a concise overall-distribution sentence suitable for an email, ideally counts by ratings 1–5 and high-performer percentage. Verify grouped counts sum to total. Read-only; do not create files or send mail.\nExtract HR rating counts",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_10",
+        "text": "Create and validate the requested Excel workbook using the exact source data below. Output path: /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-rating-distribution/workspace/HR_Rating_Distribution.xlsx. This is the only file you should create/modify.\n\nRequirements:\n- Exactly two sheets in order: 'Rating Distribution', then 'Summary'.\n- Rating Distribution columns exactly: Dept_Rating, Count. Dept_Rating format is 'Department - Rating'. Include every department/rating pair and sort Dept_Rating alphabetically as a string.\n- Summary columns exactly: Metric, Value. Rows exactly in this order: Total_Employees, Rating_5_Count, Rating_4_Count, Rating_1_Count, High_Performers_Pct. Values: 50000, 5008, 12464, 2553, and 34.9%. Store High_Performers_Pct as numeric 0.349 formatted to one decimal percentage; counts as numeric values.\n- Apply clean professional formatting (bold headers, readable widths, frozen top row, number formats, table styling acceptable).\n\nSource grouped data:\nEngineering: r1 375, r2 1006, r3 3180, r4 1814, r5 721\nFinance: r1 334, r2 1053, r3 3251, r4 1789, r5 721\nHR: r1 358, r2 1067, r3 3167, r4 1745, r5 740\nOperations: r1 380, r2 1051, r3 3263, r4 1739, r5 687\nR&D: r1 362, r2 1053, r3 3190, r4 1785, r5 693\nSales: r1 373, r2 1121, r3 3215, r4 1829, r5 694\nSupport: r1 371, r2 1108, r3 3250, r4 1763, r5 752\n\nAcceptance checks: exactly 35 distribution rows; alphabetical string sort of Dept_Rating (note ratings 1-5); count sum 50000; exact sheet names/order and headers; exact summary labels/order/values; percent formatting to one decimal. Read the workbook back after creation and report verification results and exact path.\nBuild HR Excel report",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_14",
+        "text": "Send exactly one email using the email tools.\nTo: hr-analytics@company.com\nSubject: Performance Rating Distribution Report\nAttach: /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-rating-distribution/workspace/HR_Rating_Distribution.xlsx\nPlain-text body, brief and professional:\n\nHello,\n\nAttached is the Performance Rating Distribution Report covering 50,000 employees across all seven departments. Overall, 2,553 employees were rated 1, 7,459 rated 2, 22,516 rated 3, 12,464 rated 4, and 5,008 rated 5. Employees rated 4 or 5 represent 34.9% of the workforce.\n\nBest,\nHR Analytics\n\nAcceptance criteria: verify attachment path exists/readable before sending; send to only that recipient with exact subject and one attachment; return send confirmation/message ID. Do not create drafts or send duplicates.\nEmail HR report",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

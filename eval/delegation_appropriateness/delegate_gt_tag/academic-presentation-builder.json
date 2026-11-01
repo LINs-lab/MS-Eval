@@ -1,0 +1,411 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "academic-presentation-builder",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/academic-presentation-builder.task.md",
+    "oracle166_sha256": "17a66182d2490e3946d4866f200ab47a68f559c5fd0b7abf527d850d8dde711e"
+  },
+  "label_cache_keys": [
+    "3dac6f1715e1ced0e1bd978f8b1f91cce0d3572924ad9928f248c46cb5ac4027"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 5,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (academic-literature-researcher 0): Use one explore sub-agent assigned exactly the paper \"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models\" (Jason Wei et al., 2022, arXiv:2201.11903, NeurIPS 2022).",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (academic-literature-researcher 1): Use one explore sub-agent assigned exactly the paper \"Self-Consistency Improves Chain of Thought Reasoning in Language Models\" (Xuezhi Wang et al., 2022, arXiv:2203.11171, ICLR 2023).",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (academic-literature-researcher 2): Use one explore sub-agent assigned exactly the paper \"Tree of Thoughts: Deliberate Problem Solving with Large Language Models\" (Shunyu Yao et al., 2023, arXiv:2305.10601, NeurIPS 2023).",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (academic-literature-researcher 3): Use one explore sub-agent assigned exactly the paper \"Reasoning with Language Model is Planning with World Model\" (the RAP paper, Shibo Hao et al., 2023, arXiv:2305.14992, EMNLP 2023).",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (academic-literature-researcher 4): Use one explore sub-agent assigned exactly the paper \"Let's Verify Step by Step\" (Hunter Lightman et al., 2023, arXiv:2305.20050, ICLR 2024, process-supervised reward models).",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 5,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Review.docx` exclusively. Create it exactly once with the exact title and six required sections, a Summary Table with exactly five data rows and exactly the four required columns, and source-faithful GSM8K, Game of 24/Blocksworld, and MATH context where available. Read it back and return its path, heading list, table dimensions, five-paper coverage, and validation. Do not create slides or word_count.txt.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 6,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Slides.pptx` exclusively. Create it exactly once with exactly seven slides and the exact required slide titles/content roles, ensuring slide 6 is a real performance-comparison table. Read it back and return its path, slide count/titles, paper/benchmark coverage, and validation. Do not create the Word document or word_count.txt.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (academic-literature-researcher 0): Use one explore sub-agent assigned exactly the paper \"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models\" (Jason Wei et al., 2022, arXiv:2201.11903, NeurIPS 2022).",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (academic-literature-researcher 1): Use one explore sub-agent assigned exactly the paper \"Self-Consistency Improves Chain of Thought Reasoning in Language Models\" (Xuezhi Wang et al., 2022, arXiv:2203.11171, ICLR 2023).",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (academic-literature-researcher 2): Use one explore sub-agent assigned exactly the paper \"Tree of Thoughts: Deliberate Problem Solving with Large Language Models\" (Shunyu Yao et al., 2023, arXiv:2305.10601, NeurIPS 2023).",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (academic-literature-researcher 3): Use one explore sub-agent assigned exactly the paper \"Reasoning with Language Model is Planning with World Model\" (the RAP paper, Shibo Hao et al., 2023, arXiv:2305.14992, EMNLP 2023).",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (academic-literature-researcher 4): Use one explore sub-agent assigned exactly the paper \"Let's Verify Step by Step\" (Hunter Lightman et al., 2023, arXiv:2305.20050, ICLR 2024, process-supervised reward models).",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Review.docx` exclusively. Create it exactly once with the exact title and six required sections, a Summary Table with exactly five data rows and exactly the four required columns, and source-faithful GSM8K, Game of 24/Blocksworld, and MATH context where available. Read it back and return its path, heading list, table dimensions, five-paper coverage, and validation. Do not create slides or word_count.txt.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 6,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Slides.pptx` exclusively. Create it exactly once with exactly seven slides and the exact required slide titles/content roles, ensuring slide 6 is a real performance-comparison table. Read it back and return its path, slide count/titles, paper/benchmark coverage, and validation. Do not create the Word document or word_count.txt.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:5:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 5,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:6:ppt",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 6,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "ppt": 1,
+      "word": 1
+    },
+    "read": {
+      "scholarly-arxiv": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 7,
+    "units": 3,
+    "write_units": 2,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

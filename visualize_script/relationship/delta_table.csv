@@ -1,0 +1,12 @@
+Settings,Abbreviation,"Delta Performance (MAD-SA, pp)","Delta Cost (MAD-SA, USD)",Delta Csteps (MAD-SA)
+DeepSeek-V4-Flash-0731 (Gen),V4-F-Gen,-1.81,+0.2913,+0.18
+DeepSeek-V4-Flash-0731 (Spec),V4-F-Spec,0.00,+0.3580,+1.57
+DeepSeek-V4-Flash-0731 (Plan-1st),V4-F-Plan1st,-4.22,+0.3031,+9.78
+DeepSeek-V4-Flash-0731 (Oracle),V4-F-Oracle,-3.61,+0.5595,-6.66
+Claude-Sonnet-5,Sonnet-5-Spec,-4.22,+3.1919,+2.43
+GPT-5.6-Sol,5.6-Sol-Spec,-21.69,+4.2004,+5.52
+Qwen-3.8-Max,3.8-Max-Spec,+10.24,+1.0250,-1.66
+GLM-5.3,5.3-Spec,+4.22,+0.5529,-7.14
+Kimi-K3,K3-Spec,+10.24,-0.3587,-4.25
+Minimax-M3,M3-Spec,+3.61,+0.3045,+7.61
+GLM-5.3-Flash,5.3-F-Spec,+1.20,+0.0881,-3.93

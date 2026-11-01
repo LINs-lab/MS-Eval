@@ -1,0 +1,80 @@
+{
+  "input_hash": "9e8cf5d12baf5e1cb7ea24e8c8da91664ab67f25bde098a6c9cb7a9d946bfe6b",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "arxiv-lit-review-gsheet",
+    "task_text": "I am a PhD student conducting a systematic literature review on \"prompt engineering for large language models.\" I need your help to search for relevant papers, analyze them, and compile the results into a structured Google Sheet.\n\nHere is what I need you to do:\n\nFirst, search the arxiv database for papers related to prompt engineering. I expect there to be around 5 relevant papers about prompting techniques for reasoning and problem-solving with large language models. Ignore any papers that are about word embeddings or word representations (e.g., word2vec, GloVe, distributed representations) since those are from a different era and not related to prompt engineering. Do not include any word-embedding papers in any of the deliverables described below.\n\nThen, for each relevant paper you find, use the scholarly search to look up citation counts and venue information so we have a complete picture of each paper's impact.\n\nNext, use the arxiv-latex manuscript source to read the methodology sections of each paper. I need to understand what prompting technique each paper proposes and how the approaches differ from one another.\n\nAs you work through the papers, store notes in the memory system about your progress and key findings. This will help you keep track of which papers you have analyzed and what the main themes are.\n\nThen, create a Google Sheet spreadsheet titled \"Prompt Engineering Literature Review\" with two sheets. Use the column names exactly as written below.\n\n   The first sheet should be named \"Paper Comparison\" with the following columns: Paper_ID, Title, Authors, Year, Venue, Citation_Count, Primary_Category, Methodology_Summary. The Methodology_Summary column should contain a brief one to two sentence summary of each paper's prompting approach based on what you read from the manuscript source. There should be one row per relevant paper (approximately 5 rows). Citation_Count should be written as a number (e.g., 6500).\n\n   The second sheet should be named \"Technique Analysis\" with the following columns: Technique_Name, Paper_ID, Key_Innovation, Reasoning_Type, Requires_Examples. The Reasoning_Type should describe what kind of reasoning the technique targets. You may use one or more of the following categories, separated by commas if you list several: arithmetic, commonsense, symbolic, creative, general. The Requires_Examples column should say Yes or No depending on whether the technique needs few-shot demonstrations. There should be one row per technique.\n\nFinally, save a file called review_summary.txt in your workspace that lists the titles of all relevant papers you found and a one-paragraph synthesis of the overall findings.\n\nPlease be thorough in your analysis and make sure the Google Sheet contains accurate information for all the relevant papers you find.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently,\n\nThis five-paper task is small enough for the main agent to complete directly; do not dispatch any sub-agent. Keep all research operations read-only until the three requested outputs are ready.\n\nFirst resolve the task-visible workspace directory from the runtime allowed-directory listing (or the literal accessible-workspace directory already supplied by the harness), freeze it as `<workspace_root>`, and reject bare `/workspace` and dumps/run-specific paths. Freeze the two exact schemas, the relevance rule (prompt-engineering methods for LLM reasoning/problem solving), and the exclusion rule (no word embeddings or word representations).\n\nRun the local-arXiv and Scholarly discovery branches in native parallel. For local arXiv, issue complementary prompt-engineering/reasoning queries at the supported per-call bound, union and deduplicate by stable paper ID, and retain title, complete authors, abstract, date/year, and primary category. For Scholarly, issue complementary task-derived queries (at most ten records per query), union/deduplicate by normalized title or stable ID, and retain venue plus numeric citation count. Do not claim pagination that the handlers do not expose.\n\nCross-reference the two manifests, exclude every embedding-era distractor, and freeze exactly five genuinely relevant distinct paper IDs/titles. Then issue the five independent manuscript reads in native parallel, one exact stable ID per call. For each paper extract a source-backed one-to-two-sentence methodology summary and the technique fields `Technique_Name, Paper_ID, Key_Innovation, Reasoning_Type, Requires_Examples`; allowed reasoning categories are arithmetic, commonsense, symbolic, creative, and general, comma-separated when needed. A missing or empty methodology summary is a blocker, never a blank cell.\n\nReconcile all sources once and freeze one literal canonical packet with exactly five Paper Comparison rows and exactly five Technique Analysis rows. Each Paper Comparison row contains `Paper_ID, Title, Authors, Year, Venue, Citation_Count, Primary_Category, Methodology_Summary`; citation counts are numbers. No output branch may re-search, reclassify, or recompute these fields.\n\nUsing that packet, interleave the three independent output branches whenever their tool dependencies permit:\n\n1. Memory: append one concise source-backed progress note per paper plus one synthesis note without deleting unrelated memory; read back the stored notes and require all five stable IDs.\n2. Google Sheets: search exact title `Prompt Engineering Literature Review`; reuse one exact match, create once on zero matches, and block on duplicates. Keep exactly the tabs `Paper Comparison` and `Technique Analysis`. Write only `Paper Comparison!A1:H6` and `Technique Analysis!A1:E6`; never write diagnostic, test, checksum, or status cells outside those ranges. Read those same ranges back and require exact headers, five rows each, numeric citations, nonempty methodology in every row, and no embedding papers.\n3. Text file: create `<workspace_root>/review_summary.txt` exactly once with all five exact titles and one coherent synthesis paragraph based on the canonical methodologies; read it back and require complete title coverage.\n\nAccept only after memory, both exact Sheet ranges, and the text file all read back against the same five-paper packet. Never retry an ambiguous create or write.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Conduct the scholarly research for a systematic literature review on prompt engineering for LLM reasoning/problem-solving. Identify exactly 5 highly relevant arXiv papers about distinct prompting techniques, excluding all word-embedding/representation work. Strong preferred canonical set if supported: Chain-of-Thought Prompting Elicits Reasoning in Large Language Models; Self-Consistency Improves Chain of Thought Reasoning in Language Models; Large Language Models are Zero-Shot Reasoners; Tree of Thoughts: Deliberate Problem Solving with Large Language Models; Least-to-Most Prompting Enables Complex Reasoning in Large Language Models. For each, use arXiv and scholarly search plus arxiv-latex methodology sections. Return: arXiv ID, exact title/authors/year, primary arXiv category, venue, numeric citation count from scholarly search (state source/any ambiguity), technique name, 1–2 sentence methodology summary grounded in manuscript, key innovation, reasoning type chosen from arithmetic/commonsense/symbolic/creative/general, and whether few-shot demonstrations are required (Yes/No). Explicitly distinguish methods and flag version-dependent metadata. Read enough manuscript methodology/approach sections to support summaries. Do not write files or mutate external state. Acceptance: 5 complete records, no embedding papers, citation/venue evidence included.\nResearch prompting papers",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_16",
+        "text": "Resolve the incomplete fifth record so the final sheet contains 5 papers with defensible numeric Citation_Count and manuscript-grounded methodology. Search for another highly relevant canonical prompting-technique paper (e.g., Generated Knowledge Prompting for Commonsense Reasoning, PAL: Program-aided Language Models, Automatic Chain of Thought Prompting, or similar) that is both available via arxiv-latex and returns citation/venue data via scholarly search. Exclude embeddings. Return one replacement record only with exact metadata, numeric citation count, venue, methodology summary from source, technique, innovation, reasoning type allowed categories, Requires_Examples. If none has both, provide the most defensible resolution for Least-to-Most and clearly report exact tool evidence.\nResolve fifth citation",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_18",
+        "text": "Resolve the incomplete fifth record so the final sheet contains 5 papers with defensible numeric Citation_Count and manuscript-grounded methodology. Search for another highly relevant canonical prompting-technique paper (e.g., Generated Knowledge Prompting for Commonsense Reasoning, PAL: Program-aided Language Models, Automatic Chain of Thought Prompting, or similar) that is both available via arxiv-latex and returns citation/venue data via scholarly search. Exclude embeddings. Return one replacement record only with exact metadata, numeric citation count, venue, methodology summary from source, technique, innovation, reasoning type allowed categories, Requires_Examples. If none has both, provide the most defensible resolution for Least-to-Most and clearly report exact tool evidence.\nResolve fifth citation",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_24",
+        "text": "Create a Google Spreadsheet titled exactly \"Prompt Engineering Literature Review\" in the default folder. It must have exactly two sheets named \"Paper Comparison\" and \"Technique Analysis\"; rename the default tab and add the second. Populate using the exact headers and records below. Citation_Count cells must be numeric, not text. Preserve author names and one-to-two sentence methodology summaries. Optionally apply basic professional formatting (bold/frozen headers, readable widths) but do not change column names. Return spreadsheet ID/URL and verify both tabs and row counts.\n\nPaper Comparison headers: Paper_ID, Title, Authors, Year, Venue, Citation_Count, Primary_Category, Methodology_Summary\nRows:\n1) 2201.11903 | Chain-of-Thought Prompting Elicits Reasoning in Large Language Models | Jason Wei; Xuezhi Wang; Dale Schuurmans; Maarten Bosma; Brian Ichter; Fei Xia; Ed Chi; Quoc V. Le; Denny Zhou | 2022 | NeurIPS 2022 | 6500 | cs.CL | Few-shot exemplars are augmented with intermediate natural-language reasoning steps rather than only input-output pairs, prompting the model to generate its own rationale before the answer without fine-tuning. The approach is evaluated on arithmetic, commonsense, and symbolic reasoning tasks.\n2) 2203.11171 | Self-Consistency Improves Chain of Thought Reasoning in Language Models | Xuezhi Wang; Jason Wei; Dale Schuurmans; Quoc V. Le; Ed H. Chi; Sharan Narang; Aakanksha Chowdhery; Denny Zhou | 2022 | ICLR 2023 | 3200 | cs.CL | The method temperature-samples multiple diverse chain-of-thought reasoning paths, extracts their final answers, and selects the answer with the greatest aggregate agreement. It replaces greedy single-path decoding with answer-level marginalization and needs neither training nor an auxiliary verifier.\n3) 2205.11916 | Large Language Models are Zero-Shot Reasoners | Takeshi Kojima; Shixiang Shane Gu; Machel Reid; Yutaka Matsuo; Yusuke Iwasawa | 2022 | NeurIPS 2022 | 4100 | cs.CL | Zero-shot-CoT first appends a generic reasoning trigger such as “Let's think step by step” to elicit a rationale, then uses a second answer-extraction cue. No task-specific worked examples are supplied.\n4) 2305.10601 | Tree of Thoughts: Deliberate Problem Solving with Large Language Models | Shunyu Yao; Dian Yu; Jeffrey Zhao; Izhak Shafran; Thomas L. Griffiths; Yuan Cao; Karthik Narasimhan | 2023 | NeurIPS 2023 | 2400 | cs.CL | Problems are represented as a tree of coherent intermediate thought states; the model generates candidate continuations, evaluates their promise, and explores them with breadth-first or depth-first search. This enables lookahead, alternative retention, and backtracking beyond linear chain-of-thought.\n5) 2210.03493 | Automatic Chain of Thought Prompting in Large Language Models | Zhuosheng Zhang; Aston Zhang; Mu Li; Alex Smola | 2022 | ICLR 2023 | 1800 | cs.CL | Auto-CoT clusters candidate questions, selects diverse representatives, and applies zero-shot chain-of-thought to generate a rationale for each. The resulting automatically generated examples are assembled into the final few-shot prompt.\n\nTechnique Analysis headers: Technique_Name, Paper_ID, Key_Innovation, Reasoning_Type, Requires_Examples\nRows:\nChain-of-Thought (CoT) | 2201.11903 | Demonstrates intermediate natural-language reasoning in exemplars so large models produce explicit rationales before answers. | arithmetic, commonsense, symbolic | Yes\nSelf-Consistency | 2203.11171 | Samples diverse reasoning trajectories and marginalizes by majority agreement over final answers instead of trusting one greedy path. | arithmetic, commonsense, symbolic | Yes\nZero-shot Chain-of-Thought | 2205.11916 | Uses a task-agnostic step-by-step instruction plus answer extraction to elicit reasoning without demonstrations. | arithmetic, commonsense, symbolic, general | No\nTree of Thoughts (ToT) | 2305.10601 | Combines model-generated thoughts with explicit state evaluation and search, allowing lookahead and backtracking. | arithmetic, creative, general | No\nAutomatic Chain-of-Thought (Auto-CoT) | 2210.03493 | Automatically builds diverse CoT demonstrations through question clustering and zero-shot rationale generation. | arithmetic, commonsense, symbolic, general | Yes\n\nImportant: the Auto-CoT method operationally uses embeddings for clustering candidate questions, but this is a prompt-engineering paper and not representation-learning research; no embedding paper is included.\nBuild literature spreadsheet",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv",
+          "external-fetch"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv",
+          "external-fetch"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv",
+          "external-fetch"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

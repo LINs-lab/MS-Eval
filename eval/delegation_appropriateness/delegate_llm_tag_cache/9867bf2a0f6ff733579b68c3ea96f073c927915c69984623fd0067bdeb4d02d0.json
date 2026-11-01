@@ -1,0 +1,99 @@
+{
+  "input_hash": "9867bf2a0f6ff733579b68c3ea96f073c927915c69984623fd0067bdeb4d02d0",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "yt-fireship-tech-report-excel-notion",
+    "task_text": "You are a tech lead at a software company. Your manager has asked you to compile a technology trend report based on the most popular recent videos from a well-known programming education channel called Fireship on the video platform. You need to analyze the top 10 most-viewed videos from 2024 to 2025, summarize technology trends, publish findings to the team knowledge base, schedule a recurring review meeting, and notify the team by email.\n\nYour workflow should proceed as follows.\n\nFirst, search the video platform for the Fireship channel and retrieve its videos. Sort the videos by popularity and select the top 10 by view count. For each of those videos, collect the following details: the video identifier, the title, the publication date, the duration in seconds, the view count, the like count, and the primary technology topic derived from the video tags or title keywords.\n\nSecond, create a spreadsheet file named Tech_Trend_Report.xlsx. Inside this file, create a sheet named Videos containing one row per video with the following columns in order: Video_ID, Title, Published_Date, Duration_Seconds, View_Count, Like_Count, Primary_Topic. Then create a second sheet named Topic_Summary. In Topic_Summary, aggregate the data by topic and include these columns: Topic, Video_Count, Total_Views, Avg_Duration. Each row should represent one distinct technology topic found across the top 10 videos. Ensure the averages and totals are correctly computed.\n\nThird, create a new page in the team knowledge base titled \"Fireship Tech Trends Q1 2026\". Add a brief introductory heading and a paragraph summarizing the overall findings. Then add a table or structured block listing the top 5 technology topics by total view count, with their video counts and total views.\n\nFourth, check the shared calendar for any existing Tech Review events in March 2026. Then create a new weekly recurring meeting event titled \"Tech Review Meeting\" scheduled for Monday March 9 2026 from 14:00 to 15:00. Use the UTC timezone.\n\nFifth, send an email to techteam@company.com. The subject should reference the tech trend report. The body should summarize which technology topics appeared most in the top videos, mention the new meeting scheduled, and inform the team that the full report is available in Tech_Trend_Report.xlsx.\n\nThe channel configuration file in your workspace is named channel_config.json and contains guidance on which channel to use, the date range of interest, how many videos to include, and the report title. An email template is also provided in email_template.txt to help you format the outgoing message.\n\nWhen all outputs are complete, claim the task as done.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, keep the Fireship catalog on explore, then parallelize the independent workbook, Notion, and calendar artifacts. The email stays with the main agent. A wave must finish and return all stated handoffs before the next wave begins.\n\nBefore Wave 1, the main agent reads `channel_config.json` and `email_template.txt` in read-only mode and freezes the channel, 2024-2025 date range, top-10 count, and report title.\n\n1. Wave 1 — dispatch exactly 1 explore sub-agent:\n\n   1. explore 0 (web-domain-researcher 0): Locate the Fireship channel and retrieve its full video list; filter to videos published between 2024-01-01 and 2025-12-31 inclusive, sort by view count descending, and select the top 10 (or all available if fewer than 10). For each selected video collect `video_id`, `title`, `published_date` (YYYY-MM-DD), `duration_seconds`, `view_count`, `like_count`, and a concise `primary_topic` technology label derived from the video tags or, if tags are unavailable, the title keywords. Return the compact ten-row table plus channel/page/date/count controls. Do not write files or create deliverables.\n\nAfter Wave 1, the main agent verifies the date window and ranking, aggregates Topic_Summary (`Topic, Video_Count, Total_Views, Avg_Duration`), and freezes one canonical packet of the top-10 video rows and topic totals. Missing catalog coverage is a blocker.\n\n2. Wave 2 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): Sole writer of `Tech_Trend_Report.xlsx`. Read only the frozen packet. Create a `Videos` sheet holding exactly 10 data rows (one per video, in the given order) with columns `Video_ID, Title, Published_Date, Duration_Seconds, View_Count, Like_Count, Primary_Topic` in that order, and a `Topic_Summary` sheet with one row per distinct `Primary_Topic` giving `Video_Count`, `Total_Views`, and `Avg_Duration` (rounded to at most 2 decimals) computed from the frozen Videos data. If the video data is incomplete, build the workbook with the valid rows. Write literal values and read every populated range back.\n   2. coder 1 (external-workflow-operator 0): Sole Notion owner of a page titled exactly `Fireship Tech Trends Q1 2026`. Search the exact title first, create at most once on zero matches, and block on duplicates. Include an `Overview` heading with a summary paragraph covering the 10 videos analyzed in 2024-2025, the most frequent topic(s) by video count, and the top topic by total views. Add a `Top 5 Technology Topics by Total Views` section with a table of Topic, Video_Count, and Total_Views for the top 5 topics sorted by Total_Views descending. Read the page back.\n   3. coder 2 (external-workflow-operator 1): Sole calendar owner. Search existing `Tech Review` events in March 2026, then create a weekly recurring event titled `Tech Review Meeting` starting Monday 2026-03-09 from 14:00 to 15:00 UTC, repeating every Monday at that time. If an identical event (same title, start time, and weekly recurrence) already exists, treat it as the deliverable instead of creating a duplicate. Read the retained event back.\n\nAfter Wave 2, the main agent reconciles the workbook, Notion page, and calendar event against the same packet. In that same response, search Sent mail for exact To `techteam@company.com` with a subject that references the tech trend report, send at most once using `email_template.txt` and the frozen findings (most frequent topics, the new meeting, and that the full report is in `Tech_Trend_Report.xlsx`), then read it back. Do not dispatch more sub-agents.",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Plan this multi-system task and validation strategy. User asks: read /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-yt-fireship-tech-report-excel-notion/workspace/channel_config.json and email_template.txt; identify Fireship channel and top 10 most-viewed videos published in configured 2024–2025 range, with ID/title/date/duration seconds/views/likes/topic; create Tech_Trend_Report.xlsx with Videos and Topic_Summary; create Notion page with configured/report title and top 5 topics; inspect March 2026 Tech Review calendar events then create weekly event Monday Mar 9 2026 14:00–15:00 UTC; email techteam@company.com based on template. Return a concise decomposition, dependencies, and verification checklist. Read-only; make no changes.\nPlan trend report workflow",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_10",
+        "text": "Research the canonical YouTube channel 'Fireship' for an exact report dataset. Scope: videos published from 2024-01-01 through 2025-12-31 inclusive; identify the 10 most-viewed by numeric view count. You have YouTube tools. Resolve the canonical Fireship channel, enumerate enough channel videos sorted by popularity (paginate as needed), filter to range, and fetch detailed metadata for finalists. Deliver exactly 10 rows sorted views descending with: Video_ID, Title, Published_Date, Duration_Seconds (integer), View_Count, Like_Count, tags if available, and one normalized Primary_Topic inferred consistently from tags/title. Also return topic aggregates Topic, Video_Count, Total_Views, Avg_Duration, ranked total views descending, plus a brief trend summary. Cite/describe verification that all rows belong to Fireship and fit dates. Read-only, no external writes.\nResearch Fireship top videos",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_12",
+        "text": "Create and verify the Excel workbook at /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-yt-fireship-tech-report-excel-notion/workspace/Tech_Trend_Report.xlsx. Exact requirements: sheet Videos with columns Video_ID, Title, Published_Date, Duration_Seconds, View_Count, Like_Count, Primary_Topic and these rows sorted views descending:\nNl7aCUsWykg | Big Tech in panic mode... Did DeepSeek R1 just pop the AI bubble? | 2025-01-27 | 216 | 3878491 | 152669 | Artificial Intelligence\n-2k1rcRzsLA | This free Chinese AI just crushed OpenAI's $200 o1 model... | 2025-01-21 | 280 | 3115193 | 90213 | Artificial Intelligence\nLKCVKw9CzFo | 100+ Linux Things you Need to Know | 2024-07-06 | 742 | 2891861 | 107006 | Linux\nIq_r7IcNmUk | 25 crazy software bugs explained | 2024-11-01 | 1009 | 2496715 | 72881 | Software Bugs\n4yDm6xNeYas | Some bad code just broke a billion Windows machines | 2024-07-19 | 238 | 2467547 | 121950 | Cybersecurity\nhpwoGjpYygI | DeepSeek stole our tech... says OpenAI | 2025-01-29 | 291 | 2436569 | 92019 | Artificial Intelligence\njwnez8HdN7E | Microsoft’s new chip looks like science fiction… | 2025-02-21 | 259 | 2329914 | 71310 | Quantum Computing\nN3ZGNT5S5IU | Hackers are destroying the Internet's history book right now | 2024-10-10 | 261 | 1927279 | 107099 | Cybersecurity\nx2WtHZciC74 | Claude 3.7 goes hard for programmers… | 2025-02-25 | 348 | 1926147 | 80601 | Artificial Intelligence\nTw18-4U7mts | The \"vibe coding\" mind virus explained… | 2025-03-26 | 286 | 1846051 | 65631 | Artificial Intelligence\nSecond sheet Topic_Summary exact columns Topic, Video_Count, Total_Views, Avg_Duration and rows: Artificial Intelligence|5|13202451|284.2; Cybersecurity|2|4394826|249.5; Linux|1|2891861|742; Software Bugs|1|2496715|1009; Quantum Computing|1|2329914|259. Use formulas referencing Videos where practical so totals/averages are computed correctly; readable professional formatting and an Excel table/filter. Verify both sheets and values by reopening/reading. Return final path and verification result. Only touch this workbook inside workspace.\nBuild trend report workbook",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_12",
+        "text": "Create and verify a new Notion team knowledge-base page titled exactly 'Fireship Tech Trends Q1 2026'. Use an appropriate accessible workspace/team parent discovered via Notion search; if no explicit parent exists, create it at workspace root if supported. Content: introductory heading 'Fireship Technology Trend Report'; a short paragraph explaining this analyzes the top 10 most-viewed Fireship videos published 2024–2025 and that AI dominated, with 5 videos and 13,202,451 total views (~52% of top-ten views), while cybersecurity ranked second; then a structured table or clear structured blocks listing these top 5 topics by total views with video counts and totals, in order: Artificial Intelligence—5—13,202,451; Cybersecurity—2—4,394,826; Linux—1—2,891,861; Software Bugs—1—2,496,715; Quantum Computing—1—2,329,914. Mention full detail is in Tech_Trend_Report.xlsx. Retrieve the created page after writing and return page ID/URL, parent, and verification of title/content. Do not modify unrelated pages.\nPublish Notion trend page",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_12",
+        "text": "Handle calendar workflow exactly: first list shared calendar events from 2026-03-01T00:00:00Z through 2026-04-01T00:00:00Z and report any whose title contains 'Tech Review'. Check for an existing exact weekly series/event titled 'Tech Review Meeting' at Monday 2026-03-09 14:00–15:00 UTC. If exact duplicate exists, do not create another; otherwise create event titled exactly 'Tech Review Meeting', start 2026-03-09T14:00:00Z, end 2026-03-09T15:00:00Z, timezone UTC, recurrence ['RRULE:FREQ=WEEKLY'], no attendees, and a brief description such as 'Weekly review of technology trends and team follow-ups.' Then retrieve/verify the event. Return existing March Tech Review findings, created/reused event ID, start/end/timezone/recurrence verification. Do not alter other events.\nSchedule tech review meeting",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "message_22",
+        "text": "Send exactly one email to techteam@company.com using this completed-report context. Subject exactly: '[Tech Trends] Fireship Q1 2026 Report Available'. Use this body based on the supplied template:\n\nHi Team,\n\nI have compiled the Q1 2026 technology trend report based on the top 10 most-viewed Fireship videos from 2024-2025.\n\nKey Findings:\n- Top Technology Topics: Artificial Intelligence (5 videos), Cybersecurity (2 videos), Linux (1 video), Software Bugs (1 video), and Quantum Computing (1 video)\n- Most Viewed Topic: Artificial Intelligence with 13,202,451 total views\n- Total Videos Analyzed: 10\n\nThe full report is available in Tech_Trend_Report.xlsx. Please review the Videos and Topic_Summary sheets for detailed breakdowns. The findings have also been published to the team knowledge base as “Fireship Tech Trends Q1 2026”.\n\nA weekly Tech Review Meeting has been scheduled for Mondays at 14:00-15:00 UTC starting March 9, 2026. Please add it to your calendar.\n\nBest regards,\nTech Lead\n\nAttach the workbook at /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-yt-fireship-tech-report-excel-notion/workspace/Tech_Trend_Report.xlsx. Send once only, with no CC/BCC. Return confirmation and sent message metadata if available.\nEmail tech trend report",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "youtube"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "notion",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "write",
+        "role": "calendar",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

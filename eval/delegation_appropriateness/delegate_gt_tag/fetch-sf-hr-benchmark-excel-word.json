@@ -1,0 +1,188 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "fetch-sf-hr-benchmark-excel-word",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/fetch-sf-hr-benchmark-excel-word.task.md",
+    "oracle166_sha256": "c128ba5d8179379a3617afd964856c2bc56a90d4f439782ce2149e3b7e42e1b4"
+  },
+  "label_cache_keys": [
+    "8473b6e7f53b1ab5562cb99d7a5424e81348594d56692b6196f6bf0b56c0d471"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own HR_Salary_Benchmark.xlsx exactly once. Build the exact \"Industry Benchmarks\", \"Internal Data\", and \"Variance Analysis\" sheets from the frozen table with the original columns and literal values, apply the requested rounding, read the workbook back, and return its path plus sheet, row, department, and arithmetic checks. Do not create the Word document or send email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): Use one coder sub-agent to own Salary_Benchmark_Report.docx exactly once. From the same frozen table, create the requested executive overview, department-by-department benchmark/internal/variance section, above-versus-below lists, and recommendation paragraph. Read the document back and return its path plus heading, department, and extrema checks. Do not create the workbook or send email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own HR_Salary_Benchmark.xlsx exactly once. Build the exact \"Industry Benchmarks\", \"Internal Data\", and \"Variance Analysis\" sheets from the frozen table with the original columns and literal values, apply the requested rounding, read the workbook back, and return its path plus sheet, row, department, and arithmetic checks. Do not create the Word document or send email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): Use one coder sub-agent to own Salary_Benchmark_Report.docx exactly once. From the same frozen table, create the requested executive overview, department-by-department benchmark/internal/variance section, above-versus-below lists, and recommendation paragraph. Read the document back and return its path plus heading, department, and extrema checks. Do not create the workbook or send email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:word",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "word",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "word": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 2,
+    "units": 2,
+    "write_units": 2,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

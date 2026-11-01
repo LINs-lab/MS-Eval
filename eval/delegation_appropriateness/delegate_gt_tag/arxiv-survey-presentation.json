@@ -1,0 +1,519 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "arxiv-survey-presentation",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/arxiv-survey-presentation.task.md",
+    "oracle166_sha256": "ae8db4af21b6f5280e9c616c043f7d279f06065128875c05e18157f649694fa0"
+  },
+  "label_cache_keys": [
+    "f53c2b57576dad66626305de7d4734722f3f2354d9f2a617289a11b57fd6af75"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "external-fetch"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (web-domain-researcher 0): Use one explore sub-agent to inspect both task-provided survey-methodology pages in read-only mode and combine their source-backed guidance with the frozen local-reference packet supplied by the main agent. Use only the granted non-interactive browser navigation, snapshot, search, and wait operations; do not click, type, evaluate scripts, select options, invoke terminal, or reread workspace files. Return a compact source-referenced methodology packet covering comparison criteria, taxonomy guidance, recommended presentation structure, slide tips, and per-page/reference coverage. Do not write deliverables or alter the pages.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (academic-literature-researcher 0): Use one explore sub-agent to scout the task-relevant local arXiv candidate space read-only for recent NLP, language-model, and reasoning papers. Use complementary queries at the supported per-call result bound, union and deduplicate by stable ID because no search cursor is exposed, validate relevance from title/abstract, and return a candidate manifest with authors/date, abstract, available arxiv-latex status, per-query/union controls, and rejected distractors. Do not read full manuscripts, write files, or create deliverables.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 5,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (academic-literature-researcher 1): Use one explore sub-agent to own only paper row 1 from the frozen assignment table.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (academic-literature-researcher 2): Use one explore sub-agent to own only paper row 2 from the frozen assignment table.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_2",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (academic-literature-researcher 3): Use one explore sub-agent to own only paper row 3 from the frozen assignment table.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_2",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (academic-literature-researcher 4): Use one explore sub-agent to own only paper row 4 from the frozen assignment table.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 6,
+          "wave_id": "wave_2",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (academic-literature-researcher 5): Use one explore sub-agent to own only paper row 5 from the frozen assignment table.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_3",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 7,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/Survey_Data.xlsx` exclusively. Use one `python_execute` with `openpyxl` to create Paper Comparison, Taxonomy, and Summary Statistics atomically from the canonical payload with exact headers, standard IDs without prefix/version, literal Value cells, source-backed method/dataset/finding rows, and verified taxonomy/statistics. Then read each complete populated range once and return path, sheet order, row/metric controls, and validation. Do not write the presentation.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 8,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): Use one coder sub-agent to own `<workspace_root>/NLP_Survey.pptx` exclusively. Use one `python_execute` with `python-pptx` to create the complete deck atomically from the canonical payload, with at least six slides including a title slide, methodology slide grounded in the webpage/guide packet, at least three distinct paper slides, and a final taxonomy/trends summary. Follow the visible style guide, then read the deck once and return path, slide count/titles, paper/methodology coverage, and validation. Do not write the workbook.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "external-fetch"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (web-domain-researcher 0): Use one explore sub-agent to inspect both task-provided survey-methodology pages in read-only mode and combine their source-backed guidance with the frozen local-reference packet supplied by the main agent. Use only the granted non-interactive browser navigation, snapshot, search, and wait operations; do not click, type, evaluate scripts, select options, invoke terminal, or reread workspace files. Return a compact source-referenced methodology packet covering comparison criteria, taxonomy guidance, recommended presentation structure, slide tips, and per-page/reference coverage. Do not write deliverables or alter the pages.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (academic-literature-researcher 0): Use one explore sub-agent to scout the task-relevant local arXiv candidate space read-only for recent NLP, language-model, and reasoning papers. Use complementary queries at the supported per-call result bound, union and deduplicate by stable ID because no search cursor is exposed, validate relevance from title/abstract, and return a candidate manifest with authors/date, abstract, available arxiv-latex status, per-query/union controls, and rejected distractors. Do not read full manuscripts, write files, or create deliverables.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (academic-literature-researcher 1): Use one explore sub-agent to own only paper row 1 from the frozen assignment table.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (academic-literature-researcher 2): Use one explore sub-agent to own only paper row 2 from the frozen assignment table.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_2",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (academic-literature-researcher 3): Use one explore sub-agent to own only paper row 3 from the frozen assignment table.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_2",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (academic-literature-researcher 4): Use one explore sub-agent to own only paper row 4 from the frozen assignment table.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 6,
+      "wave_id": "wave_2",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (academic-literature-researcher 5): Use one explore sub-agent to own only paper row 5 from the frozen assignment table.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 7,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/Survey_Data.xlsx` exclusively. Use one `python_execute` with `openpyxl` to create Paper Comparison, Taxonomy, and Summary Statistics atomically from the canonical payload with exact headers, standard IDs without prefix/version, literal Value cells, source-backed method/dataset/finding rows, and verified taxonomy/statistics. Then read each complete populated range once and return path, sheet order, row/metric controls, and validation. Do not write the presentation.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 8,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): Use one coder sub-agent to own `<workspace_root>/NLP_Survey.pptx` exclusively. Use one `python_execute` with `python-pptx` to create the complete deck atomically from the canonical payload, with at least six slides including a title slide, methodology slide grounded in the webpage/guide packet, at least three distinct paper slides, and a final taxonomy/trends summary. Follow the visible style guide, then read the deck once and return path, slide count/titles, paper/methodology coverage, and validation. Do not write the workbook.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_3:7:excel",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 7,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:8:ppt",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 8,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:external-fetch",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "external-fetch",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_2:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_2",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "ppt": 1
+    },
+    "read": {
+      "external-fetch": 1,
+      "scholarly-arxiv": 2
+    }
+  },
+  "counts": {
+    "waves": 3,
+    "nodes": 9,
+    "units": 5,
+    "write_units": 2,
+    "read_clusters": 3,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

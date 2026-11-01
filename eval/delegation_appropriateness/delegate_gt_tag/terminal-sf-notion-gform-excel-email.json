@@ -1,0 +1,337 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-sf-notion-gform-excel-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-sf-notion-gform-excel-email.task.md",
+    "oracle166_sha256": "d463d68bea51ae165f184cdc63228a3244838f1b3c2488eda152547832f6ff6d"
+  },
+  "label_cache_keys": [
+    "26619b6802b3df898c20ecaa5dc5b53bbba5e0a9a9ec472aa2d971d91509e852"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "snowflake"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): One explore sub-agent inspects the HR schema and runs one compact server-side department aggregate over the full employee table for exactly seven departments: count and raw averages for job satisfaction, performance rating and work-life balance. It returns alphabetical rows, company controls and query provenance only; no employee rows or writes.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "gform",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (external-workflow-operator 0): One coder is the sole owner of Employee Engagement Survey. Call create_form once, add exactly five questions in order: 1-10 role satisfaction choice, five-option work-life choice, four-option career growth choice, 1-5 manager support choice, Yes/Maybe/No recommendation choice; then get_form once. Never retry create after ambiguity.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole writer of Employee_Engagement_Report.xlsx with exact Department_Scores, Survey_Design, Action_Items, alphabetical departments, literal numbers and full read-back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 1): Sole owner of exactly one Notion page HR Engagement Dashboard. Fully paginate exact-title search, reuse one or create once, block on duplicates, write all seven department names/counts/indices and retrieve the page.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "email",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 2): Sole owner of the hr-leadership@company.com email with exact subject Employee Engagement Analysis Report and frozen highest/lowest findings. Paginate Sent search/read candidates, send at most once, and read back.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "snowflake"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): One explore sub-agent inspects the HR schema and runs one compact server-side department aggregate over the full employee table for exactly seven departments: count and raw averages for job satisfaction, performance rating and work-life balance. It returns alphabetical rows, company controls and query provenance only; no employee rows or writes.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "gform",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (external-workflow-operator 0): One coder is the sole owner of Employee Engagement Survey. Call create_form once, add exactly five questions in order: 1-10 role satisfaction choice, five-option work-life choice, four-option career growth choice, 1-5 manager support choice, Yes/Maybe/No recommendation choice; then get_form once. Never retry create after ambiguity.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole writer of Employee_Engagement_Report.xlsx with exact Department_Scores, Survey_Design, Action_Items, alphabetical departments, literal numbers and full read-back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 1): Sole owner of exactly one Notion page HR Engagement Dashboard. Fully paginate exact-title search, reuse one or create once, block on duplicates, write all seven department names/counts/indices and retrieve the page.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "email",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 2): Sole owner of the hr-leadership@company.com email with exact subject Employee Engagement Analysis Report and frozen highest/lowest findings. Paginate Sent search/read candidates, send at most once, and read back.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:1:gform",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "gform",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:2:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:3:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:4:email",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 4,
+      "role": "email",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:snowflake",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "snowflake",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "email": 1,
+      "excel": 1,
+      "gform": 1,
+      "notion": 1
+    },
+    "read": {
+      "snowflake": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 5,
+    "units": 5,
+    "write_units": 4,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

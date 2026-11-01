@@ -1,0 +1,366 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "yf-stock-volatility-terminal",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/yf-stock-volatility-terminal.task.md",
+    "oracle166_sha256": "55c39657dd9191539ddb1a7dfc703938328374e0c521d9aadd52dfdc1a0c736e"
+  },
+  "label_cache_keys": [
+    "72b5ffe9a0137b74aa1cd47789e19e8e2a4193deb20b3eb6141b10592042beef"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 5,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (financial-market-analyst 0): Use one explore sub-agent for `AMZN` only: call `get_historical_stock_prices(ticker=\"AMZN\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to its own runtime-unique JSON, read it back, and return path/hash/count/date/duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (financial-market-analyst 1): Use one explore sub-agent for `GOOGL` only: call `get_historical_stock_prices(ticker=\"GOOGL\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to a runtime-unique `GOOGL` JSON, read it back, and return path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (financial-market-analyst 2): Use one explore sub-agent for `JNJ` only: call `get_historical_stock_prices(ticker=\"JNJ\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to a runtime-unique `JNJ` JSON, read it back, and return path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (financial-market-analyst 3): Use one explore sub-agent for `JPM` only: call `get_historical_stock_prices(ticker=\"JPM\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to a runtime-unique `JPM` JSON, read it back, and return path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (financial-market-analyst 4): Use one explore sub-agent for `XOM` only: call `get_historical_stock_prices(ticker=\"XOM\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to a runtime-unique `XOM` JSON, read it back, and return path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 5,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Use one Coder sub-agent as the sole calculation/workbook owner. Read all five JSON files; for each symbol calculate daily simple percentage returns for the `Daily Returns` sheet and daily log returns for annualized volatility (`sample standard deviation * sqrt(252) * 100`), maximum drawdown as the largest positive peak-to-trough percentage, and first-to-last one-year return. Apply the portal threshold boundaries to maximum drawdown and compare volatility to the exact sector benchmark. Create `stock_volatility_report.xlsx` once with exact `Risk Analysis`, all five complete `Daily Returns` series sorted Symbol then Date, and `Summary`. Write literals only. The Summary must contain each exact requested label exactly once, including `Highest_Volatility_Stock`, with a nonblank ticker value. Read all three sheets back and explicitly return all six Summary label/value pairs, five source-vs-sheet row counts, the first/last two daily returns per symbol, and metric/category checks.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (financial-market-analyst 0): Use one explore sub-agent for `AMZN` only: call `get_historical_stock_prices(ticker=\"AMZN\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to its own runtime-unique JSON, read it back, and return path/hash/count/date/duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (financial-market-analyst 1): Use one explore sub-agent for `GOOGL` only: call `get_historical_stock_prices(ticker=\"GOOGL\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to a runtime-unique `GOOGL` JSON, read it back, and return path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (financial-market-analyst 2): Use one explore sub-agent for `JNJ` only: call `get_historical_stock_prices(ticker=\"JNJ\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to a runtime-unique `JNJ` JSON, read it back, and return path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (financial-market-analyst 3): Use one explore sub-agent for `JPM` only: call `get_historical_stock_prices(ticker=\"JPM\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to a runtime-unique `JPM` JSON, read it back, and return path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (financial-market-analyst 4): Use one explore sub-agent for `XOM` only: call `get_historical_stock_prices(ticker=\"XOM\", start_date=\"2025-03-06\", end_date=\"2026-03-06\", interval=\"1d\", auto_adjust=true)`, persist every sorted Date/Close row to a runtime-unique `XOM` JSON, read it back, and return path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Use one Coder sub-agent as the sole calculation/workbook owner. Read all five JSON files; for each symbol calculate daily simple percentage returns for the `Daily Returns` sheet and daily log returns for annualized volatility (`sample standard deviation * sqrt(252) * 100`), maximum drawdown as the largest positive peak-to-trough percentage, and first-to-last one-year return. Apply the portal threshold boundaries to maximum drawdown and compare volatility to the exact sector benchmark. Create `stock_volatility_report.xlsx` once with exact `Risk Analysis`, all five complete `Daily Returns` series sorted Symbol then Date, and `Summary`. Write literals only. The Summary must contain each exact requested label exactly once, including `Highest_Volatility_Stock`, with a nonblank ticker value. Read all three sheets back and explicitly return all six Summary label/value pairs, five source-vs-sheet row counts, the first/last two daily returns per symbol, and metric/category checks.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:5:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 5,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:yahoo-finance",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "yahoo-finance",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1
+    },
+    "read": {
+      "yahoo-finance": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 6,
+    "units": 2,
+    "write_units": 1,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

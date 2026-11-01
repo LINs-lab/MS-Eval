@@ -1,0 +1,88 @@
+{
+  "input_hash": "6828ba59b16b2f87e42a2002878834bf401b4be6aa565b757a85db9c735c7c31",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "gt",
+    "task": "fetch-wc-yf-financial-excel-word-email",
+    "task_text": "I need help with a wc yf finance analysis. There is external benchmark data available that I need you to fetch the data from http://localhost:30333/api/data.json and extract the relevant metrics.\n\nThen check our online store for current product and order data.\n\nUse the terminal to create and run a Python script called wc_yf_finance_processor.py in the workspace that reads the collected data from JSON files you create, performs the analysis, and outputs wc_yf_finance_results.json.\n\nCreate an Excel file called Yf_Financial_Report.xlsx with three sheets. The first sheet Data_Analysis should contain the main comparison data with relevant columns. The second sheet Metrics should summarize key metrics. The third sheet Recommendations should list actionable items.\n\nThe Data_Analysis sheet should have columns: Category, Our_Avg_Price, Market_Avg_Price, Price_Gap_Pct. Sort the data alphabetically by Category. The Metrics sheet should have two columns Metric and Value summarizing total counts, averages, and key statistics. The Recommendations sheet should list priority actions based on the gap analysis. Also create a Word document called Yf_Financial_Analysis.docx with an executive summary, key findings, and recommendations sections. Send an email to team-lead@company.com with subject \"Analysis Report Complete\" summarizing the key findings.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, keep read-only source gathering on explore, keep the processor on one local writer, then parallelize the two independent final artifacts. A wave must finish and return all stated handoffs before the next wave begins. Explore sub-agents must not write files; the processor coder uniquely owns the JSON inputs and script.\n\n1. Wave 1 — dispatch exactly 2 explore sub-agents in parallel:\n\n   1. explore 0 (web-domain-researcher 0): One explore sub-agent fetches `http://localhost:30333/api/data.json` exactly once and returns the complete benchmark payload with field and count controls. Do not query WooCommerce, write files, or run the processor.\n   2. explore 1 (enterprise-data-analyst 0): One explore sub-agent exhausts the required WooCommerce products and orders with `perPage` at most 100 and terminal-page checks. Paginate `woo_products_list` and `woo_orders_list` with increasing literal `page` until a short or empty terminal page proves exhaustion; omit the optional order `status` and preserve every observed status. Return compact product and order records plus page/count/null/duplicate controls. Do not modify the store, write files, or run the processor.\n\nAfter Wave 1, the main agent must verify both source identities, schemas, and coverage, then freeze the two literal payloads. Missing or ambiguous source data is a blocker.\n\n2. Wave 2 — dispatch exactly 1 coder sub-agent:\n\n   1. coder 0 (office-report-builder 0): The coder sub-agent receives both frozen payloads and uniquely owns the required JSON inputs, `wc_yf_finance_processor.py`, and `wc_yf_finance_results.json`. Derive only source-supported category comparisons. Run and read back the processor result, then return its path/hash, source/page/count controls, eligible categories, exact metrics, and schema checks. It must not fetch localhost or WooCommerce and must not create Excel or Word outputs.\n\nAfter Wave 2, the main agent must verify the source coverage and freeze the exact processor result. In the same response as Wave 3, it may start the nonduplicate `Analysis Report Complete` email branch using only those verified findings.\n\n3. Wave 3 — dispatch exactly 2 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 1): One coder sub-agent is the sole writer of `Yf_Financial_Report.xlsx`. Read only the verified processor result. Create exactly `Data_Analysis`, `Metrics`, and `Recommendations`: `Data_Analysis` has literal columns `Category, Our_Avg_Price, Market_Avg_Price, Price_Gap_Pct` sorted alphabetically by Category; `Metrics` has `Metric, Value` with source-reconciled counts, averages, and key statistics; `Recommendations` contains source-supported priority actions. Write literal values and read back every populated range.\n   2. coder 1 (office-report-builder 2): One coder sub-agent is the sole writer of `Yf_Financial_Analysis.docx`. Read only the verified processor result. Create the required executive summary, key findings, and recommendations sections, ground every quantitative claim in the result, and read back its heading structure, tables, and full text.\n\nAfter Wave 3, the main agent reconciles both reports to the same result hash and verifies exactly one email to `team-lead@company.com` with subject `Analysis Report Complete`. Do not dispatch more sub-agents.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "wave_1",
+        "text": "explore 0 (web-domain-researcher 0): One explore sub-agent fetches `http://localhost:30333/api/data.json` exactly once and returns the complete benchmark payload with field and count controls. Do not query WooCommerce, write files, or run the processor.",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "wave_1",
+        "text": "explore 1 (enterprise-data-analyst 0): One explore sub-agent exhausts the required WooCommerce products and orders with `perPage` at most 100 and terminal-page checks. Paginate `woo_products_list` and `woo_orders_list` with increasing literal `page` until a short or empty terminal page proves exhaustion; omit the optional order `status` and preserve every observed status. Return compact product and order records plus page/count/null/duplicate controls. Do not modify the store, write files, or run the processor.",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "wave_2",
+        "text": "coder 0 (office-report-builder 0): The coder sub-agent receives both frozen payloads and uniquely owns the required JSON inputs, `wc_yf_finance_processor.py`, and `wc_yf_finance_results.json`. Derive only source-supported category comparisons. Run and read back the processor result, then return its path/hash, source/page/count controls, eligible categories, exact metrics, and schema checks. It must not fetch localhost or WooCommerce and must not create Excel or Word outputs.",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "wave_3",
+        "text": "coder 0 (office-report-builder 1): One coder sub-agent is the sole writer of `Yf_Financial_Report.xlsx`. Read only the verified processor result. Create exactly `Data_Analysis`, `Metrics`, and `Recommendations`: `Data_Analysis` has literal columns `Category, Our_Avg_Price, Market_Avg_Price, Price_Gap_Pct` sorted alphabetically by Category; `Metrics` has `Metric, Value` with source-reconciled counts, averages, and key statistics; `Recommendations` contains source-supported priority actions. Write literal values and read back every populated range.",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "wave_3",
+        "text": "coder 1 (office-report-builder 2): One coder sub-agent is the sole writer of `Yf_Financial_Analysis.docx`. Read only the verified processor result. Create the required executive summary, key findings, and recommendations sections, ground every quantitative claim in the result, and read back its heading structure, tables, and full text.",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "external-fetch"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "processor",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "write",
+        "role": "word",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

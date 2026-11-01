@@ -1,0 +1,411 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "arxiv-research-tracker-notion",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/arxiv-research-tracker-notion.task.md",
+    "oracle166_sha256": "46fc795668e25f30b5857cbe2abad6236e2dade8eb275ed63c5aedb20f706bc3"
+  },
+  "label_cache_keys": [
+    "eee4e382824af7e8e074ea460392bea5a7198c1a5ef42460e1760afe95080e4e"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 5,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (academic-literature-researcher 0): Use one explore sub-agent to research attention efficiency or flash attention.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (academic-literature-researcher 1): Use one explore sub-agent to research token merging and pruning.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (academic-literature-researcher 2): Use one explore sub-agent to research low-rank adaptation.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (academic-literature-researcher 3): Use one explore sub-agent to research quantization-aware training.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (academic-literature-researcher 4): Use one explore sub-agent to research sparse mixture of experts.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 5,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own Transformer_Research_Tracker.xlsx exclusively. Create exactly Paper Comparison and Statistics with the exact headers/metrics, five citation-descending rows, literal numeric counts and one-decimal average, correctly resolved most-cited paper, runtime top venue, and date range. Read back both sheets and return path, row/metric controls, sort order, and validation. Do not modify Notion.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 6,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): Use one coder sub-agent to own the single Notion page exclusively. Search for Efficient Transformers Research Tracker, create at most one page, and add a substantive overview, one source-backed section per frozen paper with authors/citations/contribution, cross-paper trends, impactful papers, and common themes. Read it back and return page ID/title, five-paper/section coverage, and validation. Do not write the workbook.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (academic-literature-researcher 0): Use one explore sub-agent to research attention efficiency or flash attention.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (academic-literature-researcher 1): Use one explore sub-agent to research token merging and pruning.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (academic-literature-researcher 2): Use one explore sub-agent to research low-rank adaptation.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (academic-literature-researcher 3): Use one explore sub-agent to research quantization-aware training.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (academic-literature-researcher 4): Use one explore sub-agent to research sparse mixture of experts.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own Transformer_Research_Tracker.xlsx exclusively. Create exactly Paper Comparison and Statistics with the exact headers/metrics, five citation-descending rows, literal numeric counts and one-decimal average, correctly resolved most-cited paper, runtime top venue, and date range. Read back both sheets and return path, row/metric controls, sort order, and validation. Do not modify Notion.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 6,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): Use one coder sub-agent to own the single Notion page exclusively. Search for Efficient Transformers Research Tracker, create at most one page, and add a substantive overview, one source-backed section per frozen paper with authors/citations/contribution, cross-paper trends, impactful papers, and common themes. Read it back and return page ID/title, five-paper/section coverage, and validation. Do not write the workbook.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:5:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 5,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:6:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 6,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "notion": 1
+    },
+    "read": {
+      "scholarly-arxiv": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 7,
+    "units": 3,
+    "write_units": 2,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

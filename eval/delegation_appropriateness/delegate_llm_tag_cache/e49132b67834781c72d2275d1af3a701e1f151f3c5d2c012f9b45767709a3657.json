@@ -1,0 +1,86 @@
+{
+  "input_hash": "e49132b67834781c72d2275d1af3a701e1f151f3c5d2c012f9b45767709a3657",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "sf-hr-dept-budget-ppt-email",
+    "task_text": "I need to prepare a department budget presentation for our upcoming board meeting. Please pull the current department headcount and budget data from the company HR data warehouse and create a PowerPoint presentation called HR_Department_Overview.pptx. The presentation should have at least seven slides: a title slide called HR Department Budget Overview, one slide per department showing the department name, headcount, budget, and location, and a final summary slide showing total headcount and total budget across all departments. Use the department names exactly as they appear in the data source (for example `HR` and `R&D`) — do not expand or rephrase them.\n\nAfter creating the presentation, also create an Excel file called Department_Budget_Analysis.xlsx with a sheet called Department Summary that has columns Department, Headcount, Budget rounded to 2 decimals, Location, and Budget_Per_Employee which is the budget divided by headcount rounded to 2 decimals, sorted alphabetically by department name. Add a second sheet called Summary with Metric and Value columns showing Total_Headcount, Total_Budget, Avg_Budget_Per_Employee (computed as Total_Budget divided by Total_Headcount) rounded to 2 decimals, and Highest_Budget_Dept. Use these exact metric labels (with underscores) as the Metric values.\n\nThen create a Google Sheet named 'HR Department Tracker' (create it if it does not already exist) and populate it with the same department data, and send an email to hr.directors@company.com with subject HR Department Budget Summary Q1 2026 containing a brief overview of the findings.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent should first query the complete department table once, preserve exact department names such as HR and R&D, compute headcount and budget controls, and freeze alphabetically sorted rows. Then create the three independent deliverables in one wave.\n\n1. Wave 1 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One coder sub-agent owns `HR_Department_Overview.pptx` under one presentation ID. Use the literal source labels as slide text—especially the exact three-character string `R&D`; never expand it to Research and Development. Create the title slide, one slide per returned department with exact name/headcount/budget/location, and the final numeric summary. Use one bounded populate operation per slide, save once, extract the full deck text once, and return the path, slide count/titles, literal department-name coverage, and total checks.\n\n   2. coder 1 (office-report-builder 1): One coder sub-agent owns `Department_Budget_Analysis.xlsx` and writes the exact Department Summary and Summary sheets with literal values, alphabetical rows, Budget_Per_Employee, and the exact underscore metric labels. Use one bulk write per sheet and one read-back.\n\n   3. coder 2 (external-workflow-operator 0): One coder sub-agent owns exactly one `HR Department Tracker` cloud spreadsheet. Search the exact title, create only if absent, write the same literal source labels and rows once, and read it back once.\n\nAfter Wave 1, the main agent checks that all three outputs contain every exact department label including `R&D` and that the totals agree, then sends exactly one email to `hr.directors@company.com` with subject `HR Department Budget Summary Q1 2026`. Do not run row-by-row revalidation or dispatch another wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Plan the end-to-end workflow for this task: query current department headcount, budget, and location from the company HR Snowflake warehouse; create /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-dept-budget-ppt-email/workspace/HR_Department_Overview.pptx with at least 7 slides (title, one per department preserving exact names, summary totals); create Department_Budget_Analysis.xlsx with exact sheets/columns/formulas/rounding/sorting; create or reuse Google Sheet 'HR Department Tracker' and populate same department data; email hr.directors@company.com with subject 'HR Department Budget Summary Q1 2026' and brief findings. This is planning/read-only only. Identify likely Snowflake discovery/query steps, task dependencies, suitable specialist delegation, and verification checks. Do not perform writes.\nPlan HR deliverables",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "Create and verify the PowerPoint at /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-dept-budget-ppt-email/workspace/HR_Department_Overview.pptx. Use exactly 9 slides: title slide titled exactly 'HR Department Budget Overview'; one slide for each department below, preserving exact department names and showing department name, headcount, budget, and location; final summary slide showing total headcount and total budget. Use professional board-ready formatting and consistent currency with 2 decimals. Data: Engineering | 7096 | 633555641.27 | New York; Finance | 7148 | 616980984.11 | Sydney; HR | 7077 | 697911374.65 | New York; Operations | 7120 | 572668189.63 | Sydney; R&D | 7083 | 715914847.42 | Singapore; Sales | 7232 | 642575220.92 | New York; Support | 7244 | 684741486.31 | Toronto. Totals: headcount 50000; budget 4564347744.31. Acceptance: exact path/name, 9 slides, all exact names including HR and R&D, each department slide has all four requested fields, summary totals accurate, save and verify by reopening/extracting text. Do not create any other deliverable.\nBuild HR PowerPoint",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_6",
+        "text": "Create and verify Excel workbook at /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-dept-budget-ppt-email/workspace/Department_Budget_Analysis.xlsx. Sheet 1 exact name 'Department Summary', exact columns in order: Department, Headcount, Budget, Location, Budget_Per_Employee. Sort alphabetically by Department. Values: Engineering | 7096 | 633555641.27 | New York; Finance | 7148 | 616980984.11 | Sydney; HR | 7077 | 697911374.65 | New York; Operations | 7120 | 572668189.63 | Sydney; R&D | 7083 | 715914847.42 | Singapore; Sales | 7232 | 642575220.92 | New York; Support | 7244 | 684741486.31 | Toronto. Budget should be 2 decimals. Budget_Per_Employee must equal budget/headcount rounded to 2 decimals; preferably use formulas =ROUND(Crow/Brow,2). Sheet 2 exact name 'Summary', exact columns Metric and Value, with Metric values exactly: Total_Headcount, Total_Budget, Avg_Budget_Per_Employee, Highest_Budget_Dept. Corresponding values: 50000; 4564347744.31; 91286.95 (total budget / total headcount rounded 2); R&D. Use formulas for totals/average/highest where feasible, professional formatting, currency formats, and verify by reading workbook back. Do not create any other deliverable.\nBuild HR Excel",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_11",
+        "text": "Create or reuse a Google Spreadsheet with exact title 'HR Department Tracker', avoiding duplicates: search exact title first; if none, create it. Populate it with the same department data as the requested analysis, sorted alphabetically, on an appropriate main sheet (rename default sheet to 'Department Summary' if feasible). Exact columns: Department, Headcount, Budget, Location, Budget_Per_Employee. Data: Engineering | 7096 | 633555641.27 | New York; Finance | 7148 | 616980984.11 | Sydney; HR | 7077 | 697911374.65 | New York; Operations | 7120 | 572668189.63 | Sydney; R&D | 7083 | 715914847.42 | Singapore; Sales | 7232 | 642575220.92 | New York; Support | 7244 | 684741486.31 | Toronto. Budget_Per_Employee = Budget / Headcount rounded 2: Engineering 89283.49; Finance 86315.75; HR 98618.55; Operations 80430.93; R&D 101073.39; Sales 88851.52; Support 94525.33. Also add a 'Summary' sheet with exact columns Metric, Value and rows: Total_Headcount 50000; Total_Budget 4564347744.31; Avg_Budget_Per_Employee 91286.95; Highest_Budget_Dept R&D. Apply professional formatting if supported. Verify all data and return spreadsheet ID/URL and sheet names. This is the only external write for this agent; do not send email.\nCreate HR Google tracker",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_15",
+        "text": "Send an email to hr.directors@company.com with exact subject 'HR Department Budget Summary Q1 2026'. Include a brief professional overview: 7 departments, total headcount 50,000, total budget $4,564,347,744.31, average budget per employee $91,286.95, R&D has highest budget at $715,914,847.42, Support has highest headcount at 7,244. Mention the Google Sheet tracker link https://docs.google.com/spreadsheets/d/eff5d910-ccb4-4aa9-9d13-68814e1b1246/edit. Attach both files: /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-dept-budget-ppt-email/workspace/HR_Department_Overview.pptx and /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-dept-budget-ppt-email/workspace/Department_Budget_Analysis.xlsx. Verify connection and attachment paths if supported, send exactly once, and report send result/message ID. Do not modify any artifacts.\nEmail HR directors",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "ppt",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

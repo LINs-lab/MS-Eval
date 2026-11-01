@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+.env.*
+.llm_key*
+*.pid
+*.pids
+*.log
+*.lock
+/runs/
+/results/
+/eval/delegation_appropriateness/delegate_llm_tag_cache/*.tmp
+.local/
+
+# Local agent tool state
+.omc/
+.claude/settings.local.json

@@ -1,0 +1,166 @@
+{
+  "input_hash": "09d4488a719a3dadae7fee4f1e03a867530837f44e361b11419812c145792ed1",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "canvas-semester-summary-ppt",
+    "task_text": "Hi there, the Fall 2014 semester just wrapped up and I need to prepare a summary for the department. Could you pull together an overview of all the courses from that term?\n\nPlease look up all courses that ran in Fall 2014 and gather the following for each: the course name, course code, total number of students, enrollment count, number of assignments, and the average points possible across all assignments (rounded to 1 decimal). If a course has no assignments, record Avg Points Possible as 0.0. If an individual assignment has a null or zero points_possible, include it in the count but treat its points as 0 when computing the average.\n\nCreate an Excel file called Semester_Summary.xlsx in the workspace with two sheets.\n\nThe first sheet should be called \"Course Overview\" with columns: Course Name, Course Code, Total Students, Enrollments, Assignments, Avg Points Possible. One row per course, sorted alphabetically by course name.\n\nThe second sheet should be called \"Summary\" with columns Metric and Value, containing these rows: Total Courses, Total Students (sum of all course total_students), Total Enrollments (sum of all enrollment counts), Total Assignments (sum of all assignment counts), Average Assignments per Course (rounded to 1 decimal).\n\nAlso create a PowerPoint presentation called Semester_Summary.pptx in the workspace. It should have:\n\nA title slide with \"Fall 2014 Semester Summary\" as the title.\n\nAn overview slide showing the summary statistics (total courses, total students, total enrollments, total assignments, average assignments per course).\n\nOne slide for each course showing the course name as title and its details (course code, total students, enrollments, assignments, average points possible).\n\nA final \"Key Takeaways\" slide identifying the largest course by student count, the smallest course by student count, and the course with the most assignments. For each, include both the course name and the specific numeric value (e.g. \"Largest: CCC-2014J with 2498 students\").\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, combine the three small reads for each concrete Fall 2014 course and freeze deterministic extrema before either writer starts.\n\nThe main agent calls canvas_list_courses(include_ended=true), retains exactly the returned courses whose full name contains Fall 2014 or whose code ends in 2014J, and freezes every literal ID/code/name and reported total_students. It then instantiates one Explore prompt per retained course.\n\n1. Wave 1 — dispatch exactly 7 explore sub-agents in parallel, one per literal Fall 2014 course below:\n\n   1. explore 0 (enterprise-data-analyst 0): Course Explore agent for course_id=2 (AAA-2014J): issue canvas_list_assignments(course_id=2, include_submissions=false) and canvas_get_course_grades(course_id=2, page=1, per_page=1) natively in parallel. Return {course_id:2,course_code:\"AAA-2014J\",course_name,total_students,assignment_ids,assignment_count,points_possible_values,total_enrollments:pagination.total_count,pagination_controls}. Include null/zero assignment points in the returned values, do not fetch enrollment rows, and do not modify Canvas.\n   2. explore 1 (enterprise-data-analyst 1): Course Explore agent for course_id=4 (BBB-2014J) — same literal recipe, only the course identity substituted.\n   3. explore 2 (enterprise-data-analyst 2): Course Explore agent for course_id=7 (CCC-2014J) — same literal recipe, only the course identity substituted.\n   4. explore 3 (enterprise-data-analyst 3): Course Explore agent for course_id=10 (DDD-2014J) — same literal recipe, only the course identity substituted.\n   5. explore 4 (enterprise-data-analyst 4): Course Explore agent for course_id=14 (EEE-2014J) — same literal recipe, only the course identity substituted.\n   6. explore 5 (enterprise-data-analyst 5): Course Explore agent for course_id=17 (FFF-2014J) — same literal recipe, only the course identity substituted.\n   7. explore 6 (enterprise-data-analyst 6): Course Explore agent for course_id=21 (GGG-2014J) — same literal recipe, only the course identity substituted.\n\nAfter Wave 1, the main agent validates one result per frozen course and unique assignment IDs. Compute Avg Points Possible with the task's null/zero rule and requested rounding. Freeze one canonical seven-row Course Overview table and five Summary rows. Compute largest-by-students, smallest-by-students, and most-assignments by running deterministic argmax/argmin over the complete canonical table, using course_code ascending only as a tie-break. Assert each selected row belongs to that table and its metric equals the recomputed extremum. Freeze the three literal takeaway strings; writers may not select or recompute extrema.\n\n2. Wave 2 — dispatch exactly 2 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One Coder is the sole writer of Semester_Summary.xlsx in the dynamically resolved task workspace. Create exactly Course Overview and Summary with the exact headers, canonical rows, literal values, sorting and rounding; read both populated ranges back.\n   2. coder 1 (office-report-builder 1): One Coder is the sole writer of Semester_Summary.pptx in that workspace. Consume only the frozen canonical course rows, summary rows and three literal takeaway strings. Create exactly ten slides: title, overview, seven course slides in course-name order, and Key Takeaways. Read back all slide titles/text and require every course and each frozen takeaway to occur once.\n\nAfter Wave 2, the main agent reconciles both artifacts against the same payload, including the deterministic extrema assertions. Do not hard-code expected course names/counts, write to /workspace directly, or dispatch a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are planning a task for the main agent. Please decompose the following task into an ordered list of subtasks, and for each subtask specify: (1) dispatch decision: self (main agent), explore (read-only), or coder (write-capable), and (2) whether it is independent/parallelizable or must wait on another subtask's output.\n\nTASK DESCRIPTION:\nThe Fall 2014 semester just wrapped up. The agent must produce a semester summary using the Canvas LMS (via the canvas MCP tools) and filesystem/Excel/PowerPoint tools.\n\nDeliverables (both must be created in the workspace directory /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-canvas-semester-summary-ppt/workspace):\n\n1. Excel file Semester_Summary.xlsx with two sheets:\n   - Sheet \"Course Overview\" with columns: Course Name, Course Code, Total Students, Enrollments, Assignments, Avg Points Possible. One row per Fall 2014 course, sorted alphabetically by course name.\n   - Sheet \"Summary\" with columns Metric and Value, containing rows: Total Courses, Total Students (sum of all course total_students), Total Enrollments (sum of all enrollment counts), Total Assignments (sum of all assignment counts), Average Assignments per Course (rounded to 1 decimal).\n\n2. PowerPoint file Semester_Summary.pptx containing:\n   - Title slide: \"Fall 2014 Semester Summary\"\n   - Overview slide: summary statistics (total courses, total students, total enrollments, total assignments, average assignments per course)\n   - One slide per course: course name as title; details = course code, total students, enrollments, assignments, average points possible\n   - Final \"Key Takeaways\" slide: largest course by student count, smallest course by student count, course with most assignments; each with course name AND the specific numeric value.\n\nDATA GATHERING REQUIREMENTS:\n- Identify all courses that ran in Fall 2014 (term). The Canvas instance may contain multiple terms; the agent needs to figure out how to identify the Fall 2014 term (e.g., via term info on courses, course names/codes, enrollment term IDs, course start dates).\n- For each Fall 2014 course gather: course name, course code, total number of students, enrollment count, number of assignments, average points possible across all assignments (rounded to 1 decimal).\n- If a course has no assignments, Avg Points Possible = 0.0.\n- If an individual assignment has null or zero points_possible, include it in the count but treat its points as 0 when computing the average.\n\nIMPORTANT CONTEXT:\n- The main agent has full MCP tool access: canvas (create/list/get), excel (create/write/read), pptx (create slides, add text/tables/charts), filesystem (read/write in workspace).\n- The plan sub-agent you are: use only read-only tools (canvas list/get, filesystem list/read) to inspect the environment if needed to make the plan concrete (e.g., check how many courses exist, what terms look like). Do NOT create or modify anything.\n- Workspace directory: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-canvas-semester-summary-ppt/workspace\n\nDELIVERABLE OF YOUR PLAN:\nA concise ordered list of subtasks, each with dispatch decision and dependency/parallelism notes, plus a recommended verification strategy (how to confirm Excel and PPTX outputs are correct before claiming completion). Keep it actionable and specific to the tools available.\nPlan Fall 2014 summary task",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "You are gathering data for ONE Canvas course to support a Fall 2014 semester summary. The item below has format: course_id|course_name|course_code|total_students. Item: 2|Applied Analytics & Algorithms (Fall 2014)|AAA-2014J|365\n\nParse the item to get: course_id, course_name, course_code, total_students.\n\nYour job (read-only — do NOT create/modify anything):\n1. Get the ENROLLMENT COUNT: call mcp__canvas__canvas_get_course_grades with course_id, type=[\"StudentEnrollment\"], per_page=100, page=1. Read the response's `pagination.total_count` field — that is the enrollment count. If `pagination.has_more` is true, page through (page=2, 3, ...) until has_more is false, but total_count from the first page should already be the full count; only continue paging if you need to. Use the total_count value.\n2. Get the ASSIGNMENTS: call mcp__canvas__canvas_list_assignments with course_id. Count the number of assignments returned (this is the Assignments count). For each assignment, read its `points_possible` field — note it may be a string like \"10.00\", may be null, or may be 0. Treat null and 0 as 0.0 when computing the average.\n3. Compute AVG POINTS POSSIBLE = (sum of all assignments' points_possible, treating null/0 as 0.0) / (number of assignments), rounded to 1 decimal place. If there are 0 assignments, avg points = 0.0.\n\nReturn your result as a single JSON object exactly like this (no extra prose):\n{\"course_name\": \"...\", \"course_code\": \"...\", \"total_students\": N, \"enrollments\": N, \"assignments\": N, \"avg_points_possible\": X.X}\nUse the course_name, course_code, total_students from the item (do not re-derive them). Use your fetched enrollments count and assignment count/avg from Canvas. Include the actual number for every field — no placeholders.\nGather per-course Fall 2014 data",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_6",
+        "text": "You are gathering data for ONE Canvas course to support a Fall 2014 semester summary. The item below has format: course_id|course_name|course_code|total_students. Item: 4|Biochemistry & Bioinformatics (Fall 2014)|BBB-2014J|2292\n\nParse the item to get: course_id, course_name, course_code, total_students.\n\nYour job (read-only — do NOT create/modify anything):\n1. Get the ENROLLMENT COUNT: call mcp__canvas__canvas_get_course_grades with course_id, type=[\"StudentEnrollment\"], per_page=100, page=1. Read the response's `pagination.total_count` field — that is the enrollment count. If `pagination.has_more` is true, page through (page=2, 3, ...) until has_more is false, but total_count from the first page should already be the full count; only continue paging if you need to. Use the total_count value.\n2. Get the ASSIGNMENTS: call mcp__canvas__canvas_list_assignments with course_id. Count the number of assignments returned (this is the Assignments count). For each assignment, read its `points_possible` field — note it may be a string like \"10.00\", may be null, or may be 0. Treat null and 0 as 0.0 when computing the average.\n3. Compute AVG POINTS POSSIBLE = (sum of all assignments' points_possible, treating null/0 as 0.0) / (number of assignments), rounded to 1 decimal place. If there are 0 assignments, avg points = 0.0.\n\nReturn your result as a single JSON object exactly like this (no extra prose):\n{\"course_name\": \"...\", \"course_code\": \"...\", \"total_students\": N, \"enrollments\": N, \"assignments\": N, \"avg_points_possible\": X.X}\nUse the course_name, course_code, total_students from the item (do not re-derive them). Use your fetched enrollments count and assignment count/avg from Canvas. Include the actual number for every field — no placeholders.\nGather per-course Fall 2014 data",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_6",
+        "text": "You are gathering data for ONE Canvas course to support a Fall 2014 semester summary. The item below has format: course_id|course_name|course_code|total_students. Item: 7|Creative Computing & Culture (Fall 2014)|CCC-2014J|2498\n\nParse the item to get: course_id, course_name, course_code, total_students.\n\nYour job (read-only — do NOT create/modify anything):\n1. Get the ENROLLMENT COUNT: call mcp__canvas__canvas_get_course_grades with course_id, type=[\"StudentEnrollment\"], per_page=100, page=1. Read the response's `pagination.total_count` field — that is the enrollment count. If `pagination.has_more` is true, page through (page=2, 3, ...) until has_more is false, but total_count from the first page should already be the full count; only continue paging if you need to. Use the total_count value.\n2. Get the ASSIGNMENTS: call mcp__canvas__canvas_list_assignments with course_id. Count the number of assignments returned (this is the Assignments count). For each assignment, read its `points_possible` field — note it may be a string like \"10.00\", may be null, or may be 0. Treat null and 0 as 0.0 when computing the average.\n3. Compute AVG POINTS POSSIBLE = (sum of all assignments' points_possible, treating null/0 as 0.0) / (number of assignments), rounded to 1 decimal place. If there are 0 assignments, avg points = 0.0.\n\nReturn your result as a single JSON object exactly like this (no extra prose):\n{\"course_name\": \"...\", \"course_code\": \"...\", \"total_students\": N, \"enrollments\": N, \"assignments\": N, \"avg_points_possible\": X.X}\nUse the course_name, course_code, total_students from the item (do not re-derive them). Use your fetched enrollments count and assignment count/avg from Canvas. Include the actual number for every field — no placeholders.\nGather per-course Fall 2014 data",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_6",
+        "text": "You are gathering data for ONE Canvas course to support a Fall 2014 semester summary. The item below has format: course_id|course_name|course_code|total_students. Item: 10|Data-Driven Design (Fall 2014)|DDD-2014J|1803\n\nParse the item to get: course_id, course_name, course_code, total_students.\n\nYour job (read-only — do NOT create/modify anything):\n1. Get the ENROLLMENT COUNT: call mcp__canvas__canvas_get_course_grades with course_id, type=[\"StudentEnrollment\"], per_page=100, page=1. Read the response's `pagination.total_count` field — that is the enrollment count. If `pagination.has_more` is true, page through (page=2, 3, ...) until has_more is false, but total_count from the first page should already be the full count; only continue paging if you need to. Use the total_count value.\n2. Get the ASSIGNMENTS: call mcp__canvas__canvas_list_assignments with course_id. Count the number of assignments returned (this is the Assignments count). For each assignment, read its `points_possible` field — note it may be a string like \"10.00\", may be null, or may be 0. Treat null and 0 as 0.0 when computing the average.\n3. Compute AVG POINTS POSSIBLE = (sum of all assignments' points_possible, treating null/0 as 0.0) / (number of assignments), rounded to 1 decimal place. If there are 0 assignments, avg points = 0.0.\n\nReturn your result as a single JSON object exactly like this (no extra prose):\n{\"course_name\": \"...\", \"course_code\": \"...\", \"total_students\": N, \"enrollments\": N, \"assignments\": N, \"avg_points_possible\": X.X}\nUse the course_name, course_code, total_students from the item (do not re-derive them). Use your fetched enrollments count and assignment count/avg from Canvas. Include the actual number for every field — no placeholders.\nGather per-course Fall 2014 data",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "message_6",
+        "text": "You are gathering data for ONE Canvas course to support a Fall 2014 semester summary. The item below has format: course_id|course_name|course_code|total_students. Item: 14|Environmental Economics & Ethics (Fall 2014)|EEE-2014J|1188\n\nParse the item to get: course_id, course_name, course_code, total_students.\n\nYour job (read-only — do NOT create/modify anything):\n1. Get the ENROLLMENT COUNT: call mcp__canvas__canvas_get_course_grades with course_id, type=[\"StudentEnrollment\"], per_page=100, page=1. Read the response's `pagination.total_count` field — that is the enrollment count. If `pagination.has_more` is true, page through (page=2, 3, ...) until has_more is false, but total_count from the first page should already be the full count; only continue paging if you need to. Use the total_count value.\n2. Get the ASSIGNMENTS: call mcp__canvas__canvas_list_assignments with course_id. Count the number of assignments returned (this is the Assignments count). For each assignment, read its `points_possible` field — note it may be a string like \"10.00\", may be null, or may be 0. Treat null and 0 as 0.0 when computing the average.\n3. Compute AVG POINTS POSSIBLE = (sum of all assignments' points_possible, treating null/0 as 0.0) / (number of assignments), rounded to 1 decimal place. If there are 0 assignments, avg points = 0.0.\n\nReturn your result as a single JSON object exactly like this (no extra prose):\n{\"course_name\": \"...\", \"course_code\": \"...\", \"total_students\": N, \"enrollments\": N, \"assignments\": N, \"avg_points_possible\": X.X}\nUse the course_name, course_code, total_students from the item (do not re-derive them). Use your fetched enrollments count and assignment count/avg from Canvas. Include the actual number for every field — no placeholders.\nGather per-course Fall 2014 data",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "message_6",
+        "text": "You are gathering data for ONE Canvas course to support a Fall 2014 semester summary. The item below has format: course_id|course_name|course_code|total_students. Item: 17|Foundations of Finance (Fall 2014)|FFF-2014J|2365\n\nParse the item to get: course_id, course_name, course_code, total_students.\n\nYour job (read-only — do NOT create/modify anything):\n1. Get the ENROLLMENT COUNT: call mcp__canvas__canvas_get_course_grades with course_id, type=[\"StudentEnrollment\"], per_page=100, page=1. Read the response's `pagination.total_count` field — that is the enrollment count. If `pagination.has_more` is true, page through (page=2, 3, ...) until has_more is false, but total_count from the first page should already be the full count; only continue paging if you need to. Use the total_count value.\n2. Get the ASSIGNMENTS: call mcp__canvas__canvas_list_assignments with course_id. Count the number of assignments returned (this is the Assignments count). For each assignment, read its `points_possible` field — note it may be a string like \"10.00\", may be null, or may be 0. Treat null and 0 as 0.0 when computing the average.\n3. Compute AVG POINTS POSSIBLE = (sum of all assignments' points_possible, treating null/0 as 0.0) / (number of assignments), rounded to 1 decimal place. If there are 0 assignments, avg points = 0.0.\n\nReturn your result as a single JSON object exactly like this (no extra prose):\n{\"course_name\": \"...\", \"course_code\": \"...\", \"total_students\": N, \"enrollments\": N, \"assignments\": N, \"avg_points_possible\": X.X}\nUse the course_name, course_code, total_students from the item (do not re-derive them). Use your fetched enrollments count and assignment count/avg from Canvas. Include the actual number for every field — no placeholders.\nGather per-course Fall 2014 data",
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "wave": "message_6",
+        "text": "You are gathering data for ONE Canvas course to support a Fall 2014 semester summary. The item below has format: course_id|course_name|course_code|total_students. Item: 21|Global Governance & Geopolitics (Fall 2014)|GGG-2014J|749\n\nParse the item to get: course_id, course_name, course_code, total_students.\n\nYour job (read-only — do NOT create/modify anything):\n1. Get the ENROLLMENT COUNT: call mcp__canvas__canvas_get_course_grades with course_id, type=[\"StudentEnrollment\"], per_page=100, page=1. Read the response's `pagination.total_count` field — that is the enrollment count. If `pagination.has_more` is true, page through (page=2, 3, ...) until has_more is false, but total_count from the first page should already be the full count; only continue paging if you need to. Use the total_count value.\n2. Get the ASSIGNMENTS: call mcp__canvas__canvas_list_assignments with course_id. Count the number of assignments returned (this is the Assignments count). For each assignment, read its `points_possible` field — note it may be a string like \"10.00\", may be null, or may be 0. Treat null and 0 as 0.0 when computing the average.\n3. Compute AVG POINTS POSSIBLE = (sum of all assignments' points_possible, treating null/0 as 0.0) / (number of assignments), rounded to 1 decimal place. If there are 0 assignments, avg points = 0.0.\n\nReturn your result as a single JSON object exactly like this (no extra prose):\n{\"course_name\": \"...\", \"course_code\": \"...\", \"total_students\": N, \"enrollments\": N, \"assignments\": N, \"avg_points_possible\": X.X}\nUse the course_name, course_code, total_students from the item (do not re-derive them). Use your fetched enrollments count and assignment count/avg from Canvas. Include the actual number for every field — no placeholders.\nGather per-course Fall 2014 data",
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "wave": "message_14",
+        "text": "Create an Excel workbook at exactly this path:\n/workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-canvas-semester-summary-ppt/workspace/Semester_Summary.xlsx\n\nUse the MCP excel tools (mcp__excel__*) available to you. The workspace directory already exists and is empty.\n\nThe workbook must have TWO sheets with these exact names and content:\n\nSHEET 1 — name exactly: \"Course Overview\"\nColumns (header row): Course Name | Course Code | Total Students | Enrollments | Assignments | Avg Points Possible\nExactly 7 data rows, in this exact order (already sorted alphabetically by course name):\n\n1. Applied Analytics & Algorithms (Fall 2014) | AAA-2014J | 365 | 365 | 6 | 33.3\n2. Biochemistry & Bioinformatics (Fall 2014) | BBB-2014J | 2292 | 2292 | 6 | 50.0\n3. Creative Computing & Culture (Fall 2014) | CCC-2014J | 2498 | 2498 | 10 | 30.0\n4. Data-Driven Design (Fall 2014) | DDD-2014J | 1803 | 1803 | 7 | 28.6\n5. Environmental Economics & Ethics (Fall 2014) | EEE-2014J | 1188 | 1188 | 5 | 40.0\n6. Foundations of Finance (Fall 2014) | FFF-2014J | 2365 | 2365 | 13 | 69.2\n7. Global Governance & Geopolitics (Fall 2014) | GGG-2014J | 749 | 749 | 10 | 100.0\n\nNote: numeric columns must be written as numbers (not strings). Avg Points Possible values: 33.3, 50.0, 30.0, 28.6, 40.0, 69.2, 100.0.\n\nSHEET 2 — name exactly: \"Summary\"\nColumns (header row): Metric | Value\nRows (in this exact order):\nTotal Courses | 7\nTotal Students | 11260\nTotal Enrollments | 11260\nTotal Assignments | 57\nAverage Assignments per Course | 8.1\n\n(The workbook created by create_workbook typically starts with a default sheet like \"Sheet\" — rename it to \"Course Overview\", then create the second sheet named \"Summary\". If a default sheet remains after creating both, delete it so only the two required sheets exist.)\n\nSteps:\n1. Call mcp__excel__create_workbook with filepath = the path above.\n2. Rename the default sheet to \"Course Overview\" (mcp__excel__rename_worksheet).\n3. Create worksheet \"Summary\" (mcp__excel__create_worksheet).\n4. Write the Course Overview data starting at A1 (mcp__excel__write_data_to_excel) — header + 7 rows.\n5. Write the Summary data starting at A1 — header + 5 rows.\n6. If any extra default sheet exists, delete it (mcp__excel__delete_worksheet).\n\nVERIFICATION (mandatory before you return):\n- Call mcp__excel__get_workbook_metadata on the file and confirm exactly two sheets named \"Course Overview\" and \"Summary\".\n- Call mcp__excel__read_data_from_excel on both sheets (start A1) and confirm: exact headers, exactly 7 course rows in the order above with correct numeric values, and the 5 summary rows with correct values.\n\nRETURN: A concise confirmation stating the file was created at the path, the two sheet names confirmed, and that content matches the spec (including a note of the row/column counts you verified). If any verification fails, fix it before returning.\nCreate Semester_Summary.xlsx",
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "wave": "message_14",
+        "text": "Create a PowerPoint presentation and save it to exactly this path:\n/workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-canvas-semester-summary-ppt/workspace/Semester_Summary.pptx\n\nUse the MCP pptx tools (mcp__pptx__*) available to you. The presentation must contain EXACTLY 10 slides, in this order:\n\nSLIDE 1 — Title slide: Title text = \"Fall 2014 Semester Summary\". (You may add a subtitle like \"Department Semester Overview\" if the layout has one, but the title must be exactly \"Fall 2014 Semester Summary\".)\n\nSLIDE 2 — Overview slide. Title = \"Overview\". Content: the following summary statistics (present as a bulleted list or text block):\n- Total Courses: 7\n- Total Students: 11,260\n- Total Enrollments: 11,260\n- Total Assignments: 57\n- Average Assignments per Course: 8.1\n\nSLIDES 3–9 — One slide per course (in this exact order). For each, the slide TITLE must be exactly the course name, and the body must list these five details (use exact labels):\nCourse: Applied Analytics & Algorithms (Fall 2014)\n  Course Code: AAA-2014J\n  Total Students: 365\n  Enrollments: 365\n  Assignments: 6\n  Avg Points Possible: 33.3\n\nCourse: Biochemistry & Bioinformatics (Fall 2014)\n  Course Code: BBB-2014J\n  Total Students: 2292\n  Enrollments: 2292\n  Assignments: 6\n  Avg Points Possible: 50.0\n\nCourse: Creative Computing & Culture (Fall 2014)\n  Course Code: CCC-2014J\n  Total Students: 2498\n  Enrollments: 2498\n  Assignments: 10\n  Avg Points Possible: 30.0\n\nCourse: Data-Driven Design (Fall 2014)\n  Course Code: DDD-2014J\n  Total Students: 1803\n  Enrollments: 1803\n  Assignments: 7\n  Avg Points Possible: 28.6\n\nCourse: Environmental Economics & Ethics (Fall 2014)\n  Course Code: EEE-2014J\n  Total Students: 1188\n  Enrollments: 1188\n  Assignments: 5\n  Avg Points Possible: 40.0\n\nCourse: Foundations of Finance (Fall 2014)\n  Course Code: FFF-2014J\n  Total Students: 2365\n  Enrollments: 2365\n  Assignments: 13\n  Avg Points Possible: 69.2\n\nCourse: Global Governance & Geopolitics (Fall 2014)\n  Course Code: GGG-2014J\n  Total Students: 749\n  Enrollments: 749\n  Assignments: 10\n  Avg Points Possible: 100.0\n\nSLIDE 10 — Key Takeaways slide. Title = \"Key Takeaways\". Content (bullets):\n- Largest: Creative Computing & Culture (CCC-2014J) with 2498 students\n- Smallest: Applied Analytics & Algorithms (AAA-2014J) with 365 students\n- Most Assignments: Foundations of Finance (FFF-2014J) with 13 assignments\n\nImplementation approach (use the pptx tools):\n1. mcp__pptx__create_presentation to start a new presentation.\n2. Use mcp__pptx__add_slide to add slides (or create_slide_from_template with template_id like 'title_slide' for slide 1 and 'content_slide'/'bullet_slide' for others — whichever produces reliable titles and body placeholders). You may use add_bullet_points / populate_placeholder / manage_text to set titles and body text.\n3. After all slides are built, mcp__pptx__save_presentation with file_path = the path above.\n\nVERIFICATION (mandatory before you return):\n- Call mcp__pptx__get_presentation_info and confirm 10 slides.\n- Call mcp__pptx__extract_presentation_text and confirm: slide 1 title is \"Fall 2014 Semester Summary\"; slide 2 contains all 5 stats; slides 3–9 titles are the 7 course names in order with their details; slide 10 title is \"Key Takeaways\" with the 3 bullets.\n- Also verify the saved file exists via mcp__filesystem__get_file_info (path above).\n\nRETURN: A concise confirmation stating the file was created at the path, the number of slides, and that all required text was verified. If any verification fails, fix it before returning.\nCreate Semester_Summary.pptx",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas",
+          "filesystem-workspace"
+        ],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "rw": "write",
+        "role": "ppt",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

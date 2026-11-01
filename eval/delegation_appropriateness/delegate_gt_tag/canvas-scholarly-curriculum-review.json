@@ -1,0 +1,339 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "canvas-scholarly-curriculum-review",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/canvas-scholarly-curriculum-review.task.md",
+    "oracle166_sha256": "47f4434e04fb5e19ac6ae87c7be0442912500f559e2e7338c96bacf22ecf50a2"
+  },
+  "label_cache_keys": [
+    "76a0060b6ea0fa913680ec541c8a4c052027acaf4fb7d5e32c78a8964fd2274d"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): Course-metrics owner for shard A (course_id 1-11). For each assigned course, collect the exact full name, enrolled-student count from the course enrollment total, assignment count, quiz count (0 if none), discussion-topic count, and faculty count (TeacherEnrollment plus TaEnrollment only), then mark it compliant when the student-faculty ratio stays within the frozen accreditation maximum and the course has at least one quiz or assignment. Faculty counts must come from actual enrollment records, never inferred from grade rows or current-user metadata; a course lacking source-visible student plus TeacherEnrollment/TaEnrollment coverage gets CONTRACT_BLOCKER_MISSING_ROLE_COMPLETE_ENROLLMENTS and no Faculty_Count, Student_Faculty_Ratio, or Compliant value. Return assigned versus observed course IDs plus the compact per-course rows. Make no writes.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 1): Course-metrics owner for shard B (course_id 12-22) — same literal recipe, only that shard's course identities substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (academic-literature-researcher 0): Literature owner for the five fixed pedagogy topics: active learning in higher education; assessment best practices in education; online learning effectiveness; curriculum design frameworks; and student engagement strategies. Find one genuinely relevant paper per topic and return title, authors, and a curriculum-relevance note for each. Read-only; do not write the workbook or Notion page.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole writer of Curriculum_Review.xlsx. Create exactly Course Compliance, Literature Support, and Summary with the task's exact headers, all 22 course rows, at least five literature rows, and the frozen summary metrics as literal values. Read every populated range back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): Sole Notion owner of a page whose title contains the exact phrase Accreditation Review Report. Search exact title first, create at most once on zero matches, block on duplicates, and write a summary of the overall compliance rate, non-compliant courses, scholarly literature supporting the pedagogical approach, and recommendations before the visit. Read the retained page and its child-block text back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): Course-metrics owner for shard A (course_id 1-11). For each assigned course, collect the exact full name, enrolled-student count from the course enrollment total, assignment count, quiz count (0 if none), discussion-topic count, and faculty count (TeacherEnrollment plus TaEnrollment only), then mark it compliant when the student-faculty ratio stays within the frozen accreditation maximum and the course has at least one quiz or assignment. Faculty counts must come from actual enrollment records, never inferred from grade rows or current-user metadata; a course lacking source-visible student plus TeacherEnrollment/TaEnrollment coverage gets CONTRACT_BLOCKER_MISSING_ROLE_COMPLETE_ENROLLMENTS and no Faculty_Count, Student_Faculty_Ratio, or Compliant value. Return assigned versus observed course IDs plus the compact per-course rows. Make no writes.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 1): Course-metrics owner for shard B (course_id 12-22) — same literal recipe, only that shard's course identities substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (academic-literature-researcher 0): Literature owner for the five fixed pedagogy topics: active learning in higher education; assessment best practices in education; online learning effectiveness; curriculum design frameworks; and student engagement strategies. Find one genuinely relevant paper per topic and return title, authors, and a curriculum-relevance note for each. Read-only; do not write the workbook or Notion page.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole writer of Curriculum_Review.xlsx. Create exactly Course Compliance, Literature Support, and Summary with the task's exact headers, all 22 course rows, at least five literature rows, and the frozen summary metrics as literal values. Read every populated range back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): Sole Notion owner of a page whose title contains the exact phrase Accreditation Review Report. Search exact title first, create at most once on zero matches, block on duplicates, and write a summary of the overall compliance rate, non-compliant courses, scholarly literature supporting the pedagogical approach, and recommendations before the visit. Read the retained page and its child-block text back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:3:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:4:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 4,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:canvas",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "canvas",
+      "source_nodes": [
+        0,
+        1
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        2
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "notion": 1
+    },
+    "read": {
+      "canvas": 1,
+      "scholarly-arxiv": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 5,
+    "units": 4,
+    "write_units": 2,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

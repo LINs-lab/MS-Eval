@@ -1,0 +1,60 @@
+{
+  "input_hash": "a49fd62c81b2fa97626c0df77cf357e95690e94eff52fc26f9fb1d16ae4f826c",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-sales-product-ranking-ppt",
+    "task_text": "You are a business analyst preparing materials for a quarterly product performance review meeting with the sales leadership team.\n\nYour goal is to analyze product sales data from the company database and create a comprehensive set of deliverables for the board presentation.\n\nFirst, query the product and order data to determine which products generated the most revenue. Look at all orders and join them with product information to calculate total revenue and units sold per product.\n\nCreate an Excel file called \"Product_Rankings.xlsx\" in your workspace with two sheets:\n\nThe first sheet should be named \"Top Products\" and contain columns: Rank, Product_Name, Category, Total_Revenue, Units_Sold, Avg_Order_Value. Include the top 20 products ranked by total revenue in descending order. The Rank column should be numbered 1 through 20. For Product_Name, use the product base name as it appears in the data source; promotional or offer suffixes (such as \"with No Cost EMI ...\") are not required. Aggregate revenue and units by the product base name (PRODUCT_NAME): several distinct product IDs may share the same base product name, and those must be combined into one row — do not aggregate by PRODUCT_ID.\n\nThe second sheet should be named \"Category Summary\" and contain columns: Category, Product_Count, Total_Revenue, Avg_Revenue_Per_Product. This sheet should group products by category and show aggregate statistics.\n\nNext, create a PowerPoint presentation called \"Product_Performance_Review.pptx\" in your workspace. The presentation should have at least 4 slides:\nThe first slide should be a title slide with the text \"Q1 2026 Product Performance Review\".\nThe second slide should show the top 10 products by revenue.\nThe third slide should show a category breakdown of sales.\nThe fourth slide should be a summary with key metrics such as total revenue across all products, number of products sold, and top performing product.\n\nFinally, create a Google Sheet titled \"Product Rankings Dashboard\" with a sheet named \"Top 20\" that contains the same top 20 product data as the Excel file.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent should first run set-based SQL over all orders, aggregate by PRODUCT_NAME across duplicate product IDs, compute the complete category summary, and freeze the top 20 rows with deterministic ranks and reconciled revenue/units. Then create the three independent deliverables in one wave.\n\n1. Wave 1 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One coder sub-agent owns `Product_Rankings.xlsx` and writes the exact Top Products and Category Summary sheets with literal values. It must aggregate by `PRODUCT_NAME` rather than product ID, produce exactly ranks 1–20 in revenue-descending order, and write the complete category totals. Use one bulk write per sheet and one read-back.\n\n   2. coder 1 (office-report-builder 1): One coder sub-agent owns `Product_Performance_Review.pptx` under one presentation ID and creates exactly the requested title, top-10, category-breakdown, and numeric-summary content. Use at most one bounded populate operation per slide, save once, and extract the complete deck text once for validation.\n\n   3. coder 2 (external-workflow-operator 0): One coder sub-agent owns exactly one `Product Rankings Dashboard`. Search the exact title, create only if absent, ensure one `Top 20` sheet, bulk-write the same frozen rank block, and read it back once.\n\nAfter Wave 1, the main agent performs one compact cross-output check of the 20 product names/ranks, category totals, and headline metrics and then finishes without another wave or repair agent.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Analyze Snowflake product and order data for quarterly product performance deliverables. Identify relevant tables/columns, then query all orders joined to product information. Aggregate strictly by base PRODUCT_NAME (not PRODUCT_ID), combining IDs sharing a name; include category, total revenue, units sold, and average order value. Determine top 20 by revenue descending, category summary with Product_Count (distinct aggregated product names), Total_Revenue, Avg_Revenue_Per_Product, and global metrics: total revenue across all products, number of products sold, and top product. Revenue should follow the database's appropriate order-line amount or quantity*price logic based on schema. Return exact full result rows and SQL/method, with enough precision to populate Excel, PowerPoint, and Google Sheets. Read-only; do not create files. Workspace boundary: /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-sales-product-ranking-ppt/workspace only.\nAnalyze product sales data",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_8",
+        "text": "Create and verify two local artifacts inside ONLY /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-sales-product-ranking-ppt/workspace:\n1) Product_Rankings.xlsx with sheets exactly `Top Products` and `Category Summary`.\nTop Products columns exactly: Rank, Product_Name, Category, Total_Revenue, Units_Sold, Avg_Order_Value. Populate 20 rows below, ranked descending. Format professionally: title/header styling, frozen header, filters/native table if suitable, readable widths, wrapped names, currency formats, integer units.\nCategory Summary columns exactly: Category, Product_Count, Total_Revenue, Avg_Revenue_Per_Product. One row: tv, audio & cameras | 462 | 3048998.33 | 6599.563485. Format currency appropriately.\n2) Product_Performance_Review.pptx, polished board/sales-leadership deck, at least 4 slides. Exact title slide text: `Q1 2026 Product Performance Review`. Slide 2 shows top 10 products by revenue (chart/table with readable shortened display labels allowed, exact revenue values). Slide 3 category breakdown; note there is one category representing 100% of revenue. Slide 4 executive summary with total revenue $3,048,998.33, 462 distinct aggregated product names sold, top product and top revenue $106,173.00. Clearly state analysis covers all available orders (2024-03-05 to 2026-03-04) while retaining requested Q1 2026 review title, to avoid implying the dataset is Q1-only. Add an optional insights/methodology slide if useful. Ensure no overlaps/clipping and verify by reopening/extracting text. Save exact filenames.\nTop 20 rows (pipe-delimited):\n1|Samsung Galaxy S20 FE 5G (Cloud Navy, 8GB RAM, 128GB Storage) with No Cost EMI & Additional Exchange Offers|tv, audio & cameras|106173.00|123|2211.9375000000\n2|OnePlus 10R 5G (Sierra Black, 8GB RAM, 128GB Storage, 80W SuperVOOC)|tv, audio & cameras|72876.86|166|984.8224324324\n3|Fire-Boltt Ninja Call Pro Plus 1.83\" Smart Watch with Bluetooth Calling, AI Voice Assistance, 100 Sports Modes IP67 Ratin...|tv, audio & cameras|64887.74|294|477.1157352941\n4|OnePlus 11 5G (Titan Black, 16GB RAM, 256GB Storage)|tv, audio & cameras|60766.79|87|1558.1228205128\n5|Samsung 108 cm (43 inches) Crystal 4K Neo Series Ultra HD Smart LED TV UA43AUE65AKXXL (Black)|tv, audio & cameras|55633.40|105|1135.3755102041\n6|OnePlus 10R 5G (Forest Green, 12GB RAM, 256GB Storage, 80W SuperVOOC)|tv, audio & cameras|52945.71|109|1058.9142000000\n7|Samsung 108 cm (43 inches) Crystal 4K Series Ultra HD Smart LED TV UA43AUE60AKLXL (Black)|tv, audio & cameras|49490.28|84|1099.7840000000\n8|OnePlus 11 5G (Eternal Green, 16GB RAM, 256GB Storage)|tv, audio & cameras|48852.46|69|1285.5910526316\n9|OnePlus 11R 5G (Sonic Black, 16GB RAM, 256GB Storage)|tv, audio & cameras|43833.64|88|1069.1131707317\n10|OnePlus 11R 5G (Galactic Silver, 8GB RAM, 128GB Storage)|tv, audio & cameras|36963.26|84|901.5429268293\n11|Oppo F21s Pro (Starlight Black, 8GB RAM, 128 Storage) with No Cost EMI/Additional Exchange Offers|tv, audio & cameras|36196.58|117|841.7809302326\n12|OnePlus 10R 5G (Forest Green, 8GB RAM, 128GB Storage, 80W SuperVOOC)|tv, audio & cameras|34629.41|82|844.6197560976\n13|OnePlus 11R 5G (Galactic Silver, 16GB RAM, 256GB Storage)|tv, audio & cameras|32014.56|65|941.6047058824\n14|OnePlus 138 cm (55 inches) Y Series 4K Ultra HD Smart Android LED TV 55Y1S Pro (Black)|tv, audio & cameras|31716.36|57|932.8341176471\n15|OPPO A74 5G (Fluid Black, 6GB RAM, 128GB Storage) with No Cost EMI/Additional Exchange Offers|tv, audio & cameras|31029.58|134|508.6816393443\n16|realme TechLife Buds T100 Bluetooth Truly Wireless in Ear Earbuds with mic, AI ENC for Calls, Google Fast Pair, 28 Hours T...|tv, audio & cameras|30348.73|145|389.0862820513\n17|iQOO Neo 7 5G (Interstellar Black, 8GB RAM, 128GB Storage) | Dimensity 8200, only 4nm Processor in The Segment| 50% Charge...|tv, audio & cameras|29812.08|76|764.4123076923\n18|Samsung Galaxy M33 5G (Deep Ocean Blue, 8GB, 128GB Storage) | 6000mAh Battery | Upto 16GB RAM with RAM Plus | Travel Adapt...|tv, audio & cameras|29178.31|101|694.7216666667\n19|Samsung Galaxy M53 5G (Deep Ocean Blue, 6GB, 128GB Storage) | 108MP | sAmoled+ 120Hz | 12GB RAM with RAM Plus | Travel Ada...|tv, audio & cameras|28764.88|78|668.9506976744\n20|realme narzo 50 5G (Hyper Blue, 6GB RAM+128GB Storage) Dimensity 810 5G Processor | 48MP Ultra HD Camera|tv, audio & cameras|27516.42|122|482.7442105263\nImportant: for rows 17-20, literal `|` symbols occur inside product names; parse from right using the last four fields or use the rank/order supplied. Avg_Order_Value is revenue/distinct order count. Source aggregation combined IDs strictly by PRODUCT_NAME. Return exact paths plus verification summaries.\nBuild performance deliverables",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_12",
+        "text": "Create a Google Spreadsheet titled exactly `Product Rankings Dashboard`. Rename/create its worksheet so there is a sheet named exactly `Top 20`, containing the same top-20 dataset as the local Excel workbook `/workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-sales-product-ranking-ppt/workspace/Product_Rankings.xlsx`, sheet `Top Products`, range A1:F21. Preserve the six headers and values exactly. Apply professional dashboard formatting: bold colored header, frozen first row, sensible column widths, wrapped Product_Name, currency formatting for Total_Revenue and Avg_Order_Value, integer formatting for Rank and Units_Sold, and filter if supported. Verify by reading back A1:F21. Return spreadsheet ID, URL if available, sheet name, dimensions, and verification result. External Google Sheet write only; do not alter local files.\nCreate rankings dashboard",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "input_hash": "50229e75802b908418874a25b62334a4615e3e9715d6f0c9a2a288253da22760",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "howtocook-catering-gform-notion-excel",
+    "task_text": "You are a catering planner for a company team lunch event. The event is for 20 people with a budget of $25 per person. You need to plan a diverse menu, collect dietary preferences from attendees, document the menu, and track the budget.\n\nYour task has four parts.\n\nPart 1: Search the recipe database for 6 to 8 recipes suitable for a team lunch catering event. Select a mix of main dishes and side dishes. For each recipe, note the recipe name, category (such as meat, vegetable, staple, or similar), and estimated number of servings.\n\nPart 2: Create a Google Forms survey titled \"Team Lunch Dietary Preferences\" to collect dietary information from the 20 attendees. The survey must contain at least 3 questions covering the following topics: dietary restrictions or preferences (such as vegetarian, vegan, nut allergy, gluten-free, or none), any specific food allergies to be aware of, and any additional comments or requests. Use appropriate question types for each question (for example, a multiple-choice question for dietary preferences, and short-answer text questions for allergies and comments).\n\nPart 3: Create a Notion page titled \"Team Lunch Menu\" documenting the catering plan. The page must include a description of the event (20 people, $25 per person budget), a list of all selected recipes with their categories and serving information, and any notes about accommodating dietary restrictions.\n\nPart 4: Create an Excel file called Catering_Budget.xlsx in the workspace with two sheets. The first sheet must be named \"Menu\" with the following columns in this exact order: Recipe_Name, Category, Servings, Estimated_Cost_Per_Person. Add one row for each of your selected recipes with a reasonable estimated cost per person. (You may append a \"Total\" summary row after the recipe rows if you wish; it is not counted as a recipe row.) The second sheet must be named \"Summary\" with two columns: Metric and Value. Include the following rows: Total_Dishes (number of recipes selected), Total_Budget (total budget for 20 people, which is 500), Budget_Per_Person (which is 25). Write every value in the Summary \"Value\" column and every Estimated_Cost_Per_Person as a literal number (for example, 500 and 25) — do not write Excel formulas for these cells.\n\nThe initial workspace contains Event_Brief.md describing the event details and requirements.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Read `Event_Brief.md`, create the fixed Google Form once, and query the necessary HowToCook categories with native-parallel read calls. Select one explicit set of 6–8 recipes containing mains and sides, retrieve only those selected recipes, and reuse exactly that set in both `Team Lunch Menu` and `Catering_Budget.xlsx`. The Form must contain a dietary-preference multiple-choice question plus text questions whose titles explicitly contain `allergy` and `additional comments or requests`. In the workbook, write the exact two sheets and headers, exactly one recipe row per selected dish, literal numeric per-person costs, and literal Summary values `Total_Dishes`, `500`, and `25`; do not use formulas. Create the Notion page and workbook as independent output branches after the recipe set is fixed, and verify the Form, page, and workbook once each.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are a planning sub-agent. Decompose the following task into an ordered list of subtasks. For each subtask specify: (1) dispatch decision — `self` (main agent), `explore`, or `coder`; (2) whether it is independent (parallelizable) or must wait for another subtask's output.\n\nTASK (catering planner for a company team lunch, 20 people, $25/person):\n\nPart 1: Search the recipe database (via the howtocook MCP tools: mcp__howtocook__mcp_howtocook_getAllRecipes, getRecipesByCategory, getRecipeById, recommendMeals, whatToEat) for 6 to 8 recipes suitable for a team lunch catering event. Select a mix of main dishes and side dishes. For each recipe, note recipe name, category (meat/vegetable/staple/etc.), and estimated servings.\n\nPart 2: Create a Google Forms survey titled \"Team Lunch Dietary Preferences\" (via mcp__google_forms__create_form and add_*_question tools) to collect dietary info from 20 attendees. At least 3 questions: dietary restrictions/preferences (multiple choice: vegetarian, vegan, nut allergy, gluten-free, none, etc.), specific food allergies (short-answer text), additional comments/requests (short-answer text). Use appropriate question types.\n\nPart 3: Create a Notion page titled \"Team Lunch Menu\" (via mcp__notion__API-post-page) documenting the plan: event description (20 people, $25/person budget), list of all selected recipes with categories and servings, notes about accommodating dietary restrictions.\n\nPart 4: Create Excel file Catering_Budget.xlsx in the workspace (via mcp__excel__create_workbook etc.) with two sheets. Sheet 1 named \"Menu\" with columns exactly: Recipe_Name, Category, Servings, Estimated_Cost_Per_Person — one row per selected recipe with reasonable estimated cost per person (literal numbers, no formulas; a Total summary row is optional and not counted). Sheet 2 named \"Summary\" with columns Metric and Value, rows: Total_Dishes (= number of recipes), Total_Budget (= 500), Budget_Per_Person (= 25). All values literal numbers, no formulas.\n\nWorkspace: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-howtocook-catering-gform-notion-excel/workspace — contains Event_Brief.md describing event details.\n\nConstraints: Only use granted tools; final completion requires calling mcp__local__claim_done after all parts are done. Sub-agents available: plan, coder, explore.\n\nDeliverable: Return the ordered subtask list with dispatch decisions and dependency/parallelism notes, plus a brief verification strategy for each part (how to check the deliverable is correct). Keep it concise.\nPlan catering task decomposition",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_5",
+        "text": "You are an explore sub-agent tasked with discovering candidate recipes from a recipe database (howtocook MCP tools) for a company team lunch catering event (20 people, buffet, ~$25/person total budget $500, need 6-8 dishes with a mix of mains and sides).\n\nUse these tools:\n- mcp__howtocook__mcp_howtocook_getAllRecipes (pass no_param, e.g. \"\")\n- mcp__howtocook__mcp_howtocook_getRecipesByCategory with categories: 荤菜 (meat mains), 素菜 (vegetable), 主食 (staples), 水产 (seafood), 汤 (soup) as needed\n- mcp__howtocook__mcp_howtocook_getRecipeById with the recipe name to get full details (category, ingredients, steps)\n\nYour goal: Build a candidate pool of 10-15 recipes suitable for a team buffet lunch. For each candidate, report:\n1. Recipe name (exact)\n2. Category (e.g. 荤菜/素菜/主食/水产/汤/甜品 etc.)\n3. Brief description / key ingredients (note any common allergens: nuts (花生/坚果), gluten (面粉/面条), meat content for vegetarian/vegan suitability)\n4. Whether it works as a main dish or side dish\n\nPrefer a diverse mix: several meat/seafood mains, plus vegetable and staple side dishes. Note which are vegetarian-friendly and which are gluten-free or nut-free if determinable from ingredients. Keep the report as a structured list. Do NOT write any files — just return findings.\nExplore recipe database candidates",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "howtocook"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

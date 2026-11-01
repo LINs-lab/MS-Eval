@@ -1,0 +1,73 @@
+{
+  "unit": "USD per 1 million tokens",
+  "rate_order": [
+    "uncached_input",
+    "cached_input",
+    "output"
+  ],
+  "models": {
+    "deepseek-v4-flash-0731": [
+      0.45,
+      0.02,
+      1.34
+    ],
+    "qwen-3.8-max": [
+      1.79,
+      0.22,
+      5.37
+    ],
+    "glm-5.3-flash": [
+      0.15,
+      0.03,
+      0.5
+    ],
+    "glm-5.3": [
+      1.4,
+      0.26,
+      4.4
+    ],
+    "glm-5.2": [
+      1.4,
+      0.26,
+      4.4
+    ],
+    "kimi-k3": [
+      2.98,
+      0.3,
+      14.91
+    ],
+    "claude-sonnet-5": [
+      2.0,
+      0.2,
+      10.0
+    ]
+  },
+  "tiered_models": {
+    "minimax-m3": {
+      "input_token_threshold": 512000,
+      "at_or_below": [
+        0.31,
+        0.06,
+        1.25
+      ],
+      "above": [
+        0.63,
+        0.13,
+        2.5
+      ]
+    },
+    "gpt-5.6-sol": {
+      "input_token_threshold": 272000,
+      "at_or_below": [
+        4.0,
+        0.4,
+        20.0
+      ],
+      "above": [
+        8.0,
+        0.8,
+        30.0
+      ]
+    }
+  }
+}

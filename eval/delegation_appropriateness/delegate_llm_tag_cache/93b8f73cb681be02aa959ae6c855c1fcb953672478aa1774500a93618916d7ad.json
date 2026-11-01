@@ -1,0 +1,133 @@
+{
+  "input_hash": "93b8f73cb681be02aa959ae6c855c1fcb953672478aa1774500a93618916d7ad",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "gt",
+    "task": "yf-sector-outlook-report",
+    "task_text": "You are a senior research analyst at an investment management firm preparing a comprehensive sector outlook report for the chief investment officer. Your workspace contains two reference files. The file sector_mapping.md maps each portfolio holding to its sector classification. The file research_template.txt provides the standard structure for research reports.\n\nBegin by fetching the sector outlook forecasts from the research portal at http://localhost:30226/api/sector_outlook.json which provides the firm's sector forecasts. Each sector has an outlook rating (Positive, Neutral, or Cautious), a growth forecast percentage, and a risk level assessment. Read all the data from that response.\n\nNext connect to the stock data source and retrieve information for all five portfolio holdings: GOOGL, AMZN, JPM, JNJ, and XOM. For each stock, pull the current price information. Note that the historical price data in this source is a fixed dataset that ends on 2026-03-05 (the same date as the sector outlook data); there are no prices after that date. Treat the closing price on 2026-03-05, the most recent trading day in the data, as the current price for every stock. Also retrieve each stock's historical prices across the analysis window and compute its one-year return by comparing the current price (the 2026-03-05 closing price) to the closing price on the trading day closest to one year (365 calendar days) earlier, which is 2025-03-05. When requesting historical data, pass explicit start and end dates (for example 2025-03-05 through 2026-03-05) rather than relying on a period such as \"1y\" measured from today's date, so that the one-year reference is always anchored to the data itself.\n\nCreate an Excel workbook called Sector_Outlook.xlsx in your workspace with two sheets. The first sheet should be named \"Sector Performance\" with columns Sector, Stock, Current_Price, Price_1Y_Ago, Return_1Y_Pct, Outlook, Growth_Forecast, and Risk_Level. Populate it with the five stocks, matching each stock to its sector and then looking up the sector's outlook, growth forecast, and risk level from the fetched data. Sort rows alphabetically by sector name. The one-year return should be calculated as (Current_Price minus Price_1Y_Ago) divided by Price_1Y_Ago times 100, rounded to two decimal places. Write all prices, returns, and growth forecasts as literal numeric values in the cells; do not write Excel formulas. Note that GOOGL belongs to Communication Services but the sector outlook data uses the label \"Technology\" which should be applied to GOOGL since its business is fundamentally technology. Similarly AMZN is classified as Consumer Cyclical but should be mapped to \"Technology\" in the outlook data given its core technology business.\n\nThe second sheet should be named \"Cross-Sector Summary\" with columns Metric and Value. Include the following rows: Best_1Y_Sector with the sector name that has the highest stock one-year return, Worst_1Y_Sector with the sector name with the lowest stock return, Positive_Outlook_Count counting how many stocks map to sectors with a \"Positive\" outlook, High_Risk_Count counting how many stocks map to sectors with a \"High\" risk level, and Avg_1Y_Return with the simple average of all five stocks' one-year returns rounded to two decimal places. Write the counts and the average return as literal numeric values in the cells; do not write Excel formulas.\n\nCreate a Notion page titled \"Sector Outlook Report - Q1 2026\" containing a summary of the sector analysis. The page should mention each sector's outlook and the corresponding stock performance. Include the average one-year return and highlight which sectors have positive versus cautious outlooks.\n\nAlso create a Word document called Sector_Report.docx in your workspace. The document should have a title \"Sector Outlook Narrative Report\" and include sections for each sector discussing the outlook, the representative stock's performance, the growth forecast, and the risk assessment. In each sector section, identify the representative stock by its ticker symbol (GOOGL, AMZN, JPM, JNJ, XOM) or by its company name (e.g. Alphabet, Amazon, JPMorgan, Johnson &amp; Johnson, ExxonMobil). Include a concluding section that synthesizes the cross-sector view and recommends sector allocation adjustments based on the outlook data.\n\nConsolidate all deliverables into a single Sector_Outlook.xlsx, a single Sector_Report.docx, and a single Notion page before finishing; do not leave partially written or placeholder files. When you are finished, call claim_done.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, keep the compact sector-outlook fetch on the main agent, keep each holding's price history on explore, then write the workbook before the independent Notion and Word artifacts. A wave must finish and return all stated handoffs before the next wave begins.\n\nBefore Wave 1, the main agent reads `sector_mapping.md` and `research_template.txt` in read-only mode, fetches `http://localhost:30226/api/sector_outlook.json` exactly once, and freezes every sector's outlook rating, growth forecast, and risk level. Force GOOGL and AMZN onto the outlook label `Technology`; map JPM to Financial Services, JNJ to Healthcare, and XOM to Energy. The outlook feed is sector context only and is never a source of prices.\n\n1. Wave 1 — dispatch exactly 5 explore sub-agents in parallel:\n\n   1. explore 0 (financial-market-analyst 0): Price owner for GOOGL. Retrieve price history over the explicit window 2025-03-05 through 2026-03-05 (the dataset is fixed and ends 2026-03-05), treat the 2026-03-05 close as `Current_Price`, and use the 2025-03-05 close — or the nearest trading day, with the substitution documented — as `Price_1Y_Ago`. Compute the one-year return as `(current - reference) / reference * 100`, reporting the exact unrounded value plus the two-decimal rounded result, and verify no observations post-date 2026-03-05, reporting the observation count. If an anchor close is unavailable, return the available prices and flag the gap rather than fabricating a number. Do not query other tickers, write files, or create deliverables.\n   2. explore 1 (financial-market-analyst 1): Price owner for AMZN — same literal recipe, only that ticker substituted.\n   3. explore 2 (financial-market-analyst 2): Price owner for JPM — same literal recipe, only that ticker substituted.\n   4. explore 3 (financial-market-analyst 3): Price owner for JNJ — same literal recipe, only that ticker substituted.\n   5. explore 4 (financial-market-analyst 4): Price owner for XOM — same literal recipe, only that ticker substituted.\n\nAfter Wave 1, the main agent requires exactly the five tickers, joins each row to the frozen sector-outlook record, computes Best_1Y_Sector / Worst_1Y_Sector (ties broken by alphabetically first ticker), Positive_Outlook_Count, High_Risk_Count, and Avg_1Y_Return, and freezes one canonical five-row packet. Missing or ambiguous prices are a blocker.\n\n2. Wave 2 — dispatch exactly 1 coder sub-agent:\n\n   1. coder 0 (office-report-builder 0): Sole writer of `Sector_Outlook.xlsx` from the frozen packet. Create `Sector Performance` with one row per stock and columns `Sector, Stock, Current_Price, Price_1Y_Ago, Return_1Y_Pct, Outlook, Growth_Forecast, Risk_Level` — GOOGL and AMZN forced to `Technology`, rows sorted alphabetically by sector then ticker, every value a literal number with no Excel formulas. Create `Cross-Sector Summary` with Metric/Value rows for Best_1Y_Sector, Worst_1Y_Sector, Positive_Outlook_Count, High_Risk_Count, and Avg_1Y_Return (simple average of the five returns, two decimals), all as literal values. Read both sheets back. If any frozen field is missing, do not create the workbook. Do not write the Word document or Notion page.\n\nAfter Wave 2, the main agent verifies both sheets against the same packet.\n\n3. Wave 3 — dispatch exactly 2 coder sub-agents in parallel:\n\n   1. coder 0 (external-workflow-operator 0): Sole Notion owner of a page titled exactly `Sector Outlook Report - Q1 2026`. Search the exact title first, create at most once on zero matches, and block on duplicates. Include a heading with that title; a paragraph stating the 2026-03-05 data anchor, that one-year returns are measured from 2025-03-05 closes, and the average one-year return; a bullet per sector (Technology with GOOGL and AMZN, Financial Services with JPM, Healthcare with JNJ, Energy with XOM) in the form `SECTOR_NAME (OUTLOOK): TICKER(S) returned RETURN_1Y_Pct%, growth forecast GROWTH_FORECAST%, risk level RISK_LEVEL`; plus bullets highlighting every Positive-outlook sector and every Cautious-outlook sector, noting Neutral sectors separately. If a frozen field is missing, mark it `Data unavailable` rather than fabricating numbers. Read the page back.\n   2. coder 1 (office-report-builder 1): Sole writer of `Sector_Report.docx` titled `Sector Outlook Narrative Report`, with one section per mapped sector (Technology for GOOGL and AMZN, Financial Services for JPM, Healthcare for JNJ, Energy for XOM) discussing the sector's outlook rating, growth forecast, risk level, and each representative holding's performance — current price (2026-03-05 close), price one year ago (2025-03-05 close), and one-year return — with holdings identified by ticker and/or company name. Close with a `Summary and Allocation Recommendations` section comparing one-year returns and outlooks across sectors, stating the average return, naming the best- and worst-performing sectors/holdings, and recommending allocation adjustments (overweight Positive-outlook sectors, underweight Cautious ones). Do not invent missing handoff values. Read the document back and verify all five holdings.\n\nAfter Wave 3, the main agent reconciles the workbook, Word document, and Notion page against the same packet, then calls claim_done. Do not dispatch more sub-agents.",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "wave_1",
+        "text": "explore 0 (financial-market-analyst 0): Price owner for GOOGL. Retrieve price history over the explicit window 2025-03-05 through 2026-03-05 (the dataset is fixed and ends 2026-03-05), treat the 2026-03-05 close as `Current_Price`, and use the 2025-03-05 close — or the nearest trading day, with the substitution documented — as `Price_1Y_Ago`. Compute the one-year return as `(current - reference) / reference * 100`, reporting the exact unrounded value plus the two-decimal rounded result, and verify no observations post-date 2026-03-05, reporting the observation count. If an anchor close is unavailable, return the available prices and flag the gap rather than fabricating a number. Do not query other tickers, write files, or create deliverables.",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "wave_1",
+        "text": "explore 1 (financial-market-analyst 1): Price owner for AMZN — same literal recipe, only that ticker substituted.",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "wave_1",
+        "text": "explore 2 (financial-market-analyst 2): Price owner for JPM — same literal recipe, only that ticker substituted.",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "wave_1",
+        "text": "explore 3 (financial-market-analyst 3): Price owner for JNJ — same literal recipe, only that ticker substituted.",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "wave_1",
+        "text": "explore 4 (financial-market-analyst 4): Price owner for XOM — same literal recipe, only that ticker substituted.",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "wave_2",
+        "text": "coder 0 (office-report-builder 0): Sole writer of `Sector_Outlook.xlsx` from the frozen packet. Create `Sector Performance` with one row per stock and columns `Sector, Stock, Current_Price, Price_1Y_Ago, Return_1Y_Pct, Outlook, Growth_Forecast, Risk_Level` — GOOGL and AMZN forced to `Technology`, rows sorted alphabetically by sector then ticker, every value a literal number with no Excel formulas. Create `Cross-Sector Summary` with Metric/Value rows for Best_1Y_Sector, Worst_1Y_Sector, Positive_Outlook_Count, High_Risk_Count, and Avg_1Y_Return (simple average of the five returns, two decimals), all as literal values. Read both sheets back. If any frozen field is missing, do not create the workbook. Do not write the Word document or Notion page.",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "wave_3",
+        "text": "coder 0 (external-workflow-operator 0): Sole Notion owner of a page titled exactly `Sector Outlook Report - Q1 2026`. Search the exact title first, create at most once on zero matches, and block on duplicates. Include a heading with that title; a paragraph stating the 2026-03-05 data anchor, that one-year returns are measured from 2025-03-05 closes, and the average one-year return; a bullet per sector (Technology with GOOGL and AMZN, Financial Services with JPM, Healthcare with JNJ, Energy with XOM) in the form `SECTOR_NAME (OUTLOOK): TICKER(S) returned RETURN_1Y_Pct%, growth forecast GROWTH_FORECAST%, risk level RISK_LEVEL`; plus bullets highlighting every Positive-outlook sector and every Cautious-outlook sector, noting Neutral sectors separately. If a frozen field is missing, mark it `Data unavailable` rather than fabricating numbers. Read the page back.",
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "wave": "wave_3",
+        "text": "coder 1 (office-report-builder 1): Sole writer of `Sector_Report.docx` titled `Sector Outlook Narrative Report`, with one section per mapped sector (Technology for GOOGL and AMZN, Financial Services for JPM, Healthcare for JNJ, Energy for XOM) discussing the sector's outlook rating, growth forecast, risk level, and each representative holding's performance — current price (2026-03-05 close), price one year ago (2025-03-05 close), and one-year return — with holdings identified by ticker and/or company name. Close with a `Summary and Allocation Recommendations` section comparing one-year returns and outlooks across sectors, stating the average return, naming the best- and worst-performing sectors/holdings, and recommending allocation adjustments (overweight Positive-outlook sectors, underweight Cautious ones). Do not invent missing handoff values. Read the document back and verify all five holdings.",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "yahoo-finance"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "yahoo-finance"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "yahoo-finance"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "yahoo-finance"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "yahoo-finance"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "write",
+        "role": "notion",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "rw": "write",
+        "role": "word",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

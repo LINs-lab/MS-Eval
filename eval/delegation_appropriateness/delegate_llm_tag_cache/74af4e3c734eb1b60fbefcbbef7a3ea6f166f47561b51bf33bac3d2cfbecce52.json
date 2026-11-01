@@ -1,0 +1,109 @@
+{
+  "input_hash": "74af4e3c734eb1b60fbefcbbef7a3ea6f166f47561b51bf33bac3d2cfbecce52",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "academic-presentation-builder",
+    "task_text": "I am working on a literature review about recent advances in Large Language Model reasoning and I need your help creating a structured review document and a presentation summarizing the key findings. Please search for papers about \"LLM reasoning\" and \"chain-of-thought\" methods using the academic search tools. You should find papers covering chain-of-thought prompting, self-consistency, tree of thoughts, reasoning via planning, and process-based supervision for verifying reasoning steps.\n\nOnce you have found the relevant papers, read their LaTeX sources to understand the detailed methods, experimental setups, and key results reported in each paper. Pay attention to benchmark results such as GSM8K accuracy, MATH benchmark performance, and other evaluation metrics mentioned in the experiments sections.\n\nAfter gathering all the information, create a Word document called LLM_Reasoning_Review.docx in the workspace. The document should have the title \"Literature Review: Advances in Large Language Model Reasoning\" followed by these sections. The first section should be called \"Introduction\" and contain a paragraph discussing the importance of reasoning capabilities in large language models and why this area of research has gained significant attention. The second section should be called \"Chain-of-Thought Methods\" and should cover chain-of-thought prompting and self-consistency approaches, mentioning key experimental results like GSM8K accuracy numbers. The third section should be called \"Tree-Based Reasoning\" and should cover tree of thoughts and planning-based reasoning approaches such as RAP with Monte Carlo Tree Search, including results from tasks like Game of 24 and Blocksworld. The fourth section should be called \"Verification and Reward Models\" and should cover process supervision for verifying reasoning steps, mentioning the MATH benchmark results comparing process-supervised and outcome-supervised reward models. The fifth section should be called \"Summary Table\" and must contain a table with exactly 5 rows of data (one for each paper you reviewed) and 4 columns: Paper Title, Year, Key Method, and Main Result. Fill in each row based on what you found from reading the papers. The sixth and final section should be called \"Conclusion\" and contain a brief paragraph summarizing the key trends and future directions in LLM reasoning research.\n\nNext, create a PowerPoint presentation called LLM_Reasoning_Slides.pptx in the workspace with exactly 7 slides. Slide 1 should be a title slide with the title \"Advances in LLM Reasoning\" and subtitle \"Literature Review 2022-2023\". Slide 2 should be titled \"Overview\" and list all 5 papers being reviewed. Slide 3 should be titled \"Chain-of-Thought Prompting\" and present the key method and results from the chain-of-thought and self-consistency papers. Slide 4 should be titled \"Tree-Based Reasoning\" and present the key method and results from the tree of thoughts and RAP papers. Slide 5 should be titled \"Process Supervision\" and present the key method and results from the step-by-step verification paper. Slide 6 should be titled \"Performance Comparison\" and contain a table comparing the methods across benchmarks. Slide 7 should be titled \"Conclusion\" and present the key takeaways from the literature review.\n\nFinally, use the terminal to count the number of words in both output documents and save the results to a file called word_count.txt in the workspace. Each line should follow the format \"LLM_Reasoning_Review.docx: N words\" and \"LLM_Reasoning_Slides.pptx: M words\" where N and M are the actual word counts extracted from the documents.\n\nThe three deliverables (LLM_Reasoning_Review.docx, LLM_Reasoning_Slides.pptx, and word_count.txt) are independent outputs. Create each one exactly once, and do not overwrite or delete a file that another step of the workflow has already produced.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, follow this exact orchestration plan. A wave must finish and return all stated handoffs before the next wave begins. Within a wave, dispatch exactly one sub-agent for each numbered sub-task and run those sub-agents concurrently.\n\nBefore Wave 1, the main agent must freeze the exact five-paper taxonomy and output contract from the task: chain-of-thought prompting, self-consistency, Tree of Thoughts, RAP/planning, and process supervision, together with the required benchmark fields. It must assign one stable paper to each slot and prevent duplicate ownership. Resolve the task-visible workspace directory from the runtime allowed-directory listing (or the literal accessible-workspace directory already supplied by the harness), freeze `<workspace_root>`, and reject bare `/workspace` and dumps/run-specific paths.\n\n1. Wave 1 — dispatch exactly 5 sub-agents in parallel, one for each numbered sub-task:\n\n   1. explore 0 (academic-literature-researcher 0): Use one explore sub-agent assigned exactly the paper \"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models\" (Jason Wei et al., 2022, arXiv:2201.11903, NeurIPS 2022).\n   2. explore 1 (academic-literature-researcher 1): Use one explore sub-agent assigned exactly the paper \"Self-Consistency Improves Chain of Thought Reasoning in Language Models\" (Xuezhi Wang et al., 2022, arXiv:2203.11171, ICLR 2023).\n   3. explore 2 (academic-literature-researcher 2): Use one explore sub-agent assigned exactly the paper \"Tree of Thoughts: Deliberate Problem Solving with Large Language Models\" (Shunyu Yao et al., 2023, arXiv:2305.10601, NeurIPS 2023).\n   4. explore 3 (academic-literature-researcher 3): Use one explore sub-agent assigned exactly the paper \"Reasoning with Language Model is Planning with World Model\" (the RAP paper, Shibo Hao et al., 2023, arXiv:2305.14992, EMNLP 2023).\n   5. explore 4 (academic-literature-researcher 4): Use one explore sub-agent assigned exactly the paper \"Let's Verify Step by Step\" (Hunter Lightman et al., 2023, arXiv:2305.20050, ICLR 2024, process-supervised reward models).\n\nEach Wave 1 sub-agent receives its exact assigned title/arXiv ID inline, confirms the ID via one academic search call, then uses the arxiv-latex sources read-only for only that paper, verifies identity by title and stable ID, and inspects the available methods and experiments sections, and return one compact source-faithful record with paper ID/title, section coverage, benchmark/task result evidence with model and setting context, and missing-field status. Explore is read-only, so do not write files or create or modify any final deliverable.\n\nAfter Wave 1, the main agent must reconcile the five paper IDs, reject unsupported metrics, and freeze one literal canonical five-row synthesis packet whose terminology and benchmark values are consumed unchanged by both document owners and the word-count step.\n\n2. Wave 2 — dispatch exactly 2 sub-agents in parallel, one for each numbered sub-task:\n\n   1. coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Review.docx` exclusively. Create it exactly once with the exact title and six required sections, a Summary Table with exactly five data rows and exactly the four required columns, and source-faithful GSM8K, Game of 24/Blocksworld, and MATH context where available. Read it back and return its path, heading list, table dimensions, five-paper coverage, and validation. Do not create slides or word_count.txt.\n\n   2. coder 1 (office-report-builder 1): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Slides.pptx` exclusively. Create it exactly once with exactly seven slides and the exact required slide titles/content roles, ensuring slide 6 is a real performance-comparison table. Read it back and return its path, slide count/titles, paper/benchmark coverage, and validation. Do not create the Word document or word_count.txt.\n\nAfter Wave 2, the main agent must verify the two artifacts against the same five-row packet and freeze their paths. It must then use the granted terminal/document extraction capabilities itself to count actual extracted words from the verified DOCX and PPTX, write `<workspace_root>/word_count.txt` exactly once with the two required filename/count lines, and read it back without altering either source document. Finally, it must verify all three deliverables, exact slide/table counts, word-count line format, and single-writer provenance before completion.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_9",
+        "text": "You are helping build a literature review on LLM reasoning. Your task: read the LaTeX source of the arXiv paper 2201.11903 (\"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models\" by Jason Wei et al., NeurIPS 2022) using the arXiv LaTeX tools available to you (e.g., mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2201.11903\", mcp__arxiv-latex__list_paper_sections, mcp__arxiv-latex__get_paper_section, mcp__arxiv-latex__get_paper_abstract).\n\nExtract and report back the following, quoting exact numbers from the paper where possible:\n1. Full paper title, author list (first author + et al. is fine), publication venue/year.\n2. Core method description: how chain-of-thought prompting works, how the CoT exemplars are constructed, which models were evaluated (e.g., PaLM 540B, code-davinci-002), and what it showed about model scale.\n3. Key experimental results with EXACT numbers: GSM8K accuracy for PaLM 540B with standard prompting vs chain-of-thought prompting (expected around 17.9% vs 56.9% — verify from the paper); any results on MATH benchmark, commonsense benchmarks (e.g., StrategyQA, CSQA), and symbolic reasoning (e.g., Last Letter Concatenation, Coin Flip).\n4. Any other notable findings (e.g., robustness, ablation on number of exemplars).\n\nReturn a concise structured report (about 300-450 words) with the exact numbers you found. Do not write any files — just report back.\nExtract CoT paper details",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_9",
+        "text": "You are helping build a literature review on LLM reasoning. Your task: read the LaTeX source of the arXiv paper 2203.11171 (\"Self-Consistency Improves Chain of Thought Reasoning in Language Models\" by Xuezhi Wang et al., ICLR 2023) using the arXiv LaTeX tools available to you (e.g., mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2203.11171\", mcp__arxiv-latex__list_paper_sections, mcp__arxiv-latex__get_paper_section, mcp__arxiv-latex__get_paper_abstract).\n\nExtract and report back the following, quoting exact numbers from the paper where possible:\n1. Full paper title, authors (first author + et al. fine), venue/year.\n2. Core method description: how self-consistency works (sample multiple diverse reasoning paths via temperature sampling, then majority-vote the final answers), how it complements chain-of-thought prompting.\n3. Key experimental results with EXACT numbers: GSM8K accuracy improvements — e.g., GSM8K accuracy of PaLM 540B with standard prompting, with CoT prompting, and with self-consistency (expected values near 17.9% / 56.9% / 88.4% — verify from the paper and report the exact figures, including the number of samples used). Also report any MATH benchmark, SVAMP, AQuA, StrategyQA, or other benchmark numbers you can find, and any ablation on the number of sampled paths (e.g., 1, 5, 10, 40 samples).\n4. Any notable findings about decoding strategy, diversity, or scaling.\n\nReturn a concise structured report (about 300-450 words) with exact numbers. Do not write any files — just report back.\nExtract self-consistency paper details",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_9",
+        "text": "You are helping build a literature review on LLM reasoning. Your task: read the LaTeX source of the arXiv paper 2305.10601 (\"Tree of Thoughts: Deliberate Problem Solving with Large Language Models\" by Shunyu Yao et al., NeurIPS 2023) using the arXiv LaTeX tools available to you (e.g., mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2305.10601\", mcp__arxiv-latex__list_paper_sections, mcp__arxiv-latex__get_paper_section, mcp__arxiv-latex__get_paper_abstract).\n\nExtract and report back the following, quoting exact numbers from the paper where possible:\n1. Full paper title, authors (first author + et al. fine), venue/year.\n2. Core method description: how Tree of Thoughts (ToT) generalizes chain-of-thought, the four components (thought decomposition, thought generator, state evaluator, search algorithm), BFS/DFS search, and which base model was used (e.g., GPT-4).\n3. Key experimental results with EXACT numbers on the three tasks: Game of 24 (success rate — expected: GPT-4 with CoT ~4%, with ToT ~74%; verify exact figures, also success rates with 1/5/10 trials), Creative Writing (e.g., 7.56% vs higher score with ToT), and Mini Crosswords (e.g., 60% vs 10% with CoT, and 90% with ToT+best state).\n4. Any notable findings about search strategy (BFS vs DFS), thought generation, or evaluation.\n\nReturn a concise structured report (about 300-450 words) with exact numbers. Do not write any files — just report back.\nExtract Tree of Thoughts details",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_9",
+        "text": "You are helping build a literature review on LLM reasoning. Your task: read the LaTeX source of the arXiv paper 2305.14992 (\"Reasoning with Language Model is Planning with World Model\" / RAP, by Shibo Hao et al., EMNLP 2023 — verify venue from paper) using the arXiv LaTeX tools available to you (e.g., mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2305.14992\", mcp__arxiv-latex__list_paper_sections, mcp__arxiv-latex__get_paper_section, mcp__arxiv-latex__get_paper_abstract).\n\nExtract and report back the following, quoting exact numbers from the paper where possible:\n1. Full paper title, authors (first author + et al. fine), venue/year.\n2. Core method description: how RAP repurposes the LLM as a world model and a reasoning agent, how Monte Carlo Tree Search (MCTS) is used to explore the reasoning space, and how the reward/state evaluation works.\n3. Key experimental results with EXACT numbers: Game of 24 success rate with RAP vs CoT vs ToT (expected: RAP ~84% vs CoT 24% vs ToT 74%? verify), Blocksworld success rate (expected: RAP ~82% vs CoT ~50%? and compared with GPT-4 performance), and any math reasoning results (e.g., GSM8K), plus results on bAbI or other planning tasks.\n4. Any notable findings (e.g., number of MCTS rollouts, comparison against ToT).\n\nReturn a concise structured report (about 300-450 words) with exact numbers. Do not write any files — just report back.\nExtract RAP paper details",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_9",
+        "text": "You are helping build a literature review on LLM reasoning. Your task: read the LaTeX source of the arXiv paper 2305.20050 (\"Let's Verify Step by Step\" by Hunter Lightman et al., 2023 — from OpenAI) using the arXiv LaTeX tools available to you (e.g., mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2305.20050\", mcp__arxiv-latex__list_paper_sections, mcp__arxiv-latex__get_paper_section, mcp__arxiv-latex__get_paper_abstract).\n\nExtract and report back the following, quoting exact numbers from the paper where possible:\n1. Full paper title, authors (first author + et al. fine), year.\n2. Core method description: process supervision vs outcome supervision for training reward models to verify each step of a reasoning chain; how the process-supervised reward model (PRM) was trained (per-step labels from human data, PRM800K dataset).\n3. Key experimental results with EXACT numbers: MATH benchmark performance — expected: process-supervised reward model (PRM) solves 78.2% of MATH benchmark problems (verify), and compare with outcome-supervised reward model (ORM) performance (~69.4% with majority voting? verify exact numbers). Also any GSM8K results, and how best-of-N selection worked (e.g., 96.8% when using the best of 10,000 samples? verify).\n4. Any notable findings about the reward model evaluation methodology (e.g., scaling reward model performance).\n\nReturn a concise structured report (about 300-450 words) with exact numbers. Do not write any files — just report back.\nExtract Let's Verify Step by Step details",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "message_16",
+        "text": "I need you to verify exact experimental numbers from 5 arXiv papers using the mcp__arxiv-latex__get_paper_prompt tool (which returns flattened LaTeX of the full paper). For each paper, call get_paper_prompt with the arxiv_id, then search the returned text for the specific numbers below. Report ONLY verified facts: quote the exact number found and the surrounding context (which model, which benchmark, which table if identifiable). If a number cannot be found in the text, say \"NOT FOUND\" for that item. Do not rely on memory — only report what appears in the tool output.\n\nPapers and items to verify:\n\nPAPER 1 (arxiv_id \"2201.11903\", Chain-of-Thought Prompting, Wei et al.):\n- GSM8K accuracy of PaLM 540B with standard prompting (expected ~17.9%)\n- GSM8K accuracy of PaLM 540B with chain-of-thought prompting (expected ~56.9%)\n- Any mention of model scale/emergent ability (e.g., \"100B\" or \"emergent\")\n\nPAPER 2 (arxiv_id \"2203.11171\", Self-Consistency, Wang et al.):\n- GSM8K accuracy of PaLM 540B with CoT prompting (expected ~56.9%)\n- GSM8K accuracy of PaLM 540B with self-consistency (expected ~88.4% with 40 samples; report the number of samples used if stated)\n- Any AQuA, SVAMP, or StrategyQA numbers for PaLM 540B (e.g., AQuA CoT vs self-consistency)\n\nPAPER 3 (arxiv_id \"2305.10601\", Tree of Thoughts, Yao et al.):\n- Game of 24 success rate with chain-of-thought (expected 4%)\n- Game of 24 success rate with ToT (expected ~74%, and with 1/5/10 trials if stated)\n- Creative writing evaluation score (expected 7.56 with CoT vs higher with ToT — verify)\n- Mini crosswords success rates (expected ~10% with CoT, ~60% with ToT, ~90% with ToT+best state)\n\nPAPER 4 (arxiv_id \"2305.14992\", RAP, Hao et al.):\n- Blocksworld accuracy with CoT vs RAP (and any GPT-4 comparison)\n- Game of 24 success rate with CoT vs RAP (expected RAP ~84%?)\n- GSM8K accuracy with RAP vs CoT\n- Any results for bAbI or other planning tasks\n\nPAPER 5 (arxiv_id \"2305.20050\", Let's Verify Step by Step, Lightman et al.):\n- MATH benchmark accuracy of the process-supervised reward model (expected ~78.2%)\n- MATH accuracy of the outcome-supervised reward model for comparison (expected ~69-72%)\n- Any GSM8K numbers, best-of-N selection results (e.g., best of 10000), and majority voting results\n\nReturn a compact structured report listing each item and the verified value with brief context. No file writing — just report back.\nVerify exact numbers from LaTeX",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

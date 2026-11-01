@@ -1,0 +1,32 @@
+{
+  "input_hash": "947731c00bf046008311b3bbf71cd6126da60f8b538d38a5c671d0a3909082bb",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "sf-hr-worklife-notion-excel",
+    "task_text": "The HR leadership team wants to understand work-life balance and job satisfaction scores across departments to prioritize employee wellbeing initiatives. Please connect to the data warehouse and query the average work-life balance score and average job satisfaction score for employees in each department. Include the employee count per department in your results.\n\nCreate an Excel file called WL_Balance_Report.xlsx in the workspace with two sheets.\n\nThe first sheet should be called \"Department Analysis\" with five columns: Department (sorted alphabetically), Employee_Count, Avg_WLB (average work-life balance rounded to 2 decimal places), Avg_Job_Satisfaction (rounded to 2 decimal places), and Combined_Score which is the simple average of Avg_WLB and Avg_Job_Satisfaction for that department, rounded to 2 decimal places.\n\nThe second sheet should be called \"Findings\" with two columns: Metric and Value. Include rows for Total_Employees (sum of all employees), Overall_Avg_WLB (weighted average across all departments rounded to 2 decimals), Overall_Avg_Job_Satisfaction (weighted average rounded to 2 decimals), Best_WLB_Department (department with the highest average WLB), Best_JS_Department (department with highest average job satisfaction), and Departments_Analyzed (count of departments).\n\nAfter creating the Excel file, create a knowledge base page called \"HR Wellbeing Dashboard\" with content blocks that summarize the key findings from the analysis. The page should mention the overall average work-life balance and job satisfaction scores and highlight which departments perform best on each metric. When multiple departments are tied at the rounded score, you may report any one of them.\n\nFinally, send an email to hr_director@company.com with a subject that references the wellbeing analysis and a body that summarizes the top-level findings across departments.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent. Run one compact department aggregate and one company aggregate, compute weighted overall values and each literal Combined_Score, then create WL_Balance_Report.xlsx and exactly one HR Wellbeing Dashboard page with native parallel tool calls in the same response. Preserve alphabetical departments, raw ranking/tie evidence, exact metric labels, and cross-output values; verify both outputs before sending the required email.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are planning a multi-step task. Produce an ordered subtask decomposition with, for each subtask: (a) dispatch decision — self (main agent), explore, or coder; (b) whether it is independent/parallelizable or must wait for another subtask's output.\n\nTASK DESCRIPTION:\nThe HR leadership team wants work-life balance and job satisfaction scores across departments to prioritize employee wellbeing initiatives.\n\n1. Connect to the data warehouse (Snowflake, via mcp__snowflake__* tools) and query the average work-life balance score and average job satisfaction score for employees in each department, including employee count per department. The relevant tables are in a Snowflake database — explore the schema (list_databases, list_schemas, list_tables, describe_table, read_query) to find the employee table(s) with department, work-life balance, and job satisfaction columns. Determine exact column names and types, then formulate the aggregation query (GROUP BY department, with COUNT and AVG).\n\n2. Create an Excel file at /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-hr-worklife-notion-excel/workspace/WL_Balance_Report.xlsx (use mcp__excel__* tools) with two sheets:\n   - Sheet \"Department Analysis\": columns Department (sorted alphabetically), Employee_Count, Avg_WLB (average work-life balance, rounded to 2 decimals), Avg_Job_Satisfaction (rounded to 2 decimals), Combined_Score = simple average of Avg_WLB and Avg_Job_Satisfaction for that department, rounded to 2 decimals.\n   - Sheet \"Findings\": columns Metric and Value, with rows: Total_Employees (sum of all employees), Overall_Avg_WLB (weighted average across all departments, rounded to 2 decimals), Overall_Avg_Job_Satisfaction (weighted average rounded to 2 decimals), Best_WLB_Department (department with highest average WLB), Best_JS_Department (department with highest average job satisfaction), Departments_Analyzed (count of departments). Note: weighted average = SUM(employee_count * avg_score) / SUM(employee_count); ties at the rounded score may report any one department.\n\n3. Create a Notion knowledge base page titled \"HR Wellbeing Dashboard\" (via mcp__notion__* tools — check existing pages/databases first with API-post-search; if a knowledge base database exists, create a page entry in it, otherwise create a standalone page) with content blocks summarizing key findings: overall average WLB and job satisfaction scores, and which departments perform best on each metric.\n\n4. Send an email (via mcp__emails__* tools) to hr_director@company.com with subject referencing the wellbeing analysis and a body summarizing top-level findings across departments.\n\nWORKSPACE: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-hr-worklife-notion-excel/workspace (Excel file must be created there).\n\nDELIVERABLE: A numbered, ordered subtask list with dispatch decision and dependency info per subtask, plus a validation strategy (how to verify each deliverable: Excel sheet contents/rounding, Notion page existence, email sent). Keep it concise and actionable.\nPlan HR wellbeing analysis task",
+        "is_plan": true
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      }
+    ]
+  }
+}

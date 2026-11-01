@@ -1,0 +1,45 @@
+{
+  "input_hash": "a8ee6cdf0cf89dfefd538b5881fe3a885de88487b1185539ed06e52706bd26df",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "fetch-sf-support-survey-gform-gcal-excel",
+    "task_text": "Our customer support department wants to launch a structured satisfaction improvement initiative based on recent feedback. A customer satisfaction survey was conducted during Q1 2026 and the results are available through a REST API at http://localhost:30205/api/survey_results.json. The survey includes 20 customer responses with ratings for overall satisfaction, response time, resolution quality, and agent professionalism, along with the priority level experienced and free-text comments.\n\nWe also maintain a ticket management system with historical support data covering over 31,000 resolved tickets. Each ticket includes priority level, response time in hours, and a customer satisfaction score.\n\nPlease start by fetching the survey results from the API endpoint. Then query the ticket management system for aggregate metrics grouped by priority level (High, Medium, Low): average response time in hours and average customer satisfaction score. Also retrieve the total ticket count.\n\nCreate an Excel file called \"Support_Satisfaction_Analysis.xlsx\" in the workspace with four sheets.\n\nThe first sheet called \"Survey Results\" should list all 20 survey responses with columns Respondent_ID, Overall_Satisfaction, Response_Time_Rating, Resolution_Quality_Rating, Agent_Professionalism, Priority, Issue_Type, and Comment.\n\nThe second sheet called \"Survey Summary\" should have columns Metric and Value with the following rows: Total_Respondents (20), Avg_Overall_Satisfaction (the average of all overall satisfaction ratings), Avg_Response_Time_Rating, Avg_Resolution_Quality, Avg_Agent_Professionalism, Lowest_Rated_Priority (the priority level with the lowest average overall satisfaction from the survey), and Highest_Rated_Priority (the priority level with the highest average overall satisfaction from the survey).\n\nThe third sheet called \"Ticket System Comparison\" should have columns Priority, Survey_Avg_Satisfaction, Ticket_Avg_Satisfaction, Ticket_Avg_Response_Hours, and Ticket_Count. This cross-references the survey satisfaction by priority against the actual ticket system data by priority.\n\nThe fourth sheet called \"Improvement Areas\" should identify areas needing attention. It should have columns Area, Current_Score, Target_Score, and Gap. Include rows for each metric (Response Time, Resolution Quality, Agent Professionalism) where the survey average is below 4.0. The target score should be 4.5 for all metrics. The gap is the target minus the current score.\n\nNote: write all numeric values in the Excel file as literal values (for example, 3.25, 6.23), not as Excel formulas such as =AVERAGE(...) or =C2-B2.\n\nNext, create a Google Form for ongoing feedback collection. The form should be titled \"Customer Support Feedback Form\" and include the following questions: an overall satisfaction rating (scale 1-5), a response time rating (scale 1-5), a resolution quality rating (scale 1-5), a priority level selection (High, Medium, Low), and an open-ended comments field. Implement each 1-5 rating and the priority selection as single-select (multiple choice) questions — with options \"1,2,3,4,5\" for the ratings and \"High, Medium, Low\" for the priority — and the comments field as an open text question.\n\nSchedule four quarterly review meetings in Google Calendar for the year 2026: on March 15, June 15, September 15, and December 15, from 10:00 AM to 11:30 AM in America/New_York timezone. Each event summary should be \"Support Satisfaction Review - Q[N] 2026\" where N is the quarter number (1 through 4).\n\nSave all output files to the workspace directory.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Start the API fetch and one compact Snowflake query in native parallel: the query must return the all-resolved-ticket total and the High, Medium, and Low rows with count, average response hours, and average satisfaction. While those reads run, create `Customer Support Feedback Form` exactly once and add the five questions in the stated order: three 1–5 single-select rating questions, one High/Medium/Low single-select question, and one text-comments question. Also search/create/read back the four fixed quarterly events as a native-parallel batch. Reconcile the 20 survey rows with the three SQL rows, then write `Support_Satisfaction_Analysis.xlsx` once with all four exact sheets, headers, literal numeric values, the below-4.0 improvement rule, and target 4.5. Verify the workbook, Form, and four events once each; do not add a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_42",
+        "text": "Create a Google Form for ongoing customer support feedback.\n\nGoal: Build the form and add all required questions. Use the mcp__google_forms__* tools available to you.\n\nSteps:\n1. Call mcp__google_forms__create_form with title exactly \"Customer Support Feedback Form\". You may optionally set a short description. Capture the returned form ID.\n2. Add the following 5 questions in this order to that form ID:\n\n   a. mcp__google_forms__add_multiple_choice_question — questionTitle: \"Overall Satisfaction Rating (1-5)\", options: [\"1\",\"2\",\"3\",\"4\",\"5\"], required: true.\n   b. mcp__google_forms__add_multiple_choice_question — questionTitle: \"Response Time Rating (1-5)\", options: [\"1\",\"2\",\"3\",\"4\",\"5\"], required: true.\n   c. mcp__google_forms__add_multiple_choice_question — questionTitle: \"Resolution Quality Rating (1-5)\", options: [\"1\",\"2\",\"3\",\"4\",\"5\"], required: true.\n   d. mcp__google_forms__add_multiple_choice_question — questionTitle: \"Priority Level\", options: [\"High\",\"Medium\",\"Low\"], required: true.\n   e. mcp__google_forms__add_text_question — questionTitle: \"Comments\", required: false.\n\nAll rating and priority questions must be MULTIPLE CHOICE (single-select). Do NOT use the checkbox tool for any of them. Only the comments field uses add_text_question.\n\nDeliverable: Report back the created form ID, the form title, and confirmation that all 5 questions were added (with their types). If any tool call fails, report the exact error.\nCreate Google feedback form",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_42",
+        "text": "Create four quarterly \"Support Satisfaction Review\" events in Google Calendar for 2026.\n\nUse the mcp__google_calendar__create_event tool. Create exactly these 4 events. All use timezone America/New_York, start 10:00 AM, end 11:30 AM on the given date.\n\n1. Summary: \"Support Satisfaction Review - Q1 2026\"\n   Start: 2026-03-15T10:00:00  End: 2026-03-15T11:30:00  timeZone: America/New_York\n2. Summary: \"Support Satisfaction Review - Q2 2026\"\n   Start: 2026-06-15T10:00:00  End: 2026-06-15T11:30:00  timeZone: America/New_York\n3. Summary: \"Support Satisfaction Review - Q3 2026\"\n   Start: 2026-09-15T10:00:00  End: 2026-09-15T11:30:00  timeZone: America/New_York\n4. Summary: \"Support Satisfaction Review - Q4 2026\"\n   Start: 2026-12-15T10:00:00  End: 2026-12-15T11:30:00  timeZone: America/New_York\n\nFor each event, set the start and end as objects: {\"dateTime\": \"...\", \"timeZone\": \"America/New_York\"}. You may add a short description like \"Quarterly support satisfaction review meeting\" if helpful (optional).\n\nDeliverable: Report back the event IDs and confirm all 4 events were created with correct summaries and times. If any create call fails, report the exact error and continue with the others.\nSchedule quarterly review events",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "gform",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "calendar",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

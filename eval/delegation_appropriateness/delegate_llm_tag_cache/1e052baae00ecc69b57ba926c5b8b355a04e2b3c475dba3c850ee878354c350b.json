@@ -1,0 +1,75 @@
+{
+  "input_hash": "1e052baae00ecc69b57ba926c5b8b355a04e2b3c475dba3c850ee878354c350b",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "support-sla-audit-form",
+    "task_text": "I need you to conduct an SLA compliance audit for our support center. The goal is to assess how well our team is meeting response time targets, evaluate individual agent performance, and set up a process for team leads to submit improvement plans.\n\nStart by visiting the SLA compliance dashboard at http://localhost:30162 to review the management targets and compliance thresholds that have been established for this audit cycle.\n\nNext, pull the relevant data from our company data warehouse. You will need to look at all the resolved support tickets and cross-reference them against our SLA policy definitions. A ticket is considered to have breached its SLA if the actual response time exceeded the response target defined in the policy for that ticket's priority level. Calculate the compliance rate, average response time, and average customer satisfaction score for each priority level. Also gather performance metrics for each support agent, including how many tickets they resolved, their average satisfaction rating, and their average response time. Attribute each ticket to the agent listed in its resolver field, using an exact name match against the agents list (a ticket whose resolver field is empty is attributed to no agent).\n\nOnce you have all the data, create an Excel file called SLA_Audit_Report.xlsx in the workspace with three sheets. The first sheet should be named \"SLA Compliance\" and must contain columns Priority, Total_Tickets, Breached_Tickets, Compliance_Rate, Avg_Response_Hours, and Avg_Satisfaction. Include one row per priority level (High, Low, Medium) sorted alphabetically by priority. The Compliance_Rate should be calculated as the percentage of tickets that did not breach the SLA, rounded to one decimal place. Avg_Response_Hours and Avg_Satisfaction should both be rounded to one decimal place. The second sheet should be named \"Agent Performance\" and must contain columns Agent_Name, Team, Tickets_Resolved, Avg_Satisfaction, and Avg_Response_Hours. Include one row for every agent on file, sorted by Tickets_Resolved in descending order. Avg_Satisfaction and Avg_Response_Hours should be rounded to one decimal place. For an agent who resolved no tickets, write 0 for Tickets_Resolved, Avg_Satisfaction, and Avg_Response_Hours. The third sheet should be named \"Summary\" and must contain two columns, Metric and Value. The rows should be: Overall_Compliance_Rate (the percentage of all tickets that did not breach SLA, rounded to one decimal), Overall_Avg_Satisfaction (the average satisfaction across all tickets, rounded to one decimal), Meets_Compliance_Target (write \"Yes\" if overall compliance is at least 90 percent or \"No\" otherwise), Meets_Satisfaction_Target (write \"Yes\" if overall average satisfaction is at least 4.0 or \"No\" otherwise), Total_Tickets_Reviewed (total number of tickets analyzed), and Total_Breached_Tickets (total number of breached tickets). Write all numeric values in the Excel file as literal numbers (do not use Excel formulas), rounded as specified.\n\nFinally, create a Google Form titled \"SLA Improvement Plan\" so that team leads can submit their improvement proposals. Give the form a description of at least 11 characters describing its purpose. The form should have five questions in this order. First, \"Your Name\" as a required text question. Second, \"Your Team\" as a required multiple choice question with the options Tier 1, Tier 2, Tier 3, and Specialist. Third, \"Which priority level needs most improvement?\" as a required multiple choice question with the options Critical, High, Medium, and Low. Fourth, \"Proposed improvement actions\" as a required text question. Fifth, \"Target completion date\" as a required text question.\n\nSave the Excel report to the workspace and make sure the Google Form is created and accessible.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent and dispatch no sub-agent. In one read-only browser session inspect `http://localhost:30162` with navigate/snapshot only. In parallel inspect the Snowflake support schema and run compact set-based aggregates for resolved tickets joined to SLA policies by exact priority and for all agents left-joined to tickets by exact resolver name. Empty resolver maps to no agent; every agent appears with zeros when it has no tickets. Freeze exact High/Low/Medium rows, all agent rows, and overall controls with requested one-decimal rounding.\n\nThe main agent is sole writer of `SLA_Audit_Report.xlsx`: create the three exact sheets once with literal values, read every populated range back, and reconcile source totals. Independently call `create_form` exactly once for `SLA Improvement Plan` with a descriptive purpose, retain `formId`, and sequentially add five required questions in task order: text `Your Name`; team choice `Tier 1/Tier 2/Tier 3/Specialist`; priority choice `Critical/High/Medium/Low`; text exact plural `Proposed improvement actions`; text `Target completion date`. Call `get_form` once and verify exact title, description, order, types, options, required flags, and accessibility. Interleave independent workbook/Form calls when ready and finish without a Wave, repair, or auditor.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "I am conducting an SLA compliance audit for a support center. I need you to visit the SLA compliance dashboard at http://localhost:30162 and extract all relevant management targets and compliance thresholds established for this audit cycle.\n\nTasks:\n1. Navigate to http://localhost:30162 using the browser tools.\n2. Read the entire page content (scroll through it if needed, take a snapshot of the full page).\n3. Extract and report, verbatim where possible:\n   - The management targets for this audit cycle (e.g., compliance rate target, satisfaction target, response time targets).\n   - Compliance thresholds per priority level (e.g., response time targets for High, Medium, Low, Critical priorities, if listed).\n   - Any customer satisfaction (CSAT) targets.\n   - Any other audit-related parameters, dates, or notes shown on the dashboard.\n4. If there are any links, tabs, or additional pages on the dashboard that contain targets/thresholds, visit them and extract the same kind of info.\n\nDeliverable: A concise structured summary of everything the dashboard says about targets and thresholds, including exact numbers and wording. Include the exact page text for any target/threshold values. If the page fails to load or is empty, report that clearly.\nReview SLA compliance dashboard",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_2",
+        "text": "I am conducting an SLA compliance audit for a support center. I need you to pull all relevant data from the Snowflake data warehouse. \n\nBackground: We have resolved support tickets, SLA policy definitions (response time targets per priority level), and a list of support agents. I need the raw data to compute compliance metrics myself afterwards.\n\nTasks:\n1. Explore the Snowflake warehouse: list databases, schemas, and tables. Identify tables that contain: (a) support tickets (likely with priority, status, response time / first response time, satisfaction score, resolver agent, resolved timestamp), (b) SLA policy definitions (response time targets per priority), and (c) support agents (name, team).\n2. Pull ALL resolved support tickets (status = resolved or similar) with every relevant column: ticket ID, priority, response time (prefer hours, or the raw timestamps to compute it), satisfaction score, resolver agent name, and any status/resolution date columns.\n3. Pull the full SLA policy definitions: priority level and its response target (in hours).\n4. Pull the full agents list: agent name and team.\n\nImportant: Report the exact column names and values. Give me the complete raw data — either as full tables in your report, or saved to a file. Since the ticket table may be large, save the ticket data to a CSV or JSON file inside the workspace at /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-support-sla-audit-form/workspace if needed (you have write access to files? no — you are read-only, so instead include all data in your final report text, or summarize counts and provide a full listing if the dataset is small enough). If the dataset is too large to list fully, provide: total row counts, distinct priorities with counts, distinct agents with counts, and the first 50 rows in full, plus any aggregate queries that reveal the needed fields.\n\nDeliverable: A report containing:\n- Table names and schemas you found.\n- The complete SLA policy definitions (priority -> response target hours).\n- The complete agents list (name -> team).\n- All resolved tickets with their priority, response time, satisfaction score, and resolver agent. If too many to enumerate, give full aggregates by priority and by agent, plus the first 50 rows verbatim.\n- Explicitly note the unit of response time (hours/minutes) and how satisfaction is scored (1-5 scale?).\nPull support ticket data from warehouse",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_32",
+        "text": "Create an Excel file at this exact path: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-support-sla-audit-form/workspace/SLA_Audit_Report.xlsx\n\nUse the Excel MCP tools (mcp__excel__create_workbook, mcp__excel__rename_worksheet, mcp__excel__create_worksheet, mcp__excel__write_data_to_excel). Write all numeric values as literal numbers (NOT formulas). The workbook should have exactly three sheets with the names and content below. The default first sheet created by create_workbook should be renamed to \"SLA Compliance\" (or create/rename worksheets so the final sheet names match exactly: \"SLA Compliance\", \"Agent Performance\", \"Summary\").\n\n=== Sheet 1: \"SLA Compliance\" ===\nColumns (row 1): Priority | Total_Tickets | Breached_Tickets | Compliance_Rate | Avg_Response_Hours | Avg_Satisfaction\nData rows (exactly 3, in this order — alphabetically by priority):\n- High | 6466 | 5688 | 12.0 | 6.2 | 3.3\n- Low | 9348 | 5144 | 45.0 | 25.8 | 3.2\n- Medium | 15774 | 14129 | 10.4 | 12.3 | 3.3\n\n=== Sheet 2: \"Agent Performance\" ===\nColumns (row 1): Agent_Name | Team | Tickets_Resolved | Avg_Satisfaction | Avg_Response_Hours\nData rows (exactly 9 — all agents, each resolved 0 tickets so all have 0 for Tickets_Resolved, Avg_Satisfaction, Avg_Response_Hours; sorted by Tickets_Resolved descending, ties keep this order):\n- Ava | Specialist | 0 | 0 | 0\n- David | Specialist | 0 | 0 | 0\n- Emma | Specialist | 0 | 0 | 0\n- James | Specialist | 0 | 0 | 0\n- Michael | Specialist | 0 | 0 | 0\n- Olivia | Tier 2 | 0 | 0 | 0\n- Sam | Tier 2 | 0 | 0 | 0\n- Sarah | Tier 3 | 0 | 0 | 0\n- William | Tier 3 | 0 | 0 | 0\n\n=== Sheet 3: \"Summary\" ===\nColumns (row 1): Metric | Value\nData rows (exactly 6, in this order):\n- Overall_Compliance_Rate | 21.0\n- Overall_Avg_Satisfaction | 3.3\n- Meets_Compliance_Target | No\n- Meets_Satisfaction_Target | No\n- Total_Tickets_Reviewed | 31588\n- Total_Breached_Tickets | 24961\n\nDeliverable: The completed SLA_Audit_Report.xlsx file at the specified path. Report back the final path and confirm all three sheets exist with the exact names and that all numeric values were written as literal numbers (not formulas). Also verify by reading back the workbook metadata and cell contents (e.g., mcp__excel__get_workbook_metadata and mcp__excel__read_data_from_excel) so you can confirm correctness before reporting completion.\nBuild SLA audit Excel report",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_32",
+        "text": "Create a Google Form using the google_forms MCP tools (mcp__google_forms__create_form, mcp__google_forms__add_text_question, mcp__google_forms__add_multiple_choice_question, mcp__google_forms__get_form).\n\nForm requirements:\n- Title: \"SLA Improvement Plan\"\n- Description: \"Submit your team's SLA improvement proposals for the support center.\" (this is 63 characters, well above the 11-character minimum)\n- Exactly five questions, added IN THIS ORDER, all marked as required (required=true):\n\n1. Text question: \"Your Name\" (required)\n2. Multiple choice question: \"Your Team\" (required) with options exactly: Tier 1, Tier 2, Tier 3, Specialist\n3. Multiple choice question: \"Which priority level needs most improvement?\" (required) with options exactly: Critical, High, Medium, Low\n4. Text question: \"Proposed improvement actions\" (required)\n5. Text question: \"Target completion date\" (required)\n\nAfter creating the form and adding all questions, call mcp__google_forms__get_form with the form ID to verify the form exists, has the correct title and description, and contains all five questions in the correct order with the correct options.\n\nDeliverable: Report back the form ID, the form URL (if available from get_form), and confirmation of the title, description, all five questions in order, their types (text/multiple choice), the exact options for the two multiple-choice questions, and that all questions are required.\nCreate SLA improvement Google Form",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "playwright-web"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "gform",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

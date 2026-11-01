@@ -1,0 +1,1662 @@
+[
+  {
+    "task": "12306-howtocook-team-trip-catering-excel-gcal",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "72a64a2d2c3018cc3781aee20c803aa6be024d4be4cef68aa66f59bbe0dc14ea",
+    "category_copy_sha256": "72a64a2d2c3018cc3781aee20c803aa6be024d4be4cef68aa66f59bbe0dc14ea",
+    "tag_source_sha256": "72a64a2d2c3018cc3781aee20c803aa6be024d4be4cef68aa66f59bbe0dc14ea",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/12306-howtocook-team-trip-catering-excel-gcal.json"
+  },
+  {
+    "task": "12306-wc-amazon-product-roadshow-excel-notion",
+    "curated_category": "read_only",
+    "oracle_sha256": "523358ee0168a89560d2aa4adfe3cf26c94c9a9087b9735f8d0f396e330aee21",
+    "category_copy_sha256": "523358ee0168a89560d2aa4adfe3cf26c94c9a9087b9735f8d0f396e330aee21",
+    "tag_source_sha256": "523358ee0168a89560d2aa4adfe3cf26c94c9a9087b9735f8d0f396e330aee21",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/12306-wc-amazon-product-roadshow-excel-notion.json"
+  },
+  {
+    "task": "12306-wc-supplier-visit-excel-email-gcal",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "7873562bb3ce475819c2ebedbd81b237a65869e4975b8816b08b17293a5d6230",
+    "category_copy_sha256": "7873562bb3ce475819c2ebedbd81b237a65869e4975b8816b08b17293a5d6230",
+    "tag_source_sha256": "7873562bb3ce475819c2ebedbd81b237a65869e4975b8816b08b17293a5d6230",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/12306-wc-supplier-visit-excel-email-gcal.json"
+  },
+  {
+    "task": "12306-yf-investor-roadshow-excel-ppt-email",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "6f7a175958c914cc245421966e163f4f25e2371fd0448701d962748a3df2c565",
+    "category_copy_sha256": "6f7a175958c914cc245421966e163f4f25e2371fd0448701d962748a3df2c565",
+    "tag_source_sha256": "6f7a175958c914cc245421966e163f4f25e2371fd0448701d962748a3df2c565",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/12306-yf-investor-roadshow-excel-ppt-email.json"
+  },
+  {
+    "task": "academic-literature-review",
+    "curated_category": "read_only",
+    "oracle_sha256": "e532c7738ccacfa55ffc49cfb9825d40a41736b9384042248e594e56cfd99c23",
+    "category_copy_sha256": "e532c7738ccacfa55ffc49cfb9825d40a41736b9384042248e594e56cfd99c23",
+    "tag_source_sha256": "e532c7738ccacfa55ffc49cfb9825d40a41736b9384042248e594e56cfd99c23",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/academic-literature-review.json"
+  },
+  {
+    "task": "academic-presentation-builder",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "17a66182d2490e3946d4866f200ab47a68f559c5fd0b7abf527d850d8dde711e",
+    "category_copy_sha256": "17a66182d2490e3946d4866f200ab47a68f559c5fd0b7abf527d850d8dde711e",
+    "tag_source_sha256": "17a66182d2490e3946d4866f200ab47a68f559c5fd0b7abf527d850d8dde711e",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/academic-presentation-builder.json"
+  },
+  {
+    "task": "arxiv-conference-prep",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "bf96d4ca7df5aeae7a2820c2eab4385f246569f5fe5d45dcd24a5892d1ee6b71",
+    "category_copy_sha256": "bf96d4ca7df5aeae7a2820c2eab4385f246569f5fe5d45dcd24a5892d1ee6b71",
+    "tag_source_sha256": "bf96d4ca7df5aeae7a2820c2eab4385f246569f5fe5d45dcd24a5892d1ee6b71",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-conference-prep.json"
+  },
+  {
+    "task": "arxiv-federated-learning-notion",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "45d2f05daaee13a0590146a0eb3c1214488e97a3c3594ed97dc3e08101987908",
+    "category_copy_sha256": "45d2f05daaee13a0590146a0eb3c1214488e97a3c3594ed97dc3e08101987908",
+    "tag_source_sha256": "45d2f05daaee13a0590146a0eb3c1214488e97a3c3594ed97dc3e08101987908",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-federated-learning-notion.json"
+  },
+  {
+    "task": "arxiv-latex-analysis-notion-word",
+    "curated_category": "writable",
+    "oracle_sha256": "bd6ca39ff7be3b758206e6a526617f0d6781909f2964bcad6ee0f28b65b1d1b8",
+    "category_copy_sha256": "bd6ca39ff7be3b758206e6a526617f0d6781909f2964bcad6ee0f28b65b1d1b8",
+    "tag_source_sha256": "bd6ca39ff7be3b758206e6a526617f0d6781909f2964bcad6ee0f28b65b1d1b8",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-latex-analysis-notion-word.json"
+  },
+  {
+    "task": "arxiv-latex-reasoning-gsheet",
+    "curated_category": "writable",
+    "oracle_sha256": "789d89c53c8cf280001c221022b45a6131a2fc44942316e2373325c0aaf08406",
+    "category_copy_sha256": "789d89c53c8cf280001c221022b45a6131a2fc44942316e2373325c0aaf08406",
+    "tag_source_sha256": "789d89c53c8cf280001c221022b45a6131a2fc44942316e2373325c0aaf08406",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-latex-reasoning-gsheet.json"
+  },
+  {
+    "task": "arxiv-latex-review-notion-word",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "920bd49da08800ccdaaf79139b1f3a32729d181d878d493d03bd4aedcc13950b",
+    "category_copy_sha256": "920bd49da08800ccdaaf79139b1f3a32729d181d878d493d03bd4aedcc13950b",
+    "tag_source_sha256": "920bd49da08800ccdaaf79139b1f3a32729d181d878d493d03bd4aedcc13950b",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-latex-review-notion-word.json"
+  },
+  {
+    "task": "arxiv-lit-review-gsheet",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "a546aff33a4546f63104afa85f8917dc08e52f7a05f4f36594fa128c423d2240",
+    "category_copy_sha256": "a546aff33a4546f63104afa85f8917dc08e52f7a05f4f36594fa128c423d2240",
+    "tag_source_sha256": "a546aff33a4546f63104afa85f8917dc08e52f7a05f4f36594fa128c423d2240",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-lit-review-gsheet.json"
+  },
+  {
+    "task": "arxiv-reading-plan-excel-gcal-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "d6c606c349617f62e3f6b0d1d0fd9c29c5e37a28a41317199250134fc2f61328",
+    "category_copy_sha256": "d6c606c349617f62e3f6b0d1d0fd9c29c5e37a28a41317199250134fc2f61328",
+    "tag_source_sha256": "d6c606c349617f62e3f6b0d1d0fd9c29c5e37a28a41317199250134fc2f61328",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-reading-plan-excel-gcal-email.json"
+  },
+  {
+    "task": "arxiv-research-pipeline-notion-excel",
+    "curated_category": "read_only",
+    "oracle_sha256": "906177661b9831aa3279b4c7c562325514c9df3caf09985ad88d59714a7b3235",
+    "category_copy_sha256": "906177661b9831aa3279b4c7c562325514c9df3caf09985ad88d59714a7b3235",
+    "tag_source_sha256": "906177661b9831aa3279b4c7c562325514c9df3caf09985ad88d59714a7b3235",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-research-pipeline-notion-excel.json"
+  },
+  {
+    "task": "arxiv-research-report",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "19f567dd7480521f44b18ac866cf24a232725c6d09d4435dbeaad6331528a6a8",
+    "category_copy_sha256": "19f567dd7480521f44b18ac866cf24a232725c6d09d4435dbeaad6331528a6a8",
+    "tag_source_sha256": "19f567dd7480521f44b18ac866cf24a232725c6d09d4435dbeaad6331528a6a8",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-research-report.json"
+  },
+  {
+    "task": "arxiv-research-tracker-notion",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "46fc795668e25f30b5857cbe2abad6236e2dade8eb275ed63c5aedb20f706bc3",
+    "category_copy_sha256": "46fc795668e25f30b5857cbe2abad6236e2dade8eb275ed63c5aedb20f706bc3",
+    "tag_source_sha256": "46fc795668e25f30b5857cbe2abad6236e2dade8eb275ed63c5aedb20f706bc3",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-research-tracker-notion.json"
+  },
+  {
+    "task": "arxiv-survey-presentation",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "ae8db4af21b6f5280e9c616c043f7d279f06065128875c05e18157f649694fa0",
+    "category_copy_sha256": "ae8db4af21b6f5280e9c616c043f7d279f06065128875c05e18157f649694fa0",
+    "tag_source_sha256": "ae8db4af21b6f5280e9c616c043f7d279f06065128875c05e18157f649694fa0",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/arxiv-survey-presentation.json"
+  },
+  {
+    "task": "canvas-announcement-summary",
+    "curated_category": "writable",
+    "oracle_sha256": "77fd01571d60e53062bb7f884052d2968207d4297f892f471cbd780706ff19ea",
+    "category_copy_sha256": "77fd01571d60e53062bb7f884052d2968207d4297f892f471cbd780706ff19ea",
+    "tag_source_sha256": "77fd01571d60e53062bb7f884052d2968207d4297f892f471cbd780706ff19ea",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-announcement-summary.json"
+  },
+  {
+    "task": "canvas-assignment-deadline-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "c4aac81751bbe725cbf2d364aa7068fec9f9eae1dd09c4a5e54a1c78f0bbe8c0",
+    "category_copy_sha256": "c4aac81751bbe725cbf2d364aa7068fec9f9eae1dd09c4a5e54a1c78f0bbe8c0",
+    "tag_source_sha256": "c4aac81751bbe725cbf2d364aa7068fec9f9eae1dd09c4a5e54a1c78f0bbe8c0",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-assignment-deadline-gcal.json"
+  },
+  {
+    "task": "canvas-assignment-deadline-word-gcal",
+    "curated_category": "writable",
+    "oracle_sha256": "f6c628395ca6b9d8331747ac47e5f8c6427f8d37c246dd6cd534ad2a90bffd51",
+    "category_copy_sha256": "f6c628395ca6b9d8331747ac47e5f8c6427f8d37c246dd6cd534ad2a90bffd51",
+    "tag_source_sha256": "f6c628395ca6b9d8331747ac47e5f8c6427f8d37c246dd6cd534ad2a90bffd51",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-assignment-deadline-word-gcal.json"
+  },
+  {
+    "task": "canvas-assignment-feedback-gform-word",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "030250fb172304807b9974e757cc312ec85ac18dd355aad9f9b6dff92ef967b8",
+    "category_copy_sha256": "030250fb172304807b9974e757cc312ec85ac18dd355aad9f9b6dff92ef967b8",
+    "tag_source_sha256": "030250fb172304807b9974e757cc312ec85ac18dd355aad9f9b6dff92ef967b8",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-assignment-feedback-gform-word.json"
+  },
+  {
+    "task": "canvas-at-risk-intervention",
+    "curated_category": "read_only",
+    "oracle_sha256": "0d042da9000162fc9c43b23022ea2c40a319c5a145b2ca81db4e3be9196e1670",
+    "category_copy_sha256": "0d042da9000162fc9c43b23022ea2c40a319c5a145b2ca81db4e3be9196e1670",
+    "tag_source_sha256": "0d042da9000162fc9c43b23022ea2c40a319c5a145b2ca81db4e3be9196e1670",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-at-risk-intervention.json"
+  },
+  {
+    "task": "canvas-course-comparison",
+    "curated_category": "read_only",
+    "oracle_sha256": "53c0c4d1cf5a6230687528696248648b26da260a328e575f5e5c9948533389a3",
+    "category_copy_sha256": "53c0c4d1cf5a6230687528696248648b26da260a328e575f5e5c9948533389a3",
+    "tag_source_sha256": "53c0c4d1cf5a6230687528696248648b26da260a328e575f5e5c9948533389a3",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-course-comparison.json"
+  },
+  {
+    "task": "canvas-course-comparison-word",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "8d29fd47dba91617e7444b732064483cb12375a608cb44e5a7d90482659ca58c",
+    "category_copy_sha256": "8d29fd47dba91617e7444b732064483cb12375a608cb44e5a7d90482659ca58c",
+    "tag_source_sha256": "8d29fd47dba91617e7444b732064483cb12375a608cb44e5a7d90482659ca58c",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-course-comparison-word.json"
+  },
+  {
+    "task": "canvas-course-feedback",
+    "curated_category": "read_only",
+    "oracle_sha256": "93fcbca333fadb1a64ada148d0c92f9b1e511b49a7e275e77a081d6d25a05067",
+    "category_copy_sha256": "93fcbca333fadb1a64ada148d0c92f9b1e511b49a7e275e77a081d6d25a05067",
+    "tag_source_sha256": "93fcbca333fadb1a64ada148d0c92f9b1e511b49a7e275e77a081d6d25a05067",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-course-feedback.json"
+  },
+  {
+    "task": "canvas-course-notion-wiki",
+    "curated_category": "writable",
+    "oracle_sha256": "39defe5ee09576de201352c797ac8fe3ca700d56adc73136d81b305baae156fb",
+    "category_copy_sha256": "39defe5ee09576de201352c797ac8fe3ca700d56adc73136d81b305baae156fb",
+    "tag_source_sha256": "39defe5ee09576de201352c797ac8fe3ca700d56adc73136d81b305baae156fb",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": false,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-course-notion-wiki.json"
+  },
+  {
+    "task": "canvas-curriculum-audit",
+    "curated_category": "read_only",
+    "oracle_sha256": "00a2d2c89f693b3b551e926ceae8a984205af55713ce6cae2f95c9d832d6688d",
+    "category_copy_sha256": "00a2d2c89f693b3b551e926ceae8a984205af55713ce6cae2f95c9d832d6688d",
+    "tag_source_sha256": "00a2d2c89f693b3b551e926ceae8a984205af55713ce6cae2f95c9d832d6688d",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-curriculum-audit.json"
+  },
+  {
+    "task": "canvas-enrollment-forecast-excel-gform-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "61b098d3318bd2550bcc8cb6ca3c59577e186462be45872d956373d784313b38",
+    "category_copy_sha256": "61b098d3318bd2550bcc8cb6ca3c59577e186462be45872d956373d784313b38",
+    "tag_source_sha256": "61b098d3318bd2550bcc8cb6ca3c59577e186462be45872d956373d784313b38",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-enrollment-forecast-excel-gform-email.json"
+  },
+  {
+    "task": "canvas-enrollment-notion",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "02ee80bef29f0f9ec04a5655259d33596023f2d851cd3e7d00719e06794ea2db",
+    "category_copy_sha256": "02ee80bef29f0f9ec04a5655259d33596023f2d851cd3e7d00719e06794ea2db",
+    "tag_source_sha256": "02ee80bef29f0f9ec04a5655259d33596023f2d851cd3e7d00719e06794ea2db",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-enrollment-notion.json"
+  },
+  {
+    "task": "canvas-enrollment-overview",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "813ad3b2edb9777d8dbb6a9e82ba2077ac1ec357e5e38f348ba9792aa6d7af61",
+    "category_copy_sha256": "813ad3b2edb9777d8dbb6a9e82ba2077ac1ec357e5e38f348ba9792aa6d7af61",
+    "tag_source_sha256": "813ad3b2edb9777d8dbb6a9e82ba2077ac1ec357e5e38f348ba9792aa6d7af61",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-enrollment-overview.json"
+  },
+  {
+    "task": "canvas-enrollment-overview-excel-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "5142259eaf6656a312cc5778fca3967d292acedfb44ca54d144c258d5a2f67de",
+    "category_copy_sha256": "5142259eaf6656a312cc5778fca3967d292acedfb44ca54d144c258d5a2f67de",
+    "tag_source_sha256": "5142259eaf6656a312cc5778fca3967d292acedfb44ca54d144c258d5a2f67de",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-enrollment-overview-excel-email.json"
+  },
+  {
+    "task": "canvas-enrollment-overview-gsheet-ppt",
+    "curated_category": "writable",
+    "oracle_sha256": "0e0260ad7402feef23c787fca10807525156845674617475571d1bed5bb28d1a",
+    "category_copy_sha256": "0e0260ad7402feef23c787fca10807525156845674617475571d1bed5bb28d1a",
+    "tag_source_sha256": "0e0260ad7402feef23c787fca10807525156845674617475571d1bed5bb28d1a",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-enrollment-overview-gsheet-ppt.json"
+  },
+  {
+    "task": "canvas-enrollment-ppt-gsheet",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "fbd04973d5e6e1972f16db0b3f66db59b1a21d37d14246aeaa59a362cbcf7783",
+    "category_copy_sha256": "fbd04973d5e6e1972f16db0b3f66db59b1a21d37d14246aeaa59a362cbcf7783",
+    "tag_source_sha256": "fbd04973d5e6e1972f16db0b3f66db59b1a21d37d14246aeaa59a362cbcf7783",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-enrollment-ppt-gsheet.json"
+  },
+  {
+    "task": "canvas-faculty-workload-review",
+    "curated_category": "writable",
+    "oracle_sha256": "71d4bb89c49fdb68e4da7fe31f89ac754d595dbb8c9f4f3b7c0b443bbc320e5e",
+    "category_copy_sha256": "71d4bb89c49fdb68e4da7fe31f89ac754d595dbb8c9f4f3b7c0b443bbc320e5e",
+    "tag_source_sha256": "71d4bb89c49fdb68e4da7fe31f89ac754d595dbb8c9f4f3b7c0b443bbc320e5e",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-faculty-workload-review.json"
+  },
+  {
+    "task": "canvas-grade-distribution-gform",
+    "curated_category": "read_only",
+    "oracle_sha256": "fbd4fb98cd8c4c7e565204a21bfd8e5e7e0045c0c7bee247c9213b6aa29a1f01",
+    "category_copy_sha256": "fbd4fb98cd8c4c7e565204a21bfd8e5e7e0045c0c7bee247c9213b6aa29a1f01",
+    "tag_source_sha256": "fbd4fb98cd8c4c7e565204a21bfd8e5e7e0045c0c7bee247c9213b6aa29a1f01",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-grade-distribution-gform.json"
+  },
+  {
+    "task": "canvas-grade-equity-excel-word-gcal",
+    "curated_category": "read_only",
+    "oracle_sha256": "53a2a544c75e9c4dc7ccf6aa6a165327a7d5b31e09a4ef38a9bab1705c681557",
+    "category_copy_sha256": "53a2a544c75e9c4dc7ccf6aa6a165327a7d5b31e09a4ef38a9bab1705c681557",
+    "tag_source_sha256": "53a2a544c75e9c4dc7ccf6aa6a165327a7d5b31e09a4ef38a9bab1705c681557",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-grade-equity-excel-word-gcal.json"
+  },
+  {
+    "task": "canvas-grade-summary",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "50215241d44300c118c1b6c907786a1d08f3833440a19835c0b755133ccb68f1",
+    "category_copy_sha256": "50215241d44300c118c1b6c907786a1d08f3833440a19835c0b755133ccb68f1",
+    "tag_source_sha256": "50215241d44300c118c1b6c907786a1d08f3833440a19835c0b755133ccb68f1",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-grade-summary.json"
+  },
+  {
+    "task": "canvas-grades-gsheet-pdf-email",
+    "curated_category": "read_only",
+    "oracle_sha256": "2580046b23f04c813f561b05527fb218d352933adff00a57eab587c66b26e90e",
+    "category_copy_sha256": "2580046b23f04c813f561b05527fb218d352933adff00a57eab587c66b26e90e",
+    "tag_source_sha256": "2580046b23f04c813f561b05527fb218d352933adff00a57eab587c66b26e90e",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-grades-gsheet-pdf-email.json"
+  },
+  {
+    "task": "canvas-late-submission-gcal",
+    "curated_category": "read_only",
+    "oracle_sha256": "a7f1e9a448eca9f36b599d27638f36fdfcb56f64354faf33e76a59313e23ad24",
+    "category_copy_sha256": "a7f1e9a448eca9f36b599d27638f36fdfcb56f64354faf33e76a59313e23ad24",
+    "tag_source_sha256": "a7f1e9a448eca9f36b599d27638f36fdfcb56f64354faf33e76a59313e23ad24",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-late-submission-gcal.json"
+  },
+  {
+    "task": "canvas-pdf-grade-gsheet",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "792d1e5de47128da15c871d9b9bfcc587427bf660d3765d5ad6d8099bc124a91",
+    "category_copy_sha256": "792d1e5de47128da15c871d9b9bfcc587427bf660d3765d5ad6d8099bc124a91",
+    "tag_source_sha256": "792d1e5de47128da15c871d9b9bfcc587427bf660d3765d5ad6d8099bc124a91",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-pdf-grade-gsheet.json"
+  },
+  {
+    "task": "canvas-quiz-analysis-ppt",
+    "curated_category": "read_only",
+    "oracle_sha256": "b5633c42ee9186948c88296eab2e06ebf5a0ec237a0ded0a2004a8de903ee8c9",
+    "category_copy_sha256": "b5633c42ee9186948c88296eab2e06ebf5a0ec237a0ded0a2004a8de903ee8c9",
+    "tag_source_sha256": "b5633c42ee9186948c88296eab2e06ebf5a0ec237a0ded0a2004a8de903ee8c9",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-quiz-analysis-ppt.json"
+  },
+  {
+    "task": "canvas-quiz-item-analysis-word-gcal-email",
+    "curated_category": "read_only",
+    "oracle_sha256": "e005505dde5b6d9d33ceaa91cd842cae7dc43ee5f3bc51ff944d2eb143720d27",
+    "category_copy_sha256": "e005505dde5b6d9d33ceaa91cd842cae7dc43ee5f3bc51ff944d2eb143720d27",
+    "tag_source_sha256": "e005505dde5b6d9d33ceaa91cd842cae7dc43ee5f3bc51ff944d2eb143720d27",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-quiz-item-analysis-word-gcal-email.json"
+  },
+  {
+    "task": "canvas-quiz-performance-excel",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "15f6e00a088a518278657ab3b40ceae8879a5a5d51661a441de7edde48f34cb4",
+    "category_copy_sha256": "15f6e00a088a518278657ab3b40ceae8879a5a5d51661a441de7edde48f34cb4",
+    "tag_source_sha256": "15f6e00a088a518278657ab3b40ceae8879a5a5d51661a441de7edde48f34cb4",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-quiz-performance-excel.json"
+  },
+  {
+    "task": "canvas-quiz-performance-gcal-gform",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "48919277f4df5b2569bfe358b428de2fa483b1ca7cb1d610f4094cdb714ce4f3",
+    "category_copy_sha256": "48919277f4df5b2569bfe358b428de2fa483b1ca7cb1d610f4094cdb714ce4f3",
+    "tag_source_sha256": "48919277f4df5b2569bfe358b428de2fa483b1ca7cb1d610f4094cdb714ce4f3",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-quiz-performance-gcal-gform.json"
+  },
+  {
+    "task": "canvas-scholarly-curriculum-review",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "47f4434e04fb5e19ac6ae87c7be0442912500f559e2e7338c96bacf22ecf50a2",
+    "category_copy_sha256": "47f4434e04fb5e19ac6ae87c7be0442912500f559e2e7338c96bacf22ecf50a2",
+    "tag_source_sha256": "47f4434e04fb5e19ac6ae87c7be0442912500f559e2e7338c96bacf22ecf50a2",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-scholarly-curriculum-review.json"
+  },
+  {
+    "task": "canvas-semester-summary-ppt",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "e2b7e20776e8358a5a9d8bd1e2198777b331b5474090489dcd0751e6fb970442",
+    "category_copy_sha256": "e2b7e20776e8358a5a9d8bd1e2198777b331b5474090489dcd0751e6fb970442",
+    "tag_source_sha256": "e2b7e20776e8358a5a9d8bd1e2198777b331b5474090489dcd0751e6fb970442",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-semester-summary-ppt.json"
+  },
+  {
+    "task": "canvas-ta-workload-excel-email",
+    "curated_category": "read_only",
+    "oracle_sha256": "69fc66bc641046b5653e62c1b625859d48295ce40c25c8ab29f5715c66890ffc",
+    "category_copy_sha256": "69fc66bc641046b5653e62c1b625859d48295ce40c25c8ab29f5715c66890ffc",
+    "tag_source_sha256": "69fc66bc641046b5653e62c1b625859d48295ce40c25c8ab29f5715c66890ffc",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-ta-workload-excel-email.json"
+  },
+  {
+    "task": "customer-satisfaction-analytics-framework",
+    "curated_category": "writable",
+    "oracle_sha256": "0099824ed38be6ba3673c950df7450976fe8db5a52540ca9458dc61d1077cd34",
+    "category_copy_sha256": "0099824ed38be6ba3673c950df7450976fe8db5a52540ca9458dc61d1077cd34",
+    "tag_source_sha256": "0099824ed38be6ba3673c950df7450976fe8db5a52540ca9458dc61d1077cd34",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/customer-satisfaction-analytics-framework.json"
+  },
+  {
+    "task": "ecommerce-commodity-impact",
+    "curated_category": "read_only",
+    "oracle_sha256": "0fcb6ed6b1da68e004918378f3ecdb84ff76c00c62a7e93122270db114cde1fc",
+    "category_copy_sha256": "0fcb6ed6b1da68e004918378f3ecdb84ff76c00c62a7e93122270db114cde1fc",
+    "tag_source_sha256": "0fcb6ed6b1da68e004918378f3ecdb84ff76c00c62a7e93122270db114cde1fc",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/ecommerce-commodity-impact.json"
+  },
+  {
+    "task": "ecommerce-market-benchmark",
+    "curated_category": "read_only",
+    "oracle_sha256": "3be292d52b9ce52f62e50941cfc06659fc3516efe567c317781a91f14bbf5808",
+    "category_copy_sha256": "3be292d52b9ce52f62e50941cfc06659fc3516efe567c317781a91f14bbf5808",
+    "tag_source_sha256": "3be292d52b9ce52f62e50941cfc06659fc3516efe567c317781a91f14bbf5808",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/ecommerce-market-benchmark.json"
+  },
+  {
+    "task": "fetch-canvas-syllabus-benchmark-excel-ppt",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "ab61ef8e260599628afe0291a64a9186e21312e0174e8e94cd1ad1db0f49d46f",
+    "category_copy_sha256": "ab61ef8e260599628afe0291a64a9186e21312e0174e8e94cd1ad1db0f49d46f",
+    "tag_source_sha256": "ab61ef8e260599628afe0291a64a9186e21312e0174e8e94cd1ad1db0f49d46f",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-canvas-syllabus-benchmark-excel-ppt.json"
+  },
+  {
+    "task": "fetch-email-gcal-scheduler-excel-word",
+    "curated_category": "writable",
+    "oracle_sha256": "efd225a7e4e235b9cc437f48b3eb813aa20e2cf8ba6cd9cd694e2dafaa5c6db8",
+    "category_copy_sha256": "efd225a7e4e235b9cc437f48b3eb813aa20e2cf8ba6cd9cd694e2dafaa5c6db8",
+    "tag_source_sha256": "efd225a7e4e235b9cc437f48b3eb813aa20e2cf8ba6cd9cd694e2dafaa5c6db8",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": false,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-email-gcal-scheduler-excel-word.json"
+  },
+  {
+    "task": "fetch-howtocook-catering-excel-gcal-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "44e7013ca109eeca1396f9ac96219661bc9ff25963f9aa89a483017e65e36892",
+    "category_copy_sha256": "44e7013ca109eeca1396f9ac96219661bc9ff25963f9aa89a483017e65e36892",
+    "tag_source_sha256": "44e7013ca109eeca1396f9ac96219661bc9ff25963f9aa89a483017e65e36892",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-howtocook-catering-excel-gcal-email.json"
+  },
+  {
+    "task": "fetch-notion-monitoring",
+    "curated_category": "writable",
+    "oracle_sha256": "40800ad379d3327f17651ce2ee1cd9bb8520dd1a4607f0264e1c78b24a65ce6d",
+    "category_copy_sha256": "40800ad379d3327f17651ce2ee1cd9bb8520dd1a4607f0264e1c78b24a65ce6d",
+    "tag_source_sha256": "40800ad379d3327f17651ce2ee1cd9bb8520dd1a4607f0264e1c78b24a65ce6d",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-notion-monitoring.json"
+  },
+  {
+    "task": "fetch-sf-hr-benchmark-excel-word",
+    "curated_category": "writable",
+    "oracle_sha256": "c128ba5d8179379a3617afd964856c2bc56a90d4f439782ce2149e3b7e42e1b4",
+    "category_copy_sha256": "c128ba5d8179379a3617afd964856c2bc56a90d4f439782ce2149e3b7e42e1b4",
+    "tag_source_sha256": "c128ba5d8179379a3617afd964856c2bc56a90d4f439782ce2149e3b7e42e1b4",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-sf-hr-benchmark-excel-word.json"
+  },
+  {
+    "task": "fetch-sf-support-survey-gform-gcal-excel",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "2f076b87f7b6109435deab310bef10c9ff1999fe3291e3445397f06080480ae0",
+    "category_copy_sha256": "2f076b87f7b6109435deab310bef10c9ff1999fe3291e3445397f06080480ae0",
+    "tag_source_sha256": "2f076b87f7b6109435deab310bef10c9ff1999fe3291e3445397f06080480ae0",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-sf-support-survey-gform-gcal-excel.json"
+  },
+  {
+    "task": "fetch-wc-inventory-forecast-excel-gcal-email",
+    "curated_category": "read_only",
+    "oracle_sha256": "1b7a091d97cfb4829cb7b79c90e63670e3fd9af796c1787dd782746be452bb98",
+    "category_copy_sha256": "1b7a091d97cfb4829cb7b79c90e63670e3fd9af796c1787dd782746be452bb98",
+    "tag_source_sha256": "1b7a091d97cfb4829cb7b79c90e63670e3fd9af796c1787dd782746be452bb98",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-wc-inventory-forecast-excel-gcal-email.json"
+  },
+  {
+    "task": "fetch-wc-yf-financial-excel-word-email",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "42265986e44325f742cc721eefdeaabccb6b022104f6bfa0f9f06590d87ceb37",
+    "category_copy_sha256": "42265986e44325f742cc721eefdeaabccb6b022104f6bfa0f9f06590d87ceb37",
+    "tag_source_sha256": "42265986e44325f742cc721eefdeaabccb6b022104f6bfa0f9f06590d87ceb37",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-wc-yf-financial-excel-word-email.json"
+  },
+  {
+    "task": "fetch-yf-dividend-strategy-gsheet-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "cc02b6b5f5338d1560550089fcfa8f3bb6e67e3f17caa3527be7d6d5d2f33d37",
+    "category_copy_sha256": "cc02b6b5f5338d1560550089fcfa8f3bb6e67e3f17caa3527be7d6d5d2f33d37",
+    "tag_source_sha256": "cc02b6b5f5338d1560550089fcfa8f3bb6e67e3f17caa3527be7d6d5d2f33d37",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-yf-dividend-strategy-gsheet-email.json"
+  },
+  {
+    "task": "fetch-yf-macro-portfolio-excel-gcal-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "f0c1779b9ea9fec211df4e95f06f71d81896e3819f1c1ad03d9c77a4973fda3b",
+    "category_copy_sha256": "f0c1779b9ea9fec211df4e95f06f71d81896e3819f1c1ad03d9c77a4973fda3b",
+    "tag_source_sha256": "f0c1779b9ea9fec211df4e95f06f71d81896e3819f1c1ad03d9c77a4973fda3b",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-yf-macro-portfolio-excel-gcal-email.json"
+  },
+  {
+    "task": "fetch-yf-portfolio-health-excel-gcal-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "30144c63f682c2dfdcd1b9ac878c3b22c9476e17119af704dc091c0630c82055",
+    "category_copy_sha256": "30144c63f682c2dfdcd1b9ac878c3b22c9476e17119af704dc091c0630c82055",
+    "tag_source_sha256": "30144c63f682c2dfdcd1b9ac878c3b22c9476e17119af704dc091c0630c82055",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-yf-portfolio-health-excel-gcal-email.json"
+  },
+  {
+    "task": "financial-audit-cross-system-reconciliation",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "651d081fbc8df13d1d95f6ff3f22a0c09a7d46ffa90aa949cc4b379782f40903",
+    "category_copy_sha256": "651d081fbc8df13d1d95f6ff3f22a0c09a7d46ffa90aa949cc4b379782f40903",
+    "tag_source_sha256": "651d081fbc8df13d1d95f6ff3f22a0c09a7d46ffa90aa949cc4b379782f40903",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/financial-audit-cross-system-reconciliation.json"
+  },
+  {
+    "task": "gform-snowflake-feedback",
+    "curated_category": "writable",
+    "oracle_sha256": "0700395a6a5eb0c14d32ebe0db8e91218769f877141e9a522cd9a823e3eed18d",
+    "category_copy_sha256": "0700395a6a5eb0c14d32ebe0db8e91218769f877141e9a522cd9a823e3eed18d",
+    "tag_source_sha256": "0700395a6a5eb0c14d32ebe0db8e91218769f877141e9a522cd9a823e3eed18d",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/gform-snowflake-feedback.json"
+  },
+  {
+    "task": "gsheet-woocommerce-inventory",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "49ef60d9469e247e5553ccb3efdac4b6c5d08768d7c8cf1544e1f11ad8384e89",
+    "category_copy_sha256": "49ef60d9469e247e5553ccb3efdac4b6c5d08768d7c8cf1544e1f11ad8384e89",
+    "tag_source_sha256": "49ef60d9469e247e5553ccb3efdac4b6c5d08768d7c8cf1544e1f11ad8384e89",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": false,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/gsheet-woocommerce-inventory.json"
+  },
+  {
+    "task": "howtocook-catering-gform-notion-excel",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "e218ff9d96b07479f5dd7d3d5f428715ed5b6b1fcfb3f2af31a9459ff531b08d",
+    "category_copy_sha256": "e218ff9d96b07479f5dd7d3d5f428715ed5b6b1fcfb3f2af31a9459ff531b08d",
+    "tag_source_sha256": "e218ff9d96b07479f5dd7d3d5f428715ed5b6b1fcfb3f2af31a9459ff531b08d",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/howtocook-catering-gform-notion-excel.json"
+  },
+  {
+    "task": "howtocook-diet-gform-notion-excel",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "cdfa6f8a25e5d822163cc196c3a39a424ea1b7122186da304b8c98250b836ee2",
+    "category_copy_sha256": "cdfa6f8a25e5d822163cc196c3a39a424ea1b7122186da304b8c98250b836ee2",
+    "tag_source_sha256": "cdfa6f8a25e5d822163cc196c3a39a424ea1b7122186da304b8c98250b836ee2",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/howtocook-diet-gform-notion-excel.json"
+  },
+  {
+    "task": "howtocook-ecommerce-bundle",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "12d906da11427e23f9a6f01fd4dff39789404f180f61eb0bf35243eba110cdd0",
+    "category_copy_sha256": "12d906da11427e23f9a6f01fd4dff39789404f180f61eb0bf35243eba110cdd0",
+    "tag_source_sha256": "12d906da11427e23f9a6f01fd4dff39789404f180f61eb0bf35243eba110cdd0",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/howtocook-ecommerce-bundle.json"
+  },
+  {
+    "task": "howtocook-event-catering-excel-word",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "8cb972838e06dcc745b4e8be0a8b7d1d7ebb238dda80050bd805d3b22b4cb1e1",
+    "category_copy_sha256": "8cb972838e06dcc745b4e8be0a8b7d1d7ebb238dda80050bd805d3b22b4cb1e1",
+    "tag_source_sha256": "8cb972838e06dcc745b4e8be0a8b7d1d7ebb238dda80050bd805d3b22b4cb1e1",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/howtocook-event-catering-excel-word.json"
+  },
+  {
+    "task": "howtocook-event-menu-planner",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "7c26107ba0afaa90103d456850d2c3750ddd62d6bdec34aae2c546478c8d8ae1",
+    "category_copy_sha256": "7c26107ba0afaa90103d456850d2c3750ddd62d6bdec34aae2c546478c8d8ae1",
+    "tag_source_sha256": "7c26107ba0afaa90103d456850d2c3750ddd62d6bdec34aae2c546478c8d8ae1",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/howtocook-event-menu-planner.json"
+  },
+  {
+    "task": "howtocook-scholarly-health-study",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "3563c95644c16ae8e34a6c17756573322f44dadde27b2983c6c3639fcac91e31",
+    "category_copy_sha256": "3563c95644c16ae8e34a6c17756573322f44dadde27b2983c6c3639fcac91e31",
+    "tag_source_sha256": "3563c95644c16ae8e34a6c17756573322f44dadde27b2983c6c3639fcac91e31",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/howtocook-scholarly-health-study.json"
+  },
+  {
+    "task": "howtocook-weekly-gsheet-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "16cfb05a512b57a82b8eaf207e8f295a56366c936b762e262ce8337d44591b71",
+    "category_copy_sha256": "16cfb05a512b57a82b8eaf207e8f295a56366c936b762e262ce8337d44591b71",
+    "tag_source_sha256": "16cfb05a512b57a82b8eaf207e8f295a56366c936b762e262ce8337d44591b71",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/howtocook-weekly-gsheet-gcal.json"
+  },
+  {
+    "task": "howtocook-workshop-materials",
+    "curated_category": "writable",
+    "oracle_sha256": "190a76eeb5f78e94e9510b38a2b60e52d3a18b90f97f3e643324c6ea715e558b",
+    "category_copy_sha256": "190a76eeb5f78e94e9510b38a2b60e52d3a18b90f97f3e643324c6ea715e558b",
+    "tag_source_sha256": "190a76eeb5f78e94e9510b38a2b60e52d3a18b90f97f3e643324c6ea715e558b",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/howtocook-workshop-materials.json"
+  },
+  {
+    "task": "playwright-arxiv-review-criteria-word-gsheet",
+    "curated_category": "writable",
+    "oracle_sha256": "c213558ff06030466e0e3e7b7844e0f82bf5e2d3dfed4224f11875ccf57c2312",
+    "category_copy_sha256": "c213558ff06030466e0e3e7b7844e0f82bf5e2d3dfed4224f11875ccf57c2312",
+    "tag_source_sha256": "c213558ff06030466e0e3e7b7844e0f82bf5e2d3dfed4224f11875ccf57c2312",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/playwright-arxiv-review-criteria-word-gsheet.json"
+  },
+  {
+    "task": "playwright-howtocook-nutrition-gsheet-email",
+    "curated_category": "read_only",
+    "oracle_sha256": "80901f3a4c9d6b4d7b23984f861da7bcfae4b87a9e1b88b692189e680121ce63",
+    "category_copy_sha256": "80901f3a4c9d6b4d7b23984f861da7bcfae4b87a9e1b88b692189e680121ce63",
+    "tag_source_sha256": "80901f3a4c9d6b4d7b23984f861da7bcfae4b87a9e1b88b692189e680121ce63",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/playwright-howtocook-nutrition-gsheet-email.json"
+  },
+  {
+    "task": "playwright-sf-hr-benefits-survey-gform-excel",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "d1931879d903ac8847da115ad7a26b4b91603d32c7c5d0149839636d2dd98535",
+    "category_copy_sha256": "d1931879d903ac8847da115ad7a26b4b91603d32c7c5d0149839636d2dd98535",
+    "tag_source_sha256": "d1931879d903ac8847da115ad7a26b4b91603d32c7c5d0149839636d2dd98535",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/playwright-sf-hr-benefits-survey-gform-excel.json"
+  },
+  {
+    "task": "playwright-yf-market-dashboard-gsheet-word",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "6d2a2388d11513a5a575820f900e73075906f8d3220c8f7dcaf44cecb9dcdd81",
+    "category_copy_sha256": "6d2a2388d11513a5a575820f900e73075906f8d3220c8f7dcaf44cecb9dcdd81",
+    "tag_source_sha256": "6d2a2388d11513a5a575820f900e73075906f8d3220c8f7dcaf44cecb9dcdd81",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/playwright-yf-market-dashboard-gsheet-word.json"
+  },
+  {
+    "task": "ppt-snowflake-executive",
+    "curated_category": "writable",
+    "oracle_sha256": "c6a4aa7af71be84e9a63e61280b66a69a5a7c217db151d019ef064c3995bd9e8",
+    "category_copy_sha256": "c6a4aa7af71be84e9a63e61280b66a69a5a7c217db151d019ef064c3995bd9e8",
+    "tag_source_sha256": "c6a4aa7af71be84e9a63e61280b66a69a5a7c217db151d019ef064c3995bd9e8",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/ppt-snowflake-executive.json"
+  },
+  {
+    "task": "pw-sf-hr-dept-efficiency-excel-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "5043c9470677c04fbe72c3181a2c8e6122133e7b50dc7d49f708f8893ebed652",
+    "category_copy_sha256": "5043c9470677c04fbe72c3181a2c8e6122133e7b50dc7d49f708f8893ebed652",
+    "tag_source_sha256": "5043c9470677c04fbe72c3181a2c8e6122133e7b50dc7d49f708f8893ebed652",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/pw-sf-hr-dept-efficiency-excel-gcal.json"
+  },
+  {
+    "task": "pw-wc-coupon-effectiveness-gsheet-email",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "0af5ea63232302552a623e9b2b087c51f1ea4d8e67ba28941c506294c326e414",
+    "category_copy_sha256": "0af5ea63232302552a623e9b2b087c51f1ea4d8e67ba28941c506294c326e414",
+    "tag_source_sha256": "0af5ea63232302552a623e9b2b087c51f1ea4d8e67ba28941c506294c326e414",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/pw-wc-coupon-effectiveness-gsheet-email.json"
+  },
+  {
+    "task": "pw-wc-review-analysis-excel-notion",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "c25885a37dff4bda899538230907640bf6c1df68c4092af7db214cee00063493",
+    "category_copy_sha256": "c25885a37dff4bda899538230907640bf6c1df68c4092af7db214cee00063493",
+    "tag_source_sha256": "c25885a37dff4bda899538230907640bf6c1df68c4092af7db214cee00063493",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/pw-wc-review-analysis-excel-notion.json"
+  },
+  {
+    "task": "research-data-archival-compliance",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "898e44f3f1f95e6bcd6adedd55d2800c994687c706037c40f18283c802ea382c",
+    "category_copy_sha256": "898e44f3f1f95e6bcd6adedd55d2800c994687c706037c40f18283c802ea382c",
+    "tag_source_sha256": "898e44f3f1f95e6bcd6adedd55d2800c994687c706037c40f18283c802ea382c",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/research-data-archival-compliance.json"
+  },
+  {
+    "task": "research-lab-publication-pipeline",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "450c2fba140e1ca366a9982cce1b54f4b22854d97f5baca9b142384fbeb12b24",
+    "category_copy_sha256": "450c2fba140e1ca366a9982cce1b54f4b22854d97f5baca9b142384fbeb12b24",
+    "tag_source_sha256": "450c2fba140e1ca366a9982cce1b54f4b22854d97f5baca9b142384fbeb12b24",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/research-lab-publication-pipeline.json"
+  },
+  {
+    "task": "scholarly-arxiv-cross-reference",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "d814ba1c6c81e5f6166bb6808dbd8d760fdb879d749c0c21e75f5d77035cc1f7",
+    "category_copy_sha256": "d814ba1c6c81e5f6166bb6808dbd8d760fdb879d749c0c21e75f5d77035cc1f7",
+    "tag_source_sha256": "d814ba1c6c81e5f6166bb6808dbd8d760fdb879d749c0c21e75f5d77035cc1f7",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/scholarly-arxiv-cross-reference.json"
+  },
+  {
+    "task": "scholarly-arxiv-survey-word-notion-gcal",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "7fdd0fb87a465251e886629909f0da888594405b34b565006c4fc132eb97bc05",
+    "category_copy_sha256": "7fdd0fb87a465251e886629909f0da888594405b34b565006c4fc132eb97bc05",
+    "tag_source_sha256": "7fdd0fb87a465251e886629909f0da888594405b34b565006c4fc132eb97bc05",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/scholarly-arxiv-survey-word-notion-gcal.json"
+  },
+  {
+    "task": "sf-department-budget-analysis",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "8060d91d26f73d0da3a70400f5985c3aadb7a254d32bdfd9c081c65f7ac4315a",
+    "category_copy_sha256": "8060d91d26f73d0da3a70400f5985c3aadb7a254d32bdfd9c081c65f7ac4315a",
+    "tag_source_sha256": "8060d91d26f73d0da3a70400f5985c3aadb7a254d32bdfd9c081c65f7ac4315a",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-department-budget-analysis.json"
+  },
+  {
+    "task": "sf-hr-compensation-pdf-notion",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "7591f9029fa20a5825a22538d8a3d7511be059dbba5d8dea3823a5b3cd8eb3e1",
+    "category_copy_sha256": "7591f9029fa20a5825a22538d8a3d7511be059dbba5d8dea3823a5b3cd8eb3e1",
+    "tag_source_sha256": "7591f9029fa20a5825a22538d8a3d7511be059dbba5d8dea3823a5b3cd8eb3e1",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-compensation-pdf-notion.json"
+  },
+  {
+    "task": "sf-hr-dept-budget-ppt-email",
+    "curated_category": "writable",
+    "oracle_sha256": "e8359eba19c428e1156e56308208f0a7139715ce3cc2159323371aa19f8c34f3",
+    "category_copy_sha256": "e8359eba19c428e1156e56308208f0a7139715ce3cc2159323371aa19f8c34f3",
+    "tag_source_sha256": "e8359eba19c428e1156e56308208f0a7139715ce3cc2159323371aa19f8c34f3",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-dept-budget-ppt-email.json"
+  },
+  {
+    "task": "sf-hr-education-notion",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "ca346820daddfa436c6ca5ed6d9cbe3ba7429b997771f157e57a5e17c028992a",
+    "category_copy_sha256": "ca346820daddfa436c6ca5ed6d9cbe3ba7429b997771f157e57a5e17c028992a",
+    "tag_source_sha256": "ca346820daddfa436c6ca5ed6d9cbe3ba7429b997771f157e57a5e17c028992a",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-education-notion.json"
+  },
+  {
+    "task": "sf-hr-education-skills-gform-excel",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "4b34ae6ad0498c9ad9baebd9eeea81dd49f23125da01299c7eb855ada22d6ecb",
+    "category_copy_sha256": "4b34ae6ad0498c9ad9baebd9eeea81dd49f23125da01299c7eb855ada22d6ecb",
+    "tag_source_sha256": "4b34ae6ad0498c9ad9baebd9eeea81dd49f23125da01299c7eb855ada22d6ecb",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-education-skills-gform-excel.json"
+  },
+  {
+    "task": "sf-hr-performance-ppt",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "b5cd1ba1349db893defc3ad5e6907cd51e46502b0312dd709a29da33948ff935",
+    "category_copy_sha256": "b5cd1ba1349db893defc3ad5e6907cd51e46502b0312dd709a29da33948ff935",
+    "tag_source_sha256": "b5cd1ba1349db893defc3ad5e6907cd51e46502b0312dd709a29da33948ff935",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-performance-ppt.json"
+  },
+  {
+    "task": "sf-hr-promotion-review",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "d98aad60f105c3c370d6155f91a5a2979801d85a3215501f58b48d3cbe154131",
+    "category_copy_sha256": "d98aad60f105c3c370d6155f91a5a2979801d85a3215501f58b48d3cbe154131",
+    "tag_source_sha256": "d98aad60f105c3c370d6155f91a5a2979801d85a3215501f58b48d3cbe154131",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-promotion-review.json"
+  },
+  {
+    "task": "sf-hr-rating-distribution",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "3994e81d2df40e3c631c55e1f74936320ff949cdf68d7c721fe1c5eb53640b27",
+    "category_copy_sha256": "3994e81d2df40e3c631c55e1f74936320ff949cdf68d7c721fe1c5eb53640b27",
+    "tag_source_sha256": "3994e81d2df40e3c631c55e1f74936320ff949cdf68d7c721fe1c5eb53640b27",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-rating-distribution.json"
+  },
+  {
+    "task": "sf-hr-salary-benchmark-gform-excel-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "e24ed540dca29522531f69c2cb440700da23305d65595723efe651e4cc5255e3",
+    "category_copy_sha256": "e24ed540dca29522531f69c2cb440700da23305d65595723efe651e4cc5255e3",
+    "tag_source_sha256": "e24ed540dca29522531f69c2cb440700da23305d65595723efe651e4cc5255e3",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-salary-benchmark-gform-excel-email.json"
+  },
+  {
+    "task": "sf-hr-salary-overview",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "fe0b01041943a50b663e80c82995189bb2988dc0e271c7c7add38d07f0a6b2c7",
+    "category_copy_sha256": "fe0b01041943a50b663e80c82995189bb2988dc0e271c7c7add38d07f0a6b2c7",
+    "tag_source_sha256": "fe0b01041943a50b663e80c82995189bb2988dc0e271c7c7add38d07f0a6b2c7",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-salary-overview.json"
+  },
+  {
+    "task": "sf-hr-satisfaction-analysis",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "c9163b84fafdd50430212a5717b84fecf53b47ae22d07a153c1358af2bac9a9f",
+    "category_copy_sha256": "c9163b84fafdd50430212a5717b84fecf53b47ae22d07a153c1358af2bac9a9f",
+    "tag_source_sha256": "c9163b84fafdd50430212a5717b84fecf53b47ae22d07a153c1358af2bac9a9f",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-satisfaction-analysis.json"
+  },
+  {
+    "task": "sf-hr-worklife-notion-excel",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "5fb24967d4d55961f130fcabf40467e9bbb07e8c2cadd8d4f72cce2584270fd5",
+    "category_copy_sha256": "5fb24967d4d55961f130fcabf40467e9bbb07e8c2cadd8d4f72cce2584270fd5",
+    "tag_source_sha256": "5fb24967d4d55961f130fcabf40467e9bbb07e8c2cadd8d4f72cce2584270fd5",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-hr-worklife-notion-excel.json"
+  },
+  {
+    "task": "sf-quality-assurance-survey",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "81ad5e4c574574d947961e5700eaf2fc009a1da2a8dbd21b8aafd701e1500f38",
+    "category_copy_sha256": "81ad5e4c574574d947961e5700eaf2fc009a1da2a8dbd21b8aafd701e1500f38",
+    "tag_source_sha256": "81ad5e4c574574d947961e5700eaf2fc009a1da2a8dbd21b8aafd701e1500f38",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-quality-assurance-survey.json"
+  },
+  {
+    "task": "sf-sales-customer-loyalty",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "fc1f1b22217b29240a1a6c5a4ce36b2b8466e5930c2f51d85dda465259bb4688",
+    "category_copy_sha256": "fc1f1b22217b29240a1a6c5a4ce36b2b8466e5930c2f51d85dda465259bb4688",
+    "tag_source_sha256": "fc1f1b22217b29240a1a6c5a4ce36b2b8466e5930c2f51d85dda465259bb4688",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-customer-loyalty.json"
+  },
+  {
+    "task": "sf-sales-discount-analysis",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "7fb03b022e4fde256193e30963f271153f28ef7c44595f6f9c4d07dc3f1cb703",
+    "category_copy_sha256": "7fb03b022e4fde256193e30963f271153f28ef7c44595f6f9c4d07dc3f1cb703",
+    "tag_source_sha256": "7fb03b022e4fde256193e30963f271153f28ef7c44595f6f9c4d07dc3f1cb703",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-discount-analysis.json"
+  },
+  {
+    "task": "sf-sales-discount-gsheet-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "dd99ecea0d2cb8cacca29a97737387ee064a2fa5d58c87caaf7ec2588dd4357d",
+    "category_copy_sha256": "dd99ecea0d2cb8cacca29a97737387ee064a2fa5d58c87caaf7ec2588dd4357d",
+    "tag_source_sha256": "dd99ecea0d2cb8cacca29a97737387ee064a2fa5d58c87caaf7ec2588dd4357d",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-discount-gsheet-email.json"
+  },
+  {
+    "task": "sf-sales-monthly-trends",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "3917cbe3eb341eee7f0d390707a52d7a5b8a4c0ac05bdb0737e7f0f80f9cc719",
+    "category_copy_sha256": "3917cbe3eb341eee7f0d390707a52d7a5b8a4c0ac05bdb0737e7f0f80f9cc719",
+    "tag_source_sha256": "3917cbe3eb341eee7f0d390707a52d7a5b8a4c0ac05bdb0737e7f0f80f9cc719",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-monthly-trends.json"
+  },
+  {
+    "task": "sf-sales-product-ranking-gsheet",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "8a255597496067bdf12fd262fca351facd2d1c1d6db46a2269a897a3e6058adc",
+    "category_copy_sha256": "8a255597496067bdf12fd262fca351facd2d1c1d6db46a2269a897a3e6058adc",
+    "tag_source_sha256": "8a255597496067bdf12fd262fca351facd2d1c1d6db46a2269a897a3e6058adc",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-product-ranking-gsheet.json"
+  },
+  {
+    "task": "sf-sales-product-ranking-ppt",
+    "curated_category": "writable",
+    "oracle_sha256": "6de0559e03ff8bb92bf6fd256c841255e9d2ed9b1e7260bbbd60e2320ad4a760",
+    "category_copy_sha256": "6de0559e03ff8bb92bf6fd256c841255e9d2ed9b1e7260bbbd60e2320ad4a760",
+    "tag_source_sha256": "6de0559e03ff8bb92bf6fd256c841255e9d2ed9b1e7260bbbd60e2320ad4a760",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-product-ranking-ppt.json"
+  },
+  {
+    "task": "sf-sales-region-forecast-gcal-excel",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "377675342d4a6cd0f6ffdec1018ac681596d57afe8d2df3b4e7682576bd259e0",
+    "category_copy_sha256": "377675342d4a6cd0f6ffdec1018ac681596d57afe8d2df3b4e7682576bd259e0",
+    "tag_source_sha256": "377675342d4a6cd0f6ffdec1018ac681596d57afe8d2df3b4e7682576bd259e0",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-region-forecast-gcal-excel.json"
+  },
+  {
+    "task": "sf-sales-regional-summary",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "b6b791f7d24ee1ef363be34ce05d7b3a8f17d544219a34ee75a7d3ec23ddae88",
+    "category_copy_sha256": "b6b791f7d24ee1ef363be34ce05d7b3a8f17d544219a34ee75a7d3ec23ddae88",
+    "tag_source_sha256": "b6b791f7d24ee1ef363be34ce05d7b3a8f17d544219a34ee75a7d3ec23ddae88",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-regional-summary.json"
+  },
+  {
+    "task": "sf-sales-segment-analysis",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "19b1e7e91294ecb4e8d1c440087a0bbb06dc94eafe0bf12615ae564b715538bd",
+    "category_copy_sha256": "19b1e7e91294ecb4e8d1c440087a0bbb06dc94eafe0bf12615ae564b715538bd",
+    "tag_source_sha256": "19b1e7e91294ecb4e8d1c440087a0bbb06dc94eafe0bf12615ae564b715538bd",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-segment-analysis.json"
+  },
+  {
+    "task": "sf-sales-segment-word",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "7f137a4eec94ffc58f6ba72e52df785deabd8c88493bf95e63304cbee07428a6",
+    "category_copy_sha256": "7f137a4eec94ffc58f6ba72e52df785deabd8c88493bf95e63304cbee07428a6",
+    "tag_source_sha256": "7f137a4eec94ffc58f6ba72e52df785deabd8c88493bf95e63304cbee07428a6",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-segment-word.json"
+  },
+  {
+    "task": "sf-sales-trend-word-pdf",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "b65388b2f5423ed7ca3e5ead7cfd26df35d687bff3a7f9e541f97f6ed160725c",
+    "category_copy_sha256": "b65388b2f5423ed7ca3e5ead7cfd26df35d687bff3a7f9e541f97f6ed160725c",
+    "tag_source_sha256": "b65388b2f5423ed7ca3e5ead7cfd26df35d687bff3a7f9e541f97f6ed160725c",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sales-trend-word-pdf.json"
+  },
+  {
+    "task": "sf-sla-breach-audit",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "e489c194281ae7afe97dd855bf660cf30a4da1490f2f47e2d70721440c70ab4e",
+    "category_copy_sha256": "e489c194281ae7afe97dd855bf660cf30a4da1490f2f47e2d70721440c70ab4e",
+    "tag_source_sha256": "e489c194281ae7afe97dd855bf660cf30a4da1490f2f47e2d70721440c70ab4e",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-sla-breach-audit.json"
+  },
+  {
+    "task": "sf-support-csat-gform-gsheet-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "bbe1e8612e6fc63a1174d43bc0af75a3b6633c7c5c37ba3875aa072d2e59bf16",
+    "category_copy_sha256": "bbe1e8612e6fc63a1174d43bc0af75a3b6633c7c5c37ba3875aa072d2e59bf16",
+    "tag_source_sha256": "bbe1e8612e6fc63a1174d43bc0af75a3b6633c7c5c37ba3875aa072d2e59bf16",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-support-csat-gform-gsheet-email.json"
+  },
+  {
+    "task": "sf-support-priority-review",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "8e1305be8a1ce69983a94e9bde21782d32eb73d2ed25df64814277748263a378",
+    "category_copy_sha256": "8e1305be8a1ce69983a94e9bde21782d32eb73d2ed25df64814277748263a378",
+    "tag_source_sha256": "8e1305be8a1ce69983a94e9bde21782d32eb73d2ed25df64814277748263a378",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-support-priority-review.json"
+  },
+  {
+    "task": "sf-ticket-sla-compliance",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "08d0ca8c32376cc4644bb18858d830f10f367f9de8c4b226d652f97b118d0717",
+    "category_copy_sha256": "08d0ca8c32376cc4644bb18858d830f10f367f9de8c4b226d652f97b118d0717",
+    "tag_source_sha256": "08d0ca8c32376cc4644bb18858d830f10f367f9de8c4b226d652f97b118d0717",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-ticket-sla-compliance.json"
+  },
+  {
+    "task": "sf-workforce-compensation-sheet",
+    "curated_category": "writable",
+    "oracle_sha256": "a13347a894ae93e4b6a6e5604cbe49cedfd2837f2b61b129d9b28c92473f22d9",
+    "category_copy_sha256": "a13347a894ae93e4b6a6e5604cbe49cedfd2837f2b61b129d9b28c92473f22d9",
+    "tag_source_sha256": "a13347a894ae93e4b6a6e5604cbe49cedfd2837f2b61b129d9b28c92473f22d9",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": false,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-workforce-compensation-sheet.json"
+  },
+  {
+    "task": "sf-workforce-diversity-review",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "ab78745f5bac9c1b038817c04aa21c051b75927edf5bcdf32acd0ae198de38db",
+    "category_copy_sha256": "ab78745f5bac9c1b038817c04aa21c051b75927edf5bcdf32acd0ae198de38db",
+    "tag_source_sha256": "ab78745f5bac9c1b038817c04aa21c051b75927edf5bcdf32acd0ae198de38db",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-workforce-diversity-review.json"
+  },
+  {
+    "task": "supplier-contract-compliance-audit",
+    "curated_category": "writable",
+    "oracle_sha256": "105bbc48556a89a6ef041397ac1fdffce0a43bcf2a0c8eaeaa08fd3b1d101857",
+    "category_copy_sha256": "105bbc48556a89a6ef041397ac1fdffce0a43bcf2a0c8eaeaa08fd3b1d101857",
+    "tag_source_sha256": "105bbc48556a89a6ef041397ac1fdffce0a43bcf2a0c8eaeaa08fd3b1d101857",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": false,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/supplier-contract-compliance-audit.json"
+  },
+  {
+    "task": "support-sla-audit-form",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "493de026983580b3803eb8b8d293f6e49045292e3f77b3d0bfc74395d4bc92ba",
+    "category_copy_sha256": "493de026983580b3803eb8b8d293f6e49045292e3f77b3d0bfc74395d4bc92ba",
+    "tag_source_sha256": "493de026983580b3803eb8b8d293f6e49045292e3f77b3d0bfc74395d4bc92ba",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/support-sla-audit-form.json"
+  },
+  {
+    "task": "terminal-arxiv-latex-fetch-excel-notion",
+    "curated_category": "read_only",
+    "oracle_sha256": "c8ba45b5c01f3442448b24b934c9be338b686136a363ada3f7206ae9885b2d77",
+    "category_copy_sha256": "c8ba45b5c01f3442448b24b934c9be338b686136a363ada3f7206ae9885b2d77",
+    "tag_source_sha256": "c8ba45b5c01f3442448b24b934c9be338b686136a363ada3f7206ae9885b2d77",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-arxiv-latex-fetch-excel-notion.json"
+  },
+  {
+    "task": "terminal-arxiv-latex-pdf-gsheet-word",
+    "curated_category": "read_only",
+    "oracle_sha256": "7de82ac1ebe36a3f69a730c5ed7b2579490f45495ae824a67c2cb62766b073cf",
+    "category_copy_sha256": "7de82ac1ebe36a3f69a730c5ed7b2579490f45495ae824a67c2cb62766b073cf",
+    "tag_source_sha256": "7de82ac1ebe36a3f69a730c5ed7b2579490f45495ae824a67c2cb62766b073cf",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-arxiv-latex-pdf-gsheet-word.json"
+  },
+  {
+    "task": "terminal-arxiv-scholarly-notion-word-excel",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "a0fc2d1f885ff6aba4a5c27569e6190a498b3ea5249a0410356d93d06338614b",
+    "category_copy_sha256": "a0fc2d1f885ff6aba4a5c27569e6190a498b3ea5249a0410356d93d06338614b",
+    "tag_source_sha256": "a0fc2d1f885ff6aba4a5c27569e6190a498b3ea5249a0410356d93d06338614b",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-arxiv-scholarly-notion-word-excel.json"
+  },
+  {
+    "task": "terminal-canvas-gform-gcal-excel-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "a6c0567b2e43b67c09170c9d32ce8904bf18e4bdb44fb632b23886f7df37461d",
+    "category_copy_sha256": "a6c0567b2e43b67c09170c9d32ce8904bf18e4bdb44fb632b23886f7df37461d",
+    "tag_source_sha256": "a6c0567b2e43b67c09170c9d32ce8904bf18e4bdb44fb632b23886f7df37461d",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-canvas-gform-gcal-excel-email.json"
+  },
+  {
+    "task": "terminal-canvas-howtocook-gsheet-notion-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "9e1860cd2b1d711961015c1e98eda076e2a308c0ffe965b20e3493f98736e865",
+    "category_copy_sha256": "9e1860cd2b1d711961015c1e98eda076e2a308c0ffe965b20e3493f98736e865",
+    "tag_source_sha256": "9e1860cd2b1d711961015c1e98eda076e2a308c0ffe965b20e3493f98736e865",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-canvas-howtocook-gsheet-notion-email.json"
+  },
+  {
+    "task": "terminal-canvas-pdf-excel-notion-gcal",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "1bb072bedf6cd923a156497054e37ea26185f2dedfdc69edbe12d3ad1002fdb6",
+    "category_copy_sha256": "1bb072bedf6cd923a156497054e37ea26185f2dedfdc69edbe12d3ad1002fdb6",
+    "tag_source_sha256": "1bb072bedf6cd923a156497054e37ea26185f2dedfdc69edbe12d3ad1002fdb6",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-canvas-pdf-excel-notion-gcal.json"
+  },
+  {
+    "task": "terminal-canvas-wc-excel-ppt-email",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "f8ec4df9460d79948989e37753a50197ba1ad66d084a711dab0d380b3cfb4119",
+    "category_copy_sha256": "f8ec4df9460d79948989e37753a50197ba1ad66d084a711dab0d380b3cfb4119",
+    "tag_source_sha256": "f8ec4df9460d79948989e37753a50197ba1ad66d084a711dab0d380b3cfb4119",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-canvas-wc-excel-ppt-email.json"
+  },
+  {
+    "task": "terminal-howtocook-gform-excel-notion-email",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "1eb3184222c4dd5b368a953912e235d69e91af9d294734a96cbcc0546096224d",
+    "category_copy_sha256": "1eb3184222c4dd5b368a953912e235d69e91af9d294734a96cbcc0546096224d",
+    "tag_source_sha256": "1eb3184222c4dd5b368a953912e235d69e91af9d294734a96cbcc0546096224d",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-howtocook-gform-excel-notion-email.json"
+  },
+  {
+    "task": "terminal-sf-arxiv-excel-word-notion",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "e2b5e73f670889cd825cd8279581fb06bec892fa58689d47b55570127e414755",
+    "category_copy_sha256": "e2b5e73f670889cd825cd8279581fb06bec892fa58689d47b55570127e414755",
+    "tag_source_sha256": "e2b5e73f670889cd825cd8279581fb06bec892fa58689d47b55570127e414755",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-sf-arxiv-excel-word-notion.json"
+  },
+  {
+    "task": "terminal-sf-notion-gform-excel-email",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "d463d68bea51ae165f184cdc63228a3244838f1b3c2488eda152547832f6ff6d",
+    "category_copy_sha256": "d463d68bea51ae165f184cdc63228a3244838f1b3c2488eda152547832f6ff6d",
+    "tag_source_sha256": "d463d68bea51ae165f184cdc63228a3244838f1b3c2488eda152547832f6ff6d",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-sf-notion-gform-excel-email.json"
+  },
+  {
+    "task": "terminal-sf-scholarly-excel-ppt-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "a6bc9db8bbcfcb825d160077548248ff5c1de9c04f52fff062ca4849c2e72557",
+    "category_copy_sha256": "a6bc9db8bbcfcb825d160077548248ff5c1de9c04f52fff062ca4849c2e72557",
+    "tag_source_sha256": "a6bc9db8bbcfcb825d160077548248ff5c1de9c04f52fff062ca4849c2e72557",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-sf-scholarly-excel-ppt-gcal.json"
+  },
+  {
+    "task": "terminal-sf-wc-order-audit-excel-word",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "539994a61ca4472ab8f45870999e302e41fa70ca31b96a5dd4f46a6e3cf5bbcc",
+    "category_copy_sha256": "539994a61ca4472ab8f45870999e302e41fa70ca31b96a5dd4f46a6e3cf5bbcc",
+    "tag_source_sha256": "539994a61ca4472ab8f45870999e302e41fa70ca31b96a5dd4f46a6e3cf5bbcc",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-sf-wc-order-audit-excel-word.json"
+  },
+  {
+    "task": "terminal-sf-wc-yf-excel-ppt",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "1fd23dc58415cf6d911b69c31d1de93da7ea96cba4f247f322c1d21946a8fc96",
+    "category_copy_sha256": "1fd23dc58415cf6d911b69c31d1de93da7ea96cba4f247f322c1d21946a8fc96",
+    "tag_source_sha256": "1fd23dc58415cf6d911b69c31d1de93da7ea96cba4f247f322c1d21946a8fc96",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-sf-wc-yf-excel-ppt.json"
+  },
+  {
+    "task": "terminal-wc-excel-gsheet-gcal-email",
+    "curated_category": "writable",
+    "oracle_sha256": "ba8242730d97c1a0e43c1417f15e42f7313917e0e046c326bd1120dd2f89a977",
+    "category_copy_sha256": "ba8242730d97c1a0e43c1417f15e42f7313917e0e046c326bd1120dd2f89a977",
+    "tag_source_sha256": "ba8242730d97c1a0e43c1417f15e42f7313917e0e046c326bd1120dd2f89a977",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": false,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-wc-excel-gsheet-gcal-email.json"
+  },
+  {
+    "task": "terminal-wc-pw-pricing-excel-word-gcal",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "a852a08eaf150a03585ba8db24257d81dd77849f8dde6adcf4c99ae02af65116",
+    "category_copy_sha256": "a852a08eaf150a03585ba8db24257d81dd77849f8dde6adcf4c99ae02af65116",
+    "tag_source_sha256": "a852a08eaf150a03585ba8db24257d81dd77849f8dde6adcf4c99ae02af65116",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-wc-pw-pricing-excel-word-gcal.json"
+  },
+  {
+    "task": "terminal-wc-sf-revenue-reconcile-excel-ppt",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "38cf61aae3c4215a48084f4c3c31b1dbd73eb53e626876d4f904f978230fa937",
+    "category_copy_sha256": "38cf61aae3c4215a48084f4c3c31b1dbd73eb53e626876d4f904f978230fa937",
+    "tag_source_sha256": "38cf61aae3c4215a48084f4c3c31b1dbd73eb53e626876d4f904f978230fa937",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-wc-sf-revenue-reconcile-excel-ppt.json"
+  },
+  {
+    "task": "terminal-wc-yf-ppt-notion-email",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "9fa5a4f665413863f5d52481fd04f3dceae115fb4dc29b79e166f0b9eb480cba",
+    "category_copy_sha256": "9fa5a4f665413863f5d52481fd04f3dceae115fb4dc29b79e166f0b9eb480cba",
+    "tag_source_sha256": "9fa5a4f665413863f5d52481fd04f3dceae115fb4dc29b79e166f0b9eb480cba",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-wc-yf-ppt-notion-email.json"
+  },
+  {
+    "task": "terminal-yf-canvas-excel-gcal-email",
+    "curated_category": "read_only",
+    "oracle_sha256": "5322e6709a8ec2a95bee643ef01f12e31e46ca940f9a673cc16b29729fa06c93",
+    "category_copy_sha256": "5322e6709a8ec2a95bee643ef01f12e31e46ca940f9a673cc16b29729fa06c93",
+    "tag_source_sha256": "5322e6709a8ec2a95bee643ef01f12e31e46ca940f9a673cc16b29729fa06c93",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-yf-canvas-excel-gcal-email.json"
+  },
+  {
+    "task": "terminal-yf-wc-excel-word-notion",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "1477f7f2d2d9424e84c919faa7eb618d59dd59700ff80522590bccff7119a48e",
+    "category_copy_sha256": "1477f7f2d2d9424e84c919faa7eb618d59dd59700ff80522590bccff7119a48e",
+    "tag_source_sha256": "1477f7f2d2d9424e84c919faa7eb618d59dd59700ff80522590bccff7119a48e",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-yf-wc-excel-word-notion.json"
+  },
+  {
+    "task": "train-budget-excel-gform-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "70a04d9b27da747a206063d41d269d251666cadbc683491002d67fc825d0beff",
+    "category_copy_sha256": "70a04d9b27da747a206063d41d269d251666cadbc683491002d67fc825d0beff",
+    "tag_source_sha256": "70a04d9b27da747a206063d41d269d251666cadbc683491002d67fc825d0beff",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/train-budget-excel-gform-email.json"
+  },
+  {
+    "task": "train-route-analysis-excel-word-email",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "0848718017f8efb166240dfb516e8e6a96ba664ee2bcdf8127edcf0d1e7bc5c1",
+    "category_copy_sha256": "0848718017f8efb166240dfb516e8e6a96ba664ee2bcdf8127edcf0d1e7bc5c1",
+    "tag_source_sha256": "0848718017f8efb166240dfb516e8e6a96ba664ee2bcdf8127edcf0d1e7bc5c1",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/train-route-analysis-excel-word-email.json"
+  },
+  {
+    "task": "wc-category-performance-ppt",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "5aa243fddd81daf7b33ec04f3f82e1d721b6ea2de18a6e453c70bb665428acc5",
+    "category_copy_sha256": "5aa243fddd81daf7b33ec04f3f82e1d721b6ea2de18a6e453c70bb665428acc5",
+    "tag_source_sha256": "5aa243fddd81daf7b33ec04f3f82e1d721b6ea2de18a6e453c70bb665428acc5",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-category-performance-ppt.json"
+  },
+  {
+    "task": "wc-competitor-pw-pricing-excel-gcal",
+    "curated_category": "read_only",
+    "oracle_sha256": "618321a7889e81d1055fc7fb70b3a5c088013175c3d962bb686cb04fdfab25a8",
+    "category_copy_sha256": "618321a7889e81d1055fc7fb70b3a5c088013175c3d962bb686cb04fdfab25a8",
+    "tag_source_sha256": "618321a7889e81d1055fc7fb70b3a5c088013175c3d962bb686cb04fdfab25a8",
+    "automatic_tag_category": "read_only",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-competitor-pw-pricing-excel-gcal.json"
+  },
+  {
+    "task": "wc-coupon-performance-notion-ppt",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "e24ad8478423413b826920a168ba15711d013ff5956c6a5120cba521ff074735",
+    "category_copy_sha256": "e24ad8478423413b826920a168ba15711d013ff5956c6a5120cba521ff074735",
+    "tag_source_sha256": "e24ad8478423413b826920a168ba15711d013ff5956c6a5120cba521ff074735",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-coupon-performance-notion-ppt.json"
+  },
+  {
+    "task": "wc-inventory-alert-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "c06001dc331125608ff0be56fd7781ee7fd2cd312c302e9418dd9a0ec6bb0251",
+    "category_copy_sha256": "c06001dc331125608ff0be56fd7781ee7fd2cd312c302e9418dd9a0ec6bb0251",
+    "tag_source_sha256": "c06001dc331125608ff0be56fd7781ee7fd2cd312c302e9418dd9a0ec6bb0251",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-inventory-alert-gcal.json"
+  },
+  {
+    "task": "wc-inventory-gold-repricing",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "102cce65814986195073a55f277234b7f991ccea67958e7b6325f6ef122661a5",
+    "category_copy_sha256": "102cce65814986195073a55f277234b7f991ccea67958e7b6325f6ef122661a5",
+    "tag_source_sha256": "102cce65814986195073a55f277234b7f991ccea67958e7b6325f6ef122661a5",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-inventory-gold-repricing.json"
+  },
+  {
+    "task": "wc-inventory-reorder-forecast",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "d8f8e9ce9d946a75755ed99ec8321c945077d4f2eddfd9d82d09e8329fc4a73c",
+    "category_copy_sha256": "d8f8e9ce9d946a75755ed99ec8321c945077d4f2eddfd9d82d09e8329fc4a73c",
+    "tag_source_sha256": "d8f8e9ce9d946a75755ed99ec8321c945077d4f2eddfd9d82d09e8329fc4a73c",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-inventory-reorder-forecast.json"
+  },
+  {
+    "task": "wc-order-monthly-ppt-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "181418023f933b3e3acc2e43721cfab2bada7428c77ef15e425eaed65472e04b",
+    "category_copy_sha256": "181418023f933b3e3acc2e43721cfab2bada7428c77ef15e425eaed65472e04b",
+    "tag_source_sha256": "181418023f933b3e3acc2e43721cfab2bada7428c77ef15e425eaed65472e04b",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-order-monthly-ppt-gcal.json"
+  },
+  {
+    "task": "wc-product-review-analysis-gform-gcal",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "38be744f60d49b9650a4aacb968c7f94927d9bcb2d53d18033001e59da44a332",
+    "category_copy_sha256": "38be744f60d49b9650a4aacb968c7f94927d9bcb2d53d18033001e59da44a332",
+    "tag_source_sha256": "38be744f60d49b9650a4aacb968c7f94927d9bcb2d53d18033001e59da44a332",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-product-review-analysis-gform-gcal.json"
+  },
+  {
+    "task": "wc-product-review-excel-notion",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "b0e9a6c97be9407233eeedea25e36eea75ef6352a4157aec600fcec20a339e4a",
+    "category_copy_sha256": "b0e9a6c97be9407233eeedea25e36eea75ef6352a4157aec600fcec20a339e4a",
+    "tag_source_sha256": "b0e9a6c97be9407233eeedea25e36eea75ef6352a4157aec600fcec20a339e4a",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-product-review-excel-notion.json"
+  },
+  {
+    "task": "wc-tax-compliance-excel-gcal-gform",
+    "curated_category": "writable",
+    "oracle_sha256": "4e2afdd6b7014021d00d0f3902ca0e3ea9e5599cb70dcf22d2bc36ff7379eaab",
+    "category_copy_sha256": "4e2afdd6b7014021d00d0f3902ca0e3ea9e5599cb70dcf22d2bc36ff7379eaab",
+    "tag_source_sha256": "4e2afdd6b7014021d00d0f3902ca0e3ea9e5599cb70dcf22d2bc36ff7379eaab",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": false,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-tax-compliance-excel-gcal-gform.json"
+  },
+  {
+    "task": "yf-dividend-tracker-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "75ff24b3016d39aec0e6ae2f6307bf9ab5c695f777081d42c0f2193739f625e1",
+    "category_copy_sha256": "75ff24b3016d39aec0e6ae2f6307bf9ab5c695f777081d42c0f2193739f625e1",
+    "tag_source_sha256": "75ff24b3016d39aec0e6ae2f6307bf9ab5c695f777081d42c0f2193739f625e1",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-dividend-tracker-gcal.json"
+  },
+  {
+    "task": "yf-financial-health-excel-notion",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "4629eb49238c7ca07a6389eff3784e804adbf0d500833e15defe50ebf11e744b",
+    "category_copy_sha256": "4629eb49238c7ca07a6389eff3784e804adbf0d500833e15defe50ebf11e744b",
+    "tag_source_sha256": "4629eb49238c7ca07a6389eff3784e804adbf0d500833e15defe50ebf11e744b",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-financial-health-excel-notion.json"
+  },
+  {
+    "task": "yf-portfolio-gsheet-pdf-gcal-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "2422e7900a0cb2a2f973e3f1b8baf150472ef443cbded0902286ed783f9cf22a",
+    "category_copy_sha256": "2422e7900a0cb2a2f973e3f1b8baf150472ef443cbded0902286ed783f9cf22a",
+    "tag_source_sha256": "2422e7900a0cb2a2f973e3f1b8baf150472ef443cbded0902286ed783f9cf22a",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-portfolio-gsheet-pdf-gcal-email.json"
+  },
+  {
+    "task": "yf-portfolio-ppt-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "42ce9cb695f24466633c15cbcb06301c9abea4351bcc45c54c7fad0cda864acb",
+    "category_copy_sha256": "42ce9cb695f24466633c15cbcb06301c9abea4351bcc45c54c7fad0cda864acb",
+    "tag_source_sha256": "42ce9cb695f24466633c15cbcb06301c9abea4351bcc45c54c7fad0cda864acb",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-portfolio-ppt-gcal.json"
+  },
+  {
+    "task": "yf-portfolio-risk-excel",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "0b90ed64b2ec7a12f91ca035a4321947b7787fc005cd5e39d31d47db018e6611",
+    "category_copy_sha256": "0b90ed64b2ec7a12f91ca035a4321947b7787fc005cd5e39d31d47db018e6611",
+    "tag_source_sha256": "0b90ed64b2ec7a12f91ca035a4321947b7787fc005cd5e39d31d47db018e6611",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-portfolio-risk-excel.json"
+  },
+  {
+    "task": "yf-portfolio-stress-test-excel-word-gcal",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "60290deecfcba4a86ebcfe85bdad4087e0cb0609c66a92a9266acf3a77dd8cba",
+    "category_copy_sha256": "60290deecfcba4a86ebcfe85bdad4087e0cb0609c66a92a9266acf3a77dd8cba",
+    "tag_source_sha256": "60290deecfcba4a86ebcfe85bdad4087e0cb0609c66a92a9266acf3a77dd8cba",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-portfolio-stress-test-excel-word-gcal.json"
+  },
+  {
+    "task": "yf-sector-outlook-report",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "f5921d9f916c2bb2a8aa280bb80db20cfa5c6922e4e5d71382888b52caba9b74",
+    "category_copy_sha256": "f5921d9f916c2bb2a8aa280bb80db20cfa5c6922e4e5d71382888b52caba9b74",
+    "tag_source_sha256": "f5921d9f916c2bb2a8aa280bb80db20cfa5c6922e4e5d71382888b52caba9b74",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-sector-outlook-report.json"
+  },
+  {
+    "task": "yf-sector-rotation-dashboard",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "35435122d61f4443cc68fdccfac3ae863dbdb7fe0f1d2374077b04173a5f9200",
+    "category_copy_sha256": "35435122d61f4443cc68fdccfac3ae863dbdb7fe0f1d2374077b04173a5f9200",
+    "tag_source_sha256": "35435122d61f4443cc68fdccfac3ae863dbdb7fe0f1d2374077b04173a5f9200",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-sector-rotation-dashboard.json"
+  },
+  {
+    "task": "yf-stock-comparison-word-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "1f246ef534f1661e2f12c7684402d0b844bcb86f532e601d5b72e4f71736671f",
+    "category_copy_sha256": "1f246ef534f1661e2f12c7684402d0b844bcb86f532e601d5b72e4f71736671f",
+    "tag_source_sha256": "1f246ef534f1661e2f12c7684402d0b844bcb86f532e601d5b72e4f71736671f",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-stock-comparison-word-gcal.json"
+  },
+  {
+    "task": "yf-stock-volatility-terminal",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "55c39657dd9191539ddb1a7dfc703938328374e0c521d9aadd52dfdc1a0c736e",
+    "category_copy_sha256": "55c39657dd9191539ddb1a7dfc703938328374e0c521d9aadd52dfdc1a0c736e",
+    "tag_source_sha256": "55c39657dd9191539ddb1a7dfc703938328374e0c521d9aadd52dfdc1a0c736e",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yf-stock-volatility-terminal.json"
+  },
+  {
+    "task": "yt-12306-tech-conference-travel-notion-excel",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "18fdbfd5a8fceb3b9e9f599c37e396e01af02bff4aad7467c515e46ce8a9a569",
+    "category_copy_sha256": "18fdbfd5a8fceb3b9e9f599c37e396e01af02bff4aad7467c515e46ce8a9a569",
+    "tag_source_sha256": "18fdbfd5a8fceb3b9e9f599c37e396e01af02bff4aad7467c515e46ce8a9a569",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yt-12306-tech-conference-travel-notion-excel.json"
+  },
+  {
+    "task": "yt-fireship-gform-survey-excel-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "07674c1ccf4cb8fba518a9f6f8ddea699614e9346523e0a356c598656dcb0df2",
+    "category_copy_sha256": "07674c1ccf4cb8fba518a9f6f8ddea699614e9346523e0a356c598656dcb0df2",
+    "tag_source_sha256": "07674c1ccf4cb8fba518a9f6f8ddea699614e9346523e0a356c598656dcb0df2",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yt-fireship-gform-survey-excel-gcal.json"
+  },
+  {
+    "task": "yt-fireship-ppt-gcal-email",
+    "curated_category": "writable",
+    "oracle_sha256": "904f136b13bae8a73650a778109a54604d23ff8ef0cfcfe6680889e14b863623",
+    "category_copy_sha256": "904f136b13bae8a73650a778109a54604d23ff8ef0cfcfe6680889e14b863623",
+    "tag_source_sha256": "904f136b13bae8a73650a778109a54604d23ff8ef0cfcfe6680889e14b863623",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yt-fireship-ppt-gcal-email.json"
+  },
+  {
+    "task": "yt-fireship-tech-report-excel-notion",
+    "curated_category": "read_and_write",
+    "oracle_sha256": "750619cc65faaa0518494e0412cf25e2289a5f6ba4f5825c67fb4ba2d3510d42",
+    "category_copy_sha256": "750619cc65faaa0518494e0412cf25e2289a5f6ba4f5825c67fb4ba2d3510d42",
+    "tag_source_sha256": "750619cc65faaa0518494e0412cf25e2289a5f6ba4f5825c67fb4ba2d3510d42",
+    "automatic_tag_category": "read_and_write",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yt-fireship-tech-report-excel-notion.json"
+  },
+  {
+    "task": "yt-ml-repos-github-notion-excel-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "79c77c6115c2cb5e44d5597e03096ef1c9a613006519dd0086f27b0d47f482f1",
+    "category_copy_sha256": "79c77c6115c2cb5e44d5597e03096ef1c9a613006519dd0086f27b0d47f482f1",
+    "tag_source_sha256": "79c77c6115c2cb5e44d5597e03096ef1c9a613006519dd0086f27b0d47f482f1",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yt-ml-repos-github-notion-excel-email.json"
+  },
+  {
+    "task": "yt-top-videos-excel-gcal",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "9e87010a2350e5a47515ce42946ed545cc5d70c874025bcf0aef5d822c1218e3",
+    "category_copy_sha256": "9e87010a2350e5a47515ce42946ed545cc5d70c874025bcf0aef5d822c1218e3",
+    "tag_source_sha256": "9e87010a2350e5a47515ce42946ed545cc5d70c874025bcf0aef5d822c1218e3",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yt-top-videos-excel-gcal.json"
+  },
+  {
+    "task": "yt-transcript-afrobeat-song-list-excel-email",
+    "curated_category": "writable",
+    "oracle_sha256": "7a2ae33c74221fadd47b0249a4190cb9c81e671cd673ba23c699c882eea65d6d",
+    "category_copy_sha256": "7a2ae33c74221fadd47b0249a4190cb9c81e671cd673ba23c699c882eea65d6d",
+    "tag_source_sha256": "7a2ae33c74221fadd47b0249a4190cb9c81e671cd673ba23c699c882eea65d6d",
+    "automatic_tag_category": "writable",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yt-transcript-afrobeat-song-list-excel-email.json"
+  },
+  {
+    "task": "yt-transcript-music-schedule-gcal-gsheet-word",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "e1a26a13c1875e1f067ab232b2438445eb05ad48ddefec2d07196930c4d4cb53",
+    "category_copy_sha256": "e1a26a13c1875e1f067ab232b2438445eb05ad48ddefec2d07196930c4d4cb53",
+    "tag_source_sha256": "e1a26a13c1875e1f067ab232b2438445eb05ad48ddefec2d07196930c4d4cb53",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yt-transcript-music-schedule-gcal-gsheet-word.json"
+  },
+  {
+    "task": "yt-transcript-notion-song-report-gcal-email",
+    "curated_category": "no_delegation",
+    "oracle_sha256": "2230886feb89d94740ccda7e7a5a87a7b1b9a2ab490ae8e95e60545d4c7419bd",
+    "category_copy_sha256": "2230886feb89d94740ccda7e7a5a87a7b1b9a2ab490ae8e95e60545d4c7419bd",
+    "tag_source_sha256": "2230886feb89d94740ccda7e7a5a87a7b1b9a2ab490ae8e95e60545d4c7419bd",
+    "automatic_tag_category": "no_delegation",
+    "automatic_tag_category_agrees": true,
+    "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/yt-transcript-notion-song-report-gcal-email.json"
+  }
+]

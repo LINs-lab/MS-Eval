@@ -1,0 +1,366 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "arxiv-conference-prep",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/arxiv-conference-prep.task.md",
+    "oracle166_sha256": "bf96d4ca7df5aeae7a2820c2eab4385f246569f5fe5d45dcd24a5892d1ee6b71"
+  },
+  "label_cache_keys": [
+    "5562fb2e1de110ad7ffc5819ce4b0d6a2c6343271933e01e4cbe5aaf75f9b788"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 5,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (academic-literature-researcher 0): Use one explore sub-agent to research instruction following with human feedback.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (academic-literature-researcher 1): Use one explore sub-agent to research learning to summarize from human feedback.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (academic-literature-researcher 2): Use one explore sub-agent to research Constitutional AI.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (academic-literature-researcher 3): Use one explore sub-agent to research Direct Preference Optimization.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (academic-literature-researcher 4): Use one explore sub-agent to research Proximal Policy Optimization.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 5,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/RLHF_Conference_Report.pptx` exclusively. To avoid a long sequence of slide-by-slide calls, use one `python_execute` with the installed `python-pptx` package to create the complete deck atomically from the canonical packet: required title and overview slides, exactly one substantive slide for each of the five frozen papers, and a final synthesis slide. Then use the presentation read tools once to verify slide count, titles, five-paper coverage, and source-backed authors/methods. Return path and validation; do not create calendar or email state.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (academic-literature-researcher 0): Use one explore sub-agent to research instruction following with human feedback.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (academic-literature-researcher 1): Use one explore sub-agent to research learning to summarize from human feedback.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (academic-literature-researcher 2): Use one explore sub-agent to research Constitutional AI.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (academic-literature-researcher 3): Use one explore sub-agent to research Direct Preference Optimization.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (academic-literature-researcher 4): Use one explore sub-agent to research Proximal Policy Optimization.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/RLHF_Conference_Report.pptx` exclusively. To avoid a long sequence of slide-by-slide calls, use one `python_execute` with the installed `python-pptx` package to create the complete deck atomically from the canonical packet: required title and overview slides, exactly one substantive slide for each of the five frozen papers, and a final synthesis slide. Then use the presentation read tools once to verify slide count, titles, five-paper coverage, and source-backed authors/methods. Return path and validation; do not create calendar or email state.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:5:ppt",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 5,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "ppt": 1
+    },
+    "read": {
+      "scholarly-arxiv": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 6,
+    "units": 2,
+    "write_units": 1,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

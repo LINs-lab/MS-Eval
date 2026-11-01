@@ -1,0 +1,197 @@
+{
+  "input_hash": "3a0f02ea0141ba9ff8e93ec5d013905dbc66b6e0407e174d80c7ba8a839b441d",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "canvas-faculty-workload-review",
+    "task_text": "The provost wants to review faculty workload balance across all departments. Start by fetching the faculty workload standards from http://localhost:30220/api/workload_standards.json which defines the maximum course load, student thresholds, grading time estimates, and overload criteria.\n\nThen query the learning management system to determine each instructor's teaching load. For each instructor with a teaching role, count the number of distinct courses they teach, the total number of students across those courses, and the total number of assignments they are responsible for. Calculate the estimated total semester grading hours as total students multiplied by the grading hours per student from the standards. Then calculate the weekly grading hours by dividing the semester total by the number of semester weeks from the standards. An instructor is overloaded if they teach more than the maximum courses allowed OR if their weekly grading hours exceed the maximum weekly hours from the standards.\n\nReview the workload policy document, faculty directory file, and the course-to-department mapping file (department_mapping.csv) in the workspace for context on department assignments and institutional policy.\n\nCreate an Excel file called Faculty_Workload.xlsx with two sheets. The first sheet named \"Instructor Load\" should contain columns for Instructor, Courses_Count, Total_Students, Total_Assignments, Est_Grading_Hours (total semester hours, rounded to 1 decimal), Weekly_Grading_Hours (rounded to 1 decimal), and Overloaded_YN. Sort alphabetically by instructor name. The second sheet named \"Department Summary\" should aggregate by department. Determine each course's department using department_mapping.csv: course names in the learning management system are formatted as \"<Subject Area> (<Term> <Year>)\" (for example, \"Biochemistry & Bioinformatics (Fall 2013)\"); take the text before the first \"(\" as the subject area and match it case-insensitively and exactly (note the names contain \"&\") against the Course_Base_Name column in department_mapping.csv to get the Department. The sheet should have columns Department, Instructor_Count, Course_Count, and Total_Students. Instructor_Count is the number of distinct instructors who teach at least one course in that department (an instructor who teaches in multiple departments is counted in each). Course_Count is the number of course offerings in that department — count every offering, including any that have no instructor assigned (some offerings have no teacher). Total_Students is the sum of the student counts across all course offerings in that department, again including offerings with no instructor. Sort by Department alphabetically.\n\nWrite the workload data to a shared spreadsheet titled \"Faculty Workload Analysis\" with a sheet called \"Instructor Load\" containing the same instructor-level data.\n\nAlso create a presentation called Workload_Review.pptx summarizing the key findings. Include a title slide, a slide showing the total number of instructors and how many are overloaded, a slide with the department-level breakdown, and a recommendations slide suggesting rebalancing strategies for departments with overloaded faculty.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent completes the compact 22-course aggregation directly, freezes every result into one JSON handoff file, and uses exactly one parallel writer wave. Canvas is read-only. Resolve the runtime workspace dynamically. Do not dispatch any source or aggregation sub-agents.\n\nRead workload_standards.json, the complete workload policy PDF, faculty_directory.csv and department_mapping.csv, and call canvas_list_courses(include_ended=true) once. Freeze the exact IDs/codes/full names for all 22 courses and the literal policy formulas/overload boundaries. Then issue native-parallel course calls: for every course, canvas_get_course_grades(page=1,per_page=100,type=[\"StudentEnrollment\"]) and use pagination.total_count as Student_Count; canvas_get_course_grades(page=1,per_page=100,type=[\"TeacherEnrollment\"]) retaining all teacher row.id/user_id; canvas_list_assignments(include_submissions=false); and canvas_list_course_users. Follow teacher pagination if advertised and read any roster full_output_path rather than a truncated preview.\n\nThe main agent joins each TeacherEnrollment user_id only to its course roster, counts distinct courses per instructor, and sums students and assignments over taught courses. Compute semester grading hours=Total_Students*grading_hours_per_student, weekly hours=semester hours/semester_weeks, and overload from either literal policy condition. For departments, use the exact case-insensitive mapping of the full base subject name before the first parenthesis; include every one of the 22 offerings, including no-teacher offerings.\n\nThen freeze ALL results into a single handoff file workload_data.json in the runtime workspace with exactly these keys: \"standards\" (the literal workload standards object), \"instructor_load\" (the instructor rows with keys Instructor, Courses_Count, Total_Students, Total_Assignments, Est_Grading_Hours, Weekly_Grading_Hours, Overloaded_YN, already sorted alphabetically by Instructor), \"department_summary\" (department rows with keys Department, Instructor_Count, Course_Count, Total_Students, already sorted alphabetically by Department), \"total_instructors\", and \"total_overloaded\".\n\nWave 1 — start three Coder writers in parallel. Each writer must read ONLY workload_data.json for its data (no re-derivation from source systems) and must not touch any input file:\n\n1. coder 0 (office-report-builder 0): Sole writer of Faculty_Workload.xlsx. Build exactly two sheets from the JSON: \"Instructor Load\" with the header row Instructor, Courses_Count, Total_Students, Total_Assignments, Est_Grading_Hours, Weekly_Grading_Hours, Overloaded_YN and one row per instructor_load entry in the given order (hours as numeric values rounded to 1 decimal); \"Department Summary\" with the header row Department, Instructor_Count, Course_Count, Total_Students and one row per department_summary entry. Write to the runtime workspace path, then read back both sheets fully to verify headers, order and row counts.\n2. coder 1 (external-workflow-operator 0): Sole owner of the exact-title Google spreadsheet \"Faculty Workload Analysis\". Search/reuse-or-create at most once, keep exactly one sheet named \"Instructor Load\", write the frozen instructor_load table with the same header and values, then read it back and report the spreadsheet ID, title, sheet name and data-row count.\n3. coder 2 (office-report-builder 1): Sole writer of Workload_Review.pptx. Build exactly four slides from the JSON: title slide; an overview slide stating total_instructors and total_overloaded; a department breakdown slide covering all departments; and an evidence-based recommendations slide for rebalancing overloaded departments. Verify slide titles and every numeric claim through presentation info and text extraction.\n\nThe main agent reconciles the two writer read-backs and the spreadsheet report against workload_data.json (22-course, instructor and department controls). No extra verification or repair wave is allowed.\n",
+    "nodes": [
+      {
+        "id": 12,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 12|Data-Driven Design (Spring 2014) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 13|Environmental Economics & Ethics (Fall 2013) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 14|Environmental Economics & Ethics (Fall 2014) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 15|Environmental Economics & Ethics (Spring 2014) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 16|Foundations of Finance (Fall 2013) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 17|Foundations of Finance (Fall 2014) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 18|Foundations of Finance (Spring 2013) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 19|Foundations of Finance (Spring 2014) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 20|Global Governance & Geopolitics (Fall 2013) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 21|Global Governance & Geopolitics (Fall 2014) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 22,
+        "wave": "message_14",
+        "text": "You are collecting teaching-load data from the Canvas LMS (use the mcp__canvas__* tools) for a faculty workload review. The course you are assigned is: 22|Global Governance & Geopolitics (Spring 2014) — split this string on the FIRST \"|\" character: the part before the first \"|\" is the integer course_id, and the part after is the course_name (for your reference only).\n\nPerform exactly these three read-only API calls, in this order:\n\n1. Teacher enrollments: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"TeacherEnrollment\"], per_page=100. Collect the user_id of EVERY enrollment in the \"enrollments\" array. If pagination.has_more is true, keep requesting subsequent pages (page=2,3,...) until has_more is false, and include ALL user_ids found. Do NOT filter by enrollment_state.\n\n2. Student count: call mcp__canvas__canvas_get_course_grades with course_id=<course_id>, type=[\"StudentEnrollment\"], per_page=1 (page 1 only — do NOT page through all students). Read the value of pagination.total_count from the response — this is the total number of student enrollments. That number is the student_count.\n\n3. Assignment count: call mcp__canvas__canvas_list_assignments with course_id=<course_id>. Count the number of items in the returned array (every assignment counts — TMAs, CMAs, Final Exams, all of them). That number is the assignment_count.\n\nThen return your result as a single compact JSON object with exactly these keys (do not add extra commentary):\n{\"course_id\": <int>, \"teacher_user_ids\": [<int>, ...], \"student_count\": <int>, \"assignment_count\": <int>}\n\nIMPORTANT: If a course has NO teacher enrollments, return teacher_user_ids as an empty array []. Report exact numbers — do not round or modify them. If a call errors, note the error in the JSON under a key \"errors\" but still return the fields you could obtain.\nCollect per-course Canvas data",
+        "is_plan": false
+      },
+      {
+        "id": 23,
+        "wave": "message_23",
+        "text": "You are building an Excel workbook using the mcp__excel__* MCP tools (create_workbook, create_worksheet, rename_worksheet, delete_worksheet, write_data_to_excel, get_workbook_metadata, read_data_from_excel). The target file path is EXACTLY:\n/workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-canvas-faculty-workload-review/workspace/Faculty_Workload.xlsx\n\nCreate the workbook and build TWO sheets with EXACT headers and data below. All values must be written as literal values (numbers as numbers, not formulas). The final workbook must contain exactly two worksheets named \"Instructor Load\" and \"Department Summary\" (delete/rename any default sheet such as \"Sheet1\" / \"Sheet\").\n\nSHEET 1 — name: \"Instructor Load\" (first sheet). Header row (row 1), exactly these 7 columns:\nInstructor | Courses_Count | Total_Students | Total_Assignments | Est_Grading_Hours | Weekly_Grading_Hours | Overloaded_YN\n\nData rows (33, in this exact order — already sorted alphabetically by instructor):\n\nDr. Abigail Jackson,1,2292,6,1146.0,71.6,Y\nDr. Abigail Martin,1,365,6,182.5,11.4,N\nDr. Aiden Williams,1,1614,13,807.0,50.4,Y\nDr. Andrew Walker,3,2728,29,1364.0,85.2,Y\nDr. Caleb Miller,1,1936,10,968.0,60.5,Y\nDr. Caleb Morgan,2,3737,25,1868.5,116.8,Y\nDr. Clara Parker,1,2292,6,1146.0,71.6,Y\nDr. Connor Harris,2,3239,24,1619.5,101.2,Y\nDr. Daisy Smith,1,1767,12,883.5,55.2,Y\nDr. Daisy Taylor,1,1767,12,883.5,55.2,Y\nDr. David Rivera,1,2498,10,1249.0,78.1,Y\nDr. David Scott,2,2620,18,1310.0,81.9,Y\nDr. Emily King,1,1938,7,969.0,60.6,Y\nDr. Emma Wright,1,694,5,347.0,21.7,N\nDr. Evan Miller,1,1228,7,614.0,38.4,N\nDr. Evelyn Adams,1,1303,14,651.5,40.7,Y\nDr. George Allen,2,4648,26,2324.0,145.2,Y\nDr. Hannah Scott,1,952,10,476.0,29.8,N\nDr. Harry Wilson,1,1052,5,526.0,32.9,N\nDr. Isaac Lee,1,2365,13,1182.5,73.9,Y\nDr. Laura Bailey,1,749,10,374.5,23.4,N\nDr. Lily Carter,2,2061,17,1030.5,64.4,Y\nDr. Lily Jones,1,1500,13,750.0,46.9,Y\nDr. Logan Wilson,1,1803,7,901.5,56.3,Y\nDr. Lucas Jones,1,1188,5,594.0,37.1,N\nDr. Mason Taylor,1,2365,13,1182.5,73.9,Y\nDr. Matthew Davis,1,2365,13,1182.5,73.9,Y\nDr. Noah Wright,1,952,10,476.0,29.8,N\nDr. Oscar Murphy,1,2237,12,1118.5,69.9,Y\nDr. Ryan Adams,2,2516,22,1258.0,78.6,Y\nDr. Sophia Bell,1,1228,7,614.0,38.4,N\nDr. Thomas Cook,1,1803,7,901.5,56.3,Y\nDr. Victoria Morris,1,1188,5,594.0,37.1,N\n\nSHEET 2 — name: \"Department Summary\". Header row, exactly these 4 columns:\nDepartment | Instructor_Count | Course_Count | Total_Students\n\nData rows (7, sorted alphabetically by department):\n\nAnalytics,3,2,748\nBiochemistry,8,4,7909\nComputing,3,2,4434\nDesign,8,4,6272\nEconomics,4,3,2934\nFinance,8,4,7762\nGovernance,6,3,2534\n\nNotes:\n- Est_Grading_Hours and Weekly_Grading_Hours are decimals rounded to 1 decimal place (e.g., 1146.0, 71.6). Preserve the 1-decimal values exactly.\n- Overloaded_YN is the single character \"Y\" or \"N\".\n\nAFTER WRITING: verify by calling get_workbook_metadata on the file (confirm exactly 2 sheets with the required names) and read_data_from_excel for both sheets (confirm headers in row 1 and all 33 + 7 data rows present). Report the verification results. Do NOT modify the data — write it exactly as given.\nBuild Faculty_Workload.xlsx",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 12,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 22,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 23,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

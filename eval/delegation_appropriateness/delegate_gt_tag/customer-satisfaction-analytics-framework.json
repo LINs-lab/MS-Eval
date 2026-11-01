@@ -1,0 +1,233 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "customer-satisfaction-analytics-framework",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/customer-satisfaction-analytics-framework.task.md",
+    "oracle166_sha256": "0099824ed38be6ba3673c950df7450976fe8db5a52540ca9458dc61d1077cd34"
+  },
+  "label_cache_keys": [
+    "fc620193758acd0c251324b602a62f38065c33cd4d16d471612b7b6cd033cb3f"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The sole spreadsheet writer creates both `satisfaction_analysis.xlsx` and `action_plans.xlsx`. The analysis workbook contains substantive `Summary Metrics`, `Product or Dimension`, and `Customer Segment` sheets with literal numeric cells and explicit unavailable dimensions. The action plan uses exact columns `Initiative, Owner, Target Metric, Baseline, Goal, Timeline, Status` with at least five evidence-linked rows. Read every populated range back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): The sole document writer creates both `satisfaction_report.docx` and the distinct `executive_summary.docx`, each at least 60 words and covering the task-required metrics, evidence-backed findings, business implications, and prioritized actions. Read both full texts back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "gsheet",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): The sole dashboard writer searches the exact cloud-spreadsheet title, reuses one exact match or creates once on zero, blocks duplicates, writes summary, product/dimension, segment, and monitoring views from the canonical JSON, and reads its sheet inventory and bounded ranges back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The sole spreadsheet writer creates both `satisfaction_analysis.xlsx` and `action_plans.xlsx`. The analysis workbook contains substantive `Summary Metrics`, `Product or Dimension`, and `Customer Segment` sheets with literal numeric cells and explicit unavailable dimensions. The action plan uses exact columns `Initiative, Owner, Target Metric, Baseline, Goal, Timeline, Status` with at least five evidence-linked rows. Read every populated range back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): The sole document writer creates both `satisfaction_report.docx` and the distinct `executive_summary.docx`, each at least 60 words and covering the task-required metrics, evidence-backed findings, business implications, and prioritized actions. Read both full texts back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "gsheet",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): The sole dashboard writer searches the exact cloud-spreadsheet title, reuses one exact match or creates once on zero, blocks duplicates, writes summary, product/dimension, segment, and monitoring views from the canonical JSON, and reads its sheet inventory and bounded ranges back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:word",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:2:gsheet",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 2,
+      "role": "gsheet",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "gsheet": 1,
+      "word": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 3,
+    "units": 3,
+    "write_units": 3,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

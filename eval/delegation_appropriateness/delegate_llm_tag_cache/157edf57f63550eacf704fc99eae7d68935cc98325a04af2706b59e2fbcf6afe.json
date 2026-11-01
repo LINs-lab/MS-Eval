@@ -1,0 +1,197 @@
+{
+  "input_hash": "157edf57f63550eacf704fc99eae7d68935cc98325a04af2706b59e2fbcf6afe",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "canvas-ta-workload-excel-email",
+    "task_text": "The department chair wants to understand the workload distribution among Teaching Assistants across all courses to make informed staffing decisions for next semester. Pull TA enrollment data across all courses along with assignment and submission counts to assess the workload each TA is responsible for.\n\nCreate an Excel file called TA_Workload_Report.xlsx with two sheets. The first sheet should be called \"Course Workload\" and contain the following columns: Course_Name, Course_Code, TA_Count, Assignment_Count, Submission_Count, and Submissions_Per_TA. Submissions_Per_TA should be the Submission_Count divided by TA_Count, rounded to 1 decimal place. If a course has no TAs, set Submissions_Per_TA to 0. Sort the rows by Course_Name alphabetically. The second sheet should be called \"Summary\" with rows for Total_Courses, Total_TAs (sum of all TA_Count across courses), Avg_TAs_Per_Course (rounded to 1 decimal), Max_Assignment_Count (the highest assignment count among all courses), and Most_Loaded_Course (the course name with the highest Submissions_Per_TA).\n\nThen create a Notion page called \"TA Staffing Overview\" that summarizes the key findings from the workload analysis including total courses, total TAs, and which course has the heaviest TA workload.\n\nFinally, email the report to dept_chair@university.edu with subject \"TA Workload Report\" and a brief summary in the body.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, use one compact Explore agent per concrete course. Each course has a true local dependency from its assignment list to its bulk submission-count call, but courses are independent.\n\nThe main agent calls canvas_list_courses(include_ended=true), validates unique returned IDs/codes/full names, and instantiates one literal prompt per course.\n\n1. Wave 1 — dispatch exactly 22 explore sub-agents in parallel, one per literal course below:\n\n   1. explore 0 (enterprise-data-analyst 0): Course Explore agent for course_id=1 (AAA-2013J): first call canvas_list_assignments(course_id=1, include_submissions=false), validate unique assignment IDs, and freeze that literal assignment_ids list. In the next response call natively in parallel: canvas_get_course_grades(course_id=1, page=1, per_page=1, type=[\"TaEnrollment\"]) taking TA_Count from pagination.total_count without fetching TA rows; and canvas_list_student_submissions(course_id=1, assignment_ids=<literal returned assignment IDs>, student_ids=[\"all\"], grouped=false, page=1, per_page=1) taking Submission_Count from pagination.total_count without fetching later submission pages. Return only {course_id:1,course_code:\"AAA-2013J\",course_name,assignment_ids,assignment_count,ta_count,submission_count,assignment_response_count,ta_pagination,submission_pagination}. Do not modify Canvas.\n   2. explore 1 (enterprise-data-analyst 1): Course owner for course_id=2 (AAA-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   3. explore 2 (enterprise-data-analyst 2): Course owner for course_id=3 (BBB-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   4. explore 3 (enterprise-data-analyst 3): Course owner for course_id=4 (BBB-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   5. explore 4 (enterprise-data-analyst 4): Course owner for course_id=5 (BBB-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   6. explore 5 (enterprise-data-analyst 5): Course owner for course_id=6 (BBB-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   7. explore 6 (enterprise-data-analyst 6): Course owner for course_id=7 (CCC-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   8. explore 7 (enterprise-data-analyst 7): Course owner for course_id=8 (CCC-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   9. explore 8 (enterprise-data-analyst 8): Course owner for course_id=9 (DDD-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   10. explore 9 (enterprise-data-analyst 9): Course owner for course_id=10 (DDD-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   11. explore 10 (enterprise-data-analyst 10): Course owner for course_id=11 (DDD-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   12. explore 11 (enterprise-data-analyst 11): Course owner for course_id=12 (DDD-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   13. explore 12 (enterprise-data-analyst 12): Course owner for course_id=13 (EEE-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   14. explore 13 (enterprise-data-analyst 13): Course owner for course_id=14 (EEE-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   15. explore 14 (enterprise-data-analyst 14): Course owner for course_id=15 (EEE-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   16. explore 15 (enterprise-data-analyst 15): Course owner for course_id=16 (FFF-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   17. explore 16 (enterprise-data-analyst 16): Course owner for course_id=17 (FFF-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   18. explore 17 (enterprise-data-analyst 17): Course owner for course_id=18 (FFF-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   19. explore 18 (enterprise-data-analyst 18): Course owner for course_id=19 (FFF-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   20. explore 19 (enterprise-data-analyst 19): Course owner for course_id=20 (GGG-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   21. explore 20 (enterprise-data-analyst 20): Course owner for course_id=21 (GGG-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   22. explore 21 (enterprise-data-analyst 21): Course owner for course_id=22 (GGG-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n\nAfter Wave 1, the main agent requires exactly one result per course, reconciles all IDs, computes Submissions_Per_TA with zero for courses without TAs, sorts course names, and freezes the complete Course Workload table, Summary rows, deterministic Most_Loaded_Course, Notion paragraph, and email facts.\n\nThen dispatch the three independent output branches in one native-parallel response from the frozen canonical payload:\n\n- coder 0 (office-report-builder 0): Sole-write TA_Workload_Report.xlsx in the dynamically resolved workspace with exactly Course Workload and Summary — exact headers, all course rows, literal values and rounding — reading both populated ranges back.\n- coder 1 (external-workflow-operator 0): Sole-own the Notion page TA Staffing Overview: search and retrieve all exact-title candidates, stop without mutation on duplicates, create exactly once only if absent, and append the complete canonical paragraph exactly once only if absent. The paragraph must contain the literal total course count, total TA count, full most-loaded course name, and Submissions_Per_TA. Retrieve the page and child blocks after writing and leave unrelated content untouched.\n- coder 2 (external-workflow-operator 1): Search Sent mail for exact To dept_chair@university.edu and subject TA Workload Report, reading candidates to verify recipients. Send once only if absent, using the same canonical total courses, total TAs, average TAs and full heaviest-workload course, then read it back.\n\nAfter the outputs, reconcile workbook, Notion and email against the canonical payload; do not dispatch an aggregation or verification agent.\n",
+    "nodes": [
+      {
+        "id": 12,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=12 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=12, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=12. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=12, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 12, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=13 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=13, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=13. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=13, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 13, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=14 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=14, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=14. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=14, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 14, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=15 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=15, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=15. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=15, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 15, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=16 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=16, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=16. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=16, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 16, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=17 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=17, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=17. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=17, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 17, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=18 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=18, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=18. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=18, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 18, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=19 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=19, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=19. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=19, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 19, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=20 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=20, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=20. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=20, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 20, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=21 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=21, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=21. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=21, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 21, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 22,
+        "wave": "message_18",
+        "text": "You are collecting three read-only counts for Canvas course_id=22 to compute TA workload. Do NOT write or mutate anything. Return only a compact JSON row.\n\nUse these Canvas tools (they are available to you):\n1. TA count — call canvas_get_course_grades with course_id=22, type=[\"TaEnrollment\"], per_page=100. The pagination.total_count in the response is the number of Teaching Assistant enrollments for this course. Use that as ta_count. (If has_more is true, page through with page and add row counts, but the total_count field is authoritative.)\n2. Assignment count — call canvas_list_assignments with course_id=22. Count the number of assignment objects returned. Use that as assignment_count.\n3. Submission count — call canvas_list_student_submissions with course_id=22, per_page=100. The response contains a \"pagination\" object with \"total_count\" — that is the total number of submissions across all assignments in the course. Use pagination.total_count as submission_count. Do NOT page further; total_count is the full total. The ROW output is large, but you only need the pagination.total_count value.\n\nReturn EXACTLY one JSON object (no extra prose, no markdown fences) as your final message:\n\n{\"course_id\": 22, \"ta_count\": <int>, \"assignment_count\": <int>, \"submission_count\": <int>}\n\nIf any of the three calls fails, re-read the response carefully; the tool may still have returned data. If a count genuinely cannot be obtained, use 0 and note the field. Prefer accurate counts.\nExtract per-course TA workload counts",
+        "is_plan": false
+      },
+      {
+        "id": 23,
+        "wave": "message_22",
+        "text": "Create an Excel workbook at this exact path:\n/workspace/dumps/kimi-code_claude-sonnet-5/SingleUserTurn-canvas-ta-workload-excel-email/workspace/TA_Workload_Report.xlsx\n\nUse the mcp__excel__ tools (create_workbook, create_worksheet if needed, write_data_to_excel, rename_worksheet) to build it. The workbook must have exactly two sheets.\n\nSheet 1 name: \"Course Workload\"\nColumns (row 1 header): Course_Name, Course_Code, TA_Count, Assignment_Count, Submission_Count, Submissions_Per_TA\n\nData rows (already computed, sorted by Course_Name alphabetically). Write them in this exact order starting at A2:\n\n[\"Applied Analytics & Algorithms (Fall 2013)\", \"AAA-2013J\", 1, 6, 1633, 1633.0]\n[\"Applied Analytics & Algorithms (Fall 2014)\", \"AAA-2014J\", 2, 6, 1516, 758.0]\n[\"Biochemistry & Bioinformatics (Fall 2013)\", \"BBB-2013J\", 1, 12, 14375, 14375.0]\n[\"Biochemistry & Bioinformatics (Fall 2014)\", \"BBB-2014J\", 2, 6, 7408, 3704.0]\n[\"Biochemistry & Bioinformatics (Spring 2013)\", \"BBB-2013B\", 0, 12, 11256, 0]\n[\"Biochemistry & Bioinformatics (Spring 2014)\", \"BBB-2014B\", 2, 12, 9993, 4996.5]\n[\"Creative Computing & Culture (Fall 2014)\", \"CCC-2014J\", 2, 10, 11451, 5725.5]\n[\"Creative Computing & Culture (Spring 2014)\", \"CCC-2014B\", 2, 10, 7489, 3744.5]\n[\"Data-Driven Design (Fall 2013)\", \"DDD-2013J\", 3, 7, 7936, 2645.3]\n[\"Data-Driven Design (Fall 2014)\", \"DDD-2014J\", 2, 7, 8013, 4006.5]\n[\"Data-Driven Design (Spring 2013)\", \"DDD-2013B\", 2, 14, 10373, 5186.5]\n[\"Data-Driven Design (Spring 2014)\", \"DDD-2014B\", 1, 7, 4542, 4542.0]\n[\"Environmental Economics & Ethics (Fall 2013)\", \"EEE-2013J\", 1, 5, 2884, 2884.0]\n[\"Environmental Economics & Ethics (Fall 2014)\", \"EEE-2014J\", 1, 5, 3229, 3229.0]\n[\"Environmental Economics & Ethics (Spring 2014)\", \"EEE-2014B\", 1, 5, 1780, 1780.0]\n[\"Foundations of Finance (Fall 2013)\", \"FFF-2013J\", 1, 13, 16240, 16240.0]\n[\"Foundations of Finance (Fall 2014)\", \"FFF-2014J\", 0, 13, 16184, 0]\n[\"Foundations of Finance (Spring 2013)\", \"FFF-2013B\", 1, 13, 12195, 12195.0]\n[\"Foundations of Finance (Spring 2014)\", \"FFF-2014B\", 0, 13, 10196, 0]\n[\"Global Governance & Geopolitics (Fall 2013)\", \"GGG-2013J\", 2, 10, 5950, 2975.0]\n[\"Global Governance & Geopolitics (Fall 2014)\", \"GGG-2014J\", 0, 10, 4373, 0]\n[\"Global Governance & Geopolitics (Spring 2014)\", \"GGG-2014B\", 2, 10, 4896, 2448.0]\n\nSheet 2 name: \"Summary\"\nWrite with a header row and a metric-value row. Use two columns (Metric, Value) with rows:\nHeader: [\"Metric\", \"Value\"]\n[\"Total_Courses\", 22]\n[\"Total_TAs\", 29]\n[\"Avg_TAs_Per_Course\", 1.3]\n[\"Max_Assignment_Count\", 14]\n[\"Most_Loaded_Course\", \"Foundations of Finance (Fall 2013)\"]\n\nNotes:\n- The default new workbook typically has a sheet named \"Sheet\"; rename it to \"Course Workload\" and create/rename the second sheet to \"Summary\". Only these two sheets should exist — delete any extra default sheet.\n- Column headers should be on row 1, data starting row 2.\n- value 0 for submissions_per_ta on courses with no TAs is intentional.\n\nAfter writing, verify by reading the workbook metadata and reading back the key cells. Then report the final absolute path of the file and the confirmed sheet names.\nBuild TA Workload Excel report",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 12,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 22,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 23,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

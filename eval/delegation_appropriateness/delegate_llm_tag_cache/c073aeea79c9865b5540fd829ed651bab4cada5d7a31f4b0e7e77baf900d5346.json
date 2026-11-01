@@ -1,0 +1,71 @@
+{
+  "input_hash": "c073aeea79c9865b5540fd829ed651bab4cada5d7a31f4b0e7e77baf900d5346",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "canvas-enrollment-overview-gsheet-ppt",
+    "task_text": "I need an enrollment overview for all courses from the Fall 2013 semester to prepare for an upcoming academic review meeting.\n\nPlease look up all courses that ran in the Fall of 2013, get their enrollment numbers broken down by student and teacher counts, and create a Google Sheet called Fall 2013 Enrollment Overview. The sheet should have columns Course_Name, Course_Code, Student_Count, and Teacher_Count, sorted by Student_Count descending. Student_Count is the number of students currently enrolled in the course, and Teacher_Count is the number of teachers enrolled. Every total enrollment figure in the presentation, Word document, and email (such as \"total student enrollment\" or \"total students enrolled\") must count student enrollments only — do not include teachers or teaching assistants in any total.\n\nThen create a PowerPoint presentation called Enrollment_Overview_F2013.pptx for the academic review meeting. The presentation should have a title slide called Fall 2013 Enrollment Overview, one content slide per course showing the course name, course code, and its enrollment breakdown, and a final summary slide showing the total student enrollment across all courses and which course had the largest enrollment.\n\nCreate a Word document called Enrollment_Report_F2013.docx with a heading that reads Fall 2013 Enrollment Report, a paragraph summarizing the total student enrollment and the number of courses offered that semester, and a table listing each course with its course code, student count, and teacher count.\n\nSend an email to academic.office@university.edu with the subject Fall 2013 Semester Enrollment Summary. The email body should include the key enrollment statistics such as total students enrolled, number of courses, and which course had the most students.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent first gathers the compact counts and freezes one literal payload, then parallelizes the three independent report writers.\n\nCall canvas_list_courses(include_ended=true), retain exactly the courses whose full name contains Fall 2013 or whose code ends in 2013J, and freeze their literal IDs/codes/names. In one native-parallel response issue, for every retained course, canvas_get_course_grades(page=1, per_page=1, type=[\"StudentEnrollment\"]) and canvas_get_course_grades(page=1, per_page=1, type=[\"TeacherEnrollment\"]). Use pagination.total_count only; never fetch enrollment rows. Validate identity and exactly-once course coverage. Compute and freeze a canonical table {course_name, course_code, student_count, teacher_count}, sorted by student_count descending with course_code ascending for ties, plus total_students, course_count, and the deterministic largest-student course. All writers and the email must consume these literal values without recomputation.\n\n1. Wave 1 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (external-workflow-operator 0): The first Coder is the sole owner of the Google spreadsheet titled Fall 2013 Enrollment Overview. Create or reuse one exact-title spreadsheet, write only the requested Course_Name, Course_Code, Student_Count, Teacher_Count table to a precisely bounded range beginning A1, and read that exact range back. Do not add diagnostic cells or write the local files.\n   2. coder 1 (office-report-builder 0): The second Coder is the sole writer of Enrollment_Overview_F2013.pptx in the task's dynamically resolved workspace. From the canonical payload create one title slide, one slide per literal course, and one final summary slide with total student enrollment and the largest course; read back slide count, titles, and values.\n   3. coder 2 (office-report-builder 1): The third Coder is the sole writer of Enrollment_Report_F2013.docx in the same resolved workspace. Create the exact heading, summary paragraph, and complete course table from the canonical payload, then read the document back.\n\nIn the same response that launches Wave 1, the main agent independently searches Sent mail for academic.office@university.edu with subject Fall 2013 Semester Enrollment Summary. Read candidates to verify the recipient; send once only if absent, using the canonical student-only total, course count, and largest course. After Wave 1, read/reconcile the spreadsheet, presentation, document, and retained email against the same payload. Do not create a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_29",
+        "text": "Create a Google Spreadsheet for an academic enrollment report. You have Google Sheets tools available.\n\nGoal: Create a new Google spreadsheet with EXACT title: Fall 2013 Enrollment Overview\n\nIn the spreadsheet's default/first sheet, write the data as follows:\n- Row 1 (header, cells A1:D1): Course_Name, Course_Code, Student_Count, Teacher_Count  (exactly these four header strings)\n- Rows 2-7, in this exact order (data already sorted by Student_Count descending), with Student_Count and Teacher_Count written as numbers:\n\nRow 2: Foundations of Finance (Fall 2013) | FFF-2013J | 2283 | 1\nRow 3: Biochemistry & Bioinformatics (Fall 2013) | BBB-2013J | 2237 | 3\nRow 4: Data-Driven Design (Fall 2013) | DDD-2013J | 1938 | 1\nRow 5: Environmental Economics & Ethics (Fall 2013) | EEE-2013J | 1052 | 1\nRow 6: Global Governance & Geopolitics (Fall 2013) | GGG-2013J | 952 | 2\nRow 7: Applied Analytics & Algorithms (Fall 2013) | AAA-2013J | 383 | 1\n\nUse create_spreadsheet (title exactly \"Fall 2013 Enrollment Overview\"), then write values with update_cells or batch_update_cells.\n\nAcceptance criteria:\n1. Spreadsheet exists with the exact title.\n2. A1:D7 contains exactly the header and 6 rows above, in that order, counts numeric.\nVerify by reading back range A1:D7 with get_sheet_data and confirm every cell.\n\nDeliverable to report back: spreadsheet ID, spreadsheet URL/web link, sheet name used, and the verified cell contents you read back.\nCreate Fall 2013 Google Sheet",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_29",
+        "text": "Build a PowerPoint presentation for an academic review meeting using the available pptx MCP tools.\n\nDeliverable: A saved .pptx file at this exact absolute path:\n/workspace/dumps/kimi-code_Qwen3.8-Max/SingleUserTurn-canvas-enrollment-overview-gsheet-ppt/workspace/Enrollment_Overview_F2013.pptx\n\nRequired slide structure (8 slides total):\n\n1. Slide 1 — Title slide. Title text must read exactly: Fall 2013 Enrollment Overview\n   (A subtitle such as \"Academic Review Meeting\" is fine but optional.)\n\n2. Slides 2-7 — One content slide per course, in this order. Each must show the course name, course code, and its enrollment breakdown (student count and teacher count):\n   - Foundations of Finance (Fall 2013) — Code: FFF-2013J — Student Count: 2283 — Teacher Count: 1\n   - Biochemistry & Bioinformatics (Fall 2013) — Code: BBB-2013J — Student Count: 2237 — Teacher Count: 3\n   - Data-Driven Design (Fall 2013) — Code: DDD-2013J — Student Count: 1938 — Teacher Count: 1\n   - Environmental Economics & Ethics (Fall 2013) — Code: EEE-2013J — Student Count: 1052 — Teacher Count: 1\n   - Global Governance & Geopolitics (Fall 2013) — Code: GGG-2013J — Student Count: 952 — Teacher Count: 2\n   - Applied Analytics & Algorithms (Fall 2013) — Code: AAA-2013J — Student Count: 383 — Teacher Count: 1\n\n3. Slide 8 — Summary slide. Must state:\n   - Total student enrollment across all Fall 2013 courses: 8845 students\n   - Largest course: Foundations of Finance (Fall 2013) (FFF-2013J) with 2283 students\n   Optionally also mention: 6 courses offered in Fall 2013.\n\nCritical rule: every total enrollment figure anywhere in the deck must count STUDENT enrollments only — never include teachers in any total. Use only the numbers given above.\n\nTechnical notes: create a new presentation (create_presentation), add slides (add_slide with title, or manage_text), and populate text. At the end call save_presentation with the exact absolute path above. Then extract the text (extract_presentation_text) to verify all 8 slides contain the required content, and confirm the saved file exists on disk.\n\nReport back: the saved file path, number of slides, and a brief per-slide content outline you verified.\nBuild Fall 2013 PPTX deck",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_29",
+        "text": "Create a Word document using the available word MCP tools.\n\nDeliverable: A Word document named exactly: Enrollment_Report_F2013.docx\n\nRequired content, in this order:\n1. A heading (Heading 1) that reads exactly: Fall 2013 Enrollment Report\n2. A summary paragraph. It must state the total student enrollment for the Fall 2013 semester and the number of courses offered. Use these facts: total student enrollment = 8845 students; number of courses offered = 6. IMPORTANT: the total counts STUDENT enrollments only; do not include teachers or TAs in any total. Example wording: \"For the Fall 2013 semester, there was a total student enrollment of 8,845 students across the 6 courses offered.\"\n3. A table listing each course with its course code, student count, and teacher count. Use this exact data (rows sorted by student count descending). Header row and 6 data rows, 4 columns:\n\nCourse_Name | Course_Code | Student_Count | Teacher_Count\nFoundations of Finance (Fall 2013) | FFF-2013J | 2283 | 1\nBiochemistry & Bioinformatics (Fall 2013) | BBB-2013J | 2237 | 3\nData-Driven Design (Fall 2013) | DDD-2013J | 1938 | 1\nEnvironmental Economics & Ethics (Fall 2013) | EEE-2013J | 1052 | 1\nGlobal Governance & Geopolitics (Fall 2013) | GGG-2013J | 952 | 2\nApplied Analytics & Algorithms (Fall 2013) | AAA-2013J | 383 | 1\n\nTechnical steps: create_document(filename \"Enrollment_Report_F2013.docx\"), add_heading, add_paragraph, add_table (then format_table or highlight_table_header if helpful). Verify with get_document_outline and get_document_text that the heading, summary paragraph, and full table content are present and correct.\n\nReport back: the document filename/location, and the verified text/table contents.\nBuild Fall 2013 Word report",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_29",
+        "text": "Send an email using the available email MCP tools.\n\nMessage details:\n- To: academic.office@university.edu\n- Subject (exact): Fall 2013 Semester Enrollment Summary\n- Body must include these key enrollment statistics for the Fall 2013 semester:\n  1. Total students enrolled across all Fall 2013 courses: 8845\n  2. Number of courses offered in Fall 2013: 6\n  3. Course with the most students: Foundations of Finance (Fall 2013), course code FFF-2013J, with 2283 students\n\nAlso include a per-course breakdown in the body (sorted by student count, descending):\n- Foundations of Finance (Fall 2013) — FFF-2013J — 2283 students, 1 teacher\n- Biochemistry & Bioinformatics (Fall 2013) — BBB-2013J — 2237 students, 3 teachers\n- Data-Driven Design (Fall 2013) — DDD-2013J — 1938 students, 1 teacher\n- Environmental Economics & Ethics (Fall 2013) — EEE-2013J — 1052 students, 1 teacher\n- Global Governance & Geopolitics (Fall 2013) — GGG-2013J — 952 students, 2 teachers\n- Applied Analytics & Algorithms (Fall 2013) — AAA-2013J — 383 students, 1 teacher\n\nCritical rule: every \"total\" enrollment figure in the email counts STUDENT enrollments only — teachers/TAs are never included in any total. Write the email in a professional tone suitable for an academic office preparing for an academic review meeting. Plain-text body is fine.\n\nActually send the email (send_email). Report back: confirmation the email was sent, plus the exact subject and body you sent.\nSend Fall 2013 summary email",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "ppt",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "word",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

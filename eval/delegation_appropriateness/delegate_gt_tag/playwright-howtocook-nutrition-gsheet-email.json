@@ -1,0 +1,301 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "playwright-howtocook-nutrition-gsheet-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/playwright-howtocook-nutrition-gsheet-email.task.md",
+    "oracle166_sha256": "80901f3a4c9d6b4d7b23984f861da7bcfae4b87a9e1b88b692189e680121ce63"
+  },
+  "label_cache_keys": [
+    "905bb8434aa64f14dcb7589ffe5684bd5cb58baeaddcd643727eacfd21a46ad5"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 4,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "playwright-web"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (web-domain-researcher 0): Use one explore sub-agent to read the complete nutrition-guidelines page at `http://localhost:30206/guidelines.html` with read-only browser operations. Return the exact lunch targets for calories, protein, fat, and carbohydrates, every reported dietary restriction/note, and page/table/field controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "filesystem-workspace",
+            "howtocook"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (web-domain-researcher 1): Use one strictly read-only explore sub-agent to query exact recipe category `荤菜`. If the response is materialized as an overlong runtime `output_path`, read that file from the task workspace instead of retrying the category call. Select at least two distinct cafeteria-suitable recipe IDs, retrieve only those exact IDs in native parallel, and return `{recipes:[{recipe_id,name,category,ingredients,preparation}], category:\"荤菜\", category_result_count, selected_count, duplicate_ids, missing_fields}`. Do not write a deliverable or modify a recipe.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "filesystem-workspace",
+            "howtocook"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (web-domain-researcher 2): Use one strictly read-only explore sub-agent to query exact recipe category `素菜`. If the response is materialized as an overlong runtime `output_path`, read that file from the task workspace instead of retrying the category call. Select at least two distinct cafeteria-suitable recipe IDs, retrieve only those exact IDs in native parallel, and return `{recipes:[{recipe_id,name,category,ingredients,preparation}], category:\"素菜\", category_result_count, selected_count, duplicate_ids, missing_fields}`. Do not write a deliverable or modify a recipe.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "filesystem-workspace",
+            "howtocook"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (web-domain-researcher 3): Use one strictly read-only explore sub-agent to query exact category `汤`; only when that returned collection has no usable recipe may it query exact category `主食`. Consume any overlong runtime `output_path` from the task workspace without repeating the call, select at least one suitable exact recipe ID, retrieve only that ID, and return `{recipes:[{recipe_id,name,category,ingredients,preparation}], requested_category:\"汤\", used_category, fallback_reason, category_result_count, selected_count, duplicate_ids, missing_fields}`. Do not write a deliverable or modify a recipe.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "playwright-web"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (web-domain-researcher 0): Use one explore sub-agent to read the complete nutrition-guidelines page at `http://localhost:30206/guidelines.html` with read-only browser operations. Return the exact lunch targets for calories, protein, fat, and carbohydrates, every reported dietary restriction/note, and page/table/field controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "filesystem-workspace",
+        "howtocook"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (web-domain-researcher 1): Use one strictly read-only explore sub-agent to query exact recipe category `荤菜`. If the response is materialized as an overlong runtime `output_path`, read that file from the task workspace instead of retrying the category call. Select at least two distinct cafeteria-suitable recipe IDs, retrieve only those exact IDs in native parallel, and return `{recipes:[{recipe_id,name,category,ingredients,preparation}], category:\"荤菜\", category_result_count, selected_count, duplicate_ids, missing_fields}`. Do not write a deliverable or modify a recipe.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "filesystem-workspace",
+        "howtocook"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (web-domain-researcher 2): Use one strictly read-only explore sub-agent to query exact recipe category `素菜`. If the response is materialized as an overlong runtime `output_path`, read that file from the task workspace instead of retrying the category call. Select at least two distinct cafeteria-suitable recipe IDs, retrieve only those exact IDs in native parallel, and return `{recipes:[{recipe_id,name,category,ingredients,preparation}], category:\"素菜\", category_result_count, selected_count, duplicate_ids, missing_fields}`. Do not write a deliverable or modify a recipe.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "filesystem-workspace",
+        "howtocook"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (web-domain-researcher 3): Use one strictly read-only explore sub-agent to query exact category `汤`; only when that returned collection has no usable recipe may it query exact category `主食`. Consume any overlong runtime `output_path` from the task workspace without repeating the call, select at least one suitable exact recipe ID, retrieve only that ID, and return `{recipes:[{recipe_id,name,category,ingredients,preparation}], requested_category:\"汤\", used_category, fallback_reason, category_result_count, selected_count, duplicate_ids, missing_fields}`. Do not write a deliverable or modify a recipe.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "read:wave_1:filesystem-workspace",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "filesystem-workspace",
+      "source_nodes": [
+        1,
+        2,
+        3
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:howtocook",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "howtocook",
+      "source_nodes": [
+        1,
+        2,
+        3
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:playwright-web",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "playwright-web",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {},
+    "read": {
+      "filesystem-workspace": 1,
+      "howtocook": 1,
+      "playwright-web": 1
+    }
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 4,
+    "units": 3,
+    "write_units": 0,
+    "read_clusters": 3,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

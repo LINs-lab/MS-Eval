@@ -1,0 +1,298 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-sf-wc-order-audit-excel-word",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-sf-wc-order-audit-excel-word.task.md",
+    "oracle166_sha256": "539994a61ca4472ab8f45870999e302e41fa70ca31b96a5dd4f46a6e3cf5bbcc"
+  },
+  "label_cache_keys": [
+    "ae8272336d024a790411c062b7c0be11c4e9d3c89a86eb71b2f535dd64de4eb1"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "snowflake"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): One explore sub-agent runs set-based Snowflake queries that return only the four literal status rows `Cancelled`, `Delivered`, `Processing`, and `Shipped`, the overall count/revenue/average, and the four literal ship-mode rows `Economy`, `Express`, `Next Day`, and `Standard`, with total controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 1): One explore sub-agent fully paginates WooCommerce products, orders, and customers at `perPage=100`. Omit the optional order status argument to request all observed statuses and compute locally only total products, total orders, total customers, all-status revenue, and all-status average order value plus page/count controls. Do not persist raw rows or modify the store.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The Excel coder solely creates `Order_Audit_Report.xlsx`, using one bulk write for each of the exact four sheets and literal values, then one full workbook read-back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): The Word coder solely creates `Audit_Findings.docx` with one bulk structured body and one read-back. It must contain the exact title `Order Reconciliation Audit Report`, the four required sections plus recommendations, and must literally spell all four statuses `Delivered`, `Cancelled`, `Processing`, `Shipped` and all four ship modes `Economy`, `Express`, `Next Day`, `Standard` in the document text.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "snowflake"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): One explore sub-agent runs set-based Snowflake queries that return only the four literal status rows `Cancelled`, `Delivered`, `Processing`, and `Shipped`, the overall count/revenue/average, and the four literal ship-mode rows `Economy`, `Express`, `Next Day`, and `Standard`, with total controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 1): One explore sub-agent fully paginates WooCommerce products, orders, and customers at `perPage=100`. Omit the optional order status argument to request all observed statuses and compute locally only total products, total orders, total customers, all-status revenue, and all-status average order value plus page/count controls. Do not persist raw rows or modify the store.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The Excel coder solely creates `Order_Audit_Report.xlsx`, using one bulk write for each of the exact four sheets and literal values, then one full workbook read-back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): The Word coder solely creates `Audit_Findings.docx` with one bulk structured body and one read-back. It must contain the exact title `Order Reconciliation Audit Report`, the four required sections plus recommendations, and must literally spell all four statuses `Delivered`, `Cancelled`, `Processing`, `Shipped` and all four ship modes `Economy`, `Express`, `Next Day`, `Standard` in the document text.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:2:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:3:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:snowflake",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "snowflake",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:woocommerce",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "woocommerce",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "word": 1
+    },
+    "read": {
+      "snowflake": 1,
+      "woocommerce": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 4,
+    "units": 4,
+    "write_units": 2,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

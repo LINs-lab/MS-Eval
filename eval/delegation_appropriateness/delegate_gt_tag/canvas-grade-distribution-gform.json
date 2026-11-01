@@ -1,0 +1,354 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "canvas-grade-distribution-gform",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/canvas-grade-distribution-gform.task.md",
+    "oracle166_sha256": "fbd4fb98cd8c4c7e565204a21bfd8e5e7e0045c0c7bee247c9213b6aa29a1f01"
+  },
+  "label_cache_keys": [
+    "b1bd6cecff0c1ed57d02fa5339803c750cd9dfa2f8d4e6a5df86d3a6b7aab319"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 6,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): Collector for course_id=6 (course_code and course_name as listed). A strictly read-only Canvas collector: call canvas_list_student_submissions(course_id=6, per_page=100, page=1), then keep calling page=2,3,... while pagination.has_more is true. The tool result may be truncated in the chat preview — always read the FULL JSON from the output_path file given in the result. A submission counts as graded iff it has a non-null numeric score field and workflow_state == \"graded\". Scores are on a 0-100 percentage scale. Aggregate all graded submissions in one script execution and return ONLY the compact JSON {course_id:6, course_code, course_name, avg_score, median_score, pass_rate, total_students, graded_count, pages}, where avg_score/median_score are the mean/median of graded scores, pass_rate = 100 * count(score >= 60) / graded_count, and total_students = number of DISTINCT user_ids among graded submissions. Do not return the row set, write any workspace file, or modify Canvas.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 1): Collector for course_id=8 — same literal recipe, only the course substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (enterprise-data-analyst 2): Collector for course_id=12 — same literal recipe, only the course substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (enterprise-data-analyst 3): Collector for course_id=15 — same literal recipe, only the course substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (enterprise-data-analyst 4): Collector for course_id=19 — same literal recipe, only the course substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 5 (enterprise-data-analyst 5): Collector for course_id=22 — same literal recipe, only the course substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): Collector for course_id=6 (course_code and course_name as listed). A strictly read-only Canvas collector: call canvas_list_student_submissions(course_id=6, per_page=100, page=1), then keep calling page=2,3,... while pagination.has_more is true. The tool result may be truncated in the chat preview — always read the FULL JSON from the output_path file given in the result. A submission counts as graded iff it has a non-null numeric score field and workflow_state == \"graded\". Scores are on a 0-100 percentage scale. Aggregate all graded submissions in one script execution and return ONLY the compact JSON {course_id:6, course_code, course_name, avg_score, median_score, pass_rate, total_students, graded_count, pages}, where avg_score/median_score are the mean/median of graded scores, pass_rate = 100 * count(score >= 60) / graded_count, and total_students = number of DISTINCT user_ids among graded submissions. Do not return the row set, write any workspace file, or modify Canvas.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 1): Collector for course_id=8 — same literal recipe, only the course substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (enterprise-data-analyst 2): Collector for course_id=12 — same literal recipe, only the course substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (enterprise-data-analyst 3): Collector for course_id=15 — same literal recipe, only the course substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (enterprise-data-analyst 4): Collector for course_id=19 — same literal recipe, only the course substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 5 (enterprise-data-analyst 5): Collector for course_id=22 — same literal recipe, only the course substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "read:wave_1:canvas",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "canvas",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {},
+    "read": {
+      "canvas": 1
+    }
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 6,
+    "units": 1,
+    "write_units": 0,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

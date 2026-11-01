@@ -1,0 +1,143 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "fetch-notion-monitoring",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/fetch-notion-monitoring.task.md",
+    "oracle166_sha256": "40800ad379d3327f17651ce2ee1cd9bb8520dd1a4607f0264e1c78b24a65ce6d"
+  },
+  "label_cache_keys": [
+    "b66160fefe8d5275202d631a2622d398e2e2a2d2b2aaeb5fcb109a60f1827785"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The coder sub-agent is the sole owner of `Service_Availability_Report.xlsx`. Read all 504 rows from `service_status_log.json`, sort within each of the three services, compute the exact summary metrics, and collapse each maximal consecutive down/degraded run into one incident ending at the return-to-up timestamp or observation-window boundary. Create the exact two-sheet workbook and read it back once. Return the workbook path plus a compact structured handoff containing all three summary rows and every incident row; do not create another JSON file and do not touch Notion, Calendar, or email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The coder sub-agent is the sole owner of `Service_Availability_Report.xlsx`. Read all 504 rows from `service_status_log.json`, sort within each of the three services, compute the exact summary metrics, and collapse each maximal consecutive down/degraded run into one incident ending at the return-to-up timestamp or observation-window boundary. Create the exact two-sheet workbook and read it back once. Return the workbook path plus a compact structured handoff containing all three summary rows and every incident row; do not create another JSON file and do not touch Notion, Calendar, or email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "excel",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 1,
+    "units": 1,
+    "write_units": 1,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

@@ -1,0 +1,3453 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "oracle166": "data/oracle166",
+  "n_tasks": 166,
+  "n_need": 89,
+  "n_direct": 77,
+  "n_units": 265,
+  "n_nodes": 556,
+  "tasks": [
+    {
+      "task": "12306-howtocook-team-trip-catering-excel-gcal",
+      "file": "12306-howtocook-team-trip-catering-excel-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 4,
+        "write_units": 2,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1
+        },
+        "read": {
+          "howtocook": 1,
+          "rail_12306": 1
+        }
+      }
+    },
+    {
+      "task": "12306-wc-amazon-product-roadshow-excel-notion",
+      "file": "12306-wc-amazon-product-roadshow-excel-notion.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 0,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "rail_12306": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "12306-wc-supplier-visit-excel-email-gcal",
+      "file": "12306-wc-supplier-visit-excel-email-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 3,
+        "units": 4,
+        "write_units": 1,
+        "read_clusters": 3,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1
+        },
+        "read": {
+          "filesystem-workspace": 1,
+          "rail_12306": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "12306-yf-investor-roadshow-excel-ppt-email",
+      "file": "12306-yf-investor-roadshow-excel-ppt-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 6,
+        "units": 5,
+        "write_units": 2,
+        "read_clusters": 3,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "ppt": 1
+        },
+        "read": {
+          "emails": 1,
+          "rail_12306": 1,
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "academic-literature-review",
+      "file": "academic-literature-review.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 5,
+        "units": 2,
+        "write_units": 0,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "external-fetch": 1,
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "academic-presentation-builder",
+      "file": "academic-presentation-builder.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 7,
+        "units": 3,
+        "write_units": 2,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "ppt": 1,
+          "word": 1
+        },
+        "read": {
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "arxiv-conference-prep",
+      "file": "arxiv-conference-prep.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 6,
+        "units": 2,
+        "write_units": 1,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "ppt": 1
+        },
+        "read": {
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "arxiv-federated-learning-notion",
+      "file": "arxiv-federated-learning-notion.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 2,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1
+        },
+        "read": {
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "arxiv-latex-analysis-notion-word",
+      "file": "arxiv-latex-analysis-notion-word.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 2,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "notion": 1,
+          "word": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "arxiv-latex-reasoning-gsheet",
+      "file": "arxiv-latex-reasoning-gsheet.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 2,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "gsheet": 1,
+          "word": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "arxiv-latex-review-notion-word",
+      "file": "arxiv-latex-review-notion-word.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 6,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "gsheet": 1,
+          "notion": 1,
+          "word": 1
+        },
+        "read": {
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "arxiv-lit-review-gsheet",
+      "file": "arxiv-lit-review-gsheet.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "arxiv-reading-plan-excel-gcal-email",
+      "file": "arxiv-reading-plan-excel-gcal-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "arxiv-research-pipeline-notion-excel",
+      "file": "arxiv-research-pipeline-notion-excel.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 5,
+        "units": 2,
+        "write_units": 0,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "filesystem-workspace": 1,
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "arxiv-research-report",
+      "file": "arxiv-research-report.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 6,
+        "units": 2,
+        "write_units": 1,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "word": 1
+        },
+        "read": {
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "arxiv-research-tracker-notion",
+      "file": "arxiv-research-tracker-notion.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 7,
+        "units": 3,
+        "write_units": 2,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1
+        },
+        "read": {
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "arxiv-survey-presentation",
+      "file": "arxiv-survey-presentation.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 3,
+        "nodes": 9,
+        "units": 5,
+        "write_units": 2,
+        "read_clusters": 3,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "ppt": 1
+        },
+        "read": {
+          "external-fetch": 1,
+          "scholarly-arxiv": 2
+        }
+      }
+    },
+    {
+      "task": "canvas-announcement-summary",
+      "file": "canvas-announcement-summary.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 1,
+        "units": 1,
+        "write_units": 1,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-assignment-deadline-gcal",
+      "file": "canvas-assignment-deadline-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-assignment-deadline-word-gcal",
+      "file": "canvas-assignment-deadline-word-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 2,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "word": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-assignment-feedback-gform-word",
+      "file": "canvas-assignment-feedback-gform-word.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-at-risk-intervention",
+      "file": "canvas-at-risk-intervention.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 22,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-course-comparison-word",
+      "file": "canvas-course-comparison-word.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 15,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1,
+          "word": 1
+        },
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-course-comparison",
+      "file": "canvas-course-comparison.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 22,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-course-feedback",
+      "file": "canvas-course-feedback.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 7,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-course-notion-wiki",
+      "file": "canvas-course-notion-wiki.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 2,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-curriculum-audit",
+      "file": "canvas-curriculum-audit.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 22,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-enrollment-forecast-excel-gform-email",
+      "file": "canvas-enrollment-forecast-excel-gform-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-enrollment-notion",
+      "file": "canvas-enrollment-notion.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-enrollment-overview-excel-email",
+      "file": "canvas-enrollment-overview-excel-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-enrollment-overview-gsheet-ppt",
+      "file": "canvas-enrollment-overview-gsheet-ppt.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 3,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "gsheet": 1,
+          "ppt": 1,
+          "word": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-enrollment-overview",
+      "file": "canvas-enrollment-overview.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-enrollment-ppt-gsheet",
+      "file": "canvas-enrollment-ppt-gsheet.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 25,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1,
+          "ppt": 1
+        },
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-faculty-workload-review",
+      "file": "canvas-faculty-workload-review.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 3,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1,
+          "ppt": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-grade-distribution-gform",
+      "file": "canvas-grade-distribution-gform.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 6,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-grade-equity-excel-word-gcal",
+      "file": "canvas-grade-equity-excel-word-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 6,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-grade-summary",
+      "file": "canvas-grade-summary.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 3,
+        "write_units": 2,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1
+        },
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-grades-gsheet-pdf-email",
+      "file": "canvas-grades-gsheet-pdf-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 22,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-late-submission-gcal",
+      "file": "canvas-late-submission-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 22,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-pdf-grade-gsheet",
+      "file": "canvas-pdf-grade-gsheet.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 3,
+        "write_units": 2,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1
+        },
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-quiz-analysis-ppt",
+      "file": "canvas-quiz-analysis-ppt.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-quiz-item-analysis-word-gcal-email",
+      "file": "canvas-quiz-item-analysis-word-gcal-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-quiz-performance-excel",
+      "file": "canvas-quiz-performance-excel.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-quiz-performance-gcal-gform",
+      "file": "canvas-quiz-performance-gcal-gform.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "canvas-scholarly-curriculum-review",
+      "file": "canvas-scholarly-curriculum-review.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 5,
+        "units": 4,
+        "write_units": 2,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1
+        },
+        "read": {
+          "canvas": 1,
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-semester-summary-ppt",
+      "file": "canvas-semester-summary-ppt.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 9,
+        "units": 3,
+        "write_units": 2,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "ppt": 1
+        },
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "canvas-ta-workload-excel-email",
+      "file": "canvas-ta-workload-excel-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 22,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "customer-satisfaction-analytics-framework",
+      "file": "customer-satisfaction-analytics-framework.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 3,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1,
+          "word": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "ecommerce-commodity-impact",
+      "file": "ecommerce-commodity-impact.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 0,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "woocommerce": 1,
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "ecommerce-market-benchmark",
+      "file": "ecommerce-market-benchmark.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 0,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "woocommerce": 1,
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "fetch-canvas-syllabus-benchmark-excel-ppt",
+      "file": "fetch-canvas-syllabus-benchmark-excel-ppt.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 24,
+        "units": 3,
+        "write_units": 2,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "ppt": 1
+        },
+        "read": {
+          "canvas": 1
+        }
+      }
+    },
+    {
+      "task": "fetch-email-gcal-scheduler-excel-word",
+      "file": "fetch-email-gcal-scheduler-excel-word.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 1,
+        "units": 1,
+        "write_units": 1,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "processor": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "fetch-howtocook-catering-excel-gcal-email",
+      "file": "fetch-howtocook-catering-excel-gcal-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "fetch-notion-monitoring",
+      "file": "fetch-notion-monitoring.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 1,
+        "units": 1,
+        "write_units": 1,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "fetch-sf-hr-benchmark-excel-word",
+      "file": "fetch-sf-hr-benchmark-excel-word.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 2,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "word": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "fetch-sf-support-survey-gform-gcal-excel",
+      "file": "fetch-sf-support-survey-gform-gcal-excel.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "fetch-wc-inventory-forecast-excel-gcal-email",
+      "file": "fetch-wc-inventory-forecast-excel-gcal-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 0,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "external-fetch": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "fetch-wc-yf-financial-excel-word-email",
+      "file": "fetch-wc-yf-financial-excel-word-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 3,
+        "nodes": 5,
+        "units": 5,
+        "write_units": 3,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "processor": 1,
+          "word": 1
+        },
+        "read": {
+          "external-fetch": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "fetch-yf-dividend-strategy-gsheet-email",
+      "file": "fetch-yf-dividend-strategy-gsheet-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "fetch-yf-macro-portfolio-excel-gcal-email",
+      "file": "fetch-yf-macro-portfolio-excel-gcal-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "fetch-yf-portfolio-health-excel-gcal-email",
+      "file": "fetch-yf-portfolio-health-excel-gcal-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "financial-audit-cross-system-reconciliation",
+      "file": "financial-audit-cross-system-reconciliation.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 4,
+        "write_units": 2,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "word": 1
+        },
+        "read": {
+          "snowflake": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "gform-snowflake-feedback",
+      "file": "gform-snowflake-feedback.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 3,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gform": 1,
+          "word": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "gsheet-woocommerce-inventory",
+      "file": "gsheet-woocommerce-inventory.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 1,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "processor": 1
+        },
+        "read": {
+          "woocommerce": 1,
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "howtocook-catering-gform-notion-excel",
+      "file": "howtocook-catering-gform-notion-excel.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "howtocook-diet-gform-notion-excel",
+      "file": "howtocook-diet-gform-notion-excel.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "howtocook-ecommerce-bundle",
+      "file": "howtocook-ecommerce-bundle.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "howtocook-event-catering-excel-word",
+      "file": "howtocook-event-catering-excel-word.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "howtocook-event-menu-planner",
+      "file": "howtocook-event-menu-planner.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "howtocook-scholarly-health-study",
+      "file": "howtocook-scholarly-health-study.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 5,
+        "units": 5,
+        "write_units": 2,
+        "read_clusters": 3,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "word": 1
+        },
+        "read": {
+          "filesystem-workspace": 1,
+          "howtocook": 1,
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "howtocook-weekly-gsheet-gcal",
+      "file": "howtocook-weekly-gsheet-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "howtocook-workshop-materials",
+      "file": "howtocook-workshop-materials.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 3,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "pdf": 1,
+          "ppt": 1,
+          "word": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "playwright-arxiv-review-criteria-word-gsheet",
+      "file": "playwright-arxiv-review-criteria-word-gsheet.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 3,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "word": 3
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "playwright-howtocook-nutrition-gsheet-email",
+      "file": "playwright-howtocook-nutrition-gsheet-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 4,
+        "units": 3,
+        "write_units": 0,
+        "read_clusters": 3,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "filesystem-workspace": 1,
+          "howtocook": 1,
+          "playwright-web": 1
+        }
+      }
+    },
+    {
+      "task": "playwright-sf-hr-benefits-survey-gform-excel",
+      "file": "playwright-sf-hr-benefits-survey-gform-excel.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "playwright-yf-market-dashboard-gsheet-word",
+      "file": "playwright-yf-market-dashboard-gsheet-word.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "ppt-snowflake-executive",
+      "file": "ppt-snowflake-executive.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 2,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "ppt": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "pw-sf-hr-dept-efficiency-excel-gcal",
+      "file": "pw-sf-hr-dept-efficiency-excel-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "pw-wc-coupon-effectiveness-gsheet-email",
+      "file": "pw-wc-coupon-effectiveness-gsheet-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 3,
+        "nodes": 5,
+        "units": 5,
+        "write_units": 3,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1,
+          "processor": 1
+        },
+        "read": {
+          "external-fetch": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "pw-wc-review-analysis-excel-notion",
+      "file": "pw-wc-review-analysis-excel-notion.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "research-data-archival-compliance",
+      "file": "research-data-archival-compliance.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "research-lab-publication-pipeline",
+      "file": "research-lab-publication-pipeline.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "scholarly-arxiv-cross-reference",
+      "file": "scholarly-arxiv-cross-reference.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "scholarly-arxiv-survey-word-notion-gcal",
+      "file": "scholarly-arxiv-survey-word-notion-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 8,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "calendar": 1,
+          "notion": 1,
+          "word": 1
+        },
+        "read": {
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "sf-department-budget-analysis",
+      "file": "sf-department-budget-analysis.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-compensation-pdf-notion",
+      "file": "sf-hr-compensation-pdf-notion.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-dept-budget-ppt-email",
+      "file": "sf-hr-dept-budget-ppt-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 3,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1,
+          "ppt": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-education-notion",
+      "file": "sf-hr-education-notion.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-education-skills-gform-excel",
+      "file": "sf-hr-education-skills-gform-excel.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-performance-ppt",
+      "file": "sf-hr-performance-ppt.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-promotion-review",
+      "file": "sf-hr-promotion-review.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-rating-distribution",
+      "file": "sf-hr-rating-distribution.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-salary-benchmark-gform-excel-email",
+      "file": "sf-hr-salary-benchmark-gform-excel-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-salary-overview",
+      "file": "sf-hr-salary-overview.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-satisfaction-analysis",
+      "file": "sf-hr-satisfaction-analysis.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-hr-worklife-notion-excel",
+      "file": "sf-hr-worklife-notion-excel.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-quality-assurance-survey",
+      "file": "sf-quality-assurance-survey.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-customer-loyalty",
+      "file": "sf-sales-customer-loyalty.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-discount-analysis",
+      "file": "sf-sales-discount-analysis.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-discount-gsheet-email",
+      "file": "sf-sales-discount-gsheet-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-monthly-trends",
+      "file": "sf-sales-monthly-trends.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-product-ranking-gsheet",
+      "file": "sf-sales-product-ranking-gsheet.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-product-ranking-ppt",
+      "file": "sf-sales-product-ranking-ppt.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 3,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1,
+          "ppt": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-region-forecast-gcal-excel",
+      "file": "sf-sales-region-forecast-gcal-excel.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-regional-summary",
+      "file": "sf-sales-regional-summary.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-segment-analysis",
+      "file": "sf-sales-segment-analysis.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-segment-word",
+      "file": "sf-sales-segment-word.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sales-trend-word-pdf",
+      "file": "sf-sales-trend-word-pdf.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-sla-breach-audit",
+      "file": "sf-sla-breach-audit.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-support-csat-gform-gsheet-email",
+      "file": "sf-support-csat-gform-gsheet-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-support-priority-review",
+      "file": "sf-support-priority-review.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-ticket-sla-compliance",
+      "file": "sf-ticket-sla-compliance.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-workforce-compensation-sheet",
+      "file": "sf-workforce-compensation-sheet.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 2,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "sf-workforce-diversity-review",
+      "file": "sf-workforce-diversity-review.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "supplier-contract-compliance-audit",
+      "file": "supplier-contract-compliance-audit.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 5,
+        "write_units": 3,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "pdf": 1,
+          "word": 1
+        },
+        "read": {
+          "filesystem-workspace": 1,
+          "snowflake": 1
+        }
+      }
+    },
+    {
+      "task": "support-sla-audit-form",
+      "file": "support-sla-audit-form.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "terminal-arxiv-latex-fetch-excel-notion",
+      "file": "terminal-arxiv-latex-fetch-excel-notion.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 1,
+        "write_units": 0,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-arxiv-latex-pdf-gsheet-word",
+      "file": "terminal-arxiv-latex-pdf-gsheet-word.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 4,
+        "units": 2,
+        "write_units": 0,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "filesystem-workspace": 1,
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-arxiv-scholarly-notion-word-excel",
+      "file": "terminal-arxiv-scholarly-notion-word-excel.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 5,
+        "units": 5,
+        "write_units": 3,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1,
+          "word": 1
+        },
+        "read": {
+          "filesystem-workspace": 1,
+          "scholarly-arxiv": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-canvas-gform-gcal-excel-email",
+      "file": "terminal-canvas-gform-gcal-excel-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "terminal-canvas-howtocook-gsheet-notion-email",
+      "file": "terminal-canvas-howtocook-gsheet-notion-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "terminal-canvas-pdf-excel-notion-gcal",
+      "file": "terminal-canvas-pdf-excel-notion-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 3,
+        "nodes": 6,
+        "units": 6,
+        "write_units": 4,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "calendar": 1,
+          "excel": 1,
+          "notion": 1,
+          "processor": 1
+        },
+        "read": {
+          "canvas": 1,
+          "filesystem-workspace": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-canvas-wc-excel-ppt-email",
+      "file": "terminal-canvas-wc-excel-ppt-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 9,
+        "units": 5,
+        "write_units": 3,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "email": 1,
+          "excel": 1,
+          "ppt": 1
+        },
+        "read": {
+          "canvas": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-howtocook-gform-excel-notion-email",
+      "file": "terminal-howtocook-gform-excel-notion-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 3,
+        "nodes": 6,
+        "units": 6,
+        "write_units": 5,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "email": 1,
+          "excel": 1,
+          "gform": 1,
+          "notion": 1,
+          "processor": 1
+        },
+        "read": {
+          "howtocook": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-sf-arxiv-excel-word-notion",
+      "file": "terminal-sf-arxiv-excel-word-notion.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 5,
+        "units": 5,
+        "write_units": 3,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1,
+          "word": 1
+        },
+        "read": {
+          "scholarly-arxiv": 1,
+          "snowflake": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-sf-notion-gform-excel-email",
+      "file": "terminal-sf-notion-gform-excel-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 5,
+        "units": 5,
+        "write_units": 4,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "email": 1,
+          "excel": 1,
+          "gform": 1,
+          "notion": 1
+        },
+        "read": {
+          "snowflake": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-sf-scholarly-excel-ppt-gcal",
+      "file": "terminal-sf-scholarly-excel-ppt-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "terminal-sf-wc-order-audit-excel-word",
+      "file": "terminal-sf-wc-order-audit-excel-word.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 4,
+        "write_units": 2,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "word": 1
+        },
+        "read": {
+          "snowflake": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-sf-wc-yf-excel-ppt",
+      "file": "terminal-sf-wc-yf-excel-ppt.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 5,
+        "units": 5,
+        "write_units": 2,
+        "read_clusters": 3,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "ppt": 1
+        },
+        "read": {
+          "snowflake": 1,
+          "woocommerce": 1,
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-wc-excel-gsheet-gcal-email",
+      "file": "terminal-wc-excel-gsheet-gcal-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 2,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gsheet": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "terminal-wc-pw-pricing-excel-word-gcal",
+      "file": "terminal-wc-pw-pricing-excel-word-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "calendar": 1,
+          "excel": 1,
+          "word": 1
+        },
+        "read": {
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-wc-sf-revenue-reconcile-excel-ppt",
+      "file": "terminal-wc-sf-revenue-reconcile-excel-ppt.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 4,
+        "write_units": 2,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "ppt": 1
+        },
+        "read": {
+          "snowflake": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-wc-yf-ppt-notion-email",
+      "file": "terminal-wc-yf-ppt-notion-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 3,
+        "nodes": 7,
+        "units": 7,
+        "write_units": 5,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "email": 2,
+          "notion": 1,
+          "ppt": 1,
+          "processor": 1
+        },
+        "read": {
+          "woocommerce": 1,
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-yf-canvas-excel-gcal-email",
+      "file": "terminal-yf-canvas-excel-gcal-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 0,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "canvas": 1,
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "terminal-yf-wc-excel-word-notion",
+      "file": "terminal-yf-wc-excel-word-notion.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 6,
+        "units": 5,
+        "write_units": 3,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1,
+          "word": 1
+        },
+        "read": {
+          "woocommerce": 1,
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "train-budget-excel-gform-email",
+      "file": "train-budget-excel-gform-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "train-route-analysis-excel-word-email",
+      "file": "train-route-analysis-excel-word-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 34,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "email": 1,
+          "excel": 1,
+          "word": 1
+        },
+        "read": {
+          "rail_12306": 1
+        }
+      }
+    },
+    {
+      "task": "wc-category-performance-ppt",
+      "file": "wc-category-performance-ppt.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "wc-competitor-pw-pricing-excel-gcal",
+      "file": "wc-competitor-pw-pricing-excel-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 0,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {
+          "playwright-web": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "wc-coupon-performance-notion-ppt",
+      "file": "wc-coupon-performance-notion-ppt.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "wc-inventory-alert-gcal",
+      "file": "wc-inventory-alert-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "wc-inventory-gold-repricing",
+      "file": "wc-inventory-gold-repricing.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 2,
+        "units": 3,
+        "write_units": 1,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1
+        },
+        "read": {
+          "filesystem-workspace": 1,
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "wc-inventory-reorder-forecast",
+      "file": "wc-inventory-reorder-forecast.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "wc-order-monthly-ppt-gcal",
+      "file": "wc-order-monthly-ppt-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "wc-product-review-analysis-gform-gcal",
+      "file": "wc-product-review-analysis-gform-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 2,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "gform": 1
+        },
+        "read": {
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "wc-product-review-excel-notion",
+      "file": "wc-product-review-excel-notion.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "email": 1,
+          "excel": 1,
+          "notion": 1
+        },
+        "read": {
+          "woocommerce": 1
+        }
+      }
+    },
+    {
+      "task": "wc-tax-compliance-excel-gcal-gform",
+      "file": "wc-tax-compliance-excel-gcal-gform.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 2,
+        "units": 2,
+        "write_units": 2,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "calendar": 1,
+          "excel": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "yf-dividend-tracker-gcal",
+      "file": "yf-dividend-tracker-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yf-financial-health-excel-notion",
+      "file": "yf-financial-health-excel-notion.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yf-portfolio-gsheet-pdf-gcal-email",
+      "file": "yf-portfolio-gsheet-pdf-gcal-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yf-portfolio-ppt-gcal",
+      "file": "yf-portfolio-ppt-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yf-portfolio-risk-excel",
+      "file": "yf-portfolio-risk-excel.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yf-portfolio-stress-test-excel-word-gcal",
+      "file": "yf-portfolio-stress-test-excel-word-gcal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 9,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "calendar": 1,
+          "excel": 1,
+          "word": 1
+        },
+        "read": {
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "yf-sector-outlook-report",
+      "file": "yf-sector-outlook-report.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 3,
+        "nodes": 8,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1,
+          "word": 1
+        },
+        "read": {
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "yf-sector-rotation-dashboard",
+      "file": "yf-sector-rotation-dashboard.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yf-stock-comparison-word-gcal",
+      "file": "yf-stock-comparison-word-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yf-stock-volatility-terminal",
+      "file": "yf-stock-volatility-terminal.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 6,
+        "units": 2,
+        "write_units": 1,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1
+        },
+        "read": {
+          "yahoo-finance": 1
+        }
+      }
+    },
+    {
+      "task": "yt-12306-tech-conference-travel-notion-excel",
+      "file": "yt-12306-tech-conference-travel-notion-excel.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 4,
+        "write_units": 2,
+        "read_clusters": 2,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1
+        },
+        "read": {
+          "rail_12306": 1,
+          "youtube": 1
+        }
+      }
+    },
+    {
+      "task": "yt-fireship-gform-survey-excel-gcal",
+      "file": "yt-fireship-gform-survey-excel-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yt-fireship-ppt-gcal-email",
+      "file": "yt-fireship-ppt-gcal-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 1,
+        "units": 1,
+        "write_units": 1,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "ppt": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "yt-fireship-tech-report-excel-notion",
+      "file": "yt-fireship-tech-report-excel-notion.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 2,
+        "nodes": 4,
+        "units": 4,
+        "write_units": 3,
+        "read_clusters": 1,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "calendar": 1,
+          "excel": 1,
+          "notion": 1
+        },
+        "read": {
+          "youtube": 1
+        }
+      }
+    },
+    {
+      "task": "yt-ml-repos-github-notion-excel-email",
+      "file": "yt-ml-repos-github-notion-excel-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yt-top-videos-excel-gcal",
+      "file": "yt-top-videos-excel-gcal.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yt-transcript-afrobeat-song-list-excel-email",
+      "file": "yt-transcript-afrobeat-song-list-excel-email.json",
+      "need_delegation": true,
+      "counts": {
+        "waves": 1,
+        "nodes": 3,
+        "units": 3,
+        "write_units": 3,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {
+          "excel": 1,
+          "notion": 1,
+          "word": 1
+        },
+        "read": {}
+      }
+    },
+    {
+      "task": "yt-transcript-music-schedule-gcal-gsheet-word",
+      "file": "yt-transcript-music-schedule-gcal-gsheet-word.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    },
+    {
+      "task": "yt-transcript-notion-song-report-gcal-email",
+      "file": "yt-transcript-notion-song-report-gcal-email.json",
+      "need_delegation": false,
+      "counts": {
+        "waves": 0,
+        "nodes": 0,
+        "units": 0,
+        "write_units": 0,
+        "read_clusters": 0,
+        "other_write": 0,
+        "unlabeled_read_nodes": 0
+      },
+      "bag": {
+        "write": {},
+        "read": {}
+      }
+    }
+  ]
+}

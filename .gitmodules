@@ -1,0 +1,6 @@
+[submodule "toolathlon_gym"]
+	path = toolathlon_gym
+	url = https://github.com/Danield21/toolathlon_gym.git
+[submodule "kimi-code"]
+	path = kimi-code
+	url = https://github.com/Danield21/kimi-code.git

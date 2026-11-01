@@ -1,0 +1,32 @@
+{
+  "input_hash": "4bd80f89cedd7d1a89ffd256d5343d75257d53710e354ba10f87d932977fb9d4",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "sf-sales-segment-word",
+    "task_text": "There is a PDF file called Q4_Targets.pdf in the workspace that contains our approved quarterly sales targets for Q4 2025 broken down by customer segment. Please read that file first to get the target amounts for Enterprise, SMB, Consumer, and Government segments.\n\nNext, query the company data warehouse to pull the actual sales figures for Q4 2025, which covers orders placed between October 1, 2025 and December 31, 2025 inclusive. Aggregate the total sales amount and order count by customer segment. Include all orders in this date range regardless of order status (include Delivered, Shipped, Processing, and Cancelled).\n\nCreate a Word document called Q4_Segment_Report.docx in the workspace. The document should have a heading \"Q4 2025 Sales Performance by Segment\" at the top. Then include a table with columns Segment, Q4_Target, Q4_Actual (rounded to 2 decimal places), Order_Count, Variance (actual minus target, rounded to 2 decimals), and Achievement_Pct (actual divided by target times 100, rounded to 1 decimal place). Sort the rows alphabetically by segment name. After the table, add a summary paragraph that states the overall total target, total actual sales, and how many segments met or exceeded their targets.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent and dispatch no sub-agent. The four target rows and one grouped warehouse query are compact, and there is only one document writer.\n\nResolve the runtime workspace dynamically. In one native-parallel response, read every page/table of `Q4_Targets.pdf` and query the warehouse after verifying `SALES_DW.PUBLIC.ORDERS` and `SALES_DW.PUBLIC.CUSTOMERS`. Join on `CUSTOMER_ID`; use the half-open date predicate `ORDER_DATE >= '2025-10-01' AND ORDER_DATE < '2026-01-01'` so December 31 timestamps are included; apply no status filter; and group by exact customer `SEGMENT` for raw `SUM(TOTAL_AMOUNT)` and `COUNT(ORDER_ID)`. Require exactly `Consumer,Enterprise,Government,SMB`, reconcile group totals to an independent all-status Q4 order/revenue control, and exact-match all four PDF target names without positional mapping.\n\nFor each alphabetically sorted segment compute `Variance=Q4_Actual-Q4_Target` and `Achievement_Pct=100*Q4_Actual/Q4_Target` from unrounded values; round displayed money to two decimals and percentage to one decimal. Freeze overall target, actual, and count meeting `Actual >= Target`.\n\nThe main agent is the sole writer of `Q4_Segment_Report.docx`. Create it once with exact heading `Q4 2025 Sales Performance by Segment`, one table with headers `Segment,Q4_Target,Q4_Actual,Order_Count,Variance,Achievement_Pct` and exactly four rows, followed by the required summary paragraph naming overall target, overall actual, and number of segments meeting/exceeding target. Read the document headings, full table, and paragraph text back; reconcile all literal values to the frozen source controls, then finish without a Wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Decompose the following task into an ordered list of subtasks. For each subtask specify: (1) dispatch decision — `self` (main agent), `explore`, or `coder`; (2) whether it is independent (parallelizable) or must wait on another subtask's output.\n\nTASK DESCRIPTION:\n1. There is a PDF file called `Q4_Targets.pdf` in the workspace (accessible workspace: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-sales-segment-word/workspace). Read it first to get approved quarterly sales targets for Q4 2025 broken down by customer segment: Enterprise, SMB, Consumer, Government.\n2. Query the company data warehouse (Snowflake, via mcp__snowflake__ tools) to pull actual sales figures for Q4 2025 — orders placed between October 1, 2025 and December 31, 2025 inclusive. Aggregate total sales amount and order count by customer segment. Include ALL orders in the date range regardless of status (Delivered, Shipped, Processing, Cancelled).\n3. Create a Word document `Q4_Segment_Report.docx` in the workspace with:\n   - Heading \"Q4 2025 Sales Performance by Segment\" at the top.\n   - A table with columns: Segment, Q4_Target, Q4_Actual (rounded to 2 decimals), Order_Count, Variance (actual minus target, rounded to 2 decimals), Achievement_Pct (actual/target*100, rounded to 1 decimal). Rows sorted alphabetically by segment name.\n   - After the table, a summary paragraph stating the overall total target, total actual sales, and how many segments met or exceeded their targets.\n\nCONTEXT HINTS:\n- The PDF may be read with mcp__pdf-tools__* tools (get_pdf_info, read_pdf_pages, search_pdf_content).\n- The warehouse is Snowflake: list databases/schemas/tables, describe tables, run SELECT queries via mcp__snowflake__read_query.\n- The Word document is created with mcp__word__* tools (create_document, add_heading, add_table, add_paragraph). Note the workspace path is the one given above.\n- The plan should include a verification step: after creating the docx, read it back (e.g., get_document_text) to confirm heading, table content, sorting, rounding, and summary paragraph.\n\nReturn the ordered subtask list with dispatch decisions and dependency/parallelism notes, plus any risks (e.g., unknown table/schema names, column naming for segment and amount, date column names).\nPlan Q4 report task",
+        "is_plan": true
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      }
+    ]
+  }
+}

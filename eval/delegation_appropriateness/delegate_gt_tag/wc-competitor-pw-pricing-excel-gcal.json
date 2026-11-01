@@ -1,0 +1,200 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "wc-competitor-pw-pricing-excel-gcal",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/wc-competitor-pw-pricing-excel-gcal.task.md",
+    "oracle166_sha256": "618321a7889e81d1055fc7fb70b3a5c088013175c3d962bb686cb04fdfab25a8"
+  },
+  "label_cache_keys": [
+    "9bc99271852be9b1b215b3a27c792618161ca8eaa72be6c3dbea11bddddc6a9f"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "playwright-web"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (web-domain-researcher 0): One explore sub-agent uses only browser navigation and snapshots to read the complete competitor dashboard. Return a compact row for every displayed product with its exact displayed name and competitor prices plus a row-count control. Do not write files or click mutating controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 0): One explore sub-agent exhausts `woo_products_list` at `perPage=100`, returning only product ID, exact name, current price, stock quantity/status, total sales, page controls, and duplicate-ID checks. Do not modify the store or create files.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "playwright-web"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (web-domain-researcher 0): One explore sub-agent uses only browser navigation and snapshots to read the complete competitor dashboard. Return a compact row for every displayed product with its exact displayed name and competitor prices plus a row-count control. Do not write files or click mutating controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 0): One explore sub-agent exhausts `woo_products_list` at `perPage=100`, returning only product ID, exact name, current price, stock quantity/status, total sales, page controls, and duplicate-ID checks. Do not modify the store or create files.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "read:wave_1:playwright-web",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "playwright-web",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:woocommerce",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "woocommerce",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {},
+    "read": {
+      "playwright-web": 1,
+      "woocommerce": 1
+    }
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 2,
+    "units": 2,
+    "write_units": 0,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

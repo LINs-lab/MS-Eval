@@ -1,0 +1,94 @@
+{
+  "input_hash": "37b2248a27d6e2301e09871bde50c601d1bb4906a15dd1c4203df3c74bf4f35e",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "academic-literature-review",
+    "task_text": "I am working on my PhD thesis and I need help putting together the literature review section for Chapter 2, which focuses on Retrieval-Augmented Generation (RAG). In my workspace there is a compressed archive called research_notes.tar.gz that contains some preliminary notes I have been keeping in markdown files about background concepts, key research questions, and related retrieval methods. I would appreciate it if you could first extract that archive so we can see what is in there, and then read through the notes to understand the context of my research.\n\nMy research focus and the key concepts I am tracking are stored in a knowledge graph file located at memory/memory.json in the workspace. Please read that to understand the scope and direction of my literature review.\n\nAfter familiarizing yourself with my notes and research focus, I need you to search academic databases for recent and foundational papers on Retrieval-Augmented Generation. I am looking for approximately five key papers that cover the topic from different angles, including the original RAG formulation, survey papers, self-reflective retrieval approaches, recursive retrieval methods, and practical system-building perspectives. For each paper you find, please download it and read through its content to understand the main contributions. I would also like you to look at the source manuscripts of these papers to examine the methodology sections in more detail, since the methodology comparison is an important part of my literature review.\n\nOnce you have gathered all of this information, please store the key findings in my knowledge graph so that I can reference them later. Then create a Word document called Literature_Review.docx in my workspace. The document should begin with an introduction section that provides an overview of Retrieval-Augmented Generation as a research area and explains why it matters for knowledge-intensive natural language processing tasks. Following the introduction, include a dedicated section for each of the five papers you found. Each paper section should clearly state the paper title, the authors, the publication year, a description of the main contribution, and a discussion of the methodology used. After covering all five papers, end the document with a conclusion section that synthesizes the key themes, identifies common patterns across the papers, and suggests directions for future research. Please make sure the writing flows naturally and reads like a proper academic literature review rather than a collection of disconnected summaries.\n\nA few things to keep in mind while you work.\n\nFirst, the databases may return papers that are not actually about Retrieval-Augmented Generation, including papers from other fields. Judge each result by its title and abstract. The review should cover only the papers that are genuinely about RAG; please do not include or discuss unrelated papers in Literature_Review.docx.\n\nSecond, the deliverable is a single file, Literature_Review.docx, and it must end up complete and well-formed. It must be created exactly once, by exactly one designated agent, and only after all of the paper content has been gathered. Any agent that is responsible for only a portion of this task (for example, researching a subset of the papers) must NOT create, write, overwrite, or append to Literature_Review.docx; that agent should instead return its findings in its report or write them to its own separately named intermediate file that no other agent writes to. Do not have several agents append to or rewrite the same document file, as that will corrupt or overwrite it. A safe way to work in parallel is to have each agent take responsibility for a distinct subset of the papers and return its findings, and then have one agent assemble the final document exactly once, after all of the findings are in.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, use exactly one research wave. The main agent must extract `research_notes.tar.gz` once without overwriting files, read the extracted Markdown and `memory/memory.json`, and freeze these five non-overlapping topics: original RAG formulation; RAG survey; self-reflective/adaptive retrieval; recursive/hierarchical retrieval; and practical system building.\n\n1. Wave 1 — dispatch exactly 5 explore sub-agents in parallel:\n\n   1. explore 0 (academic-literature-researcher 0): Explore 0 owns only the original RAG formulation topic.\n   2. explore 1 (academic-literature-researcher 1): Explore 1 owns only the strongest RAG survey topic.\n   3. explore 2 (academic-literature-researcher 2): Explore 2 owns only self-reflective or adaptive retrieval.\n   4. explore 3 (academic-literature-researcher 3): Explore 3 owns only recursive or hierarchical retrieval.\n   5. explore 4 (academic-literature-researcher 4): Explore 4 owns only practical RAG system building.\n\nEach explore sub-agent searches only its assigned topic, rejects off-topic titles/abstracts, selects exactly one distinct paper, downloads and reads that paper, inspects the available LaTeX methodology sections, and writes one uniquely named compact evidence JSON containing topic, stable ID, exact title, authors, year, contribution, methodology, evidence section names, and limitations. Return only the JSON path, stable ID, and compact search/read controls. No sub-agent may modify the knowledge graph or create `Literature_Review.docx`.\n\nAfter Wave 1, the main agent verifies five distinct IDs and five topic slots, then directly owns both remaining outputs. Update the existing knowledge graph by adding only the five source-supported paper entities and relationships while preserving unrelated nodes. Create `Literature_Review.docx` exactly once with one bulk structured write: title; Introduction; five sections in the frozen topic order, each stating the exact title, authors, year, main contribution, and methodology; and a synthetic Conclusion with common themes and future research. Use only the five retained papers, exclude all rejected results, read the graph and document back once, and finish without another sub-agent or verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_58",
+        "text": "You are a read-only academic literature researcher helping with a PhD thesis literature review on Retrieval-Augmented Generation (RAG).\n\nRead the paper with arXiv ID 2310.11511 titled \"RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval\" by Parth Sarthi, Salman Abdullah, Aditi Tuli, Shubh Khanna, Anna Goldie, Christopher D. Manning (ICLR 2024).\n\nUse these tools:\n- mcp__arxiv_local__read_paper with paper_id \"2310.11511\" to read the full paper content.\n- mcp__arxiv-latex__list_paper_sections with arxiv_id \"2310.11511\" to list sections, then mcp__arxiv-latex__get_paper_section with arxiv_id \"2310.11511\" and section_path \"Methodology\" to get the methodology section in detail.\n- mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2310.11511\" if you need precise LaTeX detail on regarding the methodology.\n\nI need you to return a structured findings report with EXACTLY these fields filled in with factual, specific detail drawn from the paper:\n1. Title\n2. Full author list\n3. Publication year and venue\n4. Core problem addressed (why chunk-level retrieval is limiting)\n5. Main contribution (the tree-based recursive abstractive retrieval framework)\n6. Methodology in detail: how the tree is constructed (recursive embedding/clustering/summarization), how retrieval works at inference (tree traversal, collapsed tree), key algorithms/design choices, what models are used.\n7. Datasets and main experimental results (key numbers: which datasets, what improvements over baselines like DPR/BM25).\n8. Stated limitations.\n\nReturn the report as clear Markdown text. Do not write any files. Be thorough and precise — this content will be used to write an academic literature review section, so specifics matter.\nRead RAPTOR paper",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_58",
+        "text": "You are a read-only academic literature researcher helping with a PhD thesis literature review on Retrieval-Augmented Generation (RAG).\n\nRead the paper with arXiv ID 2005.11401 titled \"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks\" by Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich Kuttler, Mike Lewis, Wen-tau Yih, Tim Rocktaschel, Sebastian Riedel, Douwe Kiela (NeurIPS 2020). This is the ORIGINAL RAG paper and is foundational.\n\nUse these tools:\n- mcp__arxiv_local__read_paper with paper_id \"2005.11401\" to read the full paper content.\n- mcp__arxiv-latex__list_paper_sections with arxiv_id \"2005.11401\" to list sections, then mcp__arxiv-latex__get_paper_section with arxiv_id \"2005.11401\" and section_path \"Methodology\" to get the methodology section in detail.\n- mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2005.11401\" if you need precise LaTeX detail regarding the methodology.\n\nI need you to return a structured findings report with EXACTLY these fields filled in with factual, specific detail drawn from the paper:\n1. Title\n2. Full author list\n3. Publication year and venue\n4. Core problem addressed (parametric-only LMs and hallucination/limited knowledge access)\n5. Main contribution (RAG models combining parametric seq2seq model with non-parametric dense retrieving of Wikipedia; RAG-Sequence and RAG-Token)\n6. Methodology in detail: the two RAG formulations (RAG-Sequence marginalization, RAG-Token marginalization), the retriever (Dense Passage Retrieval-style bi-encoder) and generator, how they are trained jointly, inference details.\n7. Datasets and main experimental results (key numbers: which QA/extractive/dataset, ROUGE/EM/accuracy, comparison to BART/DPR baselines).\n8. Stated limitations.\n\nReturn the report as clear Markdown text. Do not write any files. Be thorough and precise — this content will be used to write an academic literature review section, so specifics matter.\nRead Lewis RAG original paper",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_58",
+        "text": "You are a read-only academic literature researcher helping with a PhD thesis literature review on Retrieval-Augmented Generation (RAG).\n\nRead the paper with arXiv ID 2402.19473 titled \"Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection\" by Akari Asai, Zeqiu Wu, Yizhong Wang, Avirup Sil, Hannaneh Hajishirzi (ICLR 2024). This covers self-reflective retrieval.\n\nUse these tools:\n- mcp__arxiv_local__read_paper with paper_id \"2402.19473\" to read the full paper content.\n- mcp__arxiv-latex__list_paper_sections with arxiv_id \"2402.19473\" to list sections, then mcp__arxiv-latex__get_paper_section with arxiv_id \"2402.19473\" and section_path \"Methodology\" to get the methodology section in detail.\n- mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2402.19473\" if you need precise LaTeX detail regarding the methodology.\n\nI need you to return a structured findings report with EXACTLY these fields filled in with factual, specific detail drawn from the paper:\n1. Title\n2. Full author list\n3. Publication year and venue\n4. Core problem addressed (LLMs produce inaccurate/fabricated facts; vanilla RAG retrieves indiscriminately)\n5. Main contribution (Self-RAG: trains a single LM to adaptively retrieve on demand, generate, and critique with reflection tokens)\n6. Methodology in detail: the reflection tokens (Retrieve, IsRel, IsSup, IsUse), how the critic/tokenizer critique model is trained, how the generator is trained via supervised learning with reflection token targets, how adaptive retrieval is decided at inference, the training data construction.\n7. Datasets and main experimental results (key numbers: PopQA, TriviaQA, PubHealth, ARC, etc., improvements over baselines).\n8. Stated limitations.\n\nReturn the report as clear Markdown text. Do not write any files. Be thorough and precise — this content will be used to write an academic literature review section, so specifics matter.\nRead Self-RAG paper",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_58",
+        "text": "You are a read-only academic literature researcher helping with a PhD thesis literature review on Retrieval-Augmented Generation (RAG).\n\nRead the paper with arXiv ID 2312.10997 titled \"Retrieval-Augmented Generation for Large Language Models: A Survey\" by Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan, Yuxi Bi, Yi Dai, Jiawei Sun, Haofen Wang (arXiv preprint 2023). This is a comprehensive survey paper.\n\nUse these tools:\n- mcp__arxiv_local__read_paper with paper_id \"2312.10997\" to read the full paper content.\n- mcp__arxiv-latex__list_paper_sections with arxiv_id \"2312.10997\" to list sections, then mcp__arxiv-latex__get_paper_section with arxiv_id \"2312.10997\" and section_path \"Methodology\" to get the methodology section in detail.\n- mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2312.10997\" if you need precise LaTeX detail regarding the methodology.\n\nI need you to return a structured findings report with EXACTLY these fields filled in with factual, specific detail drawn from the paper:\n1. Title\n2. Full author list\n3. Publication year and venue\n4. Core problem addressed (LLM hallucination, outdated knowledge, etc.)\n5. Main contribution (a taxonomy/framework of RAG: naive RAG, advanced RAG, modular RAG; infrastructure and evaluation)\n6. Methodology in detail: how the paper categorizes the RAG paradigm — the three paradigms (Naive/Advanced/Modular), the pipeline stages (indexing, retrieval, generation) and the enhancements (pre-retrieval/post-retrieval), the evaluation frameworks.\n7. Key datasets/benchmarks/evaluation metrics the survey discusses (RAGAS-style metrics: faithfulness, answer relevance, context relevance).\n8. Stated limitations or open problems.\n\nReturn the report as clear Markdown text. Do not write any files. Be thorough and precise — this content will be used to write an academic literature review section, so specifics matter.\nRead Gao RAG survey paper",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_58",
+        "text": "You are a read-only academic literature researcher helping with a PhD thesis literature review on Retrieval-Augmented Generation (RAG).\n\nRead the paper with arXiv ID 2404.10981 titled \"From RAG to Rich: Building Robust Retrieval-Augmented Generation Systems\" by Wenqi Chen, Jialin Wu, Dawei Zhu, Xiaoguang Li, Shuaiyi Nie (arXiv preprint 2024). This covers the practical system-building perspective.\n\nUse these tools:\n- mcp__arxiv_local__read_paper with paper_id \"2404.10981\" to read the full paper content.\n- mcp__arxiv-latex__list_paper_sections with arxiv_id \"2404.10981\" to list sections, then mcp__arxiv-latex__get_paper_section with arxiv_id \"2404.10981\" and section_path \"Methodology\" to get the methodology section in detail.\n- mcp__arxiv-latex__get_paper_prompt with arxiv_id \"2404.10981\" if you need precise LaTeX detail regarding the methodology.\n\nI need you to return a structured findings report with EXACTLY these fields filled in with factual, specific detail drawn from the paper:\n1. Title\n2. Full author list\n3. Publication year and venue\n4. Core problem addressed (engineering challenges of moving RAG from prototype to production)\n5. Main contribution (a systematic framework/practical guidelines for building robust RAG systems end-to-end)\n6. Methodology in detail: the full lifecycle covered (data ingestion, chunking, embedding selection, retrieval pipeline design, generation, evaluation, deployment and monitoring), concrete design choices and their impact.\n7. Key datasets/experimental findings on design choices (chunking sizes, embedding models, retrieval methods, evaluation).\n8. Stated limitations.\n\nReturn the report as clear Markdown text. Do not write any files. Be thorough and precise — this content will be used to write an academic literature review section, so specifics matter.\nRead From RAG to Rich paper",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

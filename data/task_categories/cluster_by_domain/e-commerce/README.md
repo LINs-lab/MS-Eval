@@ -1,0 +1,25 @@
+# E Commerce
+
+Task membership is recorded in the adjacent text list. Each link below points to the canonical task in `data/oracle166/`.
+
+- [ecommerce-commodity-impact](../../../oracle166/ecommerce-commodity-impact.task.md)
+- [ecommerce-market-benchmark](../../../oracle166/ecommerce-market-benchmark.task.md)
+- [fetch-wc-inventory-forecast-excel-gcal-email](../../../oracle166/fetch-wc-inventory-forecast-excel-gcal-email.task.md)
+- [fetch-wc-yf-financial-excel-word-email](../../../oracle166/fetch-wc-yf-financial-excel-word-email.task.md)
+- [gsheet-woocommerce-inventory](../../../oracle166/gsheet-woocommerce-inventory.task.md)
+- [pw-wc-coupon-effectiveness-gsheet-email](../../../oracle166/pw-wc-coupon-effectiveness-gsheet-email.task.md)
+- [pw-wc-review-analysis-excel-notion](../../../oracle166/pw-wc-review-analysis-excel-notion.task.md)
+- [terminal-wc-excel-gsheet-gcal-email](../../../oracle166/terminal-wc-excel-gsheet-gcal-email.task.md)
+- [terminal-wc-pw-pricing-excel-word-gcal](../../../oracle166/terminal-wc-pw-pricing-excel-word-gcal.task.md)
+- [terminal-wc-sf-revenue-reconcile-excel-ppt](../../../oracle166/terminal-wc-sf-revenue-reconcile-excel-ppt.task.md)
+- [terminal-wc-yf-ppt-notion-email](../../../oracle166/terminal-wc-yf-ppt-notion-email.task.md)
+- [wc-category-performance-ppt](../../../oracle166/wc-category-performance-ppt.task.md)
+- [wc-competitor-pw-pricing-excel-gcal](../../../oracle166/wc-competitor-pw-pricing-excel-gcal.task.md)
+- [wc-coupon-performance-notion-ppt](../../../oracle166/wc-coupon-performance-notion-ppt.task.md)
+- [wc-inventory-alert-gcal](../../../oracle166/wc-inventory-alert-gcal.task.md)
+- [wc-inventory-gold-repricing](../../../oracle166/wc-inventory-gold-repricing.task.md)
+- [wc-inventory-reorder-forecast](../../../oracle166/wc-inventory-reorder-forecast.task.md)
+- [wc-order-monthly-ppt-gcal](../../../oracle166/wc-order-monthly-ppt-gcal.task.md)
+- [wc-product-review-analysis-gform-gcal](../../../oracle166/wc-product-review-analysis-gform-gcal.task.md)
+- [wc-product-review-excel-notion](../../../oracle166/wc-product-review-excel-notion.task.md)
+- [wc-tax-compliance-excel-gcal-gform](../../../oracle166/wc-tax-compliance-excel-gcal-gform.task.md)

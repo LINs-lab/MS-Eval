@@ -1,0 +1,97 @@
+{
+  "input_hash": "b069a3e3acdb937142df6fa46f1ce4df0467f32686cd0a7bc1e9ecee8583bdcf",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "canvas-pdf-grade-gsheet",
+    "task_text": "I am a course administrator at Open University and I need to generate end-of-semester grade reports for all Spring 2014 courses. The Spring 2014 courses are identified by course codes containing \"2014B\".\n\nThere is a grading_policy.pdf file in the workspace that contains our official grading scale and special designation criteria. You must read this PDF first and apply its rules. The PDF specifies the following canonical thresholds that your output must follow exactly: letter grade A is awarded when the class average is 90.00 or above, B is 80.00 through 89.99, C is 70.00 through 79.99, D is 60.00 through 69.99, and F is below 60.00. The \"With Distinction\" designation is awarded when the class average is 85.00 or above. The \"Academic Probation\" flag is triggered when the class average falls below 50.00. All numeric values in the report (individual averages, summary averages) must be rounded to exactly 2 decimal places using standard mathematical rounding.\n\nFor each Spring 2014 course, look up the course in our learning management system and find the lead instructor. The lead instructor is the teacher enrolled in the course who comes first alphabetically by name. If a course has no teacher enrolled, use \"N/A\" for the instructor name and email, and skip sending an email for that course. Also find the number of students who have recorded scores (a non-null current_score in their enrollment grades) and calculate the class average score from those student scores.\n\nAssign each course a letter grade based on its class average using the scale in the PDF. Also determine if the course qualifies for \"With Distinction\" honors or triggers an \"Academic Probation\" flag per the PDF criteria.\n\nCreate a file called semester_grade_report.xlsx in the workspace with three sheets.\n\nThe first sheet should be named \"Course Grades\" with the following columns: Course_Code, Course_Name, Lead_Instructor, Instructor_Email, Students_Scored, Class_Average (rounded to 2 decimal places), Letter_Grade, Distinction (write \"Yes\" or \"No\"), Probation (write \"Yes\" or \"No\"). Sort rows by Course_Code alphabetically. Course_Name should include the semester suffix in parentheses, e.g. \"Biochemistry & Bioinformatics (Spring 2014)\".\n\nThe second sheet should be named \"Grade Distribution\" with columns: Letter_Grade (list A, B, C, D, F in that order), Course_Count (how many courses received that letter grade), Courses (comma-separated course codes that received that grade, sorted alphabetically within each grade; leave empty string if no courses got that grade).\n\nThe third sheet should be named \"Summary\" with two columns (Metric, Value) containing the following rows: Total_Courses (the number of Spring 2014 courses), Avg_Class_Average (the average of all class averages rounded to 2 decimal places), Highest_Average_Course (the course code with the highest class average), Lowest_Average_Course (the course code with the lowest class average), Distinction_Count (how many courses earned the With Distinction designation), Probation_Count (how many courses are flagged for Academic Probation).\n\nAlso create a Google Sheet titled \"Spring 2014 Grade Summary\" with one sheet named \"Grades\" containing columns: Course_Code, Class_Average, Letter_Grade, Distinction, Probation for all six courses sorted by Course_Code.\n\nFinally, send an email from registrar@openuniversity.ac.uk to each course's lead instructor (for courses that have a teacher) with the subject \"End-of-Semester Grade Report: [Course Code]\" where [Course Code] is replaced with the actual course code. The body should state the course name, the class average, the letter grade, and whether the course earned distinction or is on academic probation. Note: the registrar inbox and the cloud spreadsheet workspace may contain pre-existing unrelated messages and spreadsheets (such as IT maintenance notices, library notices, or historical registration reports). Do not forward, reference, or otherwise act on those unrelated items; only create the Spring 2014 grade report artifacts described above.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, dynamically collect every Spring 2014 score page, compute one canonical six-row payload, and make the workbook, Google Sheet, and instructor emails consume that payload verbatim. Do not embed expected course averages or instructor identities in the prompt.\n\nThe main agent resolves the accessible task workspace, reads grading_policy.pdf, calls canvas_list_courses(include_ended=true), and freezes the literal IDs/codes/full names of exactly the 2014B courses. For each retained course, call canvas_get_course_grades(page=1, per_page=1, type=[\"StudentEnrollment\"]) in a native-parallel discovery batch; take pagination.total_count and derive the exact page set at per_page=100.\n\n1. Wave 1 — after the student-page and teacher work items are frozen, dispatch exactly one explore sub-agent per item in one parallel response, never more than 128. Number student-page owners first, then teacher owners, N from 0:\n\n   1. explore 0 (enterprise-data-analyst 0): Student-page owner for the first frozen `{course_id,course_code,course_name,page}`. Call canvas_get_course_grades(course_id=<ID></id>, page=<page></page>, per_page=100, type=[\"StudentEnrollment\"]) exactly once and return only {course_id,course_code,page,pagination_page,pagination_total_count,returned_rows,scored_count,score_sum,score_min,score_max}, using enrollment.grades.current_score and ignoring nulls. Do not return enrollment rows.\n   2. explore 1 (enterprise-data-analyst 1): Student-page owner for the second frozen page item — same literal recipe, only that page identity substituted.\n      ...\n      P. explore P-1 (enterprise-data-analyst P-1): Student-page owner for the last frozen page item — same literal recipe, only that page identity substituted.\n      P+1. explore P (enterprise-data-analyst P): Teacher owner for the first Spring course. Call canvas_get_course_grades(course_id=<ID></id>, page=1, per_page=100, type=[\"TeacherEnrollment\"]) and canvas_list_course_users(course_id=<ID></id>). Join teacher enrollment user_ids to users, sort matched teachers by complete name alphabetically, and return {course_id,course_code,teachers:[{user_id,name,email}],lead_instructor,lead_email,teacher_count,unmatched_teacher_ids}. If no teacher exists, return N/A for name/email. Do not modify Canvas.\n      ...\n      K. explore K-1 (enterprise-data-analyst K-1): Teacher owner for the last Spring course — same literal teacher recipe, only that course identity substituted. K = P + number of Spring courses.\n\nAfter Wave 1, the main agent verifies every discovered student page exactly once, summed returned_rows against total_count, and exactly one teacher result per course. Combine unrounded page sums, apply the policy and standard mathematical rounding once, and freeze one canonical six-row table:\n{course_code,course_name,lead_instructor,instructor_email,students_scored,class_average_2dp,class_average_text_2dp,letter_grade,distinction,probation}.\nDerive Grade Distribution and Summary from this table only. Assert every downstream class-average string is exactly class_average_text_2dp; no branch may re-query or recompute grades.\n\n2. Wave 2 — dispatch exactly 2 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One Coder is the sole writer of semester_grade_report.xlsx in the dynamically resolved workspace. Create exactly Course Grades, Grade Distribution, and Summary with the exact headers/order and literal canonical values, then read all populated ranges back.\n   2. coder 1 (external-workflow-operator 0): One Coder is the sole owner of the Google spreadsheet titled Spring 2014 Grade Summary. Create it once, create/use only sheet Grades, write precisely the header and six canonical rows to A1:E7, and read A1:E7 back. Do not add diagnostic cells.\n\nIn the same response that launches Wave 2, the main agent searches Sent mail in native parallel for every canonical row whose instructor email is not N/A, matching complete From registrar@openuniversity.ac.uk, To, and subject End-of-Semester Grade Report: <Course Code></course>. Send only missing messages. Each body must copy the literal canonical course_name, class_average_text_2dp, letter_grade, distinction, and probation fields without recalculation. Read every retained email back.\n\nAfter Wave 2, reconcile workbook, sheet and emails against the identical canonical rows and exact two-decimal strings. Do not dispatch a verification wave.\n",
+    "nodes": [
+      {
+        "id": 84,
+        "wave": "message_22",
+        "text": "Create a NEW Google Spreadsheet titled exactly \"Spring 2014 Grade Summary\". It must contain one and only one sheet named \"Grades\". Write columns Course_Code, Class_Average, Letter_Grade, Distinction, Probation and these six sorted rows:\nBBB-2014B | 77.35 | C | No | No\nCCC-2014B | 62.77 | D | No | No\nDDD-2014B | 66.47 | D | No | No\nEEE-2014B | 78.80 | C | No | No\nFFF-2014B | 74.67 | C | No | No\nGGG-2014B | 77.38 | C | No | No\nEnsure numeric averages and ideally format to two decimals. Do not touch unrelated spreadsheets. Verify title, only sheet name, headers, and values by reading back. Return spreadsheet ID/URL and verification result.\nCreate cloud grade summary",
+        "is_plan": false
+      },
+      {
+        "id": 85,
+        "wave": "message_26",
+        "text": "Send exactly one email using the pipe-delimited record Dr. Caleb Miller|caleb.miller@openuniversity.ac.uk|CCC-2014B|Creative Computing & Culture (Spring 2014)|62.77|D|No|No representing name|email|course_code|course_name|class_average|letter_grade|distinction|probation. Send FROM registrar@openuniversity.ac.uk TO the listed email. Subject exactly: End-of-Semester Grade Report: [course_code] (replace bracketed token with value, no brackets). Plain-text body must clearly state course name, class average with exactly 2 decimals, letter grade, whether it earned distinction, and whether it is on academic probation. Suggested wording: \"Dear [name],\\n\\nThe end-of-semester grade report for [course_name] is now available.\\n\\nClass average: [average]\\nLetter grade: [grade]\\nWith Distinction: [Yes/No]\\nAcademic Probation: [Yes/No]\\n\\nRegards,\\nRegistrar\\nOpen University\". Do not send to anyone else, do not touch unrelated messages, and no attachments. Return recipient, subject, and send confirmation.\nSend instructor grade emails",
+        "is_plan": false
+      },
+      {
+        "id": 86,
+        "wave": "message_26",
+        "text": "Send exactly one email using the pipe-delimited record Dr. Evan Miller|evan.miller@openuniversity.ac.uk|DDD-2014B|Data-Driven Design (Spring 2014)|66.47|D|No|No representing name|email|course_code|course_name|class_average|letter_grade|distinction|probation. Send FROM registrar@openuniversity.ac.uk TO the listed email. Subject exactly: End-of-Semester Grade Report: [course_code] (replace bracketed token with value, no brackets). Plain-text body must clearly state course name, class average with exactly 2 decimals, letter grade, whether it earned distinction, and whether it is on academic probation. Suggested wording: \"Dear [name],\\n\\nThe end-of-semester grade report for [course_name] is now available.\\n\\nClass average: [average]\\nLetter grade: [grade]\\nWith Distinction: [Yes/No]\\nAcademic Probation: [Yes/No]\\n\\nRegards,\\nRegistrar\\nOpen University\". Do not send to anyone else, do not touch unrelated messages, and no attachments. Return recipient, subject, and send confirmation.\nSend instructor grade emails",
+        "is_plan": false
+      },
+      {
+        "id": 87,
+        "wave": "message_26",
+        "text": "Send exactly one email using the pipe-delimited record Dr. Emma Wright|emma.wright@openuniversity.ac.uk|EEE-2014B|Environmental Economics & Ethics (Spring 2014)|78.80|C|No|No representing name|email|course_code|course_name|class_average|letter_grade|distinction|probation. Send FROM registrar@openuniversity.ac.uk TO the listed email. Subject exactly: End-of-Semester Grade Report: [course_code] (replace bracketed token with value, no brackets). Plain-text body must clearly state course name, class average with exactly 2 decimals, letter grade, whether it earned distinction, and whether it is on academic probation. Suggested wording: \"Dear [name],\\n\\nThe end-of-semester grade report for [course_name] is now available.\\n\\nClass average: [average]\\nLetter grade: [grade]\\nWith Distinction: [Yes/No]\\nAcademic Probation: [Yes/No]\\n\\nRegards,\\nRegistrar\\nOpen University\". Do not send to anyone else, do not touch unrelated messages, and no attachments. Return recipient, subject, and send confirmation.\nSend instructor grade emails",
+        "is_plan": false
+      },
+      {
+        "id": 88,
+        "wave": "message_26",
+        "text": "Send exactly one email using the pipe-delimited record Dr. Caleb Morgan|caleb.morgan@openuniversity.ac.uk|FFF-2014B|Foundations of Finance (Spring 2014)|74.67|C|No|No representing name|email|course_code|course_name|class_average|letter_grade|distinction|probation. Send FROM registrar@openuniversity.ac.uk TO the listed email. Subject exactly: End-of-Semester Grade Report: [course_code] (replace bracketed token with value, no brackets). Plain-text body must clearly state course name, class average with exactly 2 decimals, letter grade, whether it earned distinction, and whether it is on academic probation. Suggested wording: \"Dear [name],\\n\\nThe end-of-semester grade report for [course_name] is now available.\\n\\nClass average: [average]\\nLetter grade: [grade]\\nWith Distinction: [Yes/No]\\nAcademic Probation: [Yes/No]\\n\\nRegards,\\nRegistrar\\nOpen University\". Do not send to anyone else, do not touch unrelated messages, and no attachments. Return recipient, subject, and send confirmation.\nSend instructor grade emails",
+        "is_plan": false
+      },
+      {
+        "id": 89,
+        "wave": "message_26",
+        "text": "Send exactly one email using the pipe-delimited record Dr. Lily Carter|lily.carter@openuniversity.ac.uk|GGG-2014B|Global Governance & Geopolitics (Spring 2014)|77.38|C|No|No representing name|email|course_code|course_name|class_average|letter_grade|distinction|probation. Send FROM registrar@openuniversity.ac.uk TO the listed email. Subject exactly: End-of-Semester Grade Report: [course_code] (replace bracketed token with value, no brackets). Plain-text body must clearly state course name, class average with exactly 2 decimals, letter grade, whether it earned distinction, and whether it is on academic probation. Suggested wording: \"Dear [name],\\n\\nThe end-of-semester grade report for [course_name] is now available.\\n\\nClass average: [average]\\nLetter grade: [grade]\\nWith Distinction: [Yes/No]\\nAcademic Probation: [Yes/No]\\n\\nRegards,\\nRegistrar\\nOpen University\". Do not send to anyone else, do not touch unrelated messages, and no attachments. Return recipient, subject, and send confirmation.\nSend instructor grade emails",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 84,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 85,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 86,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 87,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 88,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 89,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

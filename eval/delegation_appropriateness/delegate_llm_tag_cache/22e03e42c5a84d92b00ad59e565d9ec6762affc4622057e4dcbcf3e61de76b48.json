@@ -1,0 +1,200 @@
+{
+  "input_hash": "22e03e42c5a84d92b00ad59e565d9ec6762affc4622057e4dcbcf3e61de76b48",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "canvas-enrollment-ppt-gsheet",
+    "task_text": "Hi there, I am an academic administrator and I need to put together an enrollment overview for all courses in our learning management system. This will be shared with the provost next week so it needs to be comprehensive.\n\nPlease pull data for every course available in the system. For each course, I need the course name, course code, total number of enrollments, and a breakdown of enrollments by type (how many are students, how many are teachers, how many are teaching assistants). Also break down by enrollment status showing how many are active and how many are completed.\n\nCreate an Excel file called Enrollment_Overview.xlsx in the workspace with two sheets.\n\nThe first sheet should be called \"Enrollment Details\" and have columns Course_Name, Course_Code, Total_Enrollments, Students, Teachers, TAs, Active, and Completed. Sort the rows alphabetically by Course_Name.\n\nThe second sheet should be called \"Summary\" and have a two-column layout with Metric in column A and Value in column B. Include the following rows: Total_Courses (the number of courses), Total_Enrollments (sum across all courses), Total_Students, Total_Teachers, Total_TAs, Avg_Enrollment_Per_Course (average total enrollments per course rounded to 2 decimal places), Largest_Course (name of the course with the most enrollments), Largest_Course_Enrollments (its enrollment count), Smallest_Course (name of the course with the fewest enrollments), and Smallest_Course_Enrollments (its enrollment count).\n\nAlso create a PowerPoint presentation called Enrollment_Overview.pptx in the workspace. The first slide should have the title \"Course Enrollment Overview\" and a subtitle \"Academic Dashboard Report - <today's date in YYYY-MM-DD format>\". The second slide should be titled \"Enrollment Summary\" and show the total courses, total enrollments, total students, average enrollment per course, and which course is largest and smallest. The third slide should be titled \"Top 5 Courses by Enrollment\" and list the five courses with the highest enrollment counts, showing course name, code, and enrollment number. The fourth slide should be titled \"Enrollment Distribution\" and show the breakdown by enrollment type (students, teachers, TAs) and by status (active, completed) with percentages rounded to 1 decimal place.\n\nAdditionally, create a shared spreadsheet titled \"Enrollment Dashboard\" with a sheet called \"Course Data\" containing the same columns as the \"Enrollment Details\" sheet described above.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, first isolate each course's six compact counts, then fan out one canonical table to three independent artifact writers. Canvas remains read-only.\n\nThe main agent calls canvas_list_courses(include_ended=true), validates unique IDs/codes/names, and freezes the exact returned course inventory. It then dispatches one explicitly instantiated Explore prompt per literal course; every prompt must contain that course's exact ID, code, and full name rather than an ordinal, range, or grouped label.\n\n1. Wave 1 — dispatch exactly 22 explore sub-agents in parallel, one per literal course below:\n\n   1. explore 0 (enterprise-data-analyst 0): Course Explore agent for course_id=1 (AAA-2013J): issue these six independent canvas_get_course_grades calls natively in parallel, all with page=1 and per_page=1: unfiltered; type=[\"StudentEnrollment\"]; type=[\"TeacherEnrollment\"]; type=[\"TaEnrollment\"]; enrollment_state=[\"active\"]; enrollment_state=[\"completed\"]. Return only {course_id:1, course_code:\"AAA-2013J\", course_name, total_enrollments, students, teachers, tas, active, completed, pagination_controls}, taking every count from the matching response's pagination.total_count. Do not fetch later pages, return enrollment rows, or modify Canvas.\n   2. explore 1 (enterprise-data-analyst 1): Course owner for course_id=2 (AAA-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   3. explore 2 (enterprise-data-analyst 2): Course owner for course_id=3 (BBB-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   4. explore 3 (enterprise-data-analyst 3): Course owner for course_id=4 (BBB-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   5. explore 4 (enterprise-data-analyst 4): Course owner for course_id=5 (BBB-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   6. explore 5 (enterprise-data-analyst 5): Course owner for course_id=6 (BBB-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   7. explore 6 (enterprise-data-analyst 6): Course owner for course_id=7 (CCC-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   8. explore 7 (enterprise-data-analyst 7): Course owner for course_id=8 (CCC-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   9. explore 8 (enterprise-data-analyst 8): Course owner for course_id=9 (DDD-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   10. explore 9 (enterprise-data-analyst 9): Course owner for course_id=10 (DDD-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   11. explore 10 (enterprise-data-analyst 10): Course owner for course_id=11 (DDD-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   12. explore 11 (enterprise-data-analyst 11): Course owner for course_id=12 (DDD-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   13. explore 12 (enterprise-data-analyst 12): Course owner for course_id=13 (EEE-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   14. explore 13 (enterprise-data-analyst 13): Course owner for course_id=14 (EEE-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   15. explore 14 (enterprise-data-analyst 14): Course owner for course_id=15 (EEE-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   16. explore 15 (enterprise-data-analyst 15): Course owner for course_id=16 (FFF-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   17. explore 16 (enterprise-data-analyst 16): Course owner for course_id=17 (FFF-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   18. explore 17 (enterprise-data-analyst 17): Course owner for course_id=18 (FFF-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   19. explore 18 (enterprise-data-analyst 18): Course owner for course_id=19 (FFF-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   20. explore 19 (enterprise-data-analyst 19): Course owner for course_id=20 (GGG-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   21. explore 20 (enterprise-data-analyst 20): Course owner for course_id=21 (GGG-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   22. explore 21 (enterprise-data-analyst 21): Course owner for course_id=22 (GGG-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n\nAfter Wave 1, the main agent validates exactly one result per course and freezes a canonical table sorted by course_name with the eight required Enrollment Details columns. Compute Summary values, type/status percentages, and deterministic top-five/largest/smallest selections once; use course_code ascending as the tie-break. Freeze the runtime current date required by the presentation. No writer may recompute these facts.\n\n2. Wave 2 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One Coder is the sole writer of Enrollment_Overview.xlsx in the dynamically resolved task workspace. Create exactly Enrollment Details and Summary with the required headers, rows, literal numeric values and rounding, then read both populated ranges back.\n   2. coder 1 (office-report-builder 1): One Coder is the sole writer of Enrollment_Overview.pptx in that workspace. Create exactly the four requested slides from the canonical summary/top-five/distribution payload and runtime date, then read back slide titles and all displayed values.\n   3. coder 2 (external-workflow-operator 0): One Coder is the sole owner of the shared spreadsheet titled Enrollment Dashboard. Create or reuse one exact-title spreadsheet and write the canonical table only to sheet Course Data in the exact bounded range A1:H<row count>; do not write diagnostic cells. Read that range back.\n\nAfter Wave 2, the main agent verifies all three artifacts against the canonical table, including total-enrollment arithmetic, exact type/state counts, percentages, top-five order, extrema and current-date subtitle. Do not dispatch a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are planning a multi-step task for an academic administrator. Produce a detailed, ordered task decomposition (a plan) that the main agent will execute. Do NOT perform any writes — read-only investigation only.\n\nGOAL (user request):\n1. Pull enrollment data for EVERY course in the Canvas LMS. For each course: course name, course code, total number of enrollments, breakdown by enrollment type (students, teachers, teaching assistants), and breakdown by enrollment status (active, completed).\n2. Create an Excel file `Enrollment_Overview.xlsx` in the workspace with two sheets:\n   - Sheet \"Enrollment Details\": columns Course_Name, Course_Code, Total_Enrollments, Students, Teachers, TAs, Active, Completed. Sorted alphabetically by Course_Name.\n   - Sheet \"Summary\": two-column layout (Metric in col A, Value in col B) with rows: Total_Courses, Total_Enrollments, Total_Students, Total_Teachers, Total_TAs, Avg_Enrollment_Per_Course (avg total enrollments per course, 2 decimals), Largest_Course (name of course with most enrollments), Largest_Course_Enrollments, Smallest_Course (name with fewest enrollments), Smallest_Course_Enrollments.\n3. Create PowerPoint `Enrollment_Overview.pptx` with:\n   - Slide 1: title \"Course Enrollment Overview\", subtitle \"Academic Dashboard Report - <today's date YYYY-MM-DD>\".\n   - Slide 2: \"Enrollment Summary\" showing total courses, total enrollments, total students, avg enrollment per course, largest and smallest course.\n   - Slide 3: \"Top 5 Courses by Enrollment\" listing five highest-enrollment courses with name, code, enrollment number.\n   - Slide 4: \"Enrollment Distribution\" showing breakdown by enrollment type (students, teachers, TAs) and by status (active, completed) with percentages rounded to 1 decimal place.\n4. Create a shared Google Spreadsheet titled \"Enrollment Dashboard\" with a sheet called \"Course Data\" containing the same columns as \"Enrollment Details\".\n\nWORKSPACE: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-canvas-enrollment-ppt-gsheet/workspace (all output files go here; the Google spreadsheet is created via the google_sheet MCP tools, not saved locally).\n\nWHAT TO INVESTIGATE (read-only, so your plan is grounded):\n- Use Canvas read tools (e.g., canvas_health_check, canvas_list_courses, canvas_get_course, canvas_get_course_grades / canvas_list_course_users) to determine how to enumerate ALL courses and how to count enrollments by type (StudentEnrollment, TeacherEnrollment, TaEnrollment) and by state (active, completed). Note the current API user/account context, how many courses exist, and which endpoint reliably gives enrollment counts per course. IMPORTANT: check whether enrollment counts can be fetched per course efficiently and whether any courses have no enrollments (still count them in Total_Courses).\n- Check available filesystem tools for writing Excel files (e.g., is there a python_execute tool available to the main agent? Check mcp__local__python_execute availability in the environment description) and the pptx MCP server for creating presentations (create_presentation, add_slide, add_table, manage_text, save_presentation).\n- Check google_sheet MCP tools for creating a spreadsheet (create_spreadsheet, create_sheet, update_cells) and whether spreadsheets are created in a shared folder by default.\n- Determine today's date (you may run read-only commands) so the plan can fix the subtitle date.\n\nDELIVERABLE — return a plan with ordered subtasks. For each subtask specify:\n- Dispatch decision: `self` (main agent), `explore`, or `coder`.\n- Whether it is independent (parallelizable) or must wait for another subtask's output.\n- Exact tool calls to use and any data-shape details (e.g., how to derive Students/Teachers/TAs/Active/Completed counts per course, how to sort, how to compute summary metrics, tie-breaking rules for Largest/Smallest course if counts are equal).\nAlso flag risks: e.g., pagination, courses with zero enrollments, differing enrollment states, and how the plan handles them. Keep the plan concrete and executable.\nPlan enrollment overview task",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 2|Applied Analytics & Algorithms (Fall 2014)|AAA-2014J — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 3|Biochemistry & Bioinformatics (Fall 2013)|BBB-2013J — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 4|Biochemistry & Bioinformatics (Fall 2014)|BBB-2014J — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 5|Biochemistry & Bioinformatics (Spring 2013)|BBB-2013B — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 6|Biochemistry & Bioinformatics (Spring 2014)|BBB-2014B — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 7|Creative Computing & Culture (Fall 2014)|CCC-2014J — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 8|Creative Computing & Culture (Spring 2014)|CCC-2014B — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 9|Data-Driven Design (Fall 2013)|DDD-2013J — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 10|Data-Driven Design (Fall 2014)|DDD-2014J — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "wave": "message_22",
+        "text": "You are collecting Canvas enrollment counts for ONE course. Your input item is: 11|Data-Driven Design (Spring 2013)|DDD-2013B — a pipe-delimited string: course_id|course_name|course_code.\n\nUse the Canvas MCP tool `canvas_get_course_grades` (in the mcp__canvas__ namespace) with course_id=<the id> and per_page=1, and read `pagination.total_count` from each response (ignore the single enrollment record). Make exactly these 6 calls:\n1. No filters → Total_Enrollments (total_count)\n2. type=[\"StudentEnrollment\"] → Students\n3. type=[\"TeacherEnrollment\"] → Teachers\n4. type=[\"TaEnrollment\"] → TAs\n5. enrollment_state=[\"active\"] → Active\n6. enrollment_state=[\"completed\"] → Completed\n\nIf `pagination.total_count` is missing from any response, page through that call with per_page=100 until `has_more` is false and count the returned records locally instead.\n\nReturn your result as a SINGLE LINE exactly in this format (no extra text, no markdown, no bullet points):\ncourse_id|course_name|course_code|Total|Students|Teachers|TAs|Active|Completed\nUse integers for the counts and preserve the course name exactly as given. Example: 1|Applied Analytics & Algorithms (Fall 2013)|AAA-2013J|385|383|1|1|325|60\nFetch per-course enrollment counts",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas",
+          "filesystem-workspace"
+        ],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

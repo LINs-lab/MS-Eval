@@ -1,0 +1,58 @@
+{
+  "input_hash": "ca107123f4e4e7b7545ea61ad4d04f0bb9cb4c477d76aeed3bfdecf0e85a827d",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "sf-hr-dept-budget-ppt-email",
+    "task_text": "I need to prepare a department budget presentation for our upcoming board meeting. Please pull the current department headcount and budget data from the company HR data warehouse and create a PowerPoint presentation called HR_Department_Overview.pptx. The presentation should have at least seven slides: a title slide called HR Department Budget Overview, one slide per department showing the department name, headcount, budget, and location, and a final summary slide showing total headcount and total budget across all departments. Use the department names exactly as they appear in the data source (for example `HR` and `R&D`) — do not expand or rephrase them.\n\nAfter creating the presentation, also create an Excel file called Department_Budget_Analysis.xlsx with a sheet called Department Summary that has columns Department, Headcount, Budget rounded to 2 decimals, Location, and Budget_Per_Employee which is the budget divided by headcount rounded to 2 decimals, sorted alphabetically by department name. Add a second sheet called Summary with Metric and Value columns showing Total_Headcount, Total_Budget, Avg_Budget_Per_Employee (computed as Total_Budget divided by Total_Headcount) rounded to 2 decimals, and Highest_Budget_Dept. Use these exact metric labels (with underscores) as the Metric values.\n\nThen create a Google Sheet named 'HR Department Tracker' (create it if it does not already exist) and populate it with the same department data, and send an email to hr.directors@company.com with subject HR Department Budget Summary Q1 2026 containing a brief overview of the findings.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent should first query the complete department table once, preserve exact department names such as HR and R&D, compute headcount and budget controls, and freeze alphabetically sorted rows. Then create the three independent deliverables in one wave.\n\n1. Wave 1 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One coder sub-agent owns `HR_Department_Overview.pptx` under one presentation ID. Use the literal source labels as slide text—especially the exact three-character string `R&D`; never expand it to Research and Development. Create the title slide, one slide per returned department with exact name/headcount/budget/location, and the final numeric summary. Use one bounded populate operation per slide, save once, extract the full deck text once, and return the path, slide count/titles, literal department-name coverage, and total checks.\n\n   2. coder 1 (office-report-builder 1): One coder sub-agent owns `Department_Budget_Analysis.xlsx` and writes the exact Department Summary and Summary sheets with literal values, alphabetical rows, Budget_Per_Employee, and the exact underscore metric labels. Use one bulk write per sheet and one read-back.\n\n   3. coder 2 (external-workflow-operator 0): One coder sub-agent owns exactly one `HR Department Tracker` cloud spreadsheet. Search the exact title, create only if absent, write the same literal source labels and rows once, and read it back once.\n\nAfter Wave 1, the main agent checks that all three outputs contain every exact department label including `R&D` and that the totals agree, then sends exactly one email to `hr.directors@company.com` with subject `HR Department Budget Summary Q1 2026`. Do not run row-by-row revalidation or dispatch another wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_19",
+        "text": "You are preparing an HR department budget presentation using the mcp__pptx__ MCP tools. Create a PowerPoint presentation and save it to this exact path:\n/workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-hr-dept-budget-ppt-email/workspace/HR_Department_Overview.pptx\n\nDepartment data (department name, headcount, budget, location):\n1. Engineering, 7096, 633555641.27, New York\n2. Finance, 7148, 616980984.11, Sydney\n3. HR, 7077, 697911374.65, New York\n4. Operations, 7120, 572668189.63, Sydney\n5. R&D, 7083, 715914847.42, Singapore\n6. Sales, 7232, 642575220.92, New York\n7. Support, 7244, 684741486.31, Toronto\n\nTotals: Total Headcount = 50000; Total Budget = 4564347744.31; Avg Budget per Employee = 91286.95.\n\nRequired slides (9 total):\n1. Title slide with title text exactly \"HR Department Budget Overview\" (a subtitle such as \"Board Meeting Q1 2026\" is fine).\n2-8. One slide per department in the order listed above (Engineering, Finance, HR, Operations, R&D, Sales, Support). Each slide's title must be the exact department name (e.g., \"HR\", \"R&D\" — do NOT expand or rephrase). The slide body must show the department's headcount, budget, and location.\n9. Final summary slide (title \"Summary\") showing Total Headcount: 50000 and Total Budget: 4564347744.31 (you may also include Avg Budget per Employee: 91286.95).\n\nWorkflow: use mcp__pptx__create_presentation, then mcp__pptx__add_slide (with layout and title), mcp__pptx__populate_placeholder / mcp__pptx__add_shape / mcp__pptx__manage_text to add body content, and finally mcp__pptx__save_presentation with file_path set to the full path above. After saving, verify the file exists (e.g., via python os.path.exists) and that it has at least 7 slides (extract text to confirm).\n\nReport back: the final saved file path, number of slides, and confirmation that each department slide shows name, headcount, budget, location, and the summary slide shows totals.\nCreate HR department PPTX",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_19",
+        "text": "Using the mcp__excel__ MCP tools, create an Excel workbook at this exact path:\n/workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-hr-dept-budget-ppt-email/workspace/Department_Budget_Analysis.xlsx\n\nThe workbook must contain exactly two sheets:\n\nSheet 1 named \"Department Summary\" (exact name) with header row: Department | Headcount | Budget | Location | Budget_Per_Employee\nData rows (already sorted alphabetically by department; Budget already rounded to 2 decimals; Budget_Per_Employee = Budget / Headcount rounded to 2 decimals):\nEngineering, 7096, 633555641.27, New York, 89283.49\nFinance, 7148, 616980984.11, Sydney, 86315.19\nHR, 7077, 697911374.65, New York, 98616.84\nOperations, 7120, 572668189.63, Sydney, 80430.93\nR&D, 7083, 715914847.42, Singapore, 101075.09\nSales, 7232, 642575220.92, New York, 88851.66\nSupport, 7244, 684741486.31, Toronto, 94525.33\n\nSheet 2 named \"Summary\" with two columns: Metric | Value, with these exact rows (use the exact Metric labels with underscores):\nTotal_Headcount, 50000\nTotal_Budget, 4564347744.31\nAvg_Budget_Per_Employee, 91286.95\nHighest_Budget_Dept, R&D\n\nWorkflow: use mcp__excel__create_workbook with the full filepath; rename the default sheet to \"Department Summary\" (or create worksheets as needed); write the header + data with mcp__excel__write_data_to_excel; create the \"Summary\" sheet and write its data. Ensure numeric values are written as numbers (rounded to 2 decimals where applicable). Then read the data back from both sheets with mcp__excel__read_data_from_excel to verify.\n\nReport back: the final saved file path and confirmation of the contents of both sheets.\nCreate department budget XLSX",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_19",
+        "text": "Using the mcp__google_sheet__ MCP tools, ensure a Google Spreadsheet named \"HR Department Tracker\" exists and populate it with department data.\n\nSteps:\n1. Search for an existing spreadsheet named \"HR Department Tracker\" using mcp__google_sheet__search_spreadsheets with query \"HR Department Tracker\". (A prior check returned no results, but re-check to be safe.)\n2. If it does not already exist, create it with mcp__google_sheet__create_spreadsheet(title=\"HR Department Tracker\").\n3. Determine the first/default sheet name (e.g., \"Sheet1\") via mcp__google_sheet__list_sheets.\n4. Write the following data starting at A1 (header row + 7 data rows, already sorted alphabetically by department) using mcp__google_sheet__update_cells (or batch_update_cells):\nDepartment, Headcount, Budget, Location, Budget_Per_Employee\nEngineering, 7096, 633555641.27, New York, 89283.49\nFinance, 7148, 616980984.11, Sydney, 86315.19\nHR, 7077, 697911374.65, New York, 98616.84\nOperations, 7120, 572668189.63, Sydney, 80430.93\nR&D, 7083, 715914847.42, Singapore, 101075.09\nSales, 7232, 642575220.92, New York, 88851.66\nSupport, 7244, 684741486.31, Toronto, 94525.33\n5. Read the data back with mcp__google_sheet__get_sheet_data to confirm the rows were written.\n\nReport back: the spreadsheet ID, its title, the sheet name used, and confirmation that all 8 rows (header + 7 departments) were populated correctly.\nCreate HR tracker Google Sheet",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "ppt",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

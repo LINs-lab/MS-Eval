@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "reference": {
+    "kind": "sqsh",
+    "name": "toolathlon-pack.sqsh"
+  },
+  "environments": {
+    "harness": {
+      "python": "3.13.13",
+      "local_project": null,
+      "requirements_sha256": "5555be6c8f8b8e471b779c2a973019210c1d4c2b787a3e6be748ff0a3fdab1df"
+    },
+    "Office-PowerPoint-MCP-Server": {
+      "python": "3.13.13",
+      "local_project": "office-powerpoint-mcp-server",
+      "requirements_sha256": "f8eaf7faefd9db46778a6ddf69b9c1ec74310920e759a13c568dd1addd130d42"
+    },
+    "Office-Word-MCP-Server": {
+      "python": "3.13.13",
+      "local_project": "office-word-mcp-server",
+      "requirements_sha256": "6c65f98d6f9b0e9949137920bdcf36fafa93fdb503b3f8a3a18c68c7e71fb220"
+    },
+    "arxiv-latex-mcp": {
+      "python": "3.13.13",
+      "local_project": "arxiv-latex-mcp",
+      "requirements_sha256": "ffbf78e109ca73db32572658e55bf2d0ad4ef258ce672d5873e37873aa694860"
+    },
+    "arxiv-mcp-server": {
+      "python": "3.11.15",
+      "local_project": "arxiv-mcp-server",
+      "requirements_sha256": "6e7f9957fb068557e391a47ecd0164019c2c899492af9228fe7d87c6c6b42c72"
+    },
+    "cli-mcp-server": {
+      "python": "3.13.13",
+      "local_project": "cli-mcp-server",
+      "requirements_sha256": "a3b1e92aedba982713c865b3b6394abb65fc9932994563f5b55efe1e390ab59d"
+    },
+    "emails-mcp": {
+      "python": "3.12.13",
+      "local_project": "emails-mcp",
+      "requirements_sha256": "d1308fe8f19f31f56c8eaeb13f7ab49cc34a5832335f3b8c0d2c11dd46743ec5"
+    },
+    "excel-mcp-server": {
+      "python": "3.10.12",
+      "local_project": "excel-mcp-server",
+      "requirements_sha256": "e06451f80d51a4c8d0c3b8bed8b19391db42d7da2cdd33177ca435c34e825662"
+    },
+    "mcp-google-sheets": {
+      "python": "3.11.15",
+      "local_project": "mcp-google-sheets",
+      "requirements_sha256": "e2d215830786883a0239497419063a03674375874ca2d262057ae975241fc654"
+    },
+    "mcp-scholarly": {
+      "python": "3.11.15",
+      "local_project": "mcp-scholarly",
+      "requirements_sha256": "d1505162349ce44e7ff150649cfaa162d3c95a281932fe9feb97cc8c984c7971"
+    },
+    "mcp-snowflake-server": {
+      "python": "3.12.13",
+      "local_project": "mcp_snowflake_server",
+      "requirements_sha256": "231ff3fcd61963504935ed6d7d09be5655e3c922343f0d8de967908b2e71afc7"
+    },
+    "mcp-youtube-transcript": {
+      "python": "3.13.13",
+      "local_project": "mcp-youtube-transcript",
+      "requirements_sha256": "4c6b55e4e9d3c4a7bf6d9acabd9ccfd54178105147fc3adef1650bfabdefccd3"
+    },
+    "pdf-tools-mcp": {
+      "python": "3.12.13",
+      "local_project": "pdf-tools-mcp",
+      "requirements_sha256": "02c7b020dc06c5bc45803d2966c6cd50e9e4d0dc8e9ede891ebc8855a5365666"
+    },
+    "yahoo-finance-mcp": {
+      "python": "3.11.15",
+      "local_project": "yahoo-finance-mcp",
+      "requirements_sha256": "ace017ba64cb5cbeed4f2e0db68b4ec653d98ad99c3fc86c19cbe8f710016b06"
+    }
+  },
+  "node": "22.20.0",
+  "uv": "0.12.5",
+  "sources": {
+    "toolathlon_gym": "872ebef73f170a565136d4521ddb02b41872362e",
+    "kimi-code": "4aabe61aefb86e1b014ea2dc56308dda2b2e0971"
+  },
+  "database_seed_sha256": "9d48204b20dd0b474d2766e40ce2d53f0d68a5d69706709cdbbacc33d8fd8511",
+  "tasks_sha256": "b6c7e6be77e63d10a5f26ef3ef200f8de87767f09b883d0e90c3ec30ab0e5068",
+  "npm_fallbacks": {
+    "HowToCook-mcp": "1d02421232225358b7af100c8fba46b9196974006c78cb3419b5d473ff97ea55",
+    "notion-mcp-server": "dae8cf78ae65a6c392e518f088192ce09b6f634e92eea312b666e4d5e994c218",
+    "woocommerce-mcp": "8ac5f66ae8584372dbea04583ca929d4769cdac76f7999acccc3b43496f4afd1",
+    "youtube-mcp-server": "eb7a66dcda9fa071bc2cceee2255aa3b3901618ff09419ff673db384bfde2bfa"
+  }
+}

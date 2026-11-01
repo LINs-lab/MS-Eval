@@ -1,0 +1,60 @@
+{
+  "input_hash": "f6ed9011453828e23bc9fee53d762151392a02c60aeeeb0ead6a61543cb552b3",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-sales-segment-analysis",
+    "task_text": "I need to understand our customer segments better. Please pull data from the sales data warehouse and analyze revenue contribution by customer segment. Base the revenue and order counts on all orders regardless of order status (include Delivered, Shipped, Processing, and Cancelled).\n\nCreate an Excel file called Sales_Segment_Report.xlsx with two sheets. The \"Segment Analysis\" sheet should have columns Segment, Customers (distinct count), Orders (distinct count), Revenue rounded to 2 decimals, Avg_Order_Value rounded to 2 decimals, and Revenue_Share_Pct showing each segment's share of total revenue rounded to 1 decimal. Sort by Revenue descending.\n\nThe \"Summary\" sheet with Metric and Value should include Total_Customers, Total_Revenue rounded to 2 decimals, Top_Segment name, and Top_Segment_Share_Pct.\n\nAlso create a Google Sheet titled \"Segment Dashboard\" with a sheet \"Overview\" containing the same Segment Analysis data for the team to access.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent. Resolve the runtime workspace dynamically and run one set-based all-status query joining `SALES_DW.PUBLIC.CUSTOMERS` to `SALES_DW.PUBLIC.ORDERS` on `CUSTOMER_ID`, grouped by customer `SEGMENT`. Do not filter `ORDER_STATUS`: Delivered, Shipped, Processing, Cancelled, and any other observed status all contribute. Return distinct customer count, distinct order count, raw sum of order total, and raw average order value for each segment, plus an independent all-order control total.\n\nFreeze rows sorted by raw revenue descending with segment-name ties. Compute `Revenue_Share_Pct = 100 * segment_revenue / sum(segment_revenue)` from unrounded values and display one decimal. Compute the four Summary values exactly: distinct `Total_Customers` over customers represented in the joined all-status population, `Total_Revenue`, raw-revenue `Top_Segment`, and its `Top_Segment_Share_Pct`. In one native-parallel response, create `Sales_Segment_Report.xlsx` with exact `Segment Analysis` and `Summary` sheets and all four Summary metric rows, and create exactly one Google spreadsheet titled `Segment Dashboard` whose `Overview` sheet contains the same headers and every segment row. Use literal numeric values. Read both complete ranges back once and reconcile segment order, counts, revenue, shares, and the four Summary values; do not dispatch a sub-agent.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Query the sales data warehouse and return customer-segment metrics needed for reporting. Include ALL orders regardless of status, specifically including Delivered, Shipped, Processing, and Cancelled. Determine the relevant database/schema/tables and joins. Deliver: (1) one row per segment with Segment, distinct Customers, distinct Orders, Revenue rounded to 2 decimals, Avg_Order_Value (Revenue / distinct Orders) rounded to 2 decimals, Revenue_Share_Pct rounded to 1 decimal; sorted Revenue descending; (2) summary values Total_Customers (distinct across all segments), Total_Revenue rounded 2 decimals, Top_Segment, Top_Segment_Share_Pct; (3) concise SQL/query provenance and verification that no status filter excluded orders. Read-only; do not create files or sheets.\nAnalyze segment sales",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "Create and verify the local Excel workbook exactly at /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-sales-segment-analysis/workspace/Sales_Segment_Report.xlsx. It must have exactly two sheets named \"Segment Analysis\" and \"Summary\". Segment Analysis columns in A1:F1: Segment, Customers, Orders, Revenue, Avg_Order_Value, Revenue_Share_Pct. Rows sorted descending revenue: Consumer | 532 | 5423 | 839609.20 | 154.82 | 27.5%; Enterprise | 513 | 5058 | 793741.69 | 156.93 | 26.0%; Government | 474 | 4679 | 712686.66 | 152.32 | 23.4%; SMB | 481 | 4840 | 702960.78 | 145.24 | 23.1%. Store Revenue and Avg_Order_Value as numeric values with 2-decimal number formatting. Store Revenue_Share_Pct as actual numeric percentages (0.275 etc.) with 1-decimal percentage formatting. Summary sheet columns Metric, Value and rows: Total_Customers | 2000; Total_Revenue | 3048998.33; Top_Segment | Consumer; Top_Segment_Share_Pct | 27.5% (actual numeric percentage with 1-decimal formatting). Apply clear professional header formatting and sensible column widths if supported, but prioritize correctness. Verify by rereading workbook ranges and report exact file path, sheet names, values, and formatting outcomes. Do not create any other artifact.\nBuild Excel report",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_6",
+        "text": "Create a new Google Spreadsheet titled exactly \"Segment Dashboard\". Ensure it contains a sheet named exactly \"Overview\" with columns: Segment, Customers, Orders, Revenue, Avg_Order_Value, Revenue_Share_Pct. Populate rows sorted descending revenue: Consumer | 532 | 5423 | 839609.20 | 154.82 | 27.5%; Enterprise | 513 | 5058 | 793741.69 | 156.93 | 26.0%; Government | 474 | 4679 | 712686.66 | 152.32 | 23.4%; SMB | 481 | 4840 | 702960.78 | 145.24 | 23.1%. Use numeric values for counts/revenue/AOV and actual numeric percentages (0.275, 0.260, 0.234, 0.231), not strings. Remove or rename the default sheet so the required Overview sheet exists; extra sheets are unnecessary. Apply basic professional formatting if supported (bold header, number formats: Revenue/AOV 2 decimals; share 1-decimal percent), but prioritize data accuracy. Verify by reading the finished Overview range. Return spreadsheet ID, accessible URL, exact sheet names, values, and formatting outcome.\nCreate Segment Dashboard",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

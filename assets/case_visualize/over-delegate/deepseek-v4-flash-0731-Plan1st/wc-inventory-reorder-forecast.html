@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan-1st: Over-delegation</title>
+  <style>
+    :root{--paper:#f3eadc;--ink:#1a1612;--mute:#6a5e50;--line:#c9b79a;--main:#2a251f;--ro:#e65500;--ro-bg:#f7e0cf;--rw:#0064c8;--rw-bg:#d5e5f6;--ok:#1a6844;--share:#efe6d4}
+    *{box-sizing:border-box}html,body{margin:0}body{background:radial-gradient(circle at 10% 0,rgba(255,255,255,.55),transparent 34%),repeating-linear-gradient(0deg,transparent 0 30px,rgba(110,88,58,.06) 31px),var(--paper);color:var(--ink);font:15px/1.35 "Iowan Old Style","Palatino Linotype",Palatino,"URW Palladio L","P052",Georgia,serif}
+    .sheet{width:min(1580px,calc(100vw - 20px));margin:10px auto 16px}.eyebrow{display:flex;justify-content:space-between;font:11px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+    h1{margin:3px 0 2px;font-size:32px;letter-spacing:-.03em;line-height:.95}.sub{margin:0 0 8px;color:var(--mute);max-width:100ch;font-size:13.5px}
+    .panel{border:1.5px solid var(--ink);background:rgba(255,253,246,.72);padding:6px 10px 7px;margin-bottom:6px}.panel h2{margin:0 0 4px;font-size:13px;font-family:"IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase}
+    .task-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.tid{font:12px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;background:var(--ink);color:var(--paper);padding:5px 8px}.blurb{margin:0;font-size:13.5px}.blurb b{font-style:italic}
+    .trsd-prose{font-size:13.5px}.trsd-prose .del{color:var(--ro);font-weight:600;background:rgba(247,224,207,.7);padding:0 4px;border-bottom:1.5px solid var(--ro)}
+    .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.metric{border:1px solid var(--line);background:#fffdf7;padding:6px 8px}.metric .k{font:10px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}.metric strong{display:block;font-size:23px;line-height:1.05;margin-top:3px}.metric em{font-size:11px;color:var(--mute);font-style:normal}
+    .planbox{border:1px solid var(--line);background:#fffdf7;padding:7px 9px}.planbox p{margin:0 0 5px;font-size:12.5px}.planbox ol{margin:3px 0 0;padding-left:20px;font-size:12.5px}.planbox li+li{margin-top:3px}.planbox .focus{color:var(--ro);font-weight:600}
+    .band{margin-bottom:6px}.hd{display:flex;justify-content:space-between;align-items:baseline;font:11px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;padding:5px 8px;border:1.5px solid var(--ink);background:#fffdf7}.hd .axis{letter-spacing:.1em;opacity:.55}.box{border:1.5px solid var(--ink);border-top:0;background:rgba(255,253,246,.55)}
+    .row{display:grid;grid-template-columns:248px 1fr 70px;gap:6px;padding:5px 8px;align-items:center}.row+.row{border-top:1px solid var(--line)}.mode h3{margin:0;font-size:14px}.mode p{margin:1px 0 0;font-size:11.5px;color:var(--mute)}.roster{display:flex;flex-wrap:wrap;gap:2px;margin-top:4px}
+    .chip,.ag{display:inline-flex;align-items:center;gap:4px;border:1px solid currentColor;padding:2px 6px 2px 3px;font:10px/1.2 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;background:#fffdf7}.chip img,.ag img{width:14px;height:14px;object-fit:cover}.chip.ro,.ag.ro{color:var(--ro);background:var(--ro-bg)}.chip.rw,.ag.rw{color:var(--rw);background:var(--rw-bg)}.chip.off{opacity:.3}.chip.empty{color:var(--mute);border-style:dashed}
+    .score{display:flex;align-items:center;min-width:0}.mn,.gate{flex:0 0 auto;border:1px solid var(--ink);padding:4px 6px;text-align:center;min-width:66px;background:var(--main);color:var(--paper)}.mn small,.gate small,.wv small{display:block;font:9px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.7}.mn b,.gate b{font-size:12px}.gate{background:var(--ro-bg);color:var(--ink);outline:2px solid var(--ro);outline-offset:2px}.wv{flex:0 1 auto;border:1px dashed #8e7d66;padding:3px 6px 4px 8px;background:rgba(255,255,255,.5);position:relative}.wv:before{content:"";position:absolute;left:3px;top:14px;bottom:6px;width:4px;border:1.5px solid var(--ink);border-right:0}.wv .pack{display:flex;flex-direction:column;gap:2px}.ag{font:11.5px/1.15 Georgia,serif;padding:2px 5px}.ag .nm{font:10px/1.15 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace}.arr{width:16px;height:2px;background:var(--ink);flex:0 0 16px;position:relative;margin:0 3px}.arr:after{content:"";position:absolute;right:-1px;top:-3px;border:4px solid transparent;border-left-color:var(--ink)}.n{text-align:right;font:11px/1.2 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;color:var(--mute)}.n strong{display:block;color:var(--ok);font:700 18px/1 Georgia,serif}
+    .why{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.why article{border:1px dashed var(--ink);padding:6px 8px;background:#fffdf7}.why h3{margin:0 0 2px;font-size:13px}.why p{margin:0;font-size:12px;color:#3d352b}.why .bad{color:var(--ro)}.why .good{color:var(--ok)}
+    .legend{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:6px;padding-top:6px;border-top:1px solid var(--line);color:var(--mute);font-size:12px}.keys{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.sw{width:11px;height:11px;border:1px solid var(--ink);display:inline-block;vertical-align:-1px;margin-right:4px}.sw.m{background:var(--main)}.sw.r{background:var(--ro-bg)}.sw.w{background:var(--rw-bg)}.mono{font-family:"IBM Plex Mono","Liberation Mono",ui-monospace,monospace;font-size:11px}
+    @media(max-width:1100px){.metric-grid,.why{grid-template-columns:1fr 1fr}.row{display:block}.score{margin-top:6px;flex-wrap:wrap;gap:3px}.n{text-align:left;margin-top:6px}}@media(max-width:600px){.metric-grid,.why{grid-template-columns:1fr}.eyebrow{display:block}.eyebrow span{display:block;margin-bottom:4px}h1{font-size:27px}}
+    @media print{body{background:#fff}.sheet{width:100%;margin:0}}
+  </style>
+</head>
+<body>
+<main class="sheet">
+  <div class="eyebrow"><span>MAD-SAE Evaluation Kit</span><span>Over-delegation · instantiated run</span></div>
+  <h1>Plan-1st: Over-delegation</h1>
+  <p class="sub">This inventory forecast was explicitly annotated <b>no need for sub-agents</b>. Oracle kept 82 products, 150 orders, the workbook, and 18 calendar events in one state. Plan-1st serialized four handoffs and paid a large Cstep tax for the same deterministic data workflow.</p>
+
+  <section class="panel">
+    <div class="task-h"><h2>Task</h2><span class="tid">wc-inventory-reorder-forecast</span></div>
+    <p class="blurb">Read the reorder policy and sales-velocity template, retrieve published in-stock WooCommerce products and completed/processing orders, calculate sales velocity and reorder dates from supplier lead times, write <b>Inventory_Forecast.xlsx</b>, fill <b>sales_velocity.xlsx</b>, and create calendar events for every reorder.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Observed signal</h2>
+    <div class="metric-grid">
+      <div class="metric"><span class="k">Oracle Csteps</span><strong>35</strong><em>one solo main-agent phase</em></div>
+      <div class="metric"><span class="k">Plan1st Csteps</span><strong>179</strong><em>+144 steps over Oracle</em></div>
+      <div class="metric"><span class="k">Inflation</span><strong>5.1×</strong><em>179 / 35 critical steps</em></div>
+      <div class="metric"><span class="k">Sub-agents</span><strong>4</strong><em>0 parallel · 4 sequential</em></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="task-h"><h2>Task-Solving Rationale with Sub-Task Decomposition (TRSD)</h2><span class="tid" style="background:var(--ro)">annotation: no dispatch</span></div>
+    <p class="blurb trsd-prose">The annotation says to <span class="del">complete it directly in the main agent and dispatch no sub-agent</span>: products, orders, calculations, workbook rows, and event identities must remain in one state. Plan-1st instead inserted a planning gate, a large data-processing handoff, a verification handoff, and a repair handoff before finishing the same artifacts.</p>
+  </section>
+
+  <section class="panel">
+    <div class="task-h"><h2>Model planning content</h2><span class="tid" style="background:var(--main)">captured from Plan1st</span></div>
+    <div class="planbox">
+      <p>The plan correctly recognized the policy, the 82-product / 150-order data boundary, and the required Excel and calendar outputs. Its failure was orchestration: it converted a single stateful computation into serial ownership transfers.</p>
+      <ol>
+        <li><b>Plan:</b> read policy, template, lead times, and define the product/order pagination and reorder formulas.</li>
+        <li class="focus"><b>Coder handoff:</b> fetch products and orders, filter statuses, compute velocity, regenerate the three deliverables, and report all checks.</li>
+        <li class="focus"><b>Explore handoff:</b> independently re-fetch the store and verify the forecast deliverables.</li>
+        <li class="focus"><b>Coder repair:</b> re-fetch the data again after the status-filter discrepancy, overwrite the artifacts, and re-validate events.</li>
+        <li><b>Self:</b> aggregate handoffs, delete incorrect events, create the final reorder events, and claim done.</li>
+      </ol>
+      <p style="margin-top:6px;color:var(--ro)"><b>Failure mode:</b> each handoff reread or reconstructed the same products, orders, formulas, and artifact identities. The oracle's 35-step solo trace performs those operations once.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="hd">Execution traces <span class="axis">time &rarr; · each row shows Csteps and delegation cost</span></div>
+    <article class="box row">
+      <div class="mode"><h3>Plan-1st</h3><p>Four sequential delegates surround a stateful inventory computation.</p><div class="roster"><span class="chip ro"><img src="../../assets/agents/plan.png" alt="">plan</span><span class="chip rw"><img src="../../assets/agents/coder.png" alt="">coder x2</span><span class="chip ro"><img src="../../assets/agents/explore.png" alt="">explore</span></div></div>
+      <div class="score"><div class="mn"><small>Main</small><b>24 Csteps</b></div><div class="arr"></div><div class="wv"><small>sequential · 6 Csteps</small><div class="pack"><div class="ag ro"><img src="../../assets/agents/plan.png" alt=""><span class="nm">plan</span>policy + decomposition</div></div></div><div class="arr"></div><div class="wv"><small>sequential · 88 Csteps</small><div class="pack"><div class="ag rw"><img src="../../assets/agents/coder.png" alt=""><span class="nm">coder</span>fetch + compute + artifacts</div></div></div><div class="arr"></div><div class="wv"><small>sequential · 40 Csteps</small><div class="pack"><div class="ag ro"><img src="../../assets/agents/explore.png" alt=""><span class="nm">explore</span>independent verification</div></div></div><div class="arr"></div><div class="wv"><small>sequential · 21 Csteps</small><div class="pack"><div class="ag rw"><img src="../../assets/agents/coder.png" alt=""><span class="nm">coder</span>repair + regenerate</div></div></div><div class="arr"></div><div class="mn"><small>Main</small><b>calendar · done</b></div></div>
+      <div class="n"><strong>179</strong>Csteps<br>4 delegates</div>
+    </article>
+    <article class="box row">
+      <div class="mode"><h3>Oracle</h3><p>One main-agent context retains all product, order, formula, and event identities.</p><div class="roster"><span class="chip empty">no sub-agent roster</span></div></div>
+      <div class="score"><div class="mn"><small>Main</small><b>policy + template</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>products + orders</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>velocity + policy</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>workbooks</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>18 events</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>verify · done</b></div></div>
+      <div class="n"><strong>35</strong>Csteps<br>0 delegates</div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>Plan1st vs Oracle — Cstep inflation</h2>
+    <div class="why">
+      <article><h3 class="good">Oracle boundary</h3><p class="good">The whole workflow is one coupled table: 82 products × 150 orders feed both Excel sheets and the event identities. A single solo phase costs <b>35 Csteps</b>.</p></article>
+      <article><h3 class="bad">Plan1st tax</h3><p class="bad">The mandatory plan plus three downstream handoffs add rereads, reconciliation, correction, and event cleanup. Four sequential agents cost <b>179 Csteps</b>.</p></article>
+      <article><h3 class="bad">Difference</h3><p class="bad"><b>+144 Csteps</b> and <b>5.1×</b> the oracle trace, with no extra deliverable or capability. This is over-delegation, not useful parallelism.</p></article>
+    </div>
+  </section>
+
+  <footer class="legend"><div class="keys"><span><i class="sw m"></i>Main</span><span><i class="sw r"></i>Read-only / warning</span><span><i class="sw w"></i>Writable coder</span><span>Dashed box = one sequential phase</span></div><div class="mono">DeepSeek-V4-Flash-0731 · wc-inventory-reorder-forecast · Plan1st 179 Csteps / Oracle 35 Csteps · 4 vs 0 sub-agents</div></footer>
+</main>
+</body>
+</html>

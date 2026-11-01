@@ -1,0 +1,47 @@
+{
+  "input_hash": "ede29e0a89f8945d0ee62939168985fc32a49160b91487722f92a9c9966d3d2e",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-hr-satisfaction-analysis",
+    "task_text": "I need a job satisfaction analysis by department from our HR data warehouse. Include both job satisfaction and work-life balance scores along with performance ratings.\n\nCreate an Excel file called HR_Satisfaction_Report.xlsx with two sheets. The \"Satisfaction Analysis\" sheet should have Department, Avg_Satisfaction, Avg_Work_Life_Balance, Avg_Rating (all rounded to 2 decimals), and Employees count. Sort by raw (un-rounded) Avg_Satisfaction descending; if two departments are equal at the displayed (2-decimal) rounding, the row order should still reflect the raw-value descending sort.\n\nThe \"Summary\" should have Overall_Satisfaction (overall mean of job satisfaction across all employees, rounded to 2 decimals), Overall_WLB (overall mean of work-life balance, rounded to 2 decimals), Happiest_Dept (department with the highest raw Avg_Satisfaction), and Least_Happy_Dept (department with the lowest raw Avg_Satisfaction).\n\nAlso create a Word document called Satisfaction_Summary.docx (at least 200 characters) with a narrative covering employee satisfaction, work-life balance, and the highest- and lowest-ranked departments.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent. Dispatching sub-agents is not necessary. Run the compact department satisfaction aggregate, freeze the verified rows and summary values, then create HR_Satisfaction_Report.xlsx and Satisfaction_Summary.docx with native parallel tool calls in the same response and reconcile both outputs once.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Query the available Snowflake HR data warehouse to produce the exact aggregates needed for a report. Find the relevant employee table and columns for Department, job satisfaction, work-life balance, and performance rating. Deliver: (1) department-level raw Avg_Satisfaction sorted descending, Avg_Work_Life_Balance, Avg_Rating, employee count; preserve enough precision to disambiguate ordering even when displayed rounded values tie; (2) overall mean satisfaction and overall mean WLB; (3) happiest and least-happy departments based on raw avg satisfaction; (4) source table and concise query/validation notes. Read-only. Do not create files. Scope is solely Snowflake enterprise data relevant to this task.\nAnalyze HR satisfaction data",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_4",
+        "text": "Create two polished local artifacts inside the allowed workspace `/workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-satisfaction-analysis/workspace` using the exact data below. Deliver and verify both files.\n\n1) `HR_Satisfaction_Report.xlsx` with exactly two sheets:\n- `Satisfaction Analysis`: columns Department, Avg_Satisfaction, Avg_Work_Life_Balance, Avg_Rating, Employees. Rows must remain in this order, which is descending by raw (unrounded) Avg_Satisfaction: \nFinance | raw sat 6.593201828322205 | raw WLB 4.540400656036392 | raw rating 3.211247901510912 | 7148\nSales | 6.587420532517803 | 4.487569434000877 | 3.186670353982301 | 7232\nEngineering | 6.580115403690381 | 4.527251193517747 | 3.211386696730552 | 7096\nHR | 6.546229523779868 | 4.510281131951435 | 3.203758654797230 | 7077\nOperations | 6.532050208201224 | 4.543397686341154 | 3.182865168539326 | 7120\nSupport | 6.529239335361910 | 4.532184724460867 | 3.195610160132524 | 7244\nR&D | 6.509264075061719 | 4.519771738561636 | 3.196809261612311 | 7083\nAll three averages must display/contain values rounded to exactly 2 decimals; Employees are integer counts. Order must not be re-sorted by rounded values.\n- `Summary`: columns Overall_Satisfaction, Overall_WLB, Happiest_Dept, Least_Happy_Dept, with one data row: 6.55, 4.52, Finance, R&D. Ensure the two numeric values display to 2 decimals.\nUse professional formatting: bold colored headers, sensible widths, freeze top row on analysis if supported, number formats, borders/table styling as appropriate.\n\n2) `Satisfaction_Summary.docx`, at least 200 characters, with a professional narrative covering employee satisfaction, work-life balance, and highest/lowest-ranked departments. Use these facts: 50,000 employees; overall job satisfaction 6.55; overall WLB 4.52; Finance is highest at 6.59 raw underlying 6.593201828322205; R&D is lowest at 6.51 raw underlying 6.509264075061719. Mention that departmental satisfaction averages are tightly clustered and that the ranking is based on raw averages before 2-decimal display rounding. Include useful comments on WLB, such as Operations highest displayed WLB 4.54 and Sales lowest 4.49. Avoid claiming causal explanations.\n\nVerify workbook sheet names, cell values, row order, rounding/display formats, and doc character length. Return exact file paths and verification results.\nBuild HR report artifacts",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,349 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "howtocook-scholarly-health-study",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/howtocook-scholarly-health-study.task.md",
+    "oracle166_sha256": "3563c95644c16ae8e34a6c17756573322f44dadde27b2983c6c3639fcac91e31"
+  },
+  "label_cache_keys": [
+    "acd2f0956ec3d059667b7bcd551cfab4a0cac9c9e7a4715006ed621393b05e27"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "filesystem-workspace"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): The nutrition-reference explorer lists the workspace to confirm nutrition_reference.json, reads and parses it completely, and returns its exact ingredient schema (per-100g calories, protein, fat, carbs keys) plus the count of covered ingredients and any missing/ambiguous entries. Read-only; do not write artifacts.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "howtocook"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (web-domain-researcher 0): The recipe explorer browses the Chinese recipe database via the howtocook tools (getAllRecipes / getRecipesByCategory; categories such as 水产, 早餐, 调料, 甜品, 饮品, 荤菜, 素菜, 汤羹), selects exactly five suitable dishes from at least three different categories, and returns each dish's full Chinese name, category, and complete ingredient list with quantities, plus category/count controls. Read-only; do not write artifacts.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (academic-literature-researcher 0): The literature explorer searches the scholarly tools (search-arxiv / search-google-scholar) for papers on Chinese diet and health or traditional Asian cuisine nutrition, targets about 4 relevant papers (3-5 acceptable, ONLY genuinely diet/nutrition/health-related), and returns exact title, authors, year, citation count, key finding, identifier, and relevance evidence for each paper. Read-only; do not write artifacts.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The workbook coder sole-writes Health_Diet_Analysis.xlsx in the workspace (python openpyxl preferred, Excel MCP tools as fallback) with EXACTLY three sheets in order — the dish nutrition table (dish, category, calories, protein, fat, carbs, calorie-density rating), the paper evidence table, and a summary sheet — using literal numeric values from the frozen packet, then reads the file back and returns sheet names, row counts and validation.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): The document coder sole-writes Chinese_Cuisine_Health_Report.docx in the workspace (python-docx preferred, Word MCP tools as fallback) with the required title, methodology, per-dish findings, literature support and conclusion sections, citing only frozen papers, then reads the document text/outline back and returns validation.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "filesystem-workspace"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): The nutrition-reference explorer lists the workspace to confirm nutrition_reference.json, reads and parses it completely, and returns its exact ingredient schema (per-100g calories, protein, fat, carbs keys) plus the count of covered ingredients and any missing/ambiguous entries. Read-only; do not write artifacts.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "howtocook"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (web-domain-researcher 0): The recipe explorer browses the Chinese recipe database via the howtocook tools (getAllRecipes / getRecipesByCategory; categories such as 水产, 早餐, 调料, 甜品, 饮品, 荤菜, 素菜, 汤羹), selects exactly five suitable dishes from at least three different categories, and returns each dish's full Chinese name, category, and complete ingredient list with quantities, plus category/count controls. Read-only; do not write artifacts.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (academic-literature-researcher 0): The literature explorer searches the scholarly tools (search-arxiv / search-google-scholar) for papers on Chinese diet and health or traditional Asian cuisine nutrition, targets about 4 relevant papers (3-5 acceptable, ONLY genuinely diet/nutrition/health-related), and returns exact title, authors, year, citation count, key finding, identifier, and relevance evidence for each paper. Read-only; do not write artifacts.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The workbook coder sole-writes Health_Diet_Analysis.xlsx in the workspace (python openpyxl preferred, Excel MCP tools as fallback) with EXACTLY three sheets in order — the dish nutrition table (dish, category, calories, protein, fat, carbs, calorie-density rating), the paper evidence table, and a summary sheet — using literal numeric values from the frozen packet, then reads the file back and returns sheet names, row counts and validation.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): The document coder sole-writes Chinese_Cuisine_Health_Report.docx in the workspace (python-docx preferred, Word MCP tools as fallback) with the required title, methodology, per-dish findings, literature support and conclusion sections, citing only frozen papers, then reads the document text/outline back and returns validation.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:3:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:4:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 4,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:filesystem-workspace",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "filesystem-workspace",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:howtocook",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "howtocook",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        2
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "word": 1
+    },
+    "read": {
+      "filesystem-workspace": 1,
+      "howtocook": 1,
+      "scholarly-arxiv": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 5,
+    "units": 5,
+    "write_units": 2,
+    "read_clusters": 3,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

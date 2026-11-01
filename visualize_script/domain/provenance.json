@@ -1,0 +1,177 @@
+{
+  "captured_at_utc": "2026-09-16T01:22:34.494846+00:00",
+  "source_root": "data/task_categories",
+  "source_of_plotted_categories": "curated task lists under data/task_categories/cluster_by_delegation, not automatic delegate_gt_tag rw labels",
+  "sources": [
+    {
+      "source_path": "data/task_categories/cluster_by_domain/domain-cases.tsv",
+      "snapshot_path": "source/domain/domain-cases.tsv",
+      "sha256": "406b00388d88c6483ff3bb26f41ab36a58d236c7a3fc55072c20f5d830916b54"
+    },
+    {
+      "source_path": "data/task_categories/cluster_by_delegation/no_need_subagent/no_need_subagent.txt",
+      "snapshot_path": "source/delegation/no_need_subagent/no_need_subagent.txt",
+      "sha256": "b262c2af83e8cbfb5f20b7bbdfd15b8a6a5de9fa2cc73cb1d156fd38a825a534"
+    },
+    {
+      "source_path": "data/task_categories/cluster_by_delegation/need_subagent/need_subagent.txt",
+      "snapshot_path": "source/delegation/need_subagent/need_subagent.txt",
+      "sha256": "56d8febe2a35060c89b589de27bd621323bbc87a8eb045c3f60189cc6396084d"
+    },
+    {
+      "source_path": "data/task_categories/cluster_by_delegation/need_subagent/read_only/read_only.txt",
+      "snapshot_path": "source/delegation/need_subagent/read_only/read_only.txt",
+      "sha256": "fb88536161a4e9c74933b6da8f545da8de97b224e5100afa1926cf94be8c9539"
+    },
+    {
+      "source_path": "data/task_categories/cluster_by_delegation/need_subagent/writable/writable.txt",
+      "snapshot_path": "source/delegation/need_subagent/writable/writable.txt",
+      "sha256": "d9ba402382ad86193faf97ce06bf0be2cf7205de8bbf579ead3aa246ce360214"
+    },
+    {
+      "source_path": "data/task_categories/cluster_by_delegation/need_subagent/read_and_write/read_and_write.txt",
+      "snapshot_path": "source/delegation/need_subagent/read_and_write/read_and_write.txt",
+      "sha256": "619a819afc38cb273b09b3ebf03c026b31179ce96ce065ffc70bbfef6e621a12"
+    },
+    {
+      "source_path": "data/task_categories/cluster_by_delegation/need_subagent/domain_descriptive_statistics.tsv",
+      "snapshot_path": "source/delegation/need_subagent/domain_descriptive_statistics.tsv",
+      "sha256": "d7594f380e10467fd740aa0f353fa38fd4ea96490e257bf7a842643085e773bb"
+    }
+  ],
+  "automatic_tag_disagreements": [
+    {
+      "task": "canvas-course-notion-wiki",
+      "curated_category": "writable",
+      "oracle_sha256": "39defe5ee09576de201352c797ac8fe3ca700d56adc73136d81b305baae156fb",
+      "category_copy_sha256": "39defe5ee09576de201352c797ac8fe3ca700d56adc73136d81b305baae156fb",
+      "tag_source_sha256": "39defe5ee09576de201352c797ac8fe3ca700d56adc73136d81b305baae156fb",
+      "automatic_tag_category": "read_and_write",
+      "automatic_tag_category_agrees": false,
+      "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/canvas-course-notion-wiki.json"
+    },
+    {
+      "task": "fetch-email-gcal-scheduler-excel-word",
+      "curated_category": "writable",
+      "oracle_sha256": "efd225a7e4e235b9cc437f48b3eb813aa20e2cf8ba6cd9cd694e2dafaa5c6db8",
+      "category_copy_sha256": "efd225a7e4e235b9cc437f48b3eb813aa20e2cf8ba6cd9cd694e2dafaa5c6db8",
+      "tag_source_sha256": "efd225a7e4e235b9cc437f48b3eb813aa20e2cf8ba6cd9cd694e2dafaa5c6db8",
+      "automatic_tag_category": "read_only",
+      "automatic_tag_category_agrees": false,
+      "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/fetch-email-gcal-scheduler-excel-word.json"
+    },
+    {
+      "task": "gsheet-woocommerce-inventory",
+      "curated_category": "read_and_write",
+      "oracle_sha256": "49ef60d9469e247e5553ccb3efdac4b6c5d08768d7c8cf1544e1f11ad8384e89",
+      "category_copy_sha256": "49ef60d9469e247e5553ccb3efdac4b6c5d08768d7c8cf1544e1f11ad8384e89",
+      "tag_source_sha256": "49ef60d9469e247e5553ccb3efdac4b6c5d08768d7c8cf1544e1f11ad8384e89",
+      "automatic_tag_category": "read_only",
+      "automatic_tag_category_agrees": false,
+      "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/gsheet-woocommerce-inventory.json"
+    },
+    {
+      "task": "sf-workforce-compensation-sheet",
+      "curated_category": "writable",
+      "oracle_sha256": "a13347a894ae93e4b6a6e5604cbe49cedfd2837f2b61b129d9b28c92473f22d9",
+      "category_copy_sha256": "a13347a894ae93e4b6a6e5604cbe49cedfd2837f2b61b129d9b28c92473f22d9",
+      "tag_source_sha256": "a13347a894ae93e4b6a6e5604cbe49cedfd2837f2b61b129d9b28c92473f22d9",
+      "automatic_tag_category": "read_and_write",
+      "automatic_tag_category_agrees": false,
+      "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/sf-workforce-compensation-sheet.json"
+    },
+    {
+      "task": "supplier-contract-compliance-audit",
+      "curated_category": "writable",
+      "oracle_sha256": "105bbc48556a89a6ef041397ac1fdffce0a43bcf2a0c8eaeaa08fd3b1d101857",
+      "category_copy_sha256": "105bbc48556a89a6ef041397ac1fdffce0a43bcf2a0c8eaeaa08fd3b1d101857",
+      "tag_source_sha256": "105bbc48556a89a6ef041397ac1fdffce0a43bcf2a0c8eaeaa08fd3b1d101857",
+      "automatic_tag_category": "read_and_write",
+      "automatic_tag_category_agrees": false,
+      "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/supplier-contract-compliance-audit.json"
+    },
+    {
+      "task": "terminal-wc-excel-gsheet-gcal-email",
+      "curated_category": "writable",
+      "oracle_sha256": "ba8242730d97c1a0e43c1417f15e42f7313917e0e046c326bd1120dd2f89a977",
+      "category_copy_sha256": "ba8242730d97c1a0e43c1417f15e42f7313917e0e046c326bd1120dd2f89a977",
+      "tag_source_sha256": "ba8242730d97c1a0e43c1417f15e42f7313917e0e046c326bd1120dd2f89a977",
+      "automatic_tag_category": "read_and_write",
+      "automatic_tag_category_agrees": false,
+      "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/terminal-wc-excel-gsheet-gcal-email.json"
+    },
+    {
+      "task": "wc-tax-compliance-excel-gcal-gform",
+      "curated_category": "writable",
+      "oracle_sha256": "4e2afdd6b7014021d00d0f3902ca0e3ea9e5599cb70dcf22d2bc36ff7379eaab",
+      "category_copy_sha256": "4e2afdd6b7014021d00d0f3902ca0e3ea9e5599cb70dcf22d2bc36ff7379eaab",
+      "tag_source_sha256": "4e2afdd6b7014021d00d0f3902ca0e3ea9e5599cb70dcf22d2bc36ff7379eaab",
+      "automatic_tag_category": "read_and_write",
+      "automatic_tag_category_agrees": false,
+      "automatic_tag_path": "eval/delegation_appropriateness/delegate_gt_tag/wc-tax-compliance-excel-gcal-gform.json"
+    }
+  ],
+  "figure_revision_20260919": {
+    "output_root": "visualize_script/domain",
+    "hierarchy": "variable depth: D_no-need -> application domain; D_need -> read-write mode -> application domain",
+    "top_level_labels": [
+      "$\\\\mathcal{D}_{\\\\text{no-need}}$",
+      "$\\\\mathcal{D}_{\\\\text{need}}$"
+    ],
+    "mode_labels": [
+      "Read & Write",
+      "Write",
+      "Read-Only"
+    ],
+    "renamed_label": {
+      "Writable": "Write"
+    },
+    "figure_size_inches": [
+      14.8,
+      14.6
+    ],
+    "font_sizes_pt": {
+      "top_level": 30,
+      "mode": 32,
+      "domain_main": 32,
+      "domain_compact": [
+        14,
+        18,
+        24,
+        32
+      ]
+    },
+    "count_labels": {
+      "top_level": {
+        "D_no-need": 77,
+        "D_need": 89
+      },
+      "modes": {
+        "Read & Write": 44,
+        "Write": 23,
+        "Read-Only": 22
+      }
+    },
+    "mode_font_sizes_pt": {
+      "Read & Write": 32,
+      "Write": 32,
+      "Read-Only": 26
+    },
+    "read_and_write_inner_color": "#D9B24C",
+    "read_and_write_outer_color": "#F4E7B3",
+    "domain_label_rotation": "radial and upright",
+    "domain_font_rule": "32 pt normally; 24 pt for 5-8 degree sectors; 18 pt for 3-5 degree sectors; 14 pt below 3 degrees",
+    "external_domain_labels": 0,
+    "compact_domain_labels": true,
+    "domain_abbreviations": {
+      "Learning Management System": "LMS",
+      "Enterprise Data Warehouse": "EDW",
+      "E-Commerce": "EC",
+      "Stock Market": "SM",
+      "Video Platform": "VP",
+      "Railway System": "RS",
+      "Academic Research": "AR",
+      "Food-and-Catering": "FC"
+    }
+  }
+}

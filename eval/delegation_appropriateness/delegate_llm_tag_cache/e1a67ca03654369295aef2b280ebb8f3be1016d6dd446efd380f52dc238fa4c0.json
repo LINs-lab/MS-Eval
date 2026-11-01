@@ -1,0 +1,60 @@
+{
+  "input_hash": "e1a67ca03654369295aef2b280ebb8f3be1016d6dd446efd380f52dc238fa4c0",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "howtocook-catering-gform-notion-excel",
+    "task_text": "You are a catering planner for a company team lunch event. The event is for 20 people with a budget of $25 per person. You need to plan a diverse menu, collect dietary preferences from attendees, document the menu, and track the budget.\n\nYour task has four parts.\n\nPart 1: Search the recipe database for 6 to 8 recipes suitable for a team lunch catering event. Select a mix of main dishes and side dishes. For each recipe, note the recipe name, category (such as meat, vegetable, staple, or similar), and estimated number of servings.\n\nPart 2: Create a Google Forms survey titled \"Team Lunch Dietary Preferences\" to collect dietary information from the 20 attendees. The survey must contain at least 3 questions covering the following topics: dietary restrictions or preferences (such as vegetarian, vegan, nut allergy, gluten-free, or none), any specific food allergies to be aware of, and any additional comments or requests. Use appropriate question types for each question (for example, a multiple-choice question for dietary preferences, and short-answer text questions for allergies and comments).\n\nPart 3: Create a Notion page titled \"Team Lunch Menu\" documenting the catering plan. The page must include a description of the event (20 people, $25 per person budget), a list of all selected recipes with their categories and serving information, and any notes about accommodating dietary restrictions.\n\nPart 4: Create an Excel file called Catering_Budget.xlsx in the workspace with two sheets. The first sheet must be named \"Menu\" with the following columns in this exact order: Recipe_Name, Category, Servings, Estimated_Cost_Per_Person. Add one row for each of your selected recipes with a reasonable estimated cost per person. (You may append a \"Total\" summary row after the recipe rows if you wish; it is not counted as a recipe row.) The second sheet must be named \"Summary\" with two columns: Metric and Value. Include the following rows: Total_Dishes (number of recipes selected), Total_Budget (total budget for 20 people, which is 500), Budget_Per_Person (which is 25). Write every value in the Summary \"Value\" column and every Estimated_Cost_Per_Person as a literal number (for example, 500 and 25) — do not write Excel formulas for these cells.\n\nThe initial workspace contains Event_Brief.md describing the event details and requirements.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Read `Event_Brief.md`, create the fixed Google Form once, and query the necessary HowToCook categories with native-parallel read calls. Select one explicit set of 6–8 recipes containing mains and sides, retrieve only those selected recipes, and reuse exactly that set in both `Team Lunch Menu` and `Catering_Budget.xlsx`. The Form must contain a dietary-preference multiple-choice question plus text questions whose titles explicitly contain `allergy` and `additional comments or requests`. In the workbook, write the exact two sheets and headers, exactly one recipe row per selected dish, literal numeric per-person costs, and literal Summary values `Total_Dishes`, `500`, and `25`; do not use formulas. Create the Notion page and workbook as independent output branches after the recipe set is fixed, and verify the Form, page, and workbook once each.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Act as a read-only recipe specialist. Using the granted HowToCook recipe database tools, select 6–8 recipes suitable for a catered company team lunch for 20 people on a total budget of $500. Choose a diverse mix of main dishes and sides/staples, including options that can help accommodate common dietary needs. For each selected recipe, return: exact recipe name as found, category (meat/vegetable/staple/soup or database category), and a reasonable estimated number of servings for the catering plan (the combined menu should serve 20; each dish may be portioned for 20 buffet servings). Also return brief dietary/accommodation notes. Do not create or modify anything. Acceptance: 6–8 actual database recipes, balanced mains and sides, concise structured results.\nSelect catering lunch recipes",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "Create two external artifacts for a company catered team lunch. First create a Google Form titled exactly “Team Lunch Dietary Preferences”, with a useful description mentioning responses are requested at least 5 days before the event, and at least these 3 required questions: (1) multiple choice “What is your primary dietary restriction or preference?” with Vegetarian, Vegan, Nut allergy, Gluten-free, None, Other; (2) short-answer text “Do you have any specific food allergies we should be aware of?”; (3) short-answer text “Any additional comments or requests?”. Second create a Notion page titled exactly “Team Lunch Menu” in an appropriate accessible workspace parent that you locate via search. The page must state: Q1 company team celebration/planning lunch, buffet style, 20 attendees, $25/person and $500 total budget, beverages separate. Include all 7 menu items: 宫保鸡丁的做法—meat main (荤菜)—20 buffet servings; 徽派红烧肉的做法—meat main (荤菜)—20; 凉拌豆腐的做法—vegetable/plant protein (素菜)—20; 西红柿炒鸡蛋的做法—vegetarian dish (素菜)—20; 白灼菜心的做法—vegetable side (素菜)—20; 煮锅蒸米饭的做法—staple (主食)—20; 紫菜蛋花汤的做法—soup (汤)—20. Include accommodation notes: label peanuts/soy/sesame/egg/gluten/oyster or shellfish sauces; separate utensils for peanut dish and vegetarian items; offer gluten-free tamari; use mushroom sauce for vegan greens; omit optional shrimp from soup; rice is vegan/gluten-free; confirm menu 3 days before event and set up 1 hour before. Return Form ID/URL and Notion page ID/URL plus verification details. Do not create anything else.\nCreate form and menu page",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_6",
+        "text": "Create and verify /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-howtocook-catering-gform-notion-excel/workspace/Catering_Budget.xlsx. It must have exactly two sheets named Menu and Summary (remove/rename defaults as needed). Menu columns in exact order: Recipe_Name, Category, Servings, Estimated_Cost_Per_Person. Add exactly these 7 recipe rows with literal numeric values: 宫保鸡丁的做法 | Meat Main (荤菜) | 20 | 5.25; 徽派红烧肉的做法 | Meat Main (荤菜) | 20 | 6.00; 凉拌豆腐的做法 | Vegetable / Plant Protein (素菜) | 20 | 2.25; 西红柿炒鸡蛋的做法 | Vegetarian Dish (素菜) | 20 | 2.25; 白灼菜心的做法 | Vegetable Side (素菜) | 20 | 1.75; 煮锅蒸米饭的做法 | Staple (主食) | 20 | 1.50; 紫菜蛋花汤的做法 | Soup (汤) | 20 | 1.25. Summary columns Metric, Value, with literal numeric rows Total_Dishes=7, Total_Budget=500, Budget_Per_Person=25. Do not use formulas in any requested numeric cells. Apply professional basic formatting (bold colored headers, reasonable column widths/wrapping if supported, currency/number formatting) without changing data. Verify workbook metadata and read back both populated ranges, confirming literal numbers and exact sheet names. Return artifact path and verification.\nBuild catering budget workbook",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "howtocook"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "gform",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

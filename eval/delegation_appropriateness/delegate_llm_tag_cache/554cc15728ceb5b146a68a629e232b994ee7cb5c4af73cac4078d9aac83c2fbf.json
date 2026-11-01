@@ -1,0 +1,34 @@
+{
+  "input_hash": "554cc15728ceb5b146a68a629e232b994ee7cb5c4af73cac4078d9aac83c2fbf",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "wc-inventory-alert-gcal",
+    "task_text": "I manage the purchasing department for our online store and I need to set up restock alerts for products that are running low on inventory. Please pull the complete product catalog from our e-commerce platform and identify every product that is currently out of stock, meaning the stock quantity is zero.\n\nFor each out-of-stock product, I need you to create a calendar reminder so we do not forget to reorder. The calendar event should be scheduled on March 10, 2026, from 9:00 AM to 10:00 AM in the America/New_York timezone. The event title should be \"Restock: [Product Name]\" where the product name is truncated to the first 50 characters if it is longer than that. The description should read \"Product ID: [ID]. SKU: [SKU]. Category: [Category Name]. This product is currently out of stock and needs to be reordered.\" Use the first category name listed for each product. If a product has no category, write \"Uncategorized\" as the category.\n\nAfter creating the calendar events, send a single summary email from purchasing@ourstore.com to warehouse@ourstore.com with the subject \"Out of Stock Alert - March 2026\". The email body should list each out-of-stock product on its own line in the format \"ID [Product ID]: [Product Name] (SKU: [SKU])\" sorted by product ID ascending. At the bottom of the email, include a line that says \"Total out-of-stock products: [N]\" where N is the count.\n\nAlso save a plain text file called out_of_stock_report.txt in the workspace. Each line should contain \"[Product ID] - [Product Name] - [SKU] - [Category]\" for the out-of-stock products with each field separated by space-dash-space, sorted by product ID ascending.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Query the WooCommerce product endpoint with the out-of-stock filter at its maximum page size and retain only rows whose literal `stock_quantity` is `0`. Sort the verified list by numeric product ID and derive the report, events, and email from that one list. Write `out_of_stock_report.txt` once. In one native-parallel batch, search the exact 2026-03-10 09:00–10:00 America/New_York interval for every required `Restock: ...` title, create only missing events, and read each resulting event by ID. Then send exactly one email from `purchasing@ourstore.com` to `warehouse@ourstore.com` with subject `Out of Stock Alert - March 2026`, one sorted product line per item, and the exact total-count line.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_27",
+        "text": "You are gathering inventory data from a WooCommerce store for a restock-alert task. Your job is read-only: enumerate the COMPLETE product catalog and identify every product whose stock quantity is zero (out of stock).\n\nContext:\n- The WooCommerce REST API is available to you via the woo_products_list tool (mcp__woocommerce__woo_products_list).\n- Product IDs appear to descend from 82 (e.g. 82, 81, 80, ...) but there may be many more products and the catalog spans multiple pages. You MUST paginate through ALL of it.\n- The products_list tool returns large JSON. To avoid truncation, request with a small perPage (e.g. perPage=5 or perPage=10) and page incrementally (page=1,2,3,...). The tool output is capped around ~100k chars, so a small perPage keeps each response readable. Keep going until a page returns an empty array (no products).\n- Each product object contains fields: id, name, sku, stock_quantity, stock_status, and categories (an array of {id, name}). Some products may have multiple categories; a few may have empty categories. Some products' stock_status is \"outofstock\" with stock_quantity 0.\n- Identify ONLY products where stock_quantity === 0 (integer zero). Use stock_quantity, not just stock_status, as the authoritative check.\n\nDeliverable - return a JSON array (in your final message) of the out-of-stock products, each element containing exactly these fields, as a plain data structure:\n{\n  \"id\": <int>,\n  \"name\": <string>,\n  \"sku\": <string>,\n  \"category\": <string>   // the FIRST category name in the product's categories array; if the array is empty use \"Uncategorized\"\n}\n\nReturn ONLY that JSON array (no prose). Make sure you paginate to the end of the catalog so no out-of-stock product is missed.\nEnumerate out-of-stock products",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

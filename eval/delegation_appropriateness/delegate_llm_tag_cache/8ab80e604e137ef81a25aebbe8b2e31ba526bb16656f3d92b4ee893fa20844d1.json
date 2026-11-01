@@ -1,0 +1,195 @@
+{
+  "input_hash": "8ab80e604e137ef81a25aebbe8b2e31ba526bb16656f3d92b4ee893fa20844d1",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "yt-ml-repos-github-notion-excel-email",
+    "task_text": "You are a researcher on an ML team. Your principal investigator has asked you to catalog the curated ML technology videos from a channel called ML Tech Reviews on the video platform. This channel has a dedicated playlist of 7 videos, each covering a specific open-source machine learning project with a corresponding code repository. You need to catalog these videos, cross-reference them with related research papers from your local paper library, build a knowledge base page for the team, compile an Excel research tracker, and send a summary email.\n\nYour workflow should proceed as follows.\n\nFirst, retrieve the ML Tech Reviews playlist from the video platform. Get all items in the playlist. For each of the 7 videos, fetch the full details including the title, description, tags, publication date, and view count. From each video description, extract any repository link that points to a code hosting service. Identify the primary ML topic or technique that the video covers, such as Flash Attention, LoRA, Diffusion Models, RLHF, Mixture of Experts, Quantization, or Vector Databases, based on the title and tags.\n\nSecond, search your local paper library for research papers related to each of the 7 ML topics you identified. For each topic, retrieve the paper details including the paper identifier, title, authors, and publication date.\n\nThird, create an Excel file named ML_Research_Tracker.xlsx. Create a sheet named Videos with these columns in order: Video_ID, Title, Topic, GitHub_URL, Published_Date, View_Count. Populate it with one row for each of the 7 videos. Create a second sheet named Papers with these columns: ArXiv_ID, Title, Authors, Published, Topic, Related_Video_ID. Populate it with one row per paper found, linking each paper to its related video by the video identifier. Create a third sheet named Summary with these columns: Topic, Video_Count, Paper_Count, GitHub_Repos_Count. Populate it with one row per topic, summarizing the counts.\n\nWrite every date (Published_Date and Published) as a plain YYYY-MM-DD value, and write every count and number as a literal value — do not use spreadsheet formulas. If the work is split across sub-agents, aggregate all results into this single ML_Research_Tracker.xlsx file so it is complete (all 7 videos and every paper found) before you finish.\n\nFourth, create a new page in the team knowledge base titled \"ML Tech Research Hub\". Add an introductory paragraph describing the purpose of the page and the channel being cataloged. Then create a database within the knowledge base titled \"Research Items\" with the following properties: Name as the title field, Type as a select field with options Video and Paper, Topic as a text field, URL as a text field, and Status as a select field with options New, In Review, and Archived. Add an entry for each of the 7 videos and for each paper you found.\n\nFifth, send an email to research@lab.edu. The subject should reference the ML research catalog. The body should summarize the number of videos cataloged, the number of papers found, the topics covered, and mention that the full details are in ML_Research_Tracker.xlsx and in the team knowledge base.\n\nThe research configuration file in your workspace is named research_config.md and explains the cataloging approach. A topic mapping file named topic_mapping.json lists the 7 expected ML topics to use as reference.\n\nWhen all outputs are complete, claim the task as done.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent and dispatch no sub-agent. The source is one bounded seven-video playlist plus a local paper library; the direct route avoids topic/writer handoffs and prevents paper metadata from being guessed between agents.\n\nDynamically resolve and read `research_config.md` plus `topic_mapping.json`. Retrieve the dedicated `ML Tech Reviews` playlist once, then call `playlists_getPlaylistItems(playlistId=<retained playlist ID>, maxResults=50)` exactly once; this handler has no cursor argument. Require seven unique observed video IDs, fetch full details for each, and preserve returned IDs, titles, descriptions, tags, publication dates, integer views, and every repository URL in a description. Map each video to exactly one of the seven literal topic labels using its title, tags, and description.\n\nSearch the local paper library for every one of the seven runtime topic labels. Build seven bounded queries before issuing them in one native-parallel response. When a video's description exposes an arXiv ID or distinctive paper title, use that reference as the narrow query and require the returned ID/title to match it; otherwise use the literal mapped topic plus the video's strongest title/tag terms. Each call uses `max_results=5` and `sort_by=\"relevance\"`, with only the topic-appropriate categories from the visible mapping/config when supplied. Retain every unique returned paper that is directly relevant to that topic, and retain none merely because it shares a generic ML term. Preserve only tool-returned `id`, exact title, complete returned author list, `published` normalized to `YYYY-MM-DD`, and URL; never synthesize or overwrite a date. A topic may legitimately have no directly relevant local result, but that conclusion must come from its executed search rather than being predeclared. Freeze one canonical payload with exactly seven Videos rows, one Papers row per verified result, and seven Summary rows derived from those runtime results.\n\nThe main agent is the sole writer of `ML_Research_Tracker.xlsx` and the `ML Tech Research Hub`/`Research Items` Notion structure. Create the workbook once with exact `Videos`, `Papers`, and `Summary` headers; use literal values and no formulas, then read all three sheets back and compare all seven video IDs, every verified paper ID/date/author row, topic joins, repository URLs, and derived counts to the payload. For Notion, search exact titles first; create or complete one nonduplicate page/database with the required property types and topic options, then upsert one item per canonical video and paper using stable video/paper IDs and retrieve the schema and all runtime rows. Do not retry an ambiguous create. Finally reconcile workbook and Notion IDs/counts, check Sent mail, send only one missing exact-recipient/subject summary with verified counts and deliverable references, read back the sent record, and call `claim_done`.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Design an execution and verification plan for this multi-system catalog task. Read only these workspace files: /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-yt-ml-repos-github-notion-excel-email/workspace/research_config.md and /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-yt-ml-repos-github-notion-excel-email/workspace/topic_mapping.json. Determine how to locate the dedicated 7-video ML Tech Reviews playlist, map expected topics, select related local papers, structure the Excel workbook, and create a parent Notion page plus child database/entries and an email. Report relevant config contents, recommended specialist delegation, and precise validation criteria. Do not make any changes.\nPlan catalog workflow",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "Read exactly these two workspace files and report their complete relevant contents without modifying anything: /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-yt-ml-repos-github-notion-excel-email/workspace/research_config.md and /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-yt-ml-repos-github-notion-excel-email/workspace/topic_mapping.json. Extract the playlist/channel lookup hints, cataloging rules, all 7 expected topic labels/aliases/order, paper search expectations, and any Notion/email guidance. Acceptance: return precise values from both files, identify malformed/missing fields, and make no writes.\nRead research configuration",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_10",
+        "text": "Retrieve the authoritative dedicated playlist of exactly 7 videos from the video-platform channel named \"ML Tech Reviews\". Search playlists as needed, verify ownership/channel and count, retrieve all playlist items, then fetch full details for every video: video ID, exact title, full description, tags, publication date, and view count. Extract from each description the repository link pointing to a code hosting service (expected GitHub), normalized to a canonical URL. Assign exactly one authoritative topic label to each video using title/tags and these expected labels in order/reference: Flash Attention, LoRA, Diffusion Models, RLHF, Mixture of Experts, Quantization, Vector Databases. Return a complete structured 7-record dataset preserving playlist order, plus playlist ID/title/channel evidence. Do not modify anything. Acceptance: exactly 7 distinct videos; no guessed fields; identify any unavailable field explicitly.\nCatalog playlist videos",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_14",
+        "text": "Search the local paper library for papers substantively related to this topic/video: Flash Attention | related video ID mlu7idceolY | search term FlashAttention efficient attention transformers. Use local arXiv search and read candidate papers as necessary. Return every clearly relevant paper found in the local library, deduplicated within this topic, with exact arXiv/paper identifier, title, full authors as a comma-separated string, publication date normalized to YYYY-MM-DD, canonical https://arxiv.org/abs/{id} URL, topic exactly as given before the first separator, and related video ID. Do not modify anything. Acceptance: at least one paper if available; no fabricated metadata; distinguish search results actually available through the local library.\nFind papers by topic",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_14",
+        "text": "Search the local paper library for papers substantively related to this topic/video: LoRA | related video ID dA-NhSBt4To | search term low-rank adaptation language models. Use local arXiv search and read candidate papers as necessary. Return every clearly relevant paper found in the local library, deduplicated within this topic, with exact arXiv/paper identifier, title, full authors as a comma-separated string, publication date normalized to YYYY-MM-DD, canonical https://arxiv.org/abs/{id} URL, topic exactly as given before the first separator, and related video ID. Do not modify anything. Acceptance: at least one paper if available; no fabricated metadata; distinguish search results actually available through the local library.\nFind papers by topic",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "message_14",
+        "text": "Search the local paper library for papers substantively related to this topic/video: Diffusion Models | related video ID J87hQFtSmas | search term diffusion models image synthesis Stable Diffusion. Use local arXiv search and read candidate papers as necessary. Return every clearly relevant paper found in the local library, deduplicated within this topic, with exact arXiv/paper identifier, title, full authors as a comma-separated string, publication date normalized to YYYY-MM-DD, canonical https://arxiv.org/abs/{id} URL, topic exactly as given before the first separator, and related video ID. Do not modify anything. Acceptance: at least one paper if available; no fabricated metadata; distinguish search results actually available through the local library.\nFind papers by topic",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "message_14",
+        "text": "Search the local paper library for papers substantively related to this topic/video: RLHF | related video ID 9vM4p9NN0Ts | search term reinforcement learning human feedback language models. Use local arXiv search and read candidate papers as necessary. Return every clearly relevant paper found in the local library, deduplicated within this topic, with exact arXiv/paper identifier, title, full authors as a comma-separated string, publication date normalized to YYYY-MM-DD, canonical https://arxiv.org/abs/{id} URL, topic exactly as given before the first separator, and related video ID. Do not modify anything. Acceptance: at least one paper if available; no fabricated metadata; distinguish search results actually available through the local library.\nFind papers by topic",
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "wave": "message_14",
+        "text": "Search the local paper library for papers substantively related to this topic/video: Mixture of Experts | related video ID izrG86jG1Xk | search term mixture of experts sparse language models Mixtral. Use local arXiv search and read candidate papers as necessary. Return every clearly relevant paper found in the local library, deduplicated within this topic, with exact arXiv/paper identifier, title, full authors as a comma-separated string, publication date normalized to YYYY-MM-DD, canonical https://arxiv.org/abs/{id} URL, topic exactly as given before the first separator, and related video ID. Do not modify anything. Acceptance: at least one paper if available; no fabricated metadata; distinguish search results actually available through the local library.\nFind papers by topic",
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "wave": "message_14",
+        "text": "Search the local paper library for papers substantively related to this topic/video: Quantization | related video ID wh3uuJTK9O0 | search term LLM quantization 8-bit bitsandbytes. Use local arXiv search and read candidate papers as necessary. Return every clearly relevant paper found in the local library, deduplicated within this topic, with exact arXiv/paper identifier, title, full authors as a comma-separated string, publication date normalized to YYYY-MM-DD, canonical https://arxiv.org/abs/{id} URL, topic exactly as given before the first separator, and related video ID. Do not modify anything. Acceptance: at least one paper if available; no fabricated metadata; distinguish search results actually available through the local library.\nFind papers by topic",
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "wave": "message_14",
+        "text": "Search the local paper library for papers substantively related to this topic/video: Vector Databases | related video ID klTvEwg3oJ4 | search term vector databases approximate nearest neighbor retrieval. Use local arXiv search and read candidate papers as necessary. Return every clearly relevant paper found in the local library, deduplicated within this topic, with exact arXiv/paper identifier, title, full authors as a comma-separated string, publication date normalized to YYYY-MM-DD, canonical https://arxiv.org/abs/{id} URL, topic exactly as given before the first separator, and related video ID. Do not modify anything. Acceptance: at least one paper if available; no fabricated metadata; distinguish search results actually available through the local library.\nFind papers by topic",
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "wave": "message_18",
+        "text": "Create and verify one Excel workbook at /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-yt-ml-repos-github-notion-excel-email/workspace/ML_Research_Tracker.xlsx. Use literal values only, no formulas. Dates must be plain YYYY-MM-DD values. Build exactly these sheets and columns:\n1) Videos: Video_ID, Title, Topic, GitHub_URL, Published_Date, View_Count\nRows:\n9vM4p9NN0Ts | RLHF - Training AI with Human Feedback | RLHF | https://github.com/openai/lm-human-preferences | 2023-08-30 | 156000\nJ87hQFtSmas | Stable Diffusion - Open Source Image Generation Deep Dive | Diffusion Models | https://github.com/CompVis/stable-diffusion | 2023-09-15 | 412000\ndA-NhSBt4To | LoRA - Efficient Fine-tuning of Large Language Models | LoRA | https://github.com/microsoft/LoRA | 2023-10-20 | 198000\nmlu7idceolY | Flash Attention - Faster Transformer Training Explained | Flash Attention | https://github.com/Dao-AILab/flash-attention | 2023-11-05 | 285000\nizrG86jG1Xk | Mixtral - Mixture of Experts Architecture Explained | Mixture of Experts | https://github.com/mistralai/mistral-src | 2023-12-01 | 223000\nwh3uuJTK9O0 | bitsandbytes - LLM Quantization Made Easy | Quantization | https://github.com/TimDettmers/bitsandbytes | 2024-01-10 | 142000\nklTvEwg3oJ4 | pgvector - Vector Databases for AI Applications | Vector Databases | https://github.com/pgvector/pgvector | 2024-02-05 | 187000\n2) Papers: ArXiv_ID, Title, Authors, Published, Topic, Related_Video_ID\n2307.08691 | FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning | Tri Dao | 2023-07-17 | Flash Attention | mlu7idceolY\n2106.09685 | LoRA: Low-Rank Adaptation of Large Language Models | Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, Weizhu Chen | 2021-06-17 | LoRA | dA-NhSBt4To\n2204.05149 | Training language models to follow instructions with human feedback | Long Ouyang, Jeff Wu, Xu Jiang | 2022-03-04 | RLHF | 9vM4p9NN0Ts\n2310.06825 | Mixtral of Experts | Albert Q. Jiang, Alexandre Sablayrolles | 2023-10-10 | Mixture of Experts | izrG86jG1Xk\n2208.07339 | LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale | Tim Dettmers, Mike Lewis, Younes Belkada | 2022-08-15 | Quantization | wh3uuJTK9O0\n3) Summary: Topic, Video_Count, Paper_Count, GitHub_Repos_Count. Exactly 7 rows in this order, literal counts: Flash Attention 1,1,1; LoRA 1,1,1; Diffusion Models 1,0,1; RLHF 1,1,1; Mixture of Experts 1,1,1; Quantization 1,1,1; Vector Databases 1,0,1.\nStyle headers clearly, reasonable widths/wrapping, and optional native tables, but do not add columns/sheets or formulas. Re-read workbook after writing and verify exact sheet names, row counts (Videos 7, Papers 5, Summary 7), column order, dates, literal numeric counts/view counts, and values. Return final path and verification evidence.\nBuild Excel research tracker",
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "wave": "message_26",
+        "text": "Create the complete team knowledge-base structure in Notion and verify it. First use API get-self and search to identify an appropriate writable workspace parent; do not ask the user. Avoid duplicating an existing exact-title page if one already exists; if an existing complete \"ML Tech Research Hub\" is found, verify/reuse it, otherwise create a new page in the workspace titled \"ML Tech Research Hub\". Add this introductory paragraph: \"This hub catalogs the seven curated open-source machine learning technology videos from the ML Tech Reviews channel and links each video topic to related papers available in the team’s local research library.\"\nWithin that hub create a database titled \"Research Items\" with exactly these properties: Name (title), Type (select with Video and Paper), Topic (rich_text/text), URL (rich_text/text), Status (select with New, In Review, Archived). Create 12 entries, all Status=New:\nVIDEOS (URL canonical YouTube URL):\nRLHF - Training AI with Human Feedback | Video | RLHF | https://www.youtube.com/watch?v=9vM4p9NN0Ts\nStable Diffusion - Open Source Image Generation Deep Dive | Video | Diffusion Models | https://www.youtube.com/watch?v=J87hQFtSmas\nLoRA - Efficient Fine-tuning of Large Language Models | Video | LoRA | https://www.youtube.com/watch?v=dA-NhSBt4To\nFlash Attention - Faster Transformer Training Explained | Video | Flash Attention | https://www.youtube.com/watch?v=mlu7idceolY\nMixtral - Mixture of Experts Architecture Explained | Video | Mixture of Experts | https://www.youtube.com/watch?v=izrG86jG1Xk\nbitsandbytes - LLM Quantization Made Easy | Video | Quantization | https://www.youtube.com/watch?v=wh3uuJTK9O0\npgvector - Vector Databases for AI Applications | Video | Vector Databases | https://www.youtube.com/watch?v=klTvEwg3oJ4\nPAPERS (URL canonical arXiv URL):\nFlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning | Paper | Flash Attention | https://arxiv.org/abs/2307.08691\nLoRA: Low-Rank Adaptation of Large Language Models | Paper | LoRA | https://arxiv.org/abs/2106.09685\nTraining language models to follow instructions with human feedback | Paper | RLHF | https://arxiv.org/abs/2204.05149\nMixtral of Experts | Paper | Mixture of Experts | https://arxiv.org/abs/2310.06825\nLLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale | Paper | Quantization | https://arxiv.org/abs/2208.07339\nAcceptance: hub title and intro exist; database is a child of hub, exact schema/options exist, exactly 12 intended live entries exist (7 video, 5 paper), and each value matches. Query back and return hub page ID/URL, database ID/URL, counts, and verification. Do not create unrelated content.\nCreate knowledge base hub",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "filesystem-workspace"
+        ],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "filesystem-workspace"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "youtube"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "rw": "write",
+        "role": "notion",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

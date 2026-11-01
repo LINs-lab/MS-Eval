@@ -1,0 +1,16 @@
+terminal-yf-canvas-excel-gcal-email
+terminal-yf-wc-excel-word-notion
+yf-portfolio-stress-test-excel-word-gcal
+yf-sector-outlook-report
+yf-stock-volatility-terminal
+fetch-yf-dividend-strategy-gsheet-email
+fetch-yf-macro-portfolio-excel-gcal-email
+fetch-yf-portfolio-health-excel-gcal-email
+playwright-yf-market-dashboard-gsheet-word
+yf-dividend-tracker-gcal
+yf-financial-health-excel-notion
+yf-portfolio-gsheet-pdf-gcal-email
+yf-portfolio-ppt-gcal
+yf-portfolio-risk-excel
+yf-sector-rotation-dashboard
+yf-stock-comparison-word-gcal

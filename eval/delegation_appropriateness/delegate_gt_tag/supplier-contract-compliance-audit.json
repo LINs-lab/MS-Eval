@@ -1,0 +1,305 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "supplier-contract-compliance-audit",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/supplier-contract-compliance-audit.task.md",
+    "oracle166_sha256": "105bbc48556a89a6ef041397ac1fdffce0a43bcf2a0c8eaeaa08fd3b1d101857"
+  },
+  "label_cache_keys": [
+    "09b4ff6e67562a548bca3cfe67296b47d1f5f87275e4c776bf56db9e40eaf694"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "filesystem-workspace",
+            "snowflake"
+          ],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "dispatch coder 0 (office-report-builder 0), the evidence collector and dataset builder. It dynamically locates and reads every task-visible input (starting from supplier_list.csv, then inventorying every other workspace source and inspecting its content before deciding whether it is an executed agreement, a generic template, performance evidence, configuration/context, or irrelevant), searches the granted Snowflake schemas for supplier/contract/performance tables, and writes ONE runtime-unique audit_data.json in the task workspace covering all five supplier rows — separately recording identity/contact/service/value/start-date evidence, any generic obligations discovered, any genuinely supplier-specific contract/performance evidence, and missing fields such as renewal, SLA, dated trend, owner, target date and cost — together with metadata, findings, corrective actions, trends, aggregate counts and an executive summary derived only from that evidence, using a clearly labeled Evidence Not Available / Review Required status and a documented neutral scoring convention when no supplier-specific performance exists. It must not call a generic document an executed agreement, infer non-compliance from missing evidence, or fabricate trends, breaches, renewal dates, costs, or root causes. Return only path/hash/schema/control counts and a compact evidence/limitation summary; keep all parsing and dataset assembly inside this agent (it may script locally, but must not spawn agents).",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 1,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The sole spreadsheet writer creates both `compliance_assessment.xlsx` and `corrective_actions.xlsx`. The first has one `Compliance Assessment` row per supplier with at least Supplier, dimension scores/statuses, Overall Score, and evidence notes. The second has one `Corrective Actions` row per supplier with Issue, Remediation Action, Owner, Target Date, Estimated Cost, and Status; use evidence-collection remediation for unknowns without pretending unknown performance is a breach. Prefer generating both workbooks in one script execution (openpyxl) and read both complete ranges back once each.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): The sole document writer creates both `audit_findings.docx` and `audit_summary.docx` with python-docx in ONE script execution — build the complete content of both files in a single local python run and write them in one pass, never issuing per-heading/per-paragraph Word MCP calls. The findings document covers every supplier, evidence, gaps, risks, impacts, and recommendations; the distinct summary contains the required executive sections and explicit source limitations. Read both documents back once each.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "pdf",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (office-report-builder 2): The sole PDF writer uses the retained genuine ReportLab or headless-Chromium path to create `compliance_report.pdf` (not renamed text/HTML), including a supplier matrix, findings, actions, recommendations, and limitations, building it in one script execution where possible. Use the PDF tools to extract the completed PDF once to verify page count and required sections.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "filesystem-workspace",
+        "snowflake"
+      ],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "dispatch coder 0 (office-report-builder 0), the evidence collector and dataset builder. It dynamically locates and reads every task-visible input (starting from supplier_list.csv, then inventorying every other workspace source and inspecting its content before deciding whether it is an executed agreement, a generic template, performance evidence, configuration/context, or irrelevant), searches the granted Snowflake schemas for supplier/contract/performance tables, and writes ONE runtime-unique audit_data.json in the task workspace covering all five supplier rows — separately recording identity/contact/service/value/start-date evidence, any generic obligations discovered, any genuinely supplier-specific contract/performance evidence, and missing fields such as renewal, SLA, dated trend, owner, target date and cost — together with metadata, findings, corrective actions, trends, aggregate counts and an executive summary derived only from that evidence, using a clearly labeled Evidence Not Available / Review Required status and a documented neutral scoring convention when no supplier-specific performance exists. It must not call a generic document an executed agreement, infer non-compliance from missing evidence, or fabricate trends, breaches, renewal dates, costs, or root causes. Return only path/hash/schema/control counts and a compact evidence/limitation summary; keep all parsing and dataset assembly inside this agent (it may script locally, but must not spawn agents).",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The sole spreadsheet writer creates both `compliance_assessment.xlsx` and `corrective_actions.xlsx`. The first has one `Compliance Assessment` row per supplier with at least Supplier, dimension scores/statuses, Overall Score, and evidence notes. The second has one `Corrective Actions` row per supplier with Issue, Remediation Action, Owner, Target Date, Estimated Cost, and Status; use evidence-collection remediation for unknowns without pretending unknown performance is a breach. Prefer generating both workbooks in one script execution (openpyxl) and read both complete ranges back once each.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): The sole document writer creates both `audit_findings.docx` and `audit_summary.docx` with python-docx in ONE script execution — build the complete content of both files in a single local python run and write them in one pass, never issuing per-heading/per-paragraph Word MCP calls. The findings document covers every supplier, evidence, gaps, risks, impacts, and recommendations; the distinct summary contains the required executive sections and explicit source limitations. Read both documents back once each.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "pdf",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (office-report-builder 2): The sole PDF writer uses the retained genuine ReportLab or headless-Chromium path to create `compliance_report.pdf` (not renamed text/HTML), including a supplier matrix, findings, actions, recommendations, and limitations, building it in one script execution where possible. Use the PDF tools to extract the completed PDF once to verify page count and required sections.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:1:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 1,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:2:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:3:pdf",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "pdf",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:filesystem-workspace",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "filesystem-workspace",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:snowflake",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "snowflake",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "pdf": 1,
+      "word": 1
+    },
+    "read": {
+      "filesystem-workspace": 1,
+      "snowflake": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 4,
+    "units": 5,
+    "write_units": 3,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

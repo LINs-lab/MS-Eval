@@ -1,0 +1,202 @@
+{
+  "input_hash": "81769cea2729c62fdc1a54f84a8e96565bb1fe2707e8b76aaac9985ffd6f1619",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "canvas-late-submission-gcal",
+    "task_text": "Our academic affairs team needs a comprehensive report on late submissions across all courses in the learning management system. Please query all submissions that are flagged as late (late = true) and compile the results. The scope is the ENTIRE learning management system: cover every course stored in it, across all terms and semesters, and do not restrict the query to a single course, a single term, a specific instructor, or only currently active courses. Each semester offering of a subject (e.g., a Fall 2013 offering and a Spring 2014 offering of the same subject) is a separate course and must be reported as its own row. A submission counts as late whenever its late flag is true, regardless of grading status or workflow state.\n\nCreate an Excel file called Late_Submissions.xlsx in the workspace with two sheets. The first sheet \"By Course\" should have one row per course that has at least one late submission — every such course in the system must get a row — with columns Course_Name, Late_Count showing the total number of late submissions per course (counting every late submission in that course, across all of its assignments and all enrolled students), and Unique_Students showing how many distinct students submitted late work in that course. Sort the rows by Late_Count in descending order. The second sheet \"Top Offenders\" should list the top 10 student-course combinations with the most late submissions, having columns Student_Name, Course, and Late_Count, sorted by Late_Count descending.\n\nFor each course that has late submissions, create a calendar event titled \"Review Meeting - [course name]\" scheduled for March 13, 2026 at 10:00 AM lasting one hour — one event per such course, with no courses omitted. The event description should mention the number of late submissions and unique students affected in that course.\n\nFinally, send an email to academic.affairs@university.example.com with the subject \"Late Submission Report\" summarizing the findings. The email body should mention the total number of courses with late submissions, the total count of late submissions across all courses, and the names of the top 3 courses with the most late submissions.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, partition by course once, not by assignment page; the main agent aggregates, then dispatches three independent output writers. Canvas is read-only. Resolve the runtime workspace dynamically and create one unique JSON path per course.\n\nThe main agent calls canvas_list_courses(include_ended=true) once and freezes the complete 22-row course_id/course_code/full-name mapping. The exact full Canvas name is the canonical course identity; never reconstruct it from a code or merge semester offerings.\n\nWave 1 — dispatch exactly 22 explore sub-agents in parallel, one per literal course below:\n\n   1. explore 0 (enterprise-data-analyst 0): Course owner for course_id=1 (AAA-2013J). Call canvas_list_assignments(course_id=1, include_submissions=false) once and handle every returned assignment; call page 1 for every assignment and canvas_list_course_users(course_id=1) together in one native-parallel response; every assignment call uses canvas_list_assignment_submissions(course_id=1, assignment_id=<assignment_id>, late=true, page=1, per_page=100), then issue every remaining literal assignment/page identity revealed by total_pages in native-parallel batches, including zero-result assignments; if the user result is oversized, read the complete full_output_path rather than a truncated chat preview; retain only rows whose literal late flag is true, use row.id as submission identity, join user_id only to this course's complete map, and write a compact course JSON with exact full course name, every late submission identity/user_id, per-user late counts, Late_Count, Unique_Students, all assignment/page controls, and unresolved/duplicate controls; read it back and return only path/hash, course identity, assignment/page counts, Late_Count, Unique_Students and unresolved/duplicate controls.\n   2. explore 1 (enterprise-data-analyst 1): Course owner for course_id=2 (AAA-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   3. explore 2 (enterprise-data-analyst 2): Course owner for course_id=3 (BBB-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   4. explore 3 (enterprise-data-analyst 3): Course owner for course_id=4 (BBB-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   5. explore 4 (enterprise-data-analyst 4): Course owner for course_id=5 (BBB-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   6. explore 5 (enterprise-data-analyst 5): Course owner for course_id=6 (BBB-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   7. explore 6 (enterprise-data-analyst 6): Course owner for course_id=7 (CCC-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   8. explore 7 (enterprise-data-analyst 7): Course owner for course_id=8 (CCC-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   9. explore 8 (enterprise-data-analyst 8): Course owner for course_id=9 (DDD-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   10. explore 9 (enterprise-data-analyst 9): Course owner for course_id=10 (DDD-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   11. explore 10 (enterprise-data-analyst 10): Course owner for course_id=11 (DDD-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   12. explore 11 (enterprise-data-analyst 11): Course owner for course_id=12 (DDD-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   13. explore 12 (enterprise-data-analyst 12): Course owner for course_id=13 (EEE-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   14. explore 13 (enterprise-data-analyst 13): Course owner for course_id=14 (EEE-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   15. explore 14 (enterprise-data-analyst 14): Course owner for course_id=15 (EEE-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   16. explore 15 (enterprise-data-analyst 15): Course owner for course_id=16 (FFF-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   17. explore 16 (enterprise-data-analyst 16): Course owner for course_id=17 (FFF-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   18. explore 17 (enterprise-data-analyst 17): Course owner for course_id=18 (FFF-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   19. explore 18 (enterprise-data-analyst 18): Course owner for course_id=19 (FFF-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   20. explore 19 (enterprise-data-analyst 19): Course owner for course_id=20 (GGG-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   21. explore 20 (enterprise-data-analyst 20): Course owner for course_id=21 (GGG-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   22. explore 21 (enterprise-data-analyst 21): Course owner for course_id=22 (GGG-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n\nA course owner must block on incomplete pagination or an unresolved late-submission user. After the wave, the main agent requires all 22 course receipts, every live assignment once, and disjoint submission IDs. It freezes all positive-course rows, global late total, and the top ten student-course combinations. Top offenders are grouped by (course_id,user_id), joined to the exact in-course Student_Name, and sorted by Late_Count descending, Student_Name ascending, then full Course name; do not aggregate the same name across courses or use enrollment/account IDs as names. Top-three courses sort by Late_Count descending with full-name ties.\n\nThen dispatch the three independent output branches in one native-parallel response:\n\n1. coder 0 (office-report-builder 0): Sole-write Late_Submissions.xlsx with exactly By Course and Top Offenders, the literal headers, one row for every positive course and exactly ten canonical offender rows. Read both full ranges back and compare exact names/counts.\n2. coder 1 (external-workflow-operator 0): List events covering 2026-03-13, then locally match exact summary/start/end. For every positive course, retain or create at most once Review Meeting - <full course name> with start.dateTime=\"2026-03-13T10:00:00\" and end.dateTime=\"2026-03-13T11:00:00\"; do not append Z or convert the literal 10:00 to UTC. Include Late_Count and Unique_Students in the description. Issue missing creates together, never retry an ambiguous create, and get_event every retained ID; require the returned datetime text to contain the literal date and 10:00.\n3. coder 2 (external-workflow-operator 1): Paginate Sent mail, read candidates, and match exact recipient academic.affairs@university.example.com plus subject Late Submission Report. Send at most once with positive-course count, global late total and the three full course names, then search/read back exactly one match.\n\nDo not dispatch aggregation or audit agents after the output wave. Final acceptance uses external workbook cells, retained event datetimes and retained email, not only the canonical JSON.\n",
+    "nodes": [
+      {
+        "id": 168,
+        "wave": "message_55",
+        "text": "You are a data-extraction worker in a Canvas LMS reporting swarm. Your ONLY job: page through late submissions for the segments below and transcribe every user_id EXACTLY. Work read-only. Accuracy is critical — this feeds an official academic report.\n\nJOB SPEC: C=20|A=177:p1:exp9|A=178:p1:exp12|A=179:p1:exp26|A=180:p1:exp29\nFormat: \"C=<course_id>|A=<assignment_id>:p<start>-<end>:exp<N>|...\" — one or more segments. For each segment, fetch pages <start> through <end> (inclusive) of that assignment's late submissions. (\"p3\" alone means just page 3.)\n\nFor each segment, for each page p in its range, call:\nmcp__canvas__canvas_list_assignment_submissions(course_id=<C>, assignment_id=<A>, late=true, per_page=100, page=p)\n\nRules:\n1. The response lists submission records (late=true filter already applied). Each record has a \"user_id\" field. Transcribe EVERY record's user_id — do not skip, dedupe, reorder, or summarize any.\n2. Verify counts: records per page should be 100 except possibly the assignment's final page; the segment total must equal exp<N>. If pagination.total_count differs from expectation, still transcribe what is returned and flag it in a WARN line.\n3. Immediately after reading each page, append that page's user_ids to your running list for the segment BEFORE fetching the next page.\n4. User ids normally come back in ascending order. If your full segment sequence is non-decreasing, compress it as comma-separated tokens where each maximal run of consecutive integers of length >=2 is \"START-END\" and each isolated value is \"N\". If the sequence is NOT non-decreasing, do NOT compress: output \"RAW:\" followed by all ids comma-separated in the order read.\n5. If any user_id occurs more than once, keep both occurrences in order (they break runs, e.g. \"1043,1043\") AND append \" dups=<X>x<k>\" listing duplicated ids with occurrence counts.\n6. Re-check your transcription count equals n before finalizing.\n\nReturn ONLY one line per segment, in job order, exactly like:\nSEG C=<C> A=<A> p<start>-<end> n=<actual_record_count> exp=<N> ids=<compressed_or_RAW_list>[ dups=...]\n(plus optional final WARN lines for mismatches). No other prose.\nWave B: fetch late-submission user_ids (remaining courses)",
+        "is_plan": false
+      },
+      {
+        "id": 169,
+        "wave": "message_55",
+        "text": "You are a data-extraction worker in a Canvas LMS reporting swarm. Your ONLY job: page through late submissions for the segments below and transcribe every user_id EXACTLY. Work read-only. Accuracy is critical — this feeds an official academic report.\n\nJOB SPEC: C=20|A=181:p1:exp38|A=182:p1:exp70|A=183:p1:exp72|A=184:p1:exp100\nFormat: \"C=<course_id>|A=<assignment_id>:p<start>-<end>:exp<N>|...\" — one or more segments. For each segment, fetch pages <start> through <end> (inclusive) of that assignment's late submissions. (\"p3\" alone means just page 3.)\n\nFor each segment, for each page p in its range, call:\nmcp__canvas__canvas_list_assignment_submissions(course_id=<C>, assignment_id=<A>, late=true, per_page=100, page=p)\n\nRules:\n1. The response lists submission records (late=true filter already applied). Each record has a \"user_id\" field. Transcribe EVERY record's user_id — do not skip, dedupe, reorder, or summarize any.\n2. Verify counts: records per page should be 100 except possibly the assignment's final page; the segment total must equal exp<N>. If pagination.total_count differs from expectation, still transcribe what is returned and flag it in a WARN line.\n3. Immediately after reading each page, append that page's user_ids to your running list for the segment BEFORE fetching the next page.\n4. User ids normally come back in ascending order. If your full segment sequence is non-decreasing, compress it as comma-separated tokens where each maximal run of consecutive integers of length >=2 is \"START-END\" and each isolated value is \"N\". If the sequence is NOT non-decreasing, do NOT compress: output \"RAW:\" followed by all ids comma-separated in the order read.\n5. If any user_id occurs more than once, keep both occurrences in order (they break runs, e.g. \"1043,1043\") AND append \" dups=<X>x<k>\" listing duplicated ids with occurrence counts.\n6. Re-check your transcription count equals n before finalizing.\n\nReturn ONLY one line per segment, in job order, exactly like:\nSEG C=<C> A=<A> p<start>-<end> n=<actual_record_count> exp=<N> ids=<compressed_or_RAW_list>[ dups=...]\n(plus optional final WARN lines for mismatches). No other prose.\nWave B: fetch late-submission user_ids (remaining courses)",
+        "is_plan": false
+      },
+      {
+        "id": 170,
+        "wave": "message_55",
+        "text": "You are a data-extraction worker in a Canvas LMS reporting swarm. Your ONLY job: page through late submissions for the segments below and transcribe every user_id EXACTLY. Work read-only. Accuracy is critical — this feeds an official academic report.\n\nJOB SPEC: C=20|A=184:p2:exp12|A=185:p1-2:exp193\nFormat: \"C=<course_id>|A=<assignment_id>:p<start>-<end>:exp<N>|...\" — one or more segments. For each segment, fetch pages <start> through <end> (inclusive) of that assignment's late submissions. (\"p3\" alone means just page 3.)\n\nFor each segment, for each page p in its range, call:\nmcp__canvas__canvas_list_assignment_submissions(course_id=<C>, assignment_id=<A>, late=true, per_page=100, page=p)\n\nRules:\n1. The response lists submission records (late=true filter already applied). Each record has a \"user_id\" field. Transcribe EVERY record's user_id — do not skip, dedupe, reorder, or summarize any.\n2. Verify counts: records per page should be 100 except possibly the assignment's final page; the segment total must equal exp<N>. If pagination.total_count differs from expectation, still transcribe what is returned and flag it in a WARN line.\n3. Immediately after reading each page, append that page's user_ids to your running list for the segment BEFORE fetching the next page.\n4. User ids normally come back in ascending order. If your full segment sequence is non-decreasing, compress it as comma-separated tokens where each maximal run of consecutive integers of length >=2 is \"START-END\" and each isolated value is \"N\". If the sequence is NOT non-decreasing, do NOT compress: output \"RAW:\" followed by all ids comma-separated in the order read.\n5. If any user_id occurs more than once, keep both occurrences in order (they break runs, e.g. \"1043,1043\") AND append \" dups=<X>x<k>\" listing duplicated ids with occurrence counts.\n6. Re-check your transcription count equals n before finalizing.\n\nReturn ONLY one line per segment, in job order, exactly like:\nSEG C=<C> A=<A> p<start>-<end> n=<actual_record_count> exp=<N> ids=<compressed_or_RAW_list>[ dups=...]\n(plus optional final WARN lines for mismatches). No other prose.\nWave B: fetch late-submission user_ids (remaining courses)",
+        "is_plan": false
+      },
+      {
+        "id": 171,
+        "wave": "message_55",
+        "text": "You are a data-extraction worker in a Canvas LMS reporting swarm. Your ONLY job: page through late submissions for the segments below and transcribe every user_id EXACTLY. Work read-only. Accuracy is critical — this feeds an official academic report.\n\nJOB SPEC: C=21|A=197:p1:exp5|A=198:p1:exp10|A=199:p1:exp20|A=200:p1:exp22\nFormat: \"C=<course_id>|A=<assignment_id>:p<start>-<end>:exp<N>|...\" — one or more segments. For each segment, fetch pages <start> through <end> (inclusive) of that assignment's late submissions. (\"p3\" alone means just page 3.)\n\nFor each segment, for each page p in its range, call:\nmcp__canvas__canvas_list_assignment_submissions(course_id=<C>, assignment_id=<A>, late=true, per_page=100, page=p)\n\nRules:\n1. The response lists submission records (late=true filter already applied). Each record has a \"user_id\" field. Transcribe EVERY record's user_id — do not skip, dedupe, reorder, or summarize any.\n2. Verify counts: records per page should be 100 except possibly the assignment's final page; the segment total must equal exp<N>. If pagination.total_count differs from expectation, still transcribe what is returned and flag it in a WARN line.\n3. Immediately after reading each page, append that page's user_ids to your running list for the segment BEFORE fetching the next page.\n4. User ids normally come back in ascending order. If your full segment sequence is non-decreasing, compress it as comma-separated tokens where each maximal run of consecutive integers of length >=2 is \"START-END\" and each isolated value is \"N\". If the sequence is NOT non-decreasing, do NOT compress: output \"RAW:\" followed by all ids comma-separated in the order read.\n5. If any user_id occurs more than once, keep both occurrences in order (they break runs, e.g. \"1043,1043\") AND append \" dups=<X>x<k>\" listing duplicated ids with occurrence counts.\n6. Re-check your transcription count equals n before finalizing.\n\nReturn ONLY one line per segment, in job order, exactly like:\nSEG C=<C> A=<A> p<start>-<end> n=<actual_record_count> exp=<N> ids=<compressed_or_RAW_list>[ dups=...]\n(plus optional final WARN lines for mismatches). No other prose.\nWave B: fetch late-submission user_ids (remaining courses)",
+        "is_plan": false
+      },
+      {
+        "id": 172,
+        "wave": "message_55",
+        "text": "You are a data-extraction worker in a Canvas LMS reporting swarm. Your ONLY job: page through late submissions for the segments below and transcribe every user_id EXACTLY. Work read-only. Accuracy is critical — this feeds an official academic report.\n\nJOB SPEC: C=21|A=201:p1:exp25|A=202:p1:exp46|A=203:p1:exp69|A=204:p1:exp100\nFormat: \"C=<course_id>|A=<assignment_id>:p<start>-<end>:exp<N>|...\" — one or more segments. For each segment, fetch pages <start> through <end> (inclusive) of that assignment's late submissions. (\"p3\" alone means just page 3.)\n\nFor each segment, for each page p in its range, call:\nmcp__canvas__canvas_list_assignment_submissions(course_id=<C>, assignment_id=<A>, late=true, per_page=100, page=p)\n\nRules:\n1. The response lists submission records (late=true filter already applied). Each record has a \"user_id\" field. Transcribe EVERY record's user_id — do not skip, dedupe, reorder, or summarize any.\n2. Verify counts: records per page should be 100 except possibly the assignment's final page; the segment total must equal exp<N>. If pagination.total_count differs from expectation, still transcribe what is returned and flag it in a WARN line.\n3. Immediately after reading each page, append that page's user_ids to your running list for the segment BEFORE fetching the next page.\n4. User ids normally come back in ascending order. If your full segment sequence is non-decreasing, compress it as comma-separated tokens where each maximal run of consecutive integers of length >=2 is \"START-END\" and each isolated value is \"N\". If the sequence is NOT non-decreasing, do NOT compress: output \"RAW:\" followed by all ids comma-separated in the order read.\n5. If any user_id occurs more than once, keep both occurrences in order (they break runs, e.g. \"1043,1043\") AND append \" dups=<X>x<k>\" listing duplicated ids with occurrence counts.\n6. Re-check your transcription count equals n before finalizing.\n\nReturn ONLY one line per segment, in job order, exactly like:\nSEG C=<C> A=<A> p<start>-<end> n=<actual_record_count> exp=<N> ids=<compressed_or_RAW_list>[ dups=...]\n(plus optional final WARN lines for mismatches). No other prose.\nWave B: fetch late-submission user_ids (remaining courses)",
+        "is_plan": false
+      },
+      {
+        "id": 173,
+        "wave": "message_55",
+        "text": "You are a data-extraction worker in a Canvas LMS reporting swarm. Your ONLY job: page through late submissions for the segments below and transcribe every user_id EXACTLY. Work read-only. Accuracy is critical — this feeds an official academic report.\n\nJOB SPEC: C=21|A=204:p2:exp15|A=205:p1-2:exp151\nFormat: \"C=<course_id>|A=<assignment_id>:p<start>-<end>:exp<N>|...\" — one or more segments. For each segment, fetch pages <start> through <end> (inclusive) of that assignment's late submissions. (\"p3\" alone means just page 3.)\n\nFor each segment, for each page p in its range, call:\nmcp__canvas__canvas_list_assignment_submissions(course_id=<C>, assignment_id=<A>, late=true, per_page=100, page=p)\n\nRules:\n1. The response lists submission records (late=true filter already applied). Each record has a \"user_id\" field. Transcribe EVERY record's user_id — do not skip, dedupe, reorder, or summarize any.\n2. Verify counts: records per page should be 100 except possibly the assignment's final page; the segment total must equal exp<N>. If pagination.total_count differs from expectation, still transcribe what is returned and flag it in a WARN line.\n3. Immediately after reading each page, append that page's user_ids to your running list for the segment BEFORE fetching the next page.\n4. User ids normally come back in ascending order. If your full segment sequence is non-decreasing, compress it as comma-separated tokens where each maximal run of consecutive integers of length >=2 is \"START-END\" and each isolated value is \"N\". If the sequence is NOT non-decreasing, do NOT compress: output \"RAW:\" followed by all ids comma-separated in the order read.\n5. If any user_id occurs more than once, keep both occurrences in order (they break runs, e.g. \"1043,1043\") AND append \" dups=<X>x<k>\" listing duplicated ids with occurrence counts.\n6. Re-check your transcription count equals n before finalizing.\n\nReturn ONLY one line per segment, in job order, exactly like:\nSEG C=<C> A=<A> p<start>-<end> n=<actual_record_count> exp=<N> ids=<compressed_or_RAW_list>[ dups=...]\n(plus optional final WARN lines for mismatches). No other prose.\nWave B: fetch late-submission user_ids (remaining courses)",
+        "is_plan": false
+      },
+      {
+        "id": 174,
+        "wave": "message_55",
+        "text": "You are a data-extraction worker in a Canvas LMS reporting swarm. Your ONLY job: page through late submissions for the segments below and transcribe every user_id EXACTLY. Work read-only. Accuracy is critical — this feeds an official academic report.\n\nJOB SPEC: C=22|A=187:p1:exp11|A=188:p1:exp17|A=189:p1:exp29|A=190:p1:exp34\nFormat: \"C=<course_id>|A=<assignment_id>:p<start>-<end>:exp<N>|...\" — one or more segments. For each segment, fetch pages <start> through <end> (inclusive) of that assignment's late submissions. (\"p3\" alone means just page 3.)\n\nFor each segment, for each page p in its range, call:\nmcp__canvas__canvas_list_assignment_submissions(course_id=<C>, assignment_id=<A>, late=true, per_page=100, page=p)\n\nRules:\n1. The response lists submission records (late=true filter already applied). Each record has a \"user_id\" field. Transcribe EVERY record's user_id — do not skip, dedupe, reorder, or summarize any.\n2. Verify counts: records per page should be 100 except possibly the assignment's final page; the segment total must equal exp<N>. If pagination.total_count differs from expectation, still transcribe what is returned and flag it in a WARN line.\n3. Immediately after reading each page, append that page's user_ids to your running list for the segment BEFORE fetching the next page.\n4. User ids normally come back in ascending order. If your full segment sequence is non-decreasing, compress it as comma-separated tokens where each maximal run of consecutive integers of length >=2 is \"START-END\" and each isolated value is \"N\". If the sequence is NOT non-decreasing, do NOT compress: output \"RAW:\" followed by all ids comma-separated in the order read.\n5. If any user_id occurs more than once, keep both occurrences in order (they break runs, e.g. \"1043,1043\") AND append \" dups=<X>x<k>\" listing duplicated ids with occurrence counts.\n6. Re-check your transcription count equals n before finalizing.\n\nReturn ONLY one line per segment, in job order, exactly like:\nSEG C=<C> A=<A> p<start>-<end> n=<actual_record_count> exp=<N> ids=<compressed_or_RAW_list>[ dups=...]\n(plus optional final WARN lines for mismatches). No other prose.\nWave B: fetch late-submission user_ids (remaining courses)",
+        "is_plan": false
+      },
+      {
+        "id": 175,
+        "wave": "message_55",
+        "text": "You are a data-extraction worker in a Canvas LMS reporting swarm. Your ONLY job: page through late submissions for the segments below and transcribe every user_id EXACTLY. Work read-only. Accuracy is critical — this feeds an official academic report.\n\nJOB SPEC: C=22|A=191:p1:exp47|A=192:p1:exp69|A=193:p1:exp70|A=194:p1:exp84\nFormat: \"C=<course_id>|A=<assignment_id>:p<start>-<end>:exp<N>|...\" — one or more segments. For each segment, fetch pages <start> through <end> (inclusive) of that assignment's late submissions. (\"p3\" alone means just page 3.)\n\nFor each segment, for each page p in its range, call:\nmcp__canvas__canvas_list_assignment_submissions(course_id=<C>, assignment_id=<A>, late=true, per_page=100, page=p)\n\nRules:\n1. The response lists submission records (late=true filter already applied). Each record has a \"user_id\" field. Transcribe EVERY record's user_id — do not skip, dedupe, reorder, or summarize any.\n2. Verify counts: records per page should be 100 except possibly the assignment's final page; the segment total must equal exp<N>. If pagination.total_count differs from expectation, still transcribe what is returned and flag it in a WARN line.\n3. Immediately after reading each page, append that page's user_ids to your running list for the segment BEFORE fetching the next page.\n4. User ids normally come back in ascending order. If your full segment sequence is non-decreasing, compress it as comma-separated tokens where each maximal run of consecutive integers of length >=2 is \"START-END\" and each isolated value is \"N\". If the sequence is NOT non-decreasing, do NOT compress: output \"RAW:\" followed by all ids comma-separated in the order read.\n5. If any user_id occurs more than once, keep both occurrences in order (they break runs, e.g. \"1043,1043\") AND append \" dups=<X>x<k>\" listing duplicated ids with occurrence counts.\n6. Re-check your transcription count equals n before finalizing.\n\nReturn ONLY one line per segment, in job order, exactly like:\nSEG C=<C> A=<A> p<start>-<end> n=<actual_record_count> exp=<N> ids=<compressed_or_RAW_list>[ dups=...]\n(plus optional final WARN lines for mismatches). No other prose.\nWave B: fetch late-submission user_ids (remaining courses)",
+        "is_plan": false
+      },
+      {
+        "id": 176,
+        "wave": "message_55",
+        "text": "You are a data-extraction worker in a Canvas LMS reporting swarm. Your ONLY job: page through late submissions for the segments below and transcribe every user_id EXACTLY. Work read-only. Accuracy is critical — this feeds an official academic report.\n\nJOB SPEC: C=22|A=195:p1-2:exp147\nFormat: \"C=<course_id>|A=<assignment_id>:p<start>-<end>:exp<N>|...\" — one or more segments. For each segment, fetch pages <start> through <end> (inclusive) of that assignment's late submissions. (\"p3\" alone means just page 3.)\n\nFor each segment, for each page p in its range, call:\nmcp__canvas__canvas_list_assignment_submissions(course_id=<C>, assignment_id=<A>, late=true, per_page=100, page=p)\n\nRules:\n1. The response lists submission records (late=true filter already applied). Each record has a \"user_id\" field. Transcribe EVERY record's user_id — do not skip, dedupe, reorder, or summarize any.\n2. Verify counts: records per page should be 100 except possibly the assignment's final page; the segment total must equal exp<N>. If pagination.total_count differs from expectation, still transcribe what is returned and flag it in a WARN line.\n3. Immediately after reading each page, append that page's user_ids to your running list for the segment BEFORE fetching the next page.\n4. User ids normally come back in ascending order. If your full segment sequence is non-decreasing, compress it as comma-separated tokens where each maximal run of consecutive integers of length >=2 is \"START-END\" and each isolated value is \"N\". If the sequence is NOT non-decreasing, do NOT compress: output \"RAW:\" followed by all ids comma-separated in the order read.\n5. If any user_id occurs more than once, keep both occurrences in order (they break runs, e.g. \"1043,1043\") AND append \" dups=<X>x<k>\" listing duplicated ids with occurrence counts.\n6. Re-check your transcription count equals n before finalizing.\n\nReturn ONLY one line per segment, in job order, exactly like:\nSEG C=<C> A=<A> p<start>-<end> n=<actual_record_count> exp=<N> ids=<compressed_or_RAW_list>[ dups=...]\n(plus optional final WARN lines for mismatches). No other prose.\nWave B: fetch late-submission user_ids (remaining courses)",
+        "is_plan": false
+      },
+      {
+        "id": 177,
+        "wave": "message_61",
+        "text": "You are resolving user_id → full name mappings from a mock Canvas LMS course roster. Read-only work; accuracy is critical.\n\nTARGET: course_id=3; user_ids=2901,2912\n\nStep 1: Call mcp__canvas__canvas_list_course_users with the given course_id. WARNING: the roster is large (1300–2300 users). The tool result will very likely exceed the inline output limit and be replaced by a short notice containing an absolute dump-file path under the workspace \".tool_results\" directory. That is expected — do not panic or retry blindly.\n\nStep 2: Extract the \"name\" field for EACH requested user id from the roster (inline result or dump file):\n- If the dump file path was given, inspect it with mcp__filesystem__read_file using the head/tail parameters to read line windows. The roster is pretty-printed JSON with users typically ordered by ascending id, each user object spanning roughly 5–15 lines (fields: id, name, sortable_name, short_name, login_id, email, ...).\n- Strategy: read a small head window (e.g. head=60) to see the first user id and the exact lines-per-user; optionally read tail=60 to see the last user id. Then estimate the line window containing each target id: line ≈ (target_id − first_id) × lines_per_user, and read with a generous head=(estimate + margin). If a target id sits near the end of the roster, use tail=<margin> instead. Repeat/adjust windows until every target id's \"name\" value is found verbatim.\n- Never guess or interpolate a name: only report names you literally read in the roster data. If an id genuinely does not appear in the roster, report it as null.\n\nStep 3: Return ONLY this JSON (no prose):\n{\"course_id\": <int>, \"names\": {\"<user_id>\": \"<name or null>\", ...}, \"roster_first_id\": <int>, \"roster_last_id\": <int>, \"method\": \"<one short sentence>\"}\nResolve student names for top offenders",
+        "is_plan": false
+      },
+      {
+        "id": 178,
+        "wave": "message_61",
+        "text": "You are resolving user_id → full name mappings from a mock Canvas LMS course roster. Read-only work; accuracy is critical.\n\nTARGET: course_id=6; user_ids=6224\n\nStep 1: Call mcp__canvas__canvas_list_course_users with the given course_id. WARNING: the roster is large (1300–2300 users). The tool result will very likely exceed the inline output limit and be replaced by a short notice containing an absolute dump-file path under the workspace \".tool_results\" directory. That is expected — do not panic or retry blindly.\n\nStep 2: Extract the \"name\" field for EACH requested user id from the roster (inline result or dump file):\n- If the dump file path was given, inspect it with mcp__filesystem__read_file using the head/tail parameters to read line windows. The roster is pretty-printed JSON with users typically ordered by ascending id, each user object spanning roughly 5–15 lines (fields: id, name, sortable_name, short_name, login_id, email, ...).\n- Strategy: read a small head window (e.g. head=60) to see the first user id and the exact lines-per-user; optionally read tail=60 to see the last user id. Then estimate the line window containing each target id: line ≈ (target_id − first_id) × lines_per_user, and read with a generous head=(estimate + margin). If a target id sits near the end of the roster, use tail=<margin> instead. Repeat/adjust windows until every target id's \"name\" value is found verbatim.\n- Never guess or interpolate a name: only report names you literally read in the roster data. If an id genuinely does not appear in the roster, report it as null.\n\nStep 3: Return ONLY this JSON (no prose):\n{\"course_id\": <int>, \"names\": {\"<user_id>\": \"<name or null>\", ...}, \"roster_first_id\": <int>, \"roster_last_id\": <int>, \"method\": \"<one short sentence>\"}\nResolve student names for top offenders",
+        "is_plan": false
+      },
+      {
+        "id": 179,
+        "wave": "message_61",
+        "text": "You are resolving user_id → full name mappings from a mock Canvas LMS course roster. Read-only work; accuracy is critical.\n\nTARGET: course_id=11; user_ids=12775,12853,12921,13030,13036,13236\n\nStep 1: Call mcp__canvas__canvas_list_course_users with the given course_id. WARNING: the roster is large (1300–2300 users). The tool result will very likely exceed the inline output limit and be replaced by a short notice containing an absolute dump-file path under the workspace \".tool_results\" directory. That is expected — do not panic or retry blindly.\n\nStep 2: Extract the \"name\" field for EACH requested user id from the roster (inline result or dump file):\n- If the dump file path was given, inspect it with mcp__filesystem__read_file using the head/tail parameters to read line windows. The roster is pretty-printed JSON with users typically ordered by ascending id, each user object spanning roughly 5–15 lines (fields: id, name, sortable_name, short_name, login_id, email, ...).\n- Strategy: read a small head window (e.g. head=60) to see the first user id and the exact lines-per-user; optionally read tail=60 to see the last user id. Then estimate the line window containing each target id: line ≈ (target_id − first_id) × lines_per_user, and read with a generous head=(estimate + margin). If a target id sits near the end of the roster, use tail=<margin> instead. Repeat/adjust windows until every target id's \"name\" value is found verbatim.\n- Never guess or interpolate a name: only report names you literally read in the roster data. If an id genuinely does not appear in the roster, report it as null.\n\nStep 3: Return ONLY this JSON (no prose):\n{\"course_id\": <int>, \"names\": {\"<user_id>\": \"<name or null>\", ...}, \"roster_first_id\": <int>, \"roster_last_id\": <int>, \"method\": \"<one short sentence>\"}\nResolve student names for top offenders",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 168,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 169,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 170,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 171,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 172,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 173,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 174,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 175,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 176,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 177,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas",
+          "filesystem-workspace"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 178,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas",
+          "filesystem-workspace"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 179,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas",
+          "filesystem-workspace"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

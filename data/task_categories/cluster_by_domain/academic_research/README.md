@@ -1,0 +1,25 @@
+# Academic Research
+
+Task membership is recorded in the adjacent text list. Each link below points to the canonical task in `data/oracle166/`.
+
+- [academic-literature-review](../../../oracle166/academic-literature-review.task.md)
+- [academic-presentation-builder](../../../oracle166/academic-presentation-builder.task.md)
+- [arxiv-conference-prep](../../../oracle166/arxiv-conference-prep.task.md)
+- [arxiv-federated-learning-notion](../../../oracle166/arxiv-federated-learning-notion.task.md)
+- [arxiv-latex-analysis-notion-word](../../../oracle166/arxiv-latex-analysis-notion-word.task.md)
+- [arxiv-latex-reasoning-gsheet](../../../oracle166/arxiv-latex-reasoning-gsheet.task.md)
+- [arxiv-latex-review-notion-word](../../../oracle166/arxiv-latex-review-notion-word.task.md)
+- [arxiv-lit-review-gsheet](../../../oracle166/arxiv-lit-review-gsheet.task.md)
+- [arxiv-reading-plan-excel-gcal-email](../../../oracle166/arxiv-reading-plan-excel-gcal-email.task.md)
+- [arxiv-research-pipeline-notion-excel](../../../oracle166/arxiv-research-pipeline-notion-excel.task.md)
+- [arxiv-research-report](../../../oracle166/arxiv-research-report.task.md)
+- [arxiv-research-tracker-notion](../../../oracle166/arxiv-research-tracker-notion.task.md)
+- [arxiv-survey-presentation](../../../oracle166/arxiv-survey-presentation.task.md)
+- [playwright-arxiv-review-criteria-word-gsheet](../../../oracle166/playwright-arxiv-review-criteria-word-gsheet.task.md)
+- [research-data-archival-compliance](../../../oracle166/research-data-archival-compliance.task.md)
+- [research-lab-publication-pipeline](../../../oracle166/research-lab-publication-pipeline.task.md)
+- [scholarly-arxiv-cross-reference](../../../oracle166/scholarly-arxiv-cross-reference.task.md)
+- [scholarly-arxiv-survey-word-notion-gcal](../../../oracle166/scholarly-arxiv-survey-word-notion-gcal.task.md)
+- [terminal-arxiv-latex-fetch-excel-notion](../../../oracle166/terminal-arxiv-latex-fetch-excel-notion.task.md)
+- [terminal-arxiv-latex-pdf-gsheet-word](../../../oracle166/terminal-arxiv-latex-pdf-gsheet-word.task.md)
+- [terminal-arxiv-scholarly-notion-word-excel](../../../oracle166/terminal-arxiv-scholarly-notion-word-excel.task.md)

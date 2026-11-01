@@ -1,0 +1,20 @@
+experiment,model,mode,source_csv,scope,n_total,n_success,n_metric_rows,success_rate,mean_critical_steps,median_critical_steps,mean_cost_usd,median_cost_usd,efficiency_pareto,cost_pareto
+claude-auto-spec,Claude-Sonnet-5,Auto (Spec),results/claude-sonnet-5/auto-spec/summary.csv,all,166,122,166,0.7349397590,45.7168674699,36.0000000000,5.0419388434,1.2103830000,False,False
+claude-sa,Claude-Sonnet-5,SA,results/claude-sonnet-5/single/summary.csv,all,166,129,166,0.7771084337,43.2831325301,35.0000000000,1.8499997289,1.1337530000,False,False
+deepseek-auto-gen,DeepSeek-V4-Flash-0731,Auto (Gen),results/deepseek-v4-flash-0731/auto-gen/summary.csv,all,166,143,166,0.8614457831,38.1746987952,29.0000000000,0.4656798373,0.0967910000,False,False
+deepseek-auto-spec,DeepSeek-V4-Flash-0731,Auto (Spec),results/deepseek-v4-flash-0731/auto-spec/summary.csv,all,166,146,166,0.8795180723,39.5602409639,32.0000000000,0.5324484096,0.1197090000,False,False
+deepseek-oracle,DeepSeek-V4-Flash-0731,Oracle,results/deepseek-v4-flash-0731/oracle-spec/summary.csv,all,166,140,166,0.8433734940,31.3373493976,24.5000000000,0.7338880663,0.1282960000,False,False
+deepseek-plan-1st,DeepSeek-V4-Flash-0731,Plan-1st,results/deepseek-v4-flash-0731/plan1st/summary.csv,all,166,139,166,0.8373493976,47.7710843373,36.0000000000,0.4775088916,0.1655785000,False,False
+deepseek-sa,DeepSeek-V4-Flash-0731,SA,results/deepseek-v4-flash-0731/single/summary.csv,all,166,146,166,0.8795180723,37.9939759036,31.5000000000,0.1744039880,0.0892390000,True,True
+glm-5.3-auto-spec,GLM-5.3,Auto (Spec),results/glm-5.3/auto-spec/summary.csv,all,166,121,166,0.7289156627,48.4578313253,43.0000000000,2.1848358494,1.3118620000,False,False
+glm-5.3-sa,GLM-5.3,SA,results/glm-5.3/single/summary.csv,all,166,114,166,0.6867469880,55.6024096386,51.0000000000,1.6319816928,1.1101045000,False,False
+glm-5.3-flash-auto-spec,GLM-5.3-Flash,Auto (Spec),results/glm-5.3-flash/auto-spec/summary.csv,all,166,127,166,0.7650602410,35.5662650602,31.0000000000,0.2185204096,0.0785025000,False,False
+glm-5.3-flash-sa,GLM-5.3-Flash,SA,results/glm-5.3-flash/single/summary.csv,all,166,125,166,0.7530120482,39.4939759036,35.0000000000,0.1304571627,0.0781940000,False,True
+gpt-5.6-sol-auto-spec,GPT-5.6-Sol,Auto (Spec),results/gpt-5.6-sol/auto-spec/summary.csv,all,166,84,166,0.5060240964,35.0843373494,33.0000000000,5.6692402108,1.0728480000,False,False
+gpt-5.6-sol-sa,GPT-5.6-Sol,SA,results/gpt-5.6-sol/single/summary.csv,all,166,120,166,0.7228915663,29.5602409639,26.0000000000,1.4688513313,0.8073590000,True,False
+kimi-k3-auto-spec,Kimi-K3,Auto (Spec),results/kimi-k3/auto-spec/summary.csv,all,166,141,166,0.8493975904,31.0481927711,24.0000000000,2.8847618193,1.1582240000,True,False
+kimi-k3-sa,Kimi-K3,SA,results/kimi-k3/single/summary.csv,all,166,124,166,0.7469879518,35.3012048193,27.0000000000,3.2434915843,1.7493935000,False,False
+minimax-m3-auto-spec,Minimax-M3,Auto (Spec),results/minimax-m3/auto-spec/summary.csv,all,166,105,166,0.6325301205,51.1506024096,36.5000000000,0.5363732289,0.1622990000,False,False
+minimax-m3-sa,Minimax-M3,SA,results/minimax-m3/single/summary.csv,all,166,99,166,0.5963855422,43.5421686747,32.0000000000,0.2318424819,0.1326215000,False,False
+qwen-3.8-max-auto-spec,Qwen-3.8-Max,Auto (Spec),results/qwen-3.8-max/auto-spec/summary.csv,all,166,128,166,0.7710843373,37.7469879518,30.0000000000,2.1686624458,0.7827875000,False,False
+qwen-3.8-max-sa,Qwen-3.8-Max,SA,results/qwen-3.8-max/single/summary.csv,all,166,111,166,0.6686746988,39.4036144578,34.0000000000,1.1437056205,0.7516840000,False,False

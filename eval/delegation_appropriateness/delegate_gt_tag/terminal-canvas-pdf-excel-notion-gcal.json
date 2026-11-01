@@ -1,0 +1,401 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-canvas-pdf-excel-notion-gcal",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-canvas-pdf-excel-notion-gcal.task.md",
+    "oracle166_sha256": "1bb072bedf6cd923a156497054e37ea26185f2dedfdc69edbe12d3ad1002fdb6"
+  },
+  "label_cache_keys": [
+    "a991ae2291bc2ab28549337f438ada8d0419cd22aa7f72af35bf8a3b836dca92"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas",
+            "filesystem-workspace"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): Course-metrics owner for shard A (course_id 1-11, including Creative Computing and Culture courses 7 and 8). For each assigned course, verify the course, enumerate its assignments and quizzes, and gather enrollment, per-course average submission grade, average quiz score (accepted only once quiz-to-assignment mappings and complete student score coverage are proven), assignment/submission counts, and a both-assessments flag. Persist `accreditation_course_batch_a.json` with `coverage_status=complete` plus provenance controls, or `=blocked` with the exact gap and unsupported quiz averages omitted. Return only path/hash and coverage controls. Make no other writes.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas",
+            "filesystem-workspace"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 1): Course-metrics owner for shard B (course_id 12-22) — same literal recipe, only that shard's course identities and `accreditation_course_batch_b.json` substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "processor",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole owner of the processor chain. It receives both frozen course batches and the eight frozen thresholds. First merge both batches into one unified dataset covering every course, verifying no duplicates and that courses 7 and 8 are included, with any missing course recorded in a warnings list. Write and run a Python-standard-library-only `compute_metrics.py` that writes `program_metrics.json` with literal numeric values: `avg_gpa` as the mean of the per-course `avg_grade` values (non-null only, 0-100 scale), `retention_proxy` as total_enrollment divided by total_submissions, and `diversity_score` as the number of courses with both assignments and quizzes (a non-null `avg_quiz_score` counts as evidence of quizzes when `quiz_count` is missing) divided by the total number of courses — each rounded to 4 decimal places — plus `total_courses`, `total_enrollment`, `total_submissions`, `courses_with_assignments_and_quizzes`, and a warnings list. If `total_submissions` is 0 set `retention_proxy` to null with a warning; if some courses lack `total_submissions`, compute `retention_proxy` from the courses that have it and list the excluded courses in warnings. Then write and run `evaluate_compliance.py` with the eight criteria and thresholds hardcoded, mapping `avg_gpa` to the overall-GPA criterion, the retention proxy to the retention criterion, and the assessment diversity score to the assessment-diversity criterion, writing `compliance_assessment.json` containing a `criteria` array of exactly eight objects with fields `criterion`, `threshold`, `actual_value`, `status`, and optionally `gap_note`. Status rules: Compliant when `actual_value >= threshold`, Partial when `actual_value >= 0.9 x threshold` (within 10 percent below), Non-Compliant otherwise; a criterion with no matching metric gets `actual_value` null, status Non-Compliant, and a `gap_note` explaining the missing metric. Then write and run `generate_summary.py` that reads `compliance_assessment.json` and produces `accreditation_summary.txt` listing every one of the eight criteria with its exact name and status one per line, a Gaps section for each Partial or Non-Compliant criterion showing its actual value vs threshold and a short statement of the shortfall, and a final line of exactly `Overall compliance: <NN>%` where NN is (Compliant count / 8) * 100 rounded to the nearest whole number. If `compliance_assessment.json` is missing or unreadable, write `accreditation_summary.txt` stating that compliance data was unavailable and giving the line `Overall compliance: N/A`. Run the three scripts in that order only. Return paths/hashes and metric/status/summary controls. Do not create the workbook, Notion database, or calendar events.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_3",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 3,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 1): Sole writer of `Accreditation_Self_Study.xlsx`. Read only the frozen course packet and compliance result. Create exactly four worksheets in order — `Course_Data` (one row per course sorted alphabetically by name, including courses 7 and 8), `Accreditation_Matrix` (exactly eight criterion rows with threshold, actual value, and status), `Gap_Analysis` (rows only for Partial or Non-Compliant criteria, with gap description, remediation action, and timeline), and `Resource_Needs` (at least three resources each justified against a specific gap, with literal-number estimated cost and High/Medium/Low priority). All cells must be literal values, never Excel formulas. Read every populated range back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): Sole Notion owner of the database `Accreditation Action Items`. Search the exact title first, create it once only when absent, and reuse without duplicating. Require properties Criterion (title), Status (select: Compliant/Partial/Non-Compliant), Owner, Due_Date, and Evidence. Add exactly eight pages: one per criterion named and statused per the frozen compliance result, each with a distinct faculty owner from `faculty_credentials.json`, due dates spread across the next three months (none in the past), and an evidence note referencing the program metrics and source data. Read the database and page properties back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "calendar",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 1): Sole calendar owner of the three accreditation milestones. Search existing accreditation-related events first, then create without duplicating `Evidence Collection Deadline` (exactly 30 days after today), `Draft Report Due` (60 days), and `Final Submission` (90 days), each with a description mentioning the accreditation self-study and no backdated times. Read the retained events back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas",
+        "filesystem-workspace"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): Course-metrics owner for shard A (course_id 1-11, including Creative Computing and Culture courses 7 and 8). For each assigned course, verify the course, enumerate its assignments and quizzes, and gather enrollment, per-course average submission grade, average quiz score (accepted only once quiz-to-assignment mappings and complete student score coverage are proven), assignment/submission counts, and a both-assessments flag. Persist `accreditation_course_batch_a.json` with `coverage_status=complete` plus provenance controls, or `=blocked` with the exact gap and unsupported quiz averages omitted. Return only path/hash and coverage controls. Make no other writes.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas",
+        "filesystem-workspace"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 1): Course-metrics owner for shard B (course_id 12-22) — same literal recipe, only that shard's course identities and `accreditation_course_batch_b.json` substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "processor",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole owner of the processor chain. It receives both frozen course batches and the eight frozen thresholds. First merge both batches into one unified dataset covering every course, verifying no duplicates and that courses 7 and 8 are included, with any missing course recorded in a warnings list. Write and run a Python-standard-library-only `compute_metrics.py` that writes `program_metrics.json` with literal numeric values: `avg_gpa` as the mean of the per-course `avg_grade` values (non-null only, 0-100 scale), `retention_proxy` as total_enrollment divided by total_submissions, and `diversity_score` as the number of courses with both assignments and quizzes (a non-null `avg_quiz_score` counts as evidence of quizzes when `quiz_count` is missing) divided by the total number of courses — each rounded to 4 decimal places — plus `total_courses`, `total_enrollment`, `total_submissions`, `courses_with_assignments_and_quizzes`, and a warnings list. If `total_submissions` is 0 set `retention_proxy` to null with a warning; if some courses lack `total_submissions`, compute `retention_proxy` from the courses that have it and list the excluded courses in warnings. Then write and run `evaluate_compliance.py` with the eight criteria and thresholds hardcoded, mapping `avg_gpa` to the overall-GPA criterion, the retention proxy to the retention criterion, and the assessment diversity score to the assessment-diversity criterion, writing `compliance_assessment.json` containing a `criteria` array of exactly eight objects with fields `criterion`, `threshold`, `actual_value`, `status`, and optionally `gap_note`. Status rules: Compliant when `actual_value >= threshold`, Partial when `actual_value >= 0.9 x threshold` (within 10 percent below), Non-Compliant otherwise; a criterion with no matching metric gets `actual_value` null, status Non-Compliant, and a `gap_note` explaining the missing metric. Then write and run `generate_summary.py` that reads `compliance_assessment.json` and produces `accreditation_summary.txt` listing every one of the eight criteria with its exact name and status one per line, a Gaps section for each Partial or Non-Compliant criterion showing its actual value vs threshold and a short statement of the shortfall, and a final line of exactly `Overall compliance: <NN>%` where NN is (Compliant count / 8) * 100 rounded to the nearest whole number. If `compliance_assessment.json` is missing or unreadable, write `accreditation_summary.txt` stating that compliance data was unavailable and giving the line `Overall compliance: N/A`. Run the three scripts in that order only. Return paths/hashes and metric/status/summary controls. Do not create the workbook, Notion database, or calendar events.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 1): Sole writer of `Accreditation_Self_Study.xlsx`. Read only the frozen course packet and compliance result. Create exactly four worksheets in order — `Course_Data` (one row per course sorted alphabetically by name, including courses 7 and 8), `Accreditation_Matrix` (exactly eight criterion rows with threshold, actual value, and status), `Gap_Analysis` (rows only for Partial or Non-Compliant criteria, with gap description, remediation action, and timeline), and `Resource_Needs` (at least three resources each justified against a specific gap, with literal-number estimated cost and High/Medium/Low priority). All cells must be literal values, never Excel formulas. Read every populated range back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): Sole Notion owner of the database `Accreditation Action Items`. Search the exact title first, create it once only when absent, and reuse without duplicating. Require properties Criterion (title), Status (select: Compliant/Partial/Non-Compliant), Owner, Due_Date, and Evidence. Add exactly eight pages: one per criterion named and statused per the frozen compliance result, each with a distinct faculty owner from `faculty_credentials.json`, due dates spread across the next three months (none in the past), and an evidence note referencing the program metrics and source data. Read the database and page properties back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "calendar",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 1): Sole calendar owner of the three accreditation milestones. Search existing accreditation-related events first, then create without duplicating `Evidence Collection Deadline` (exactly 30 days after today), `Draft Report Due` (60 days), and `Final Submission` (90 days), each with a description mentioning the accreditation self-study and no backdated times. Read the retained events back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:2:processor",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "processor",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:3:excel",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 3,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:4:notion",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 4,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:5:calendar",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 5,
+      "role": "calendar",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:canvas",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "canvas",
+      "source_nodes": [
+        0,
+        1
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:filesystem-workspace",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "filesystem-workspace",
+      "source_nodes": [
+        0,
+        1
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "calendar": 1,
+      "excel": 1,
+      "notion": 1,
+      "processor": 1
+    },
+    "read": {
+      "canvas": 1,
+      "filesystem-workspace": 1
+    }
+  },
+  "counts": {
+    "waves": 3,
+    "nodes": 6,
+    "units": 6,
+    "write_units": 4,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

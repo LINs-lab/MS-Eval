@@ -1,0 +1,233 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "howtocook-workshop-materials",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/howtocook-workshop-materials.task.md",
+    "oracle166_sha256": "190a76eeb5f78e94e9510b38a2b60e52d3a18b90f97f3e643324c6ea715e558b"
+  },
+  "label_cache_keys": [
+    "70e7ff0d650cbfd4f3e8c186a64b53836393eea80db709cdbf96200b50a09c71"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): One coder sub-agent owns Workshop_Handbook.docx and writes the exact title, one complete section for each of the three frozen dishes, ordered ingredients/steps, and Tips and Notes. Read it back and return its path and three-dish coverage checks.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): One coder sub-agent owns Workshop_Slides.pptx and creates exactly the title slide, two slides for each of the three frozen dishes, and the Enjoy Your Meal closing slide. Read it back and return its path, presentation ID, eight-slide count, titles, and dish coverage.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "pdf",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (office-report-builder 2): One coder sub-agent owns Shopping_List.pdf and consolidates all ingredients from the same three frozen recipes in English with combined quantities and clear grouping. Read it back and return its path, title, ingredient coverage, and quantity controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): One coder sub-agent owns Workshop_Handbook.docx and writes the exact title, one complete section for each of the three frozen dishes, ordered ingredients/steps, and Tips and Notes. Read it back and return its path and three-dish coverage checks.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): One coder sub-agent owns Workshop_Slides.pptx and creates exactly the title slide, two slides for each of the three frozen dishes, and the Enjoy Your Meal closing slide. Read it back and return its path, presentation ID, eight-slide count, titles, and dish coverage.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "pdf",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (office-report-builder 2): One coder sub-agent owns Shopping_List.pdf and consolidates all ingredients from the same three frozen recipes in English with combined quantities and clear grouping. Read it back and return its path, title, ingredient coverage, and quantity controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:word",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:ppt",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:2:pdf",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 2,
+      "role": "pdf",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "pdf": 1,
+      "ppt": 1,
+      "word": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 3,
+    "units": 3,
+    "write_units": 3,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

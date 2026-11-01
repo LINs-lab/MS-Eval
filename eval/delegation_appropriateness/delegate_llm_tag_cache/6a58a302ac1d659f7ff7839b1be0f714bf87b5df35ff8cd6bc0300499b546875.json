@@ -1,0 +1,79 @@
+{
+  "input_hash": "6a58a302ac1d659f7ff7839b1be0f714bf87b5df35ff8cd6bc0300499b546875",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "canvas-faculty-workload-review",
+    "task_text": "The provost wants to review faculty workload balance across all departments. Start by fetching the faculty workload standards from http://localhost:30220/api/workload_standards.json which defines the maximum course load, student thresholds, grading time estimates, and overload criteria.\n\nThen query the learning management system to determine each instructor's teaching load. For each instructor with a teaching role, count the number of distinct courses they teach, the total number of students across those courses, and the total number of assignments they are responsible for. Calculate the estimated total semester grading hours as total students multiplied by the grading hours per student from the standards. Then calculate the weekly grading hours by dividing the semester total by the number of semester weeks from the standards. An instructor is overloaded if they teach more than the maximum courses allowed OR if their weekly grading hours exceed the maximum weekly hours from the standards.\n\nReview the workload policy document, faculty directory file, and the course-to-department mapping file (department_mapping.csv) in the workspace for context on department assignments and institutional policy.\n\nCreate an Excel file called Faculty_Workload.xlsx with two sheets. The first sheet named \"Instructor Load\" should contain columns for Instructor, Courses_Count, Total_Students, Total_Assignments, Est_Grading_Hours (total semester hours, rounded to 1 decimal), Weekly_Grading_Hours (rounded to 1 decimal), and Overloaded_YN. Sort alphabetically by instructor name. The second sheet named \"Department Summary\" should aggregate by department. Determine each course's department using department_mapping.csv: course names in the learning management system are formatted as \"<Subject Area> (<Term> <Year>)\" (for example, \"Biochemistry & Bioinformatics (Fall 2013)\"); take the text before the first \"(\" as the subject area and match it case-insensitively and exactly (note the names contain \"&\") against the Course_Base_Name column in department_mapping.csv to get the Department. The sheet should have columns Department, Instructor_Count, Course_Count, and Total_Students. Instructor_Count is the number of distinct instructors who teach at least one course in that department (an instructor who teaches in multiple departments is counted in each). Course_Count is the number of course offerings in that department — count every offering, including any that have no instructor assigned (some offerings have no teacher). Total_Students is the sum of the student counts across all course offerings in that department, again including offerings with no instructor. Sort by Department alphabetically.\n\nWrite the workload data to a shared spreadsheet titled \"Faculty Workload Analysis\" with a sheet called \"Instructor Load\" containing the same instructor-level data.\n\nAlso create a presentation called Workload_Review.pptx summarizing the key findings. Include a title slide, a slide showing the total number of instructors and how many are overloaded, a slide with the department-level breakdown, and a recommendations slide suggesting rebalancing strategies for departments with overloaded faculty.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent completes the compact 22-course aggregation directly, freezes every result into one JSON handoff file, and uses exactly one parallel writer wave. Canvas is read-only. Resolve the runtime workspace dynamically. Do not dispatch any source or aggregation sub-agents.\n\nRead workload_standards.json, the complete workload policy PDF, faculty_directory.csv and department_mapping.csv, and call canvas_list_courses(include_ended=true) once. Freeze the exact IDs/codes/full names for all 22 courses and the literal policy formulas/overload boundaries. Then issue native-parallel course calls: for every course, canvas_get_course_grades(page=1,per_page=100,type=[\"StudentEnrollment\"]) and use pagination.total_count as Student_Count; canvas_get_course_grades(page=1,per_page=100,type=[\"TeacherEnrollment\"]) retaining all teacher row.id/user_id; canvas_list_assignments(include_submissions=false); and canvas_list_course_users. Follow teacher pagination if advertised and read any roster full_output_path rather than a truncated preview.\n\nThe main agent joins each TeacherEnrollment user_id only to its course roster, counts distinct courses per instructor, and sums students and assignments over taught courses. Compute semester grading hours=Total_Students*grading_hours_per_student, weekly hours=semester hours/semester_weeks, and overload from either literal policy condition. For departments, use the exact case-insensitive mapping of the full base subject name before the first parenthesis; include every one of the 22 offerings, including no-teacher offerings.\n\nThen freeze ALL results into a single handoff file workload_data.json in the runtime workspace with exactly these keys: \"standards\" (the literal workload standards object), \"instructor_load\" (the instructor rows with keys Instructor, Courses_Count, Total_Students, Total_Assignments, Est_Grading_Hours, Weekly_Grading_Hours, Overloaded_YN, already sorted alphabetically by Instructor), \"department_summary\" (department rows with keys Department, Instructor_Count, Course_Count, Total_Students, already sorted alphabetically by Department), \"total_instructors\", and \"total_overloaded\".\n\nWave 1 — start three Coder writers in parallel. Each writer must read ONLY workload_data.json for its data (no re-derivation from source systems) and must not touch any input file:\n\n1. coder 0 (office-report-builder 0): Sole writer of Faculty_Workload.xlsx. Build exactly two sheets from the JSON: \"Instructor Load\" with the header row Instructor, Courses_Count, Total_Students, Total_Assignments, Est_Grading_Hours, Weekly_Grading_Hours, Overloaded_YN and one row per instructor_load entry in the given order (hours as numeric values rounded to 1 decimal); \"Department Summary\" with the header row Department, Instructor_Count, Course_Count, Total_Students and one row per department_summary entry. Write to the runtime workspace path, then read back both sheets fully to verify headers, order and row counts.\n2. coder 1 (external-workflow-operator 0): Sole owner of the exact-title Google spreadsheet \"Faculty Workload Analysis\". Search/reuse-or-create at most once, keep exactly one sheet named \"Instructor Load\", write the frozen instructor_load table with the same header and values, then read it back and report the spreadsheet ID, title, sheet name and data-row count.\n3. coder 2 (office-report-builder 1): Sole writer of Workload_Review.pptx. Build exactly four slides from the JSON: title slide; an overview slide stating total_instructors and total_overloaded; a department breakdown slide covering all departments; and an evidence-based recommendations slide for rebalancing overloaded departments. Verify slide titles and every numeric claim through presentation info and text extraction.\n\nThe main agent reconciles the two writer read-backs and the spreadsheet report against workload_data.json (22-course, instructor and department controls). No extra verification or repair wave is allowed.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_31",
+        "text": "You are helping collect faculty workload data from a Canvas LMS. For each of the following course IDs: [2, 4, 5, 6, 7, 8], perform these three read-only operations using the Canvas MCP tools:\n\n1. `canvas_get_course_grades` with course_id=<id>, type=[\"TeacherEnrollment\"], enrollment_state=[\"active\"] — this returns the teachers of the course (user_id values).\n2. `canvas_list_course_users` with course_id=<id> — this returns all users in the course with their id, name, and email. Use it to map each teacher user_id to a human-readable name (name field).\n3. `canvas_list_assignments` with course_id=<id> — count the total number of assignment objects returned.\n\nNote: Some courses may have NO teachers (empty TeacherEnrollment list). Some course user lists may be long — that is fine, you only need to find names for the teacher user_ids.\n\nReturn ONLY a compact JSON array (no other commentary) with one object per course, in this exact format:\n[\n  {\"course_id\": 2, \"teachers\": [{\"user_id\": 123, \"name\": \"Dr. Example Name\"}], \"assignment_count\": 10},\n  ...\n]\n- \"teachers\" must list every teacher found; if none, use an empty array [].\n- \"assignment_count\" must be the exact count of assignments.\n- Use the exact user_id values and names from Canvas (name field, e.g. \"Dr. David Scott\").\nDo not skip any course. Double-check each course ID is included in your output.\nGather Canvas course data set 1",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_31",
+        "text": "You are helping collect faculty workload data from a Canvas LMS. For each of the following course IDs: [9, 10, 11, 12, 13, 14], perform these three read-only operations using the Canvas MCP tools:\n\n1. `canvas_get_course_grades` with course_id=<id>, type=[\"TeacherEnrollment\"], enrollment_state=[\"active\"] — this returns the teachers of the course (user_id values).\n2. `canvas_list_course_users` with course_id=<id> — this returns all users in the course with their id, name, and email. Use it to map each teacher user_id to a human-readable name (name field).\n3. `canvas_list_assignments` with course_id=<id> — count the total number of assignment objects returned.\n\nNote: Some courses may have NO teachers (empty TeacherEnrollment list). Some course user lists may be long — that is fine, you only need to find names for the teacher user_ids.\n\nReturn ONLY a compact JSON array (no other commentary) with one object per course, in this exact format:\n[\n  {\"course_id\": 9, \"teachers\": [{\"user_id\": 123, \"name\": \"Dr. Example Name\"}], \"assignment_count\": 10},\n  ...\n]\n- \"teachers\" must list every teacher found; if none, use an empty array [].\n- \"assignment_count\" must be the exact count of assignments.\n- Use the exact user_id values and names from Canvas (name field, e.g. \"Dr. David Scott\").\nDo not skip any course. Double-check each course ID is included in your output.\nGather Canvas course data set 2",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_31",
+        "text": "You are helping collect faculty workload data from a Canvas LMS. For each of the following course IDs: [15, 16, 17, 18, 19, 20], perform these three read-only operations using the Canvas MCP tools:\n\n1. `canvas_get_course_grades` with course_id=<id>, type=[\"TeacherEnrollment\"], enrollment_state=[\"active\"] — this returns the teachers of the course (user_id values).\n2. `canvas_list_course_users` with course_id=<id> — this returns all users in the course with their id, name, and email. Use it to map each teacher user_id to a human-readable name (name field).\n3. `canvas_list_assignments` with course_id=<id> — count the total number of assignment objects returned.\n\nNote: Some courses may have NO teachers (empty TeacherEnrollment list). Some course user lists may be long — that is fine, you only need to find names for the teacher user_ids.\n\nReturn ONLY a compact JSON array (no other commentary) with one object per course, in this exact format:\n[\n  {\"course_id\": 15, \"teachers\": [{\"user_id\": 123, \"name\": \"Dr. Example Name\"}], \"assignment_count\": 10},\n  ...\n]\n- \"teachers\" must list every teacher found; if none, use an empty array [].\n- \"assignment_count\" must be the exact count of assignments.\n- Use the exact user_id values and names from Canvas (name field, e.g. \"Dr. David Scott\").\nDo not skip any course. Double-check each course ID is included in your output.\nGather Canvas course data set 3",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_31",
+        "text": "You are helping collect faculty workload data from a Canvas LMS. For each of the following course IDs: [21, 22], perform these three read-only operations using the Canvas MCP tools:\n\n1. `canvas_get_course_grades` with course_id=<id>, type=[\"TeacherEnrollment\"], enrollment_state=[\"active\"] — this returns the teachers of the course (user_id values).\n2. `canvas_list_course_users` with course_id=<id> — this returns all users in the course with their id, name, and email. Use it to map each teacher user_id to a human-readable name (name field).\n3. `canvas_list_assignments` with course_id=<id> — count the total number of assignment objects returned.\n\nNote: Some courses may have NO teachers (empty TeacherEnrollment list). Some course user lists may be long — that is fine, you only need to find names for the teacher user_ids.\n\nReturn ONLY a compact JSON array (no other commentary) with one object per course, in this exact format:\n[\n  {\"course_id\": 21, \"teachers\": [{\"user_id\": 123, \"name\": \"Dr. Example Name\"}], \"assignment_count\": 10},\n  ...\n]\n- \"teachers\" must list every teacher found; if none, use an empty array [].\n- \"assignment_count\" must be the exact count of assignments.\n- Use the exact user_id values and names from Canvas (name field, e.g. \"Dr. David Scott\").\nDo not skip any course. Double-check each course ID is included in your output.\nGather Canvas course data set 4",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "input_hash": "9a02826d5eff0f01fd5ccbd8310619162c42631d3a2f6224e7c244167c7aeb8c",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-hr-promotion-review",
+    "task_text": "Our annual promotion cycle is coming up and I need to identify eligible candidates across the company. An employee is eligible for promotion if they have a performance rating of 4 or higher and at least 5 years of experience. Please pull this data from our data warehouse.\n\nCreate an Excel file called Promotion_Candidates.xlsx in the workspace with two sheets. The first sheet \"By Department\" should have columns Department, Eligible_Count, Avg_Salary rounded to 2 decimals, Avg_Experience rounded to 1 decimal, and Avg_Rating rounded to 2 decimals. Sort by Department alphabetically.\n\nThe second sheet \"Summary\" should have Metric and Value columns with Total_Eligible being the total count across all departments, Avg_Salary_Eligible as the weighted average salary of all eligible employees rounded to 2 decimals, and Avg_Experience_Eligible as the weighted average experience rounded to 1 decimal.\n\nAfter creating the report, send an email to hr-director@company.com with subject \"Promotion Cycle: Eligible Candidates Summary\" that mentions the total number of eligible candidates and briefly describes the department with the highest count.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Freeze the task-visible agent-workspace absolute path from the Visible Boundary/current working directory. Run one set-based warehouse query using the literal predicate `performance_rating >= 4 AND years_of_experience >= 5`, returning each department's eligible count and raw salary/experience/rating aggregates plus company-wide aggregates. Compute the requested weighted summary from employee aggregates, not averages of department averages, and select the highest-count department deterministically.\n\nFrom that one frozen result, create `<agent_workspace>/Promotion_Candidates.xlsx` with only the two exact sheets/headers/metrics in the task, alphabetical departments, literal values, and requested rounding; in the same native-parallel response send exactly one email to `hr-director@company.com` with subject `Promotion Cycle: Eligible Candidates Summary`. Read the two populated ranges back once, reconcile them to the query, and finish. Do not search Sent folders, retry folder aliases, read the sent message back, or add a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are planning a task. Do NOT execute the task — only produce a decomposition plan with ordered subtasks, each specifying: dispatch decision (self / explore / coder), and whether it is independent (parallelizable) or must wait on another subtask's output.\n\nTASK DESCRIPTION (given by the user):\nOur annual promotion cycle is coming up and I need to identify eligible candidates across the company. An employee is eligible for promotion if they have a performance rating of 4 or higher AND at least 5 years of experience. Pull this data from the data warehouse.\n\nDeliverables:\n1. Create an Excel file called `Promotion_Candidates.xlsx` in the workspace directory `/workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-hr-promotion-review/workspace` with two sheets:\n   - Sheet \"By Department\": columns Department, Eligible_Count, Avg_Salary (rounded to 2 decimals), Avg_Experience (rounded to 1 decimal), Avg_Rating (rounded to 2 decimals). Sorted by Department alphabetically.\n   - Sheet \"Summary\": columns Metric and Value with rows: Total_Eligible = total count across all departments; Avg_Salary_Eligible = weighted average salary of all eligible employees rounded to 2 decimals; Avg_Experience_Eligible = weighted average experience rounded to 1 decimal.\n2. After creating the report, send an email to hr-director@company.com with subject \"Promotion Cycle: Eligible Candidates Summary\" that mentions the total number of eligible candidates and briefly describes the department with the highest count.\n\nAVAILABLE TOOLS/CONTEXT:\n- Data warehouse: Snowflake MCP tools (mcp__snowflake__list_databases, list_schemas, list_tables, describe_table, read_query). You may inspect the schema to find the employee/HR table(s) and determine column names for department, salary, experience (years), performance rating. The exact table location is unknown — exploration is part of the task.\n- Excel MCP tools (mcp__excel__*) for creating the workbook and sheets.\n- Email MCP tools (mcp__emails__send_email) for sending the email.\n- Filesystem MCP tools and local python execution (mcp__local__python_execute) are also available.\n\nCONSTRAINTS:\n- The workspace directory is the only writable location.\n- Rounding requirements are exact (salary 2dp, experience 1dp, rating 2dp).\n- The Summary sheet must use weighted averages (weighted by employee count per department, presumably equal to each employee's salary/experience — confirm from data).\n\nDELIVERABLE OF THE PLAN:\nReturn an ordered list of subtasks (e.g., 1. Explore warehouse schema to locate employee table (explore agent, independent); 2. Query eligible employees and compute aggregates (coder, depends on 1); 3. Build Excel file (coder, depends on 2); 4. Send email (self or coder, depends on 3); 5. Verify file contents (self, depends on 3)). For each subtask give: dispatch decision, dependencies/parallelizability, and a brief description of what it should do and how to verify it. Also flag any risks (e.g., unknown column names, data types, missing values, multiple tables).\nPlan promotion candidates task",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_10",
+        "text": "Create an Excel workbook at exactly this path:\n/workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-hr-promotion-review/workspace/Promotion_Candidates.xlsx\n\nUse Python with openpyxl via mcp__local__python_execute (openpyxl is available; if not, use the mcp__excel__* tools instead). The file must contain EXACTLY two worksheets with these names and contents.\n\nSHEET 1 — name: \"By Department\"\nHeader row (row 1): Department | Eligible_Count | Avg_Salary | Avg_Experience | Avg_Rating\nData rows (rows 2-8, already sorted alphabetically by department):\nEngineering | 1424 | 60600.85 | 14.1 | 4.29\nFinance    | 1444 | 58930.16 | 13.9 | 4.29\nHR         | 1412 | 60658.10 | 14.4 | 4.31\nOperations | 1371 | 58720.23 | 14.4 | 4.29\nR&D        | 1368 | 58410.80 | 14.5 | 4.28\nSales      | 1432 | 60014.46 | 14.2 | 4.26\nSupport    | 1363 | 60447.76 | 14.4 | 4.30\n\nSHEET 2 — name: \"Summary\"\nHeader row: Metric | Value\nRows:\nTotal_Eligible | 9814\nAvg_Salary_Eligible | 59688.45\nAvg_Experience_Eligible | 14.3\n\nREQUIREMENTS:\n- All numeric cells must be written as NUMBERS (not strings). Apply number formats so they display with the correct precision: Avg_Salary cells with 2 decimals (e.g. 0.00), Avg_Experience cells with 1 decimal (e.g. 0.0), Avg_Rating with 2 decimals (e.g. 0.00), Eligible_Count / Total_Eligible as integers.\n- The workbook must have ONLY these two sheets (remove the default \"Sheet\" if openpyxl creates one).\n- The default first sheet should be \"By Department\" (order: By Department first, Summary second).\n- No extra rows, columns, or data.\n\nVERIFY after writing: open the file (e.g. with openpyxl load_workbook) and confirm: sheet names exactly [\"By Department\", \"Summary\"]; headers match exactly; all 7 data rows present in the order listed above with exact values; Summary rows exact; numeric types are int/float. Print a verification summary.\n\nREPORT BACK: the absolute file path, confirmation the file exists (with file size), and the verification results (sheet names, row counts, spot-checked cell values). Do not modify anything else in the workspace.\nCreate Promotion_Candidates.xlsx",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

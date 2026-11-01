@@ -1,0 +1,35 @@
+{
+  "input_hash": "e4a43488f46802339d2b50b0381293d03e43ab0b3aa3be0bc8fc2152be1a5d91",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "sf-sales-customer-loyalty",
+    "task_text": "I need a customer loyalty analysis broken down by both segment and region. Pull data from the sales data warehouse showing customer lifetime value patterns across different segment-region combinations.\n\nCreate an Excel file called Customer_Loyalty_Report.xlsx with two sheets. The \"Customer Loyalty\" sheet should have Segment_Region (formatted as \"Segment - Region\"), Customers count, Avg_LTV (average lifetime value) rounded to 2 decimals, and Total_Orders. Sort by Segment alphabetically then Avg_LTV descending within each segment.\n\nThe \"Summary\" should have Total_Combinations, Highest_LTV_Group (the segment-region combo with highest avg LTV), and Overall_Avg_LTV as a weighted average by customer count. Include a header row with columns `Metric` and `Value`, with one data row per metric below it. Base all metrics on ALL orders in the data warehouse — do not filter orders by status unless explicitly asked.\n\nSend an email to marketing@company.com with subject \"Customer Loyalty Analysis\" highlighting the highest-value segment-region combinations.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete this compact warehouse aggregation directly in the main agent; do not dispatch any sub-agent. First aggregate all order rows by `CUSTOMER_ID` without a status filter. Left-join those per-customer order counts to the customer table, then group customers by their exact `SEGMENT` and `REGION`. For every group return `Customers = count of customer rows`, `Avg_LTV = average of customer LIFETIME_VALUE`, and `Total_Orders = sum of the joined per-customer order counts`; this avoids multiplying lifetime value by the number of orders. Format the key as `Segment - Region`, sort by Segment alphabetically and raw Avg_LTV descending within each segment, choose the highest-LTV group deterministically, and compute Overall_Avg_LTV from the customer-level values, equivalently weighting each group average by its customer count.\n\nAfter freezing the complete group rows and summary, freeze the task-visible agent-workspace absolute path from the Visible Boundary/current working directory. Start creation of `<agent_workspace>/Customer_Loyalty_Report.xlsx` and the single required email in the same native-parallel response. Create only `Customer Loyalty(Segment_Region,Customers,Avg_LTV,Total_Orders)` and `Summary(Metric,Value)` with exactly `Total_Combinations`, `Highest_LTV_Group`, and `Overall_Avg_LTV`; use literal numeric cells, two-decimal LTV values, and read both sheets back once. Send exactly one email to `marketing@company.com` with subject `Customer Loyalty Analysis`, highlighting the verified highest-value groups. Reconcile counts, sort order, and summary values before completion; do not add Sent-folder discovery/readback or a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are planning a multi-step task. Do NOT execute the task — produce a detailed, ordered plan.\n\nTASK DESCRIPTION:\nCreate a customer loyalty analysis broken down by both segment and region, pulling data from a sales data warehouse (Snowflake, accessible via mcp__snowflake__* read tools). Deliverables:\n\n1. An Excel file named `Customer_Loyalty_Report.xlsx` (create it inside the workspace directory: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-sales-customer-loyalty/workspace) with two sheets:\n   - Sheet \"Customer Loyalty\": columns Segment_Region (formatted as \"Segment - Region\"), Customers count, Avg_LTV (average lifetime value, rounded to 2 decimals), Total_Orders. Sort by Segment alphabetically, then Avg_LTV descending within each segment.\n   - Sheet \"Summary\": rows with Metric/Value columns containing Total_Combinations, Highest_LTV_Group (segment-region combo with the highest avg LTV), and Overall_Avg_LTV (weighted average by customer count). Include a header row with columns `Metric` and `Value`, one data row per metric below it.\n   - Base all metrics on ALL orders in the data warehouse — do not filter orders by status unless explicitly asked.\n2. Send an email to marketing@company.com with subject \"Customer Loyalty Analysis\" highlighting the highest-value segment-region combinations (use mcp__emails__send_email).\n\nYOUR PLANNING WORK:\n- First, explore the Snowflake data warehouse (read-only) to identify the relevant database/schema/tables. Use mcp__snowflake__list_databases, list_schemas, list_tables, describe_table, and read_query (SELECT only) to understand the schema. Look for a sales/fact table with orders, customer dimension with segment, region, and any LTV or order-value fields. Determine how lifetime value should be computed (e.g., sum of order values per customer, or an existing LTV column) and how orders are counted.\n- Identify whether segment/region are on a customer table joined to orders, or on the orders table itself.\n- Determine the exact SQL needed to compute: per segment-region: customer count (distinct customers), avg LTV (per customer lifetime value), total orders; plus overall weighted average LTV by customer count.\n- Check the email server connection (mcp__emails__check_connection) and confirm send_email is available.\n\nDELIVERABLE — return a plan with ordered subtasks, each specifying:\n- dispatch decision: self (main agent), explore, or coder\n- whether the subtask is independent (parallelizable) or depends on prior output\n- concrete details (table names, column names, SQL approach, file path for the xlsx, email recipient/subject)\n\nAlso list any risks (e.g., ambiguous LTV definition, null handling, duplicate orders) and how to handle them. Keep the plan concise but complete.\nPlan customer loyalty analysis task",
+        "is_plan": true
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake",
+          "emails"
+        ],
+        "is_plan": true
+      }
+    ]
+  }
+}

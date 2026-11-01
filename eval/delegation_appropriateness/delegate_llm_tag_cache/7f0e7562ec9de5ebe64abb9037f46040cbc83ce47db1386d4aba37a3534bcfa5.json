@@ -1,0 +1,60 @@
+{
+  "input_hash": "7f0e7562ec9de5ebe64abb9037f46040cbc83ce47db1386d4aba37a3534bcfa5",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "wc-order-monthly-ppt-gcal",
+    "task_text": "The e-commerce manager wants a monthly sales performance presentation to share with stakeholders and needs a planning meeting scheduled. Analyze WooCommerce order data broken down by month to compute monthly revenue totals and order counts across all order statuses.\n\nCreate a PowerPoint presentation called Monthly_Sales_Review.pptx with the following slides. Slide 1 should be a title slide with \"Monthly Sales Performance Review\" as the title. Slide 2 should be titled \"Monthly Revenue Overview\" and contain a table showing each month (January through December), the number of orders, and the total revenue for that month. Slide 3 should be titled \"Order Volume Trends\" and describe the monthly order volume patterns. Slide 4 should be titled \"Key Insights\" and highlight the peak revenue month, the lowest revenue month, and total annual revenue. Slide 5 should be titled \"Next Steps\" with planned actions for improving sales performance.\n\nSchedule a Google Calendar event called \"Monthly Sales Review\" on 2026-04-15 from 14:00 to 15:00 with a description noting it is a stakeholder review of monthly sales performance.\n\nEmail the presentation to ecommerce_manager@store.com with subject \"Monthly Sales Performance Review\" and include the key revenue highlights in the email body.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent and dispatch no sub-agent. The complete order catalog, twelve monthly rows, five-slide deck, one fixed meeting, and one email form one compact workflow.\n\nResolve the workspace dynamically. Start the independent meeting inventory and order retrieval in the same response: call `list_events(timeMin=\"2026-04-15T00:00:00\", timeMax=\"2026-04-16T00:00:00\", maxResults=100, orderBy=\"startTime\")`, and call `woo_orders_list(perPage=100,page=1)` without `status`. Continue increasing order pages until a short or empty page, preserving all observed statuses; do not query by status/month and do not modify orders. Parse every observed order date and numeric total once, aggregate January through December counts and revenue including zero months, and freeze peak month, lowest month, and annual revenue with deterministic source-order tie handling.\n\nCreate `Monthly_Sales_Review.pptx` exactly once with one presentation ID and exactly the five requested slides, including all twelve monthly rows and insights derived only from the frozen table; read back the full slide inventory and verify every title/value. Filter the event inventory locally to exact `Monthly Sales Review` at 14:00–15:00, create once only if missing with exact `start.dateTime`/`end.dateTime` and description, retain the created/reused ID, and call `get_event`. Only after deck and event readback, check Sent mail for the exact recipient/subject; send one missing email with verified highlights and the presentation in the supported workspace-path `attachments` list, never retry an ambiguous send, and read back the attachment record before `claim_done`.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Analyze WooCommerce order data for the user's task. Retrieve all orders across all available statuses, paginate as needed, and compute January–December monthly order counts and total revenue, using order totals and order dates (clarify treatment of dates/timezones if needed). Report a complete month-by-month table, annual revenue, peak and lowest revenue months, and any caveats. Read-only: do not create/update/delete anything. This is needed to build a 5-slide PowerPoint and email highlights.\nAnalyze monthly WooCommerce sales",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_4",
+        "text": "Create a PowerPoint presentation at /workspace/dumps/kimi-code_GPT-5.6-Sol/SingleUserTurn-wc-order-monthly-ppt-gcal/workspace/Monthly_Sales_Review.pptx using the exact 2025 WooCommerce monthly analysis below. Use 5 slides: 1 title slide title exactly 'Monthly Sales Performance Review'; 2 title 'Monthly Revenue Overview' with a table columns Month, Orders, Total Revenue and rows January–December; 3 title 'Order Volume Trends' describing patterns (zero Jan/Feb, growth March–June, dip July, high volumes Aug/Sep/Dec tied at 17, etc.); 4 title 'Key Insights' highlighting peak revenue June $9,555.69 / 11 orders, lowest revenue Jan and Feb $0 / no orders, annual revenue $49,705.39 (also mention lowest active month November $1,212.05 / 9 orders); 5 title 'Next Steps' with planned actions to improve performance. Make it stakeholder-ready and polished with readable formatting. Include a note that analysis covers calendar year 2025, all statuses, gross sum of WooCommerce order totals, and UTC date_created month assignment. Verify the file exists and report its path. Data: Jan 0 $0.00; Feb 0 $0.00; Mar 12 $1,636.15; Apr 9 $4,349.71; May 10 $6,023.29; Jun 11 $9,555.69; Jul 8 $3,921.19; Aug 17 $3,873.37; Sep 17 $5,842.43; Oct 11 $4,447.76; Nov 9 $1,212.05; Dec 17 $8,843.75; total 121 orders $49,705.39. Do not create calendar events or send email.\nBuild monthly sales presentation",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_6",
+        "text": "Complete two authorized external writes for this task, in order: (1) Create Google Calendar event titled exactly 'Monthly Sales Review' on 2026-04-15 from 14:00 to 15:00. Use timezone America/New_York if a timezone is required/appropriate; include description exactly or substantively: 'Stakeholder review of monthly sales performance.' No attendees were specified. (2) Send an email to ecommerce_manager@store.com with subject exactly 'Monthly Sales Performance Review', attach `/workspace/dumps/kimi-code_GPT-5.6-Sol/SingleUserTurn-wc-order-monthly-ppt-gcal/workspace/Monthly_Sales_Review.pptx`, and include key revenue highlights in the body: calendar year 2025 all-status gross order-total analysis; annual revenue $49,705.39 across 121 orders; peak June $9,555.69 from 11 orders; lowest revenue January and February $0.00 with no orders; lowest active month November $1,212.05 from 9 orders. Mention August, September, and December tied for highest order volume at 17 orders. Verify successful results and return event ID and email/send result. Do not alter the presentation or perform unrelated actions.\nSchedule review and email deck",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "ppt",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "calendar",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

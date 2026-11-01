@@ -1,0 +1,80 @@
+{
+  "schema": "delegation-appropriateness-v1",
+  "gt_input_schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "label_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "function_labels": {
+    "write": [
+      "calendar",
+      "email",
+      "excel",
+      "gform",
+      "gsheet",
+      "notion",
+      "other-write",
+      "pdf",
+      "ppt",
+      "processor",
+      "word"
+    ],
+    "read": [
+      "canvas",
+      "emails",
+      "external-fetch",
+      "filesystem-workspace",
+      "github",
+      "howtocook",
+      "notion",
+      "playwright-web",
+      "rail_12306",
+      "scholarly-arxiv",
+      "snowflake",
+      "woocommerce",
+      "yahoo-finance",
+      "youtube"
+    ],
+    "matchable_write": [
+      "calendar",
+      "email",
+      "excel",
+      "gform",
+      "gsheet",
+      "notion",
+      "pdf",
+      "ppt",
+      "processor",
+      "word"
+    ]
+  },
+  "gt_path": "eval/delegation_appropriateness/delegate_gt_tag",
+  "dump": "results/glm-5.3-flash/auto-spec",
+  "summary": "eval/eval_results/glm-5.3-flash/auto-spec/input_summary.csv",
+  "cache": "eval/delegation_appropriateness/delegate_llm_tag_cache",
+  "gt_input_vocab": "expanded-20260912-v2",
+  "delegation_rates": {
+    "udr": 0.2696629213483146,
+    "odr": 0.5064935064935064,
+    "udr_cnt": 24,
+    "odr_cnt": 39,
+    "n_need": 89,
+    "n_noneed": 77,
+    "n_missing": 0
+  },
+  "n_gt_tasks": 166,
+  "n_covered": 166,
+  "n_missing": 0,
+  "n_need": 89,
+  "n_delegated": 104,
+  "plan_nodes_excluded": 0,
+  "hit_scores": {
+    "gt_total": 265,
+    "actual_total": 199,
+    "matched": 86,
+    "recall": 0.32452830188679244,
+    "precision": 0.4321608040201005,
+    "f1": 0.3706896551724138
+  },
+  "missing_tasks": []
+}

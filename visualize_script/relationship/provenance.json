@@ -1,0 +1,256 @@
+{
+  "source": "source_summary.csv",
+  "source_sha256": "6c06257650e9cc13d398c272212092065dd9aac1ecd0649f369a1ebf3e515a64",
+  "styles_source": "../msq_ranking/draw_msq.py",
+  "icons_source": "../msq_ranking/icons",
+  "data_scope": "All 166 tasks per experiment; mean cost and mean critical steps.",
+  "delta_definition": "MAD minus same-model SA; success-rate differences in percentage points.",
+  "default_mad_mode": "Auto (Spec)",
+  "oracle_mode": "Oracle (oracle-spec, frozen Pareto snapshot)",
+  "cost_axis": {
+    "scale": "symlog",
+    "base": 10,
+    "linthresh_usd": 0.1,
+    "linscale": 1
+  },
+  "table_header_correction": "The duplicate last Delta Performance column is interpreted as Delta Csteps.",
+  "figure_inches": [
+    10.2,
+    10.0
+  ],
+  "png_dpi": 300,
+  "font": "Nimbus Roman",
+  "tag_style": "black full model names",
+  "efficiency_linear_fit": false,
+  "axis_titles": {
+    "y": "Delta Average Success Rate per task (%)",
+    "cost_x": "Delta Average Cost per task ($, log scale)",
+    "efficiency_x": "Delta Average Csteps per task"
+  },
+  "label_fontsize_pt": 15,
+  "icon_max_dimension_pt": 25,
+  "matplotlib_version": "3.10.3",
+  "composite": "combine/performance_cost_efficiency.*",
+  "quadrant_annotation_fontsize_pt": 20,
+  "tick_fontsize_pt": 20,
+  "layout": {
+    "efficiency": {
+      "label_offsets_pt": {
+        "DeepSeek-V4-Flash-0731-Plan1st": [
+          -20,
+          -30
+        ],
+        "DeepSeek-V4-Flash-0731-Oracle": [
+          20,
+          -60
+        ],
+        "DeepSeek-V4-Flash-0731-Spec": [
+          20,
+          0
+        ],
+        "DeepSeek-V4-Flash-0731-Gen": [
+          20,
+          0
+        ],
+        "Claude-Sonnet-5-Spec": [
+          20,
+          0
+        ],
+        "GLM-5.3-Flash-Spec": [
+          -20,
+          0
+        ],
+        "Qwen-3.8-Max-Spec": [
+          20,
+          0
+        ],
+        "GPT-5.6-Sol-Spec": [
+          -20,
+          0
+        ],
+        "Minimax-M3-Spec": [
+          20,
+          0
+        ],
+        "GLM-5.3-Spec": [
+          20,
+          0
+        ],
+        "Kimi-K3-Spec": [
+          -20,
+          0
+        ]
+      },
+      "label_overlaps": [],
+      "label_icon_overlaps": [],
+      "clipped_labels": [],
+      "icon_overlaps": [],
+      "points": [
+        {
+          "abbreviation": "V4-F-Gen",
+          "x": 0.18072289159999855,
+          "y": -1.8072289156626624
+        },
+        {
+          "abbreviation": "V4-F-Spec",
+          "x": 1.5662650602999975,
+          "y": 0.0
+        },
+        {
+          "abbreviation": "V4-F-Plan1st",
+          "x": 9.7771084337,
+          "y": -4.216867469879531
+        },
+        {
+          "abbreviation": "V4-F-Oracle",
+          "x": -6.656626506000002,
+          "y": -3.6144578313253106
+        },
+        {
+          "abbreviation": "Sonnet-5-Spec",
+          "x": 2.4337349398000043,
+          "y": -4.216867469879517
+        },
+        {
+          "abbreviation": "5.6-Sol-Spec",
+          "x": 5.524096385500002,
+          "y": -21.686746987951814
+        },
+        {
+          "abbreviation": "3.8-Max-Spec",
+          "x": -1.656626506000002,
+          "y": 10.240963855421697
+        },
+        {
+          "abbreviation": "5.3-Spec",
+          "x": -7.144578313300002,
+          "y": 4.216867469879517
+        },
+        {
+          "abbreviation": "K3-Spec",
+          "x": -4.253012048199999,
+          "y": 10.240963855421683
+        },
+        {
+          "abbreviation": "M3-Spec",
+          "x": 7.608433734899997,
+          "y": 3.6144578313253035
+        },
+        {
+          "abbreviation": "5.3-F-Spec",
+          "x": -3.9277108434,
+          "y": 1.2048192771084416
+        }
+      ]
+    },
+    "cost": {
+      "label_offsets_pt": {
+        "DeepSeek-V4-Flash-0731-Plan1st": [
+          -20,
+          0
+        ],
+        "DeepSeek-V4-Flash-0731-Oracle": [
+          -20,
+          -30
+        ],
+        "DeepSeek-V4-Flash-0731-Spec": [
+          -35,
+          -18
+        ],
+        "DeepSeek-V4-Flash-0731-Gen": [
+          -80,
+          60
+        ],
+        "Claude-Sonnet-5-Spec": [
+          -20,
+          -44
+        ],
+        "GLM-5.3-Flash-Spec": [
+          -20,
+          -18
+        ],
+        "Qwen-3.8-Max-Spec": [
+          -20,
+          0
+        ],
+        "GPT-5.6-Sol-Spec": [
+          -20,
+          18
+        ],
+        "Minimax-M3-Spec": [
+          -20,
+          0
+        ],
+        "GLM-5.3-Spec": [
+          -20,
+          18
+        ],
+        "Kimi-K3-Spec": [
+          20,
+          0
+        ]
+      },
+      "label_overlaps": [],
+      "label_icon_overlaps": [],
+      "clipped_labels": [],
+      "icon_overlaps": [],
+      "points": [
+        {
+          "abbreviation": "V4-F-Gen",
+          "x": 0.2912758493,
+          "y": -1.8072289156626624
+        },
+        {
+          "abbreviation": "V4-F-Spec",
+          "x": 0.35804442159999994,
+          "y": 0.0
+        },
+        {
+          "abbreviation": "V4-F-Plan1st",
+          "x": 0.3031049036,
+          "y": -4.216867469879531
+        },
+        {
+          "abbreviation": "V4-F-Oracle",
+          "x": 0.5594840783,
+          "y": -3.6144578313253106
+        },
+        {
+          "abbreviation": "Sonnet-5-Spec",
+          "x": 3.1919391144999993,
+          "y": -4.216867469879517
+        },
+        {
+          "abbreviation": "5.6-Sol-Spec",
+          "x": 4.2003888795,
+          "y": -21.686746987951814
+        },
+        {
+          "abbreviation": "3.8-Max-Spec",
+          "x": 1.0249568252999999,
+          "y": 10.240963855421697
+        },
+        {
+          "abbreviation": "5.3-Spec",
+          "x": 0.5528541566000003,
+          "y": 4.216867469879517
+        },
+        {
+          "abbreviation": "K3-Spec",
+          "x": -0.3587297650000001,
+          "y": 10.240963855421683
+        },
+        {
+          "abbreviation": "M3-Spec",
+          "x": 0.30453074700000005,
+          "y": 3.6144578313253035
+        },
+        {
+          "abbreviation": "5.3-F-Spec",
+          "x": 0.0880632469,
+          "y": 1.2048192771084416
+        }
+      ]
+    }
+  }
+}

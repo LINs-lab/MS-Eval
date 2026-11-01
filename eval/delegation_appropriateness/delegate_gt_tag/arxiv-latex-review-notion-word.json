@@ -1,0 +1,374 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "arxiv-latex-review-notion-word",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/arxiv-latex-review-notion-word.task.md",
+    "oracle166_sha256": "920bd49da08800ccdaaf79139b1f3a32729d181d878d493d03bd4aedcc13950b"
+  },
+  "label_cache_keys": [
+    "da6dad6a7c086cda97684177c57fb32636f90b6c07a4edb1996f9b90b31b4aec"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (academic-literature-researcher 0): Reader for retained paper 1. Use the local repository read_paper tool with paper_id = that literal assigned ID, read through ALL sections of the paper (not just the abstract) to understand the methodology and key results, and return EXACTLY the structured report {paper_id, title, full authors, published date, key method, source-backed findings, method category, section coverage}. Read-only: do not create Notion, Word, Google Sheet, or intermediate files.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (academic-literature-researcher 1): Reader for retained paper 2 — same literal recipe, only paper_id substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (academic-literature-researcher 2): Reader for retained paper 3 — same literal recipe, only paper_id substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (external-workflow-operator 0): Use one coder sub-agent to own the single Notion page exclusively. Search for LLM Fine-Tuning Knowledge Base, create at most one page, add one substantive block per frozen paper with title, method, and findings, and read it back. Return page ID/title, paper coverage, block count, and validation. Do not write the Word document or Google Sheet.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 0): Use one coder sub-agent to own LLM_Paper_Synthesis.docx exclusively. Create it exactly once with the required heading, introduction, and one author/method/results section for every frozen paper. Read it back and return path, headings, retained-paper coverage, and validation. Do not modify Notion or Google Sheets.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "gsheet",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 1): Use one coder sub-agent to own the Google Sheet LLM Paper Registry exclusively. Create it once with the exact six columns and one row per frozen paper, preserving full authors and source dates and using controlled Method_Category values. Read it back and return spreadsheet/sheet IDs, headers, row count, and validation. Do not write Notion or Word state.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (academic-literature-researcher 0): Reader for retained paper 1. Use the local repository read_paper tool with paper_id = that literal assigned ID, read through ALL sections of the paper (not just the abstract) to understand the methodology and key results, and return EXACTLY the structured report {paper_id, title, full authors, published date, key method, source-backed findings, method category, section coverage}. Read-only: do not create Notion, Word, Google Sheet, or intermediate files.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (academic-literature-researcher 1): Reader for retained paper 2 — same literal recipe, only paper_id substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (academic-literature-researcher 2): Reader for retained paper 3 — same literal recipe, only paper_id substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (external-workflow-operator 0): Use one coder sub-agent to own the single Notion page exclusively. Search for LLM Fine-Tuning Knowledge Base, create at most one page, add one substantive block per frozen paper with title, method, and findings, and read it back. Return page ID/title, paper coverage, block count, and validation. Do not write the Word document or Google Sheet.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 0): Use one coder sub-agent to own LLM_Paper_Synthesis.docx exclusively. Create it exactly once with the required heading, introduction, and one author/method/results section for every frozen paper. Read it back and return path, headings, retained-paper coverage, and validation. Do not modify Notion or Google Sheets.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "gsheet",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 1): Use one coder sub-agent to own the Google Sheet LLM Paper Registry exclusively. Create it once with the exact six columns and one row per frozen paper, preserving full authors and source dates and using controlled Method_Category values. Read it back and return spreadsheet/sheet IDs, headers, row count, and validation. Do not write Notion or Word state.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:3:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:4:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 4,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:5:gsheet",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 5,
+      "role": "gsheet",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        0,
+        1,
+        2
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "gsheet": 1,
+      "notion": 1,
+      "word": 1
+    },
+    "read": {
+      "scholarly-arxiv": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 6,
+    "units": 4,
+    "write_units": 3,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

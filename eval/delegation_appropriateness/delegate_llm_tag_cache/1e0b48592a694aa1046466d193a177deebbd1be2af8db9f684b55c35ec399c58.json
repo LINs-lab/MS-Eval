@@ -1,0 +1,71 @@
+{
+  "input_hash": "1e0b48592a694aa1046466d193a177deebbd1be2af8db9f684b55c35ec399c58",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "sf-hr-dept-budget-ppt-email",
+    "task_text": "I need to prepare a department budget presentation for our upcoming board meeting. Please pull the current department headcount and budget data from the company HR data warehouse and create a PowerPoint presentation called HR_Department_Overview.pptx. The presentation should have at least seven slides: a title slide called HR Department Budget Overview, one slide per department showing the department name, headcount, budget, and location, and a final summary slide showing total headcount and total budget across all departments. Use the department names exactly as they appear in the data source (for example `HR` and `R&D`) — do not expand or rephrase them.\n\nAfter creating the presentation, also create an Excel file called Department_Budget_Analysis.xlsx with a sheet called Department Summary that has columns Department, Headcount, Budget rounded to 2 decimals, Location, and Budget_Per_Employee which is the budget divided by headcount rounded to 2 decimals, sorted alphabetically by department name. Add a second sheet called Summary with Metric and Value columns showing Total_Headcount, Total_Budget, Avg_Budget_Per_Employee (computed as Total_Budget divided by Total_Headcount) rounded to 2 decimals, and Highest_Budget_Dept. Use these exact metric labels (with underscores) as the Metric values.\n\nThen create a Google Sheet named 'HR Department Tracker' (create it if it does not already exist) and populate it with the same department data, and send an email to hr.directors@company.com with subject HR Department Budget Summary Q1 2026 containing a brief overview of the findings.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent should first query the complete department table once, preserve exact department names such as HR and R&D, compute headcount and budget controls, and freeze alphabetically sorted rows. Then create the three independent deliverables in one wave.\n\n1. Wave 1 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One coder sub-agent owns `HR_Department_Overview.pptx` under one presentation ID. Use the literal source labels as slide text—especially the exact three-character string `R&D`; never expand it to Research and Development. Create the title slide, one slide per returned department with exact name/headcount/budget/location, and the final numeric summary. Use one bounded populate operation per slide, save once, extract the full deck text once, and return the path, slide count/titles, literal department-name coverage, and total checks.\n\n   2. coder 1 (office-report-builder 1): One coder sub-agent owns `Department_Budget_Analysis.xlsx` and writes the exact Department Summary and Summary sheets with literal values, alphabetical rows, Budget_Per_Employee, and the exact underscore metric labels. Use one bulk write per sheet and one read-back.\n\n   3. coder 2 (external-workflow-operator 0): One coder sub-agent owns exactly one `HR Department Tracker` cloud spreadsheet. Search the exact title, create only if absent, write the same literal source labels and rows once, and read it back once.\n\nAfter Wave 1, the main agent checks that all three outputs contain every exact department label including `R&D` and that the totals agree, then sends exactly one email to `hr.directors@company.com` with subject `HR Department Budget Summary Q1 2026`. Do not run row-by-row revalidation or dispatch another wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_20",
+        "text": "Create a PowerPoint presentation file at this exact absolute path:\n/workspace/dumps/kimi-code_claude-sonnet-5/SingleUserTurn-sf-hr-dept-budget-ppt-email/workspace/HR_Department_Overview.pptx\n\nThe presentation is an HR Department Budget Overview for a board meeting. It must have at least 7 slides, structured as follows:\n\nSlide 1 (title slide): Title = \"HR Department Budget Overview\"\n\nThen ONE slide per department (7 slides), each showing the department name, headcount, budget, and location. Use the department names EXACTLY as given (do not expand or rephrase, e.g. keep \"R&D\" and \"HR\"). Each slide should have a clear title (the department name) and body content listing headcount, budget, and location. Here is the data:\n\n1. Engineering — Headcount: 7096, Budget: 633555641.27, Location: New York\n2. Finance — Headcount: 7148, Budget: 616980984.11, Location: Sydney\n3. HR — Headcount: 7077, Budget: 697911374.65, Location: New York\n4. Operations — Headcount: 7120, Budget: 572668189.63, Location: Sydney\n5. R&D — Headcount: 7083, Budget: 715914847.42, Location: Singapore\n6. Sales — Headcount: 7232, Budget: 642575220.92, Location: New York\n7. Support — Headcount: 7244, Budget: 684741486.31, Location: Toronto\n\nFinal slide (summary slide): Title = \"Summary\" or similar. Show Total Headcount = 50000 and Total Budget = 4564347744.31 across all departments.\n\nFormat the budget values nicely (e.g. \"$633,555,641.27\"). Use the pptx tools (create_presentation, add_slide, populate_placeholder / manage_text / add_bullet_points, etc.) to build the deck, then save_presentation to the exact path above. Do not use auto_generate_presentation — build it manually so the content matches exactly.\n\nReturn the final file path and a confirmation that the presentation was saved with the correct number of slides and correct content. Make sure you call save_presentation so the file actually exists on disk.\nBuild HR department PPTX",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_20",
+        "text": "Create an Excel workbook file at this exact absolute path:\n/workspace/dumps/kimi-code_claude-sonnet-5/SingleUserTurn-sf-hr-dept-budget-ppt-email/workspace/Department_Budget_Analysis.xlsx\n\nThe workbook must contain two sheets:\n\nSheet 1 named \"Department Summary\" with these columns (in order): Department, Headcount, Budget, Location, Budget_Per_Employee\nRows are sorted alphabetically by department name. Data:\n\nDepartment | Headcount | Budget | Location | Budget_Per_Employee\nEngineering | 7096 | 633555641.27 | New York | 89283.49\nFinance | 7148 | 616980984.11 | Sydney | 86315.19\nHR | 7077 | 697911374.65 | New York | 98616.84\nOperations | 7120 | 572668189.63 | Sydney | 80430.93\nR&D | 7083 | 715914847.42 | Singapore | 101075.09\nSales | 7232 | 642575220.92 | New York | 88851.66\nSupport | 7244 | 684741486.31 | Toronto | 94525.33\n\nBudget should be a number rounded to 2 decimals (the values above are already at 2 decimals). Budget_Per_Employee is budget divided by headcount, rounded to 2 decimals (values given). Headcount should be an integer. Column headers must be exactly: Department, Headcount, Budget, Location, Budget_Per_Employee.\n\nSheet 2 named \"Summary\" with columns \"Metric\" and \"Value\". Rows (metric labels use underscores exactly as written):\nMetric | Value\nTotal_Headcount | 50000\nTotal_Budget | 4564347744.31\nAvg_Budget_Per_Employee | 91286.95\nHighest_Budget_Dept | R&D\n\nAvg_Budget_Per_Employee is Total_Budget / Total_Headcount rounded to 2 decimals. Total_Budget is the sum of all department budgets. Use these exact metric labels with underscores.\n\nUse the excel tools (create_workbook, create_worksheet, write_data_to_excel, rename_worksheet) to build and save the file to the exact path above. Verify the file exists on disk when done (e.g. via get_workbook_metadata or reading data back).\n\nReturn the final file path and confirmation that both sheets exist with the correct values.\nBuild department budget Excel",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_20",
+        "text": "Create and populate a Google Sheet named 'HR Department Tracker'.\n\nSteps:\n1. Search for an existing spreadsheet named 'HR Department Tracker' using google_sheet search_spreadsheets (query \"HR Department Tracker\"). \n2. If one already exists, use that spreadsheet (get its ID). If it does NOT exist, create it with create_spreadsheet with title 'HR Department Tracker'.\n3. Populate it with the department data. Use the default first sheet (or a sheet named 'Department Summary' — create/rename as needed). Write the following columns as a header row and then the 7 data rows:\n\nColumns: Department, Headcount, Budget, Location, Budget_Per_Employee\n\nEngineering | 7096 | 633555641.27 | New York | 89283.49\nFinance | 7148 | 616980984.11 | Sydney | 86315.19\nHR | 7077 | 697911374.65 | New York | 98616.84\nOperations | 7120 | 572668189.63 | Sydney | 80430.93\nR&D | 7083 | 715914847.42 | Singapore | 101075.09\nSales | 7232 | 642575220.92 | New York | 88851.66\nSupport | 7244 | 684741486.31 | Toronto | 94525.33\n\nPreserve the department names exactly as given (keep \"R&D\" and \"HR\" unexpanded). Budget values as numbers with 2 decimals, Headcount as integers, Budget_Per_Employee as numbers with 2 decimals.\n\nReturn the spreadsheet ID, the sheet name used, and confirmation that the data was written successfully.\nCreate and populate Google Sheet",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_20",
+        "text": "Send an email using the email tools.\n\nRecipient: hr.directors@company.com\nSubject: HR Department Budget Summary Q1 2026\n\nBody: a brief, professional overview of the department headcount and budget findings. Include the key figures: 7 departments (Engineering, Finance, HR, Operations, R&D, Sales, Support), total headcount 50000 across all departments, total budget 4564347744.31, average budget per employee 91286.95, and the department with the highest budget is R&D (715914847.42). Keep it concise and board-appropriate.\n\nUse send_email with the recipient, subject, and body. Return confirmation of successful send (e.g. message ID) and the recipient/subject.\nSend HR budget summary email",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "ppt",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

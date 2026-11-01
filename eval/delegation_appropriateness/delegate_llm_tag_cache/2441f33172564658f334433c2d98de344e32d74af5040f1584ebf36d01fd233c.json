@@ -1,0 +1,32 @@
+{
+  "input_hash": "2441f33172564658f334433c2d98de344e32d74af5040f1584ebf36d01fd233c",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "wc-inventory-alert-gcal",
+    "task_text": "I manage the purchasing department for our online store and I need to set up restock alerts for products that are running low on inventory. Please pull the complete product catalog from our e-commerce platform and identify every product that is currently out of stock, meaning the stock quantity is zero.\n\nFor each out-of-stock product, I need you to create a calendar reminder so we do not forget to reorder. The calendar event should be scheduled on March 10, 2026, from 9:00 AM to 10:00 AM in the America/New_York timezone. The event title should be \"Restock: [Product Name]\" where the product name is truncated to the first 50 characters if it is longer than that. The description should read \"Product ID: [ID]. SKU: [SKU]. Category: [Category Name]. This product is currently out of stock and needs to be reordered.\" Use the first category name listed for each product. If a product has no category, write \"Uncategorized\" as the category.\n\nAfter creating the calendar events, send a single summary email from purchasing@ourstore.com to warehouse@ourstore.com with the subject \"Out of Stock Alert - March 2026\". The email body should list each out-of-stock product on its own line in the format \"ID [Product ID]: [Product Name] (SKU: [SKU])\" sorted by product ID ascending. At the bottom of the email, include a line that says \"Total out-of-stock products: [N]\" where N is the count.\n\nAlso save a plain text file called out_of_stock_report.txt in the workspace. Each line should contain \"[Product ID] - [Product Name] - [SKU] - [Category]\" for the out-of-stock products with each field separated by space-dash-space, sorted by product ID ascending.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Query the WooCommerce product endpoint with the out-of-stock filter at its maximum page size and retain only rows whose literal `stock_quantity` is `0`. Sort the verified list by numeric product ID and derive the report, events, and email from that one list. Write `out_of_stock_report.txt` once. In one native-parallel batch, search the exact 2026-03-10 09:00–10:00 America/New_York interval for every required `Restock: ...` title, create only missing events, and read each resulting event by ID. Then send exactly one email from `purchasing@ourstore.com` to `warehouse@ourstore.com` with subject `Out of Stock Alert - March 2026`, one sorted product line per item, and the exact total-count line.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_65",
+        "text": "Create exactly 5 calendar events in Google Calendar using the `mcp__google_calendar__create_event` tool. These are restock reminders for out-of-stock products.\n\nCOMMON EVENT SCHEDULE (identical for all 5 events):\n- Start: 2026-03-10T09:00:00 with timeZone \"America/New_York\"\n- End: 2026-03-10T10:00:00 with timeZone \"America/New_York\"\n- (No recurrence, no attendees, no location needed)\n\nTHE 5 EVENTS — use these EXACT `summary` (title) and `description` strings verbatim. Copy them character-for-character, including the special characters (® and ‑ U+2011 non-breaking hyphen) and trailing spaces where present. Do NOT re-derive, re-truncate, or \"clean up\" any of these strings.\n\nEVENT 1:\n- summary: \"Restock: Infinity (JBL Glide 500, 20 Hrs Playtime with Quic\"\n- description: \"Product ID: 20. SKU: INFINITY-JBL-GLIDE-1020. Category: Electronics. This product is currently out of stock and needs to be reordered.\"\n\nEVENT 2:\n- summary: \"Restock: BOXTUDIO®- LIGHTBOX- Tabletop Portable PhotoStudio\"\n- description: \"Product ID: 39. SKU: BOXTUDIO-LIGHTBOX-TA-1039. Category: Cameras. This product is currently out of stock and needs to be reordered.\"\n\nEVENT 3 (note: the title ends with a trailing space character):\n- summary: \"Restock: TYPE-C Earphone for OnePlus 8 Pro , OnePlus Eight \"\n- description: \"Product ID: 45. SKU: TYPEC-EARPHONE-FOR-1045. Category: Audio. This product is currently out of stock and needs to be reordered.\"\n\nEVENT 4:\n- summary: \"Restock: 30kg digital scale for shop and kitchen green disp\"\n- description: \"Product ID: 71. SKU: 30KG-DIGITAL-SCALE-1071. Category: Home Appliances. This product is currently out of stock and needs to be reordered.\"\n\nEVENT 5 (note: contains a U+2011 non-breaking hyphen in \"Sound‑Absorption\"):\n- summary: \"Restock: Silencer Panels, Flame Retardant Sound‑Absorption,\"\n- description: \"Product ID: 79. SKU: SILENCER-PANELS-FLAM-1079. Category: TV & Home Theater. This product is currently out of stock and needs to be reordered.\"\n\nNOTES:\n- The title format is \"Restock: \" + the product name truncated to its first 50 characters. The strings above are already correctly truncated — all summaries after the \"Restock: \" prefix are exactly 50 characters. Use them as-is.\n- After creating all 5 events, verify each one by calling `mcp__google_calendar__list_events` for the range 2026-03-10T00:00:00Z to 2026-03-11T00:00:00Z and confirm 5 events exist with the correct titles and descriptions.\n\nDELIVERABLE TO RETURN:\n1. Confirmation that all 5 events were created.\n2. The eventId of each of the 5 events, mapped to its product ID (20, 39, 45, 71, 79).\n3. The verification result from list_events showing the 5 events on March 10, 2026.\n4. Any errors encountered.\n\nDo NOT create any events other than these 5. Do NOT send any emails.\nCreate 5 restock calendar events",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "write",
+        "role": "calendar",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

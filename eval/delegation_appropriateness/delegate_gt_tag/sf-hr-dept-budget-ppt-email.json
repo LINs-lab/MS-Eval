@@ -1,0 +1,233 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "sf-hr-dept-budget-ppt-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/sf-hr-dept-budget-ppt-email.task.md",
+    "oracle166_sha256": "e8359eba19c428e1156e56308208f0a7139715ce3cc2159323371aa19f8c34f3"
+  },
+  "label_cache_keys": [
+    "081e7d41ce9542364c74a57d1cbf98e84b94616a3c947851dc53a8fcfb54b765"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): One coder sub-agent owns `HR_Department_Overview.pptx` under one presentation ID. Use the literal source labels as slide text—especially the exact three-character string `R&D`; never expand it to Research and Development. Create the title slide, one slide per returned department with exact name/headcount/budget/location, and the final numeric summary. Use one bounded populate operation per slide, save once, extract the full deck text once, and return the path, slide count/titles, literal department-name coverage, and total checks.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): One coder sub-agent owns `Department_Budget_Analysis.xlsx` and writes the exact Department Summary and Summary sheets with literal values, alphabetical rows, Budget_Per_Employee, and the exact underscore metric labels. Use one bulk write per sheet and one read-back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "gsheet",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): One coder sub-agent owns exactly one `HR Department Tracker` cloud spreadsheet. Search the exact title, create only if absent, write the same literal source labels and rows once, and read it back once.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): One coder sub-agent owns `HR_Department_Overview.pptx` under one presentation ID. Use the literal source labels as slide text—especially the exact three-character string `R&D`; never expand it to Research and Development. Create the title slide, one slide per returned department with exact name/headcount/budget/location, and the final numeric summary. Use one bounded populate operation per slide, save once, extract the full deck text once, and return the path, slide count/titles, literal department-name coverage, and total checks.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): One coder sub-agent owns `Department_Budget_Analysis.xlsx` and writes the exact Department Summary and Summary sheets with literal values, alphabetical rows, Budget_Per_Employee, and the exact underscore metric labels. Use one bulk write per sheet and one read-back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "gsheet",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): One coder sub-agent owns exactly one `HR Department Tracker` cloud spreadsheet. Search the exact title, create only if absent, write the same literal source labels and rows once, and read it back once.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:ppt",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:2:gsheet",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 2,
+      "role": "gsheet",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "gsheet": 1,
+      "ppt": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 3,
+    "units": 3,
+    "write_units": 3,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

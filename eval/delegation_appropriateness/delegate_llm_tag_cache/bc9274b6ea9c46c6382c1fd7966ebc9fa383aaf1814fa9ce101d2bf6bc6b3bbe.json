@@ -1,0 +1,32 @@
+{
+  "input_hash": "bc9274b6ea9c46c6382c1fd7966ebc9fa383aaf1814fa9ce101d2bf6bc6b3bbe",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "yt-top-videos-excel-gcal",
+    "task_text": "You are a team lead who wants to set up a structured learning program using the most popular technology videos from the Fireship channel. Your task is to curate the top videos and schedule dedicated team viewing sessions in the shared calendar.\n\nStart by querying the video database to find the top 10 most-viewed videos published by the Fireship channel. Rank them from 1 (highest view count) to 10 (lowest).\n\nCreate a spreadsheet file called Top_Videos_Watchlist.xlsx in your workspace. This file must contain two sheets.\n\nThe first sheet must be named Watchlist. It should have one row per video with the following columns in this exact order: Rank (1 through 10), Video_ID, Title, Duration_Min (the video duration converted to minutes, rounded to 1 decimal place), View_Count, Like_Count, and Like_Rate (calculated as like_count divided by view_count multiplied by 100, rounded to 2 decimal places). Sort rows by View_Count in descending order so Rank 1 is the most-viewed video.\n\nThe second sheet must be named Summary. It should have exactly two columns named Label and Value, with the following rows in order: Total_Selected (which should be 10), Combined_Views (the sum of all 10 videos' view counts), Avg_Duration_Min (average duration in minutes rounded to 1 decimal), and Avg_Like_Rate (average like rate across all 10 videos rounded to 2 decimal places).\n\nAfter creating the spreadsheet, schedule one learning session in the shared calendar for each of the 10 videos. Each event title should be \"Team Learning: \" followed by the video title truncated to 40 characters if it is longer than 40 characters. Schedule the sessions on consecutive Tuesdays starting April 7, 2026. The first session goes on April 7, the second on April 14, the third on April 21, continuing forward for all 10 sessions. Each session runs from 10:00 AM to 11:00 AM.\n\nFinally, send an email to team@company.com with subject \"Learning Sessions Scheduled\" and a message body listing all 10 sessions with their scheduled dates and video titles.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Use one stateful Fireship channel-list session: call `channels_listVideos` once at the maximum page size, keep the returned list identifier, and continue only that identifier with `channels_navigateList` until the source is exhausted. Do not restart enumeration. Rank the complete observed catalog by numeric view count, retain exactly the top ten, and compute all Watchlist and Summary values from that table. Create `Top_Videos_Watchlist.xlsx` with one bulk write per sheet and one read-back. From the same ranked table, map ranks 1–10 to the ten Tuesdays from 2026-04-07 through 2026-06-09, and search/create/read back the ten independent 10:00–11:00 events as native-parallel batches, using the task's 40-character title rule and the runtime calendar default because no timezone is specified. Finally send exactly one email to `team@company.com` with subject `Learning Sessions Scheduled` and all ten dates and full titles in chronological order.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are a planning agent. Decompose the following task into an ordered list of subtasks. For each subtask specify: dispatch decision (`self` = main agent, `explore`, or `coder`), and whether it is independent (parallelizable) or must wait on another subtask's output.\n\nTASK DESCRIPTION (from the user, a team lead):\n1. Query the YouTube video database to find the top 10 most-viewed videos published by the Fireship channel. Rank them 1 (highest view count) to 10 (lowest). The YouTube MCP tools are available (mcp__youtube__*): videos_searchVideos, videos_getVideo, channels_getChannel, channels_listVideos, channels_navigateList, transcripts_getTranscript, playlists_* tools.\n2. Create a spreadsheet file called Top_Videos_Watchlist.xlsx in the workspace. It must contain two sheets:\n   - Sheet 1 named \"Watchlist\": one row per video with columns in exact order: Rank (1-10), Video_ID, Title, Duration_Min (duration converted to minutes, rounded to 1 decimal place), View_Count, Like_Count, Like_Rate (like_count / view_count * 100, rounded to 2 decimal places). Rows sorted by View_Count descending so Rank 1 = most-viewed.\n   - Sheet 2 named \"Summary\": exactly two columns Label and Value, rows in order: Total_Selected (=10), Combined_Views (sum of all 10 view counts), Avg_Duration_Min (average duration rounded to 1 decimal), Avg_Like_Rate (average like rate rounded to 2 decimals).\n3. Schedule one learning session in the shared Google Calendar for each of the 10 videos (mcp__google_calendar__create_event). Event title: \"Team Learning: \" + video title truncated to 40 chars if longer than 40. Sessions on consecutive Tuesdays starting April 7, 2026 (Apr 7, Apr 14, Apr 21, ... for 10 sessions), each 10:00 AM - 11:00 AM.\n4. Send an email to team@company.com with subject \"Learning Sessions Scheduled\" and a body listing all 10 sessions with scheduled dates and video titles (mcp__emails__send_email).\n\nWORKSPACE: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-yt-top-videos-excel-gcal/workspace (files must be created there).\n\nContext you may gather (read-only): explore the YouTube MCP tools to understand how to find the Fireship channel and list its videos (e.g., search for \"Fireship\", get channel details, list videos sorted by popular). Check available excel/calendar/email tool capabilities if needed via read-only means. Do NOT create/write anything.\n\nDeliverable: a concrete ordered subtask plan with dispatch decisions, dependencies, and a verification strategy for each deliverable (spreadsheet contents, calendar events, email).\nPlan task decomposition",
+        "is_plan": true
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      }
+    ]
+  }
+}

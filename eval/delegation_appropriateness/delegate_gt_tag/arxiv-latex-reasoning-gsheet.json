@@ -1,0 +1,188 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "arxiv-latex-reasoning-gsheet",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/arxiv-latex-reasoning-gsheet.task.md",
+    "oracle166_sha256": "789d89c53c8cf280001c221022b45a6131a2fc44942316e2373325c0aaf08406"
+  },
+  "label_cache_keys": [
+    "f3ef25e403debf24cdda8136e66efa9f82f49e056b1584c2c77cece13eb3b0a0"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "gsheet",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (external-workflow-operator 0): The Google Sheet writer: create a spreadsheet titled exactly \"Reasoning Methods Comparison\" with exactly one sheet named \"Papers\" (rename the default sheet or create the named one), write the header row Title, Year, Method, Key_Contribution followed by exactly the five frozen rows, then read the complete range back and return the spreadsheet/sheet IDs, header check and row count. Do not create the Word document.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 0): The Word writer: create Reasoning_Methods_Review.docx in the resolved workspace with the title \"Chain-of-Thought Reasoning: Methods Comparison\", the literal date 2026-03-06, one section per frozen paper mentioning its title and contribution, and a short conclusion paragraph, then read the document outline and text back. Do not create the spreadsheet.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "gsheet",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (external-workflow-operator 0): The Google Sheet writer: create a spreadsheet titled exactly \"Reasoning Methods Comparison\" with exactly one sheet named \"Papers\" (rename the default sheet or create the named one), write the header row Title, Year, Method, Key_Contribution followed by exactly the five frozen rows, then read the complete range back and return the spreadsheet/sheet IDs, header check and row count. Do not create the Word document.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 0): The Word writer: create Reasoning_Methods_Review.docx in the resolved workspace with the title \"Chain-of-Thought Reasoning: Methods Comparison\", the literal date 2026-03-06, one section per frozen paper mentioning its title and contribution, and a short conclusion paragraph, then read the document outline and text back. Do not create the spreadsheet.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:gsheet",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "gsheet",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:word",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "word",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "gsheet": 1,
+      "word": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 2,
+    "units": 2,
+    "write_units": 2,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

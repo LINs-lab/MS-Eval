@@ -1,0 +1,439 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-wc-yf-ppt-notion-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-wc-yf-ppt-notion-email.task.md",
+    "oracle166_sha256": "9fa5a4f665413863f5d52481fd04f3dceae115fb4dc29b79e166f0b9eb480cba"
+  },
+  "label_cache_keys": [
+    "b068fd817b0ba43b4c51804e70f671a21dc94f984e637091388d921187e77b04"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): WooCommerce owner. Exhaust `woo_products_list` and `woo_orders_list` with `perPage` at most 100 and increasing literal `page` until a short or empty terminal page proves exhaustion; omit the optional order `status` and preserve every observed status. Persist a runtime-unique raw products/orders JSON and return only path/hash plus page/count/null/duplicate controls. Do not group months, write processor scripts, or create deliverables.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (financial-market-analyst 0): Market-data owner for AMZN, JPM, and `^DJI`. Retrieve each symbol's full historical daily close series and return compact per-symbol rows plus date/count controls, or persist `market_data_raw.json` and return its path/hash. Do not compute correlations, write processor scripts, or create deliverables.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "processor",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole owner of the processor chain. It receives both frozen raw payloads. First write and run `ecommerce_performance.py` to produce `ecommerce_performance.json` containing normalized monthly order-count/revenue rows (grouped by order creation date), per-category revenue and average current price under one documented revenue convention, plus product/category source coverage and validation counts. Independently write and run `market_indicator_analysis.py` to emit `market_indicator_metrics.json`: for each symbol the average closing price, the full-history percent change (expected roughly +26% for AMZN, +62% for JPM, +24% for DJI), the population standard deviation of closes (ddof=0), and monthly average closes for the 12 months from 2025-03 through 2026-02 (null with a warning for any month lacking data); validate that all three symbols and exactly those 12 monthly values are present and consistent with the raw data. Then write and run `market_correlation.py` matching monthly store revenue to monthly average closes for AMZN, JPM, and `^DJI` over 2025-03 through 2026-02, computing Pearson correlations and applying the recommendation rule: `market-aligned pricing` if the absolute AMZN correlation exceeds 0.5, `counter-cyclical promotions` if the AMZN correlation is below -0.3, otherwise `independent pricing strategy`; emit `market_correlation.json`. Then write and run `category_analysis.py` to emit `category_market_analysis.json` with exactly 3 top and 3 bottom categories by total revenue, each carrying rank, category, total revenue, average price, a `market_context` summary, and a data-driven `strategic_note` (invest, reposition, promote, phase out, bundle), plus an overall summary and source-data references. Run ecommerce and market-indicator scripts before the correlation and category scripts. Return paths/hashes and metric/correlation/ranking controls. Do not create the presentation, Notion database, or emails.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_3",
+      "n_agents": 4,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 3,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 1): Sole writer of `Market_Strategy_Presentation.pptx` with exactly 7 slides: a title slide (`E-Commerce Market Positioning Strategy`, subtitle `Macroeconomic Impact Analysis`); `Market Overview` covering AMZN, JPM, and DJI price trends with percent changes (~+26%, +62%, +24%), average closes, and volatility; `Monthly Revenue Trends` presenting e-commerce revenue for 2025-03 through 2026-02; `Category Performance` showing revenue and average price per category; `Market Correlation Analysis` with the three Pearson correlations and a brief interpretation; `Strategic Recommendations` containing the pricing strategy and category-specific actions (reinforce Electronics and TV & Home Theater, promote Cameras and Watches); and `Next Steps` outlining 3 to 5 action items. Read the deck back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): Sole Notion owner of the database `Market Strategy Tracker`. Search the exact title first, create it once only when absent, and reuse without duplicating. Require five properties: Initiative (title), Category (select: Pricing, Marketing, Inventory, Expansion, Cost Management), Market_Condition (select: Bull, Bear, Neutral), Expected_Impact (number, USD revenue impact), and Timeline (date). Ensure exactly five initiative entries, adding only missing ones matched by exact Initiative title: `Review pricing for TV & Home Theater` (Pricing/Bull/5000/2026-04-15), `Launch Electronics promotion campaign` (Marketing/Neutral/3000/2026-04-01), `Expand Audio product line` (Expansion/Bull/2500/2026-05-01), `Optimize Camera inventory levels` (Inventory/Neutral/1500/2026-04-10), and `Negotiate supplier costs for Home Appliances` (Cost Management/Bear/2000/2026-05-15). Read the database and entries back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "email",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 1): Sole owner of the CEO email. Search Sent mail for exact To `ceo@company.com` / subject `E-Commerce Market Strategy: Executive Summary`, send at most once, then read it back. The body must include a brief market overview with the three percentage changes (AMZN +26%, JPM +62%, DJI +24% over the full analyzed history), the best-performing category (Electronics), the Pearson correlation findings for AMZN, JPM, and `^DJI`, and the pricing recommendation string from the frozen correlation result.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 6,
+          "wave_id": "wave_3",
+          "rw": "write",
+          "role": "email",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 3 (external-workflow-operator 2): Sole owner of the marketing email. Search Sent mail for exact To `marketing_team@company.com` / subject `Category Performance Insights for Q2 Planning`, send at most once, then read it back. The body must provide a detailed revenue breakdown by product category, explicitly highlight Electronics and TV & Home Theater as the largest revenue sources, and recommend concrete promotional strategies (limited-time discounts, bundles with top sellers, targeted campaigns, product-page improvements) for the underperforming categories Cameras and Watches.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): WooCommerce owner. Exhaust `woo_products_list` and `woo_orders_list` with `perPage` at most 100 and increasing literal `page` until a short or empty terminal page proves exhaustion; omit the optional order `status` and preserve every observed status. Persist a runtime-unique raw products/orders JSON and return only path/hash plus page/count/null/duplicate controls. Do not group months, write processor scripts, or create deliverables.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (financial-market-analyst 0): Market-data owner for AMZN, JPM, and `^DJI`. Retrieve each symbol's full historical daily close series and return compact per-symbol rows plus date/count controls, or persist `market_data_raw.json` and return its path/hash. Do not compute correlations, write processor scripts, or create deliverables.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "processor",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole owner of the processor chain. It receives both frozen raw payloads. First write and run `ecommerce_performance.py` to produce `ecommerce_performance.json` containing normalized monthly order-count/revenue rows (grouped by order creation date), per-category revenue and average current price under one documented revenue convention, plus product/category source coverage and validation counts. Independently write and run `market_indicator_analysis.py` to emit `market_indicator_metrics.json`: for each symbol the average closing price, the full-history percent change (expected roughly +26% for AMZN, +62% for JPM, +24% for DJI), the population standard deviation of closes (ddof=0), and monthly average closes for the 12 months from 2025-03 through 2026-02 (null with a warning for any month lacking data); validate that all three symbols and exactly those 12 monthly values are present and consistent with the raw data. Then write and run `market_correlation.py` matching monthly store revenue to monthly average closes for AMZN, JPM, and `^DJI` over 2025-03 through 2026-02, computing Pearson correlations and applying the recommendation rule: `market-aligned pricing` if the absolute AMZN correlation exceeds 0.5, `counter-cyclical promotions` if the AMZN correlation is below -0.3, otherwise `independent pricing strategy`; emit `market_correlation.json`. Then write and run `category_analysis.py` to emit `category_market_analysis.json` with exactly 3 top and 3 bottom categories by total revenue, each carrying rank, category, total revenue, average price, a `market_context` summary, and a data-driven `strategic_note` (invest, reposition, promote, phase out, bundle), plus an overall summary and source-data references. Run ecommerce and market-indicator scripts before the correlation and category scripts. Return paths/hashes and metric/correlation/ranking controls. Do not create the presentation, Notion database, or emails.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 1): Sole writer of `Market_Strategy_Presentation.pptx` with exactly 7 slides: a title slide (`E-Commerce Market Positioning Strategy`, subtitle `Macroeconomic Impact Analysis`); `Market Overview` covering AMZN, JPM, and DJI price trends with percent changes (~+26%, +62%, +24%), average closes, and volatility; `Monthly Revenue Trends` presenting e-commerce revenue for 2025-03 through 2026-02; `Category Performance` showing revenue and average price per category; `Market Correlation Analysis` with the three Pearson correlations and a brief interpretation; `Strategic Recommendations` containing the pricing strategy and category-specific actions (reinforce Electronics and TV & Home Theater, promote Cameras and Watches); and `Next Steps` outlining 3 to 5 action items. Read the deck back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): Sole Notion owner of the database `Market Strategy Tracker`. Search the exact title first, create it once only when absent, and reuse without duplicating. Require five properties: Initiative (title), Category (select: Pricing, Marketing, Inventory, Expansion, Cost Management), Market_Condition (select: Bull, Bear, Neutral), Expected_Impact (number, USD revenue impact), and Timeline (date). Ensure exactly five initiative entries, adding only missing ones matched by exact Initiative title: `Review pricing for TV & Home Theater` (Pricing/Bull/5000/2026-04-15), `Launch Electronics promotion campaign` (Marketing/Neutral/3000/2026-04-01), `Expand Audio product line` (Expansion/Bull/2500/2026-05-01), `Optimize Camera inventory levels` (Inventory/Neutral/1500/2026-04-10), and `Negotiate supplier costs for Home Appliances` (Cost Management/Bear/2000/2026-05-15). Read the database and entries back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "email",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 1): Sole owner of the CEO email. Search Sent mail for exact To `ceo@company.com` / subject `E-Commerce Market Strategy: Executive Summary`, send at most once, then read it back. The body must include a brief market overview with the three percentage changes (AMZN +26%, JPM +62%, DJI +24% over the full analyzed history), the best-performing category (Electronics), the Pearson correlation findings for AMZN, JPM, and `^DJI`, and the pricing recommendation string from the frozen correlation result.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 6,
+      "wave_id": "wave_3",
+      "rw": "write",
+      "role": "email",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 3 (external-workflow-operator 2): Sole owner of the marketing email. Search Sent mail for exact To `marketing_team@company.com` / subject `Category Performance Insights for Q2 Planning`, send at most once, then read it back. The body must provide a detailed revenue breakdown by product category, explicitly highlight Electronics and TV & Home Theater as the largest revenue sources, and recommend concrete promotional strategies (limited-time discounts, bundles with top sellers, targeted campaigns, product-page improvements) for the underperforming categories Cameras and Watches.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:2:processor",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "processor",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:3:ppt",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 3,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:4:notion",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 4,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:5:email",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 5,
+      "role": "email",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_3:6:email",
+      "kind": "write",
+      "wave": "wave_3",
+      "node": 6,
+      "role": "email",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:woocommerce",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "woocommerce",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:yahoo-finance",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "yahoo-finance",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "email": 2,
+      "notion": 1,
+      "ppt": 1,
+      "processor": 1
+    },
+    "read": {
+      "woocommerce": 1,
+      "yahoo-finance": 1
+    }
+  },
+  "counts": {
+    "waves": 3,
+    "nodes": 7,
+    "units": 7,
+    "write_units": 5,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

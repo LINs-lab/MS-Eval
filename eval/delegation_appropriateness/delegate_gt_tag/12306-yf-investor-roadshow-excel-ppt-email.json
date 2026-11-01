@@ -1,0 +1,390 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "12306-yf-investor-roadshow-excel-ppt-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/12306-yf-investor-roadshow-excel-ppt-email.task.md",
+    "oracle166_sha256": "6f7a175958c914cc245421966e163f4f25e2371fd0448701d962748a3df2c565"
+  },
+  "label_cache_keys": [
+    "879c64e9e05ddb4a3be69fb9fc4bdbc9e9c5d7cb8151da26663cc7bc416373a1"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 4,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (web-domain-researcher 0): Use one explore sub-agent to own the rail branch. Check current date, resolve the three specific station codes, exhaust both 2026-03-10 high-speed result sets, select one feasible service per route from returned times/durations, and preserve the business-class fare/availability plus the actual train_no where needed. Return both selected legs with route counts and validation. Do not write files, alter rail state, or create deliverables.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (financial-market-analyst 0): Use one explore sub-agent to own only the read-only GOOGL branch. Retrieve GOOGL info and 30-day price history, requested annual income-statement rows, recommendations, and the latest five returned news records. Compute its 30-day change from first and last source observations, preserve dates/values/units, distinguish absent fields from zero, and normalize billions only after retaining raw values. Return history row/date controls, statement years, prices, metrics, recommendation counts, five news records, and validation. Do not query AMZN or write files.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (financial-market-analyst 1): Use one explore sub-agent to own only the read-only AMZN branch. Retrieve AMZN info and 30-day price history, compute the change from first and last source observations, preserve dates/values/units, and distinguish absent fields from zero. Return compact history row/date controls, prices, metrics, and validation. Do not query GOOGL, write files, or create deliverables.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "emails"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (web-domain-researcher 1): Use one explore sub-agent to own the read-only meeting-coordination branch. Search the inbox for exact subjects `Q1 2026 Roadshow - Schedule Request` from `investors@fundmanager.com` and `Availability Confirmed - March 10 Meeting` from `shanghai_partners@finance.com`; paginate both result sets, read every candidate, and match by complete sender, recipient, and subject rather than subject alone. Return the exact requested schedule/materials details and the Shanghai partner's stated availability constraint, with message IDs and matching controls. Do not send or modify email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 4,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/Roadshow_Analysis.xlsx` exclusively. Create Travel_Plan, Stock_Summary, and Financial_Highlights from the canonical payload with the exact required columns, two travel/ticker rows as applicable, at least two GOOGL fiscal years, business class, literal numbers, and correctly converted billion-USD fields. Read back all sheets and return the path, sheet order, row counts, ticker/year controls, and validation. Do not create the presentation or send email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): Use one coder sub-agent to own `<workspace_root>/Investor_Roadshow.pptx` exclusively. Create the deck exactly once with at least the five required slides, using only the canonical itinerary and finance facts; include both cities, GOOGL financials, GOOGL-versus-AMZN 30-day comparison, and analyst consensus without unsupported claims. Read it back and return path, slide count/titles, ticker coverage, and validation. Do not write the workbook or send email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (web-domain-researcher 0): Use one explore sub-agent to own the rail branch. Check current date, resolve the three specific station codes, exhaust both 2026-03-10 high-speed result sets, select one feasible service per route from returned times/durations, and preserve the business-class fare/availability plus the actual train_no where needed. Return both selected legs with route counts and validation. Do not write files, alter rail state, or create deliverables.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (financial-market-analyst 0): Use one explore sub-agent to own only the read-only GOOGL branch. Retrieve GOOGL info and 30-day price history, requested annual income-statement rows, recommendations, and the latest five returned news records. Compute its 30-day change from first and last source observations, preserve dates/values/units, distinguish absent fields from zero, and normalize billions only after retaining raw values. Return history row/date controls, statement years, prices, metrics, recommendation counts, five news records, and validation. Do not query AMZN or write files.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (financial-market-analyst 1): Use one explore sub-agent to own only the read-only AMZN branch. Retrieve AMZN info and 30-day price history, compute the change from first and last source observations, preserve dates/values/units, and distinguish absent fields from zero. Return compact history row/date controls, prices, metrics, and validation. Do not query GOOGL, write files, or create deliverables.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "emails"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (web-domain-researcher 1): Use one explore sub-agent to own the read-only meeting-coordination branch. Search the inbox for exact subjects `Q1 2026 Roadshow - Schedule Request` from `investors@fundmanager.com` and `Availability Confirmed - March 10 Meeting` from `shanghai_partners@finance.com`; paginate both result sets, read every candidate, and match by complete sender, recipient, and subject rather than subject alone. Return the exact requested schedule/materials details and the Shanghai partner's stated availability constraint, with message IDs and matching controls. Do not send or modify email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/Roadshow_Analysis.xlsx` exclusively. Create Travel_Plan, Stock_Summary, and Financial_Highlights from the canonical payload with the exact required columns, two travel/ticker rows as applicable, at least two GOOGL fiscal years, business class, literal numbers, and correctly converted billion-USD fields. Read back all sheets and return the path, sheet order, row counts, ticker/year controls, and validation. Do not create the presentation or send email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): Use one coder sub-agent to own `<workspace_root>/Investor_Roadshow.pptx` exclusively. Create the deck exactly once with at least the five required slides, using only the canonical itinerary and finance facts; include both cities, GOOGL financials, GOOGL-versus-AMZN 30-day comparison, and analyst consensus without unsupported claims. Read it back and return path, slide count/titles, ticker coverage, and validation. Do not write the workbook or send email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:4:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 4,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:5:ppt",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 5,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:emails",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "emails",
+      "source_nodes": [
+        3
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:rail_12306",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "rail_12306",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:yahoo-finance",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "yahoo-finance",
+      "source_nodes": [
+        1,
+        2
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "ppt": 1
+    },
+    "read": {
+      "emails": 1,
+      "rail_12306": 1,
+      "yahoo-finance": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 6,
+    "units": 5,
+    "write_units": 2,
+    "read_clusters": 3,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "source": "msq_values.csv",
+  "metric": "MSQ (percent)",
+  "setting": "Eight Auto (Spec) runs and three additional DeepSeek modes",
+  "order": "descending",
+  "font_size_multiplier": 2,
+  "icon_size_multiplier": 2,
+  "icon_display_size": "50 px-equivalent display size after transparent-padding crop",
+  "figsize_inches": [
+    25.5,
+    10.8
+  ],
+  "axes_rect": [
+    0.075,
+    0.39,
+    0.91,
+    0.49
+  ],
+  "legend_order": [
+    "Oracle",
+    "Open-source",
+    "Closed-source"
+  ],
+  "legend_font_matches_model_name": true,
+  "value_label_weight": "bold only for the highest value; normal otherwise",
+  "font_sizes_pt": {
+    "global": 26,
+    "axis_title": 34,
+    "legend": 32,
+    "ticks": 28,
+    "bar_values": 30,
+    "x_labels": 28
+  },
+  "text_color": "black",
+  "outer_spines": "hidden",
+  "deepseek_experiment_color": "#3754E8",
+  "background_categories": {
+    "Oracle": "#FFF3D5",
+    "Open-source": "#EDF4FC",
+    "Closed-source": "#FCEFE8"
+  },
+  "rows": [
+    {
+      "model": "DeepSeek-V4-Flash-0731",
+      "mode": "Oracle",
+      "msq_percent": 39.16
+    },
+    {
+      "model": "GLM-5.3",
+      "mode": "Auto (Spec)",
+      "msq_percent": 24.6
+    },
+    {
+      "model": "Qwen-3.8-Max",
+      "mode": "Auto (Spec)",
+      "msq_percent": 22.7
+    },
+    {
+      "model": "DeepSeek-V4-Flash-0731",
+      "mode": "Auto (Spec)",
+      "msq_percent": 20.82
+    },
+    {
+      "model": "Kimi-K3",
+      "mode": "Auto (Spec)",
+      "msq_percent": 17.98
+    },
+    {
+      "model": "DeepSeek-V4-Flash-0731",
+      "mode": "Plan-1st",
+      "msq_percent": 17.6
+    },
+    {
+      "model": "GLM-5.3-Flash",
+      "mode": "Auto (Spec)",
+      "msq_percent": 16.98
+    },
+    {
+      "model": "GPT-5.6-Sol",
+      "mode": "Auto (Spec)",
+      "msq_percent": 15.63
+    },
+    {
+      "model": "Claude-Sonnet-5",
+      "mode": "Auto (Spec)",
+      "msq_percent": 13.29
+    },
+    {
+      "model": "DeepSeek-V4-Flash-0731",
+      "mode": "Auto (Gen)",
+      "msq_percent": 11.65
+    },
+    {
+      "model": "MiniMax-M3",
+      "mode": "Auto (Spec)",
+      "msq_percent": 6.39
+    }
+  ],
+  "csv_sha256": "539f652275d0a357ef5a9e68c16664fe7cc5cbb1415572ab61ac6d4a1a7fa14a"
+}

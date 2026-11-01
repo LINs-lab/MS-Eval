@@ -1,0 +1,199 @@
+{
+  "input_hash": "0e524d5c4b1c40a4548953a075bf3dc30fd376f50d5cfe7f7f8a9cfc419e3a5b",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "canvas-scholarly-curriculum-review",
+    "task_text": "You are an accreditation coordinator preparing a comprehensive curriculum review for an upcoming university accreditation visit. Your job is to audit the institution's courses against accreditation requirements, find supporting scholarly literature, and document everything in a structured compliance matrix and an accreditation report.\n\nStart by fetching the accreditation requirements from the accreditation portal at http://localhost:30238/api/accreditation_requirements.json. This document specifies minimum thresholds for course counts, faculty ratios, assessment types, and scholarly integration that the institution must meet.\n\nNext, connect to the learning management system and retrieve a list of all courses offered by the institution. For each course, gather the course name, the number of enrolled students, the number of assignments, the number of quizzes the course has (use 0 if it has none), and the number of discussion topics. Also determine how many faculty members (teachers and teaching assistants combined) are associated with each course. Use the course's enrollment count (total students) directly for the number of enrolled students, and derive the faculty count from each course's enrollment records, where faculty are enrollments of type TeacherEnrollment or TaEnrollment.\n\nUsing this data, evaluate each course against the accreditation requirements. A course is considered compliant if the student to faculty ratio does not exceed the maximum specified in the requirements and the course has at least one form of assessment (quiz or assignment). Note which courses are compliant and which are not.\n\nThen search the scholarly literature for research supporting the pedagogical approaches used in the curriculum. Search for papers on the following topics: active learning in higher education, assessment best practices in education, online learning effectiveness, curriculum design frameworks, and student engagement strategies. For each topic, find at least one relevant paper and note its title, authors, and relevance to the curriculum.\n\nCreate an Excel file called Curriculum_Review.xlsx in your workspace with three sheets. The first sheet should be called \"Course Compliance\" with columns for Course_Name, Assignment_Count, Quiz_Count, Discussion_Count, Student_Count, Faculty_Count, Student_Faculty_Ratio, and Compliant (Yes or No based on whether the course meets the accreditation criteria). Include all courses.\n\nThe second sheet should be called \"Literature Support\" with columns for Search_Topic, Paper_Title, Authors, and Relevance_Note. Include at least five rows covering the five pedagogical topics listed above.\n\nThe third sheet should be called \"Summary\" with columns for Metric and Value. Include rows for total courses, compliant courses, non-compliant courses, compliance rate (as a percentage), total faculty across all courses, average student to faculty ratio, and the number of supporting papers found.\n\nFinally, create a page in the team's knowledge base (Notion) titled \"Accreditation Review Report\" (the page title must contain this exact phrase) that summarizes the curriculum audit findings. The page should mention the overall compliance rate, highlight any courses that fail to meet requirements, reference the scholarly literature that supports the institution's pedagogical approach, and note any recommendations for improvement before the accreditation visit.\n\nWhen you have completed all tasks, call claim_done.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, use one parallel source wave and one parallel writer wave. Canvas and scholarly search are read-only. The main agent fetches the accreditation JSON and freezes the course manifest; writers consume only the merged canonical packet.\n\nBefore Wave 1, the main agent fetches http://localhost:30238/api/accreditation_requirements.json once and freezes the literal student-faculty-ratio maximum and assessment-presence rule. It then calls canvas_list_courses(include_ended=true) once, validates unique IDs/codes/full names, and freezes the complete 22-course manifest. Partition that manifest into two disjoint shards covering every course_id exactly once: shard A = course_id 1-11 (AAA-2013J through DDD-2013B) and shard B = course_id 12-22 (DDD-2014B through GGG-2014B). Pass each owner its literal ID list, codes, and full names.\n\n1. Wave 1 — dispatch exactly 3 explore sub-agents in parallel:\n\n   1. explore 0 (enterprise-data-analyst 0): Course-metrics owner for shard A (course_id 1-11). For each assigned course, collect the exact full name, enrolled-student count from the course enrollment total, assignment count, quiz count (0 if none), discussion-topic count, and faculty count (TeacherEnrollment plus TaEnrollment only), then mark it compliant when the student-faculty ratio stays within the frozen accreditation maximum and the course has at least one quiz or assignment. Faculty counts must come from actual enrollment records, never inferred from grade rows or current-user metadata; a course lacking source-visible student plus TeacherEnrollment/TaEnrollment coverage gets CONTRACT_BLOCKER_MISSING_ROLE_COMPLETE_ENROLLMENTS and no Faculty_Count, Student_Faculty_Ratio, or Compliant value. Return assigned versus observed course IDs plus the compact per-course rows. Make no writes.\n   2. explore 1 (enterprise-data-analyst 1): Course-metrics owner for shard B (course_id 12-22) — same literal recipe, only that shard's course identities substituted.\n   3. explore 2 (academic-literature-researcher 0): Literature owner for the five fixed pedagogy topics: active learning in higher education; assessment best practices in education; online learning effectiveness; curriculum design frameworks; and student engagement strategies. Find one genuinely relevant paper per topic and return title, authors, and a curriculum-relevance note for each. Read-only; do not write the workbook or Notion page.\n\nAfter Wave 1, the main agent requires both shards together to cover every frozen course_id exactly once, rejects duplicate/missing IDs, and freezes one canonical packet: all 22 Course Compliance rows, at least five Literature Support rows, and the Summary metrics (total courses, compliant courses, non-compliant courses, compliance rate as a percentage, total faculty across all courses, average student-faculty ratio, supporting-paper count).\n\n2. Wave 2 — dispatch exactly 2 coder sub-agents in parallel, both consuming the canonical packet with no recomputation from Canvas or scholarly search:\n\n   1. coder 0 (office-report-builder 0): Sole writer of Curriculum_Review.xlsx. Create exactly Course Compliance, Literature Support, and Summary with the task's exact headers, all 22 course rows, at least five literature rows, and the frozen summary metrics as literal values. Read every populated range back.\n   2. coder 1 (external-workflow-operator 0): Sole Notion owner of a page whose title contains the exact phrase Accreditation Review Report. Search exact title first, create at most once on zero matches, block on duplicates, and write a summary of the overall compliance rate, non-compliant courses, scholarly literature supporting the pedagogical approach, and recommendations before the visit. Read the retained page and its child-block text back.\n\nAfter Wave 2, the main agent reconciles workbook ranges and the Notion read-back against the same packet, then calls claim_done. Do not dispatch an aggregation or verification agent.",
+    "nodes": [
+      {
+        "id": 12,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 13). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 13):\n1. Assignments: call canvas_list_assignments with course_id = 13 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 13 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 13 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 13, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 13, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 14). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 14):\n1. Assignments: call canvas_list_assignments with course_id = 14 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 14 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 14 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 14, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 14, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 15). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 15):\n1. Assignments: call canvas_list_assignments with course_id = 15 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 15 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 15 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 15, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 15, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 16). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 16):\n1. Assignments: call canvas_list_assignments with course_id = 16 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 16 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 16 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 16, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 16, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 17). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 17):\n1. Assignments: call canvas_list_assignments with course_id = 17 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 17 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 17 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 17, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 17, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 18). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 18):\n1. Assignments: call canvas_list_assignments with course_id = 18 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 18 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 18 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 18, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 18, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 19). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 19):\n1. Assignments: call canvas_list_assignments with course_id = 19 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 19 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 19 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 19, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 19, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 20). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 20):\n1. Assignments: call canvas_list_assignments with course_id = 20 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 20 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 20 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 20, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 20, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 21). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 21):\n1. Assignments: call canvas_list_assignments with course_id = 21 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 21 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 21 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 21, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 21, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "wave": "message_8",
+        "text": "You are gathering accreditation audit statistics for ONE Canvas course (course_id = 22). Use the Canvas MCP tools to collect exact counts, then report them.\n\nSteps (all using course_id = 22):\n1. Assignments: call canvas_list_assignments with course_id = 22 and count the number of assignments returned.\n2. Quizzes: call canvas_list_quizzes with course_id = 22 and count the number of quizzes returned. Use 0 if there are none.\n3. Discussion topics: call canvas_list_discussion_topics with course_id = 22 and count the number of discussion topics returned. Use 0 if there are none.\n4. Faculty count: call canvas_get_course_grades with course_id = 22, type = [\"TeacherEnrollment\",\"TaEnrollment\"], per_page = 100, page = 1. Count the enrollments returned (teachers + TAs). If the response has pagination.has_more = true, keep paging (page=2, 3, ...) and add counts until has_more is false. The total is the faculty count for the course.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"course_id\": 22, \"assignment_count\": <number>, \"quiz_count\": <number>, \"discussion_count\": <number>, \"faculty_count\": <number>}\nGather Canvas course statistics",
+        "is_plan": false
+      },
+      {
+        "id": 22,
+        "wave": "message_10",
+        "text": "Search the scholarly literature for the topic: \"active learning in higher education\". Use the mcp__scholarly__search-arxiv and mcp__scholarly__search-google-scholar tools with this topic (and reasonable variants) to find at least one highly relevant, real paper.\n\nSelect the single most relevant paper you find for this topic. It must be a real paper with verifiable metadata.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"topic\": \"active learning in higher education\", \"paper_title\": \"<full paper title>\", \"authors\": \"<author names, comma-separated>\", \"relevance_note\": \"<1-2 sentence note explaining how this paper supports the institution's pedagogical approach in this area>\"}\nSearch scholarly literature for curriculum topics",
+        "is_plan": false
+      },
+      {
+        "id": 23,
+        "wave": "message_10",
+        "text": "Search the scholarly literature for the topic: \"assessment best practices in education\". Use the mcp__scholarly__search-arxiv and mcp__scholarly__search-google-scholar tools with this topic (and reasonable variants) to find at least one highly relevant, real paper.\n\nSelect the single most relevant paper you find for this topic. It must be a real paper with verifiable metadata.\n\nReturn EXACTLY the following JSON and nothing else (no prose, no markdown):\n{\"topic\": \"assessment best practices in education\", \"paper_title\": \"<full paper title>\", \"authors\": \"<author names, comma-separated>\", \"relevance_note\": \"<1-2 sentence note explaining how this paper supports the institution's pedagogical approach in this area>\"}\nSearch scholarly literature for curriculum topics",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 12,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 22,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 23,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

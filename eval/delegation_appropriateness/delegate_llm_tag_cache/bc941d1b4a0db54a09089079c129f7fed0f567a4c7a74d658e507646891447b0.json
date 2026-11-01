@@ -1,0 +1,60 @@
+{
+  "input_hash": "bc941d1b4a0db54a09089079c129f7fed0f567a4c7a74d658e507646891447b0",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-sales-discount-analysis",
+    "task_text": "I need to understand the impact of discounts on our sales. Group orders into the following discount bands and analyze the revenue contribution of each band. Use these inclusive boundaries:\n- \"No Discount\" — DISCOUNT exactly 0\n- \"1-10%\" — DISCOUNT greater than 0 and up to 0.10 inclusive\n- \"11-20%\" — DISCOUNT greater than 0.10 and up to 0.20 inclusive (so an order with DISCOUNT exactly 0.20 belongs here)\n- \"20%+\" — DISCOUNT strictly greater than 0.20\n\nNote: the warehouse currently has no orders with a discount above 0.20, so the \"20%+\" band will be empty. You may omit the \"20%+\" row from the report (or include it with zeros); either is acceptable.\n\nCreate an Excel file called Sales_Discount_Report.xlsx with two sheets. The \"Discount Analysis\" should have Discount_Band, Orders count, Revenue rounded to 2 decimals, and Avg_Order_Value rounded to 2 decimals. Sort alphabetically by band name.\n\nThe \"Summary\" should have Total_Orders, Total_Revenue, No_Discount_Revenue, and Discounted_Revenue. Include a header row with columns `Metric` and `Value`, with one data row per metric below it.\n\nSend an email to finance@company.com with subject \"Discount Impact Analysis\" summarizing the findings.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete this compact order aggregation directly in the main agent; do not dispatch any sub-agent. Run one set-based query over all orders with no status filter and assign each row to the literal mutually exclusive bands: `No Discount` for discount equal to 0, `1-10%` for `0 < discount <= 0.10`, `11-20%` for `0.10 < discount <= 0.20`, and `20%+` only for discount strictly above 0.20. Return per-band order count, revenue sum, and average order value plus company-wide total orders/revenue and no-discount/discounted revenue controls. Preserve the empty `20%+` case as either an omitted row or one zero row, sort present band labels alphabetically, and freeze raw totals before rounding.\n\nAfter the aggregates are frozen, resolve the runtime workspace root and start creation of `Sales_Discount_Report.xlsx` there plus the exact sent-mail search in the same native-parallel response. Create only `Discount Analysis(Discount_Band,Orders,Revenue,Avg_Order_Value)` and `Summary(Metric,Value)` with the four requested metrics; write literal numbers, round money to two decimals, and read both sheets back. Search all pages of Sent mail for recipient `finance@company.com` and subject `Discount Impact Analysis`; send once only if no exact match exists, summarize the verified band contribution, and read the retained message back. Reconcile all band totals to the company-wide controls before completion.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Analyze Snowflake warehouse sales orders for a finance discount-impact report. Identify the relevant orders table and columns, then compute exact metrics using these bands: No Discount = DISCOUNT exactly 0; 1-10% = >0 and <=0.10; 11-20% = >0.10 and <=0.20; 20%+ = >0.20. Required by band: distinct/order count as appropriate to the table grain, revenue, average order value; alphabetical band order. Required totals: Total_Orders, Total_Revenue, No_Discount_Revenue, Discounted_Revenue. Determine the correct revenue field/derivation from schema. Return exact numeric results, table grain interpretation, and the final SQL used. Read-only only; do not create files or send email. Acceptance: band totals reconcile exactly to summary totals, with the known empty >20% band handled.\nAnalyze sales discount bands",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_8",
+        "text": "Create and verify an Excel workbook at /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-sales-discount-analysis/workspace/Sales_Discount_Report.xlsx. Use exactly two sheets named `Discount Analysis` and `Summary` (remove/rename default sheet as needed).\n\nDiscount Analysis columns must be: Discount_Band, Orders count, Revenue, Avg_Order_Value. Populate these alphabetically sorted rows:\n1-10% | 5710 | 912969.71 | 159.89\n11-20% | 5735 | 776869.25 | 135.46\n20%+ | 0 | 0.00 | 0.00\nNo Discount | 8555 | 1359159.37 | 158.87\nFormat Revenue and Avg_Order_Value to 2 decimals and Orders count as integer. Use a readable professional style (bold header, sensible widths, freeze header if feasible).\n\nSummary must have header columns Metric and Value, with exactly one row each in this order:\nTotal_Orders | 20000\nTotal_Revenue | 3048998.33\nNo_Discount_Revenue | 1359159.37\nDiscounted_Revenue | 1689838.96\nFormat Total_Orders integer and monetary values to 2 decimals. Verify the file exists, sheet names are correct, and values read back accurately. Return artifact path and verification results. Do not send email.\nBuild sales discount workbook",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_12",
+        "text": "Send one email to finance@company.com with subject exactly `Discount Impact Analysis`. Summarize these verified findings clearly and concisely:\n- 20,000 total orders; total revenue $3,048,998.33.\n- No Discount: 8,555 orders, $1,359,159.37 revenue, average order value $158.87.\n- 1-10%: 5,710 orders, $912,969.71 revenue, average order value $159.89.\n- 11-20%: 5,735 orders, $776,869.25 revenue, average order value $135.46.\n- 20%+: no orders and $0 revenue.\n- Combined discounted revenue: $1,689,838.96.\nInclude a concise interpretation using calculated shares: discounted orders are 57.23% of orders and 55.42% of total revenue; no-discount orders are 42.78% of orders and 44.58% of revenue; the 11-20% band has the lowest AOV among populated bands.\nAttach `/workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-sales-discount-analysis/workspace/Sales_Discount_Report.xlsx`.\nAcceptance: email is actually sent (not drafted), recipient and subject exact, attachment included. Return send confirmation/message ID if available.\nEmail discount findings",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

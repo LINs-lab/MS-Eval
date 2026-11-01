@@ -1,0 +1,74 @@
+{
+  "input_hash": "04d106f7c6865a74582024d32a8371975e36f30d8762be8bfce053876bca9607",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "canvas-assignment-feedback-gform-word",
+    "task_text": "You are a course analytics assistant for the Foundations of Finance course offered in Fall 2013. This course has a course ID of 16 in the learning management system.\n\nYour task has three parts.\n\nPart 1: Retrieve all assignments for course 16 and gather submission statistics for each one. For each assignment, collect the assignment name, total number of submissions, average score (rounded to 2 decimal places), number of late submissions, and late submission rate (late submissions divided by total submissions, multiplied by 100, rounded to 2 decimal places).\n\nPart 2: Create a Google Forms survey titled \"Foundations of Finance - Assignment Feedback Survey\" to collect student feedback on assignments. The survey must contain exactly 5 questions covering the following topics: overall assignment workload, clarity of assignment instructions, time required to complete assignments, availability of instructor support, and overall satisfaction with the assignments. Use appropriate question types for each.\n\nPart 3: Create a Word document called Assignment_Analysis.docx in the workspace. The document must have the title \"Foundations of Finance (Fall 2013) - Assignment Analysis\" at the top. It must contain a table with the following columns in this exact order: Assignment_Name, Total_Submissions, Avg_Score, Late_Submissions, Late_Rate(%). Sort the rows alphabetically by Assignment_Name. Include all assignments found in the course that have at least one submission (assignments with no submissions may be excluded).\n\nAfter creating the Word document, send a summary email to instructor@financeou.example.com from analytics@university.example.com with the subject \"Assignment Analysis Report - Foundations of Finance (Fall 2013)\". The email body must mention the total number of assignments analyzed, the assignment with the highest average score, and the assignment with the most late submissions. Also include the Google Forms survey link in the email body.\n\nThe initial workspace contains Assignment_Guidelines.pdf for reference on the grading criteria used in this course.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently,\n\nThis is a compact one-course task. The main agent completes it directly; do not dispatch any sub-agent. Canvas is read-only.\n\nFirst resolve the task-visible workspace directory from the runtime allowed-directory listing (or the literal accessible-workspace directory already supplied by the harness), freeze it as `<workspace_root>`, and reject bare `/workspace` and dumps/run-specific paths. In one native-parallel response, call `canvas_list_courses(include_ended=true)`, extract all pages of `<workspace_root>/Assignment_Guidelines.pdf` read-only with `python_execute`, call `create_form(title=\"Foundations of Finance - Assignment Feedback Survey\")` exactly once, and search Sent mail for the exact recipient/subject. Select exactly one returned course whose code is `FFF-2013J` and whose full name is `Foundations of Finance (Fall 2013)`; stop on zero or multiple matches, and never retry Form creation after an ambiguous result. Then call `canvas_list_assignments(course_id=<literal returned course ID>)` once.\n\nFrom the returned assignment list, issue one independent `canvas_list_assignment_submissions(course_id=<literal returned course ID>, assignment_id=<returned assignment ID>, page=1, per_page=1)` call per assignment in one native-parallel response. Use the whole-assignment `summary` returned on each call; do not page raw submissions. For every assignment with `summary.total_count>0`, compute:\n`Total_Submissions=total_count`, `Avg_Score=round(avg_score,2)`, `Late_Submissions=late_count`, and `Late_Rate(%)=round(100*late_count/total_count,2)`.\nSort rows by exact assignment name. Select highest average score and most late submissions with assignment-name ascending tie-breaks.\n\nFreeze one literal canonical payload containing all sorted rows, analyzed count, the two named extrema, and the verified Form ID/responder link. The Word document and email must consume exactly this payload without recomputing statistics.\n\nComplete the Form chain on the retained ID, adding exactly these five multiple-choice questions in order and then reading the Form back:\n1. `How would you rate the overall assignment workload?` — `Very light, Light, About right, Heavy, Very heavy`\n2. `How clear were the assignment instructions?` — `Very unclear, Unclear, Neutral, Clear, Very clear`\n3. `How much time did you typically spend on each assignment?` — `Less than 1 hour, 1-3 hours, 4-6 hours, 7-10 hours, More than 10 hours`\n4. `How available was instructor support for assignments?` — `Never available, Rarely available, Sometimes available, Usually available, Always available`\n5. `What is your overall satisfaction with the assignments?` — `1, 2, 3, 4, 5`\nRequire exactly this five-question sequence on the newly retained Form ID; do not append duplicates.\n\nCreate `<workspace_root>/Assignment_Analysis.docx` exactly once, preferably atomically with `python-docx`, using title `Foundations of Finance (Fall 2013) - Assignment Analysis` and one table with exact columns `Assignment_Name, Total_Submissions, Avg_Score, Late_Submissions, Late_Rate(%)`. Read the document back and require every canonical row in alphabetical order with literal numeric values.\n\nFor email idempotency, paginate `search_emails(query=\"Assignment Analysis Report - Foundations of Finance (Fall 2013)\", folder=\"Sent\", page=<n>, page_size=50)`, read every candidate, and match complete To, From, and Subject. Send exactly once only when no exact match exists, from `analytics@university.example.com` to `instructor@financeou.example.com`. The body must include canonical analyzed count, named highest-average assignment, named most-late assignment, and verified Form responder link. Repeat search/read-back and require exactly one exact message.\n\nAccept only after the Form, Word file, and email read back against the same canonical payload.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "For Canvas course ID 16 (Foundations of Finance, Fall 2013), retrieve every assignment and submission data needed for a complete assignment-level analysis. For each assignment with at least one submission, report: assignment ID, exact assignment name, total number of submissions, average score rounded to 2 decimals, late submission count, and late rate = late/total*100 rounded to 2 decimals. Interpret 'total submissions' as actual submitted work, excluding unsubmitted records; use all necessary pagination and verify counts. Also identify the assignment with highest average score and the assignment with most late submissions, noting ties if any. You may inspect /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-canvas-assignment-feedback-gform-word/workspace/Assignment_Guidelines.pdf if useful, but do not modify anything. Return a concise, independently verifiable data table and methodology notes.\nAnalyze Canvas assignments",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "Create a Google Form titled exactly \"Foundations of Finance - Assignment Feedback Survey\". It must contain exactly 5 questions, one per topic: (1) overall assignment workload, (2) clarity of assignment instructions, (3) time required to complete assignments, (4) availability of instructor support, and (5) overall satisfaction with the assignments. Use appropriate question types: use five-point multiple-choice rating scales for workload, clarity, support, and satisfaction; use a multiple-choice time-range question for time required. Make all questions required. Do not add any extra questions. After creation, verify the form has exactly these five questions and return the form ID and respondent/edit/view link(s) exposed by the tools plus the exact question wording/options.\nCreate feedback survey",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_6",
+        "text": "Create /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-canvas-assignment-feedback-gform-word/workspace/Assignment_Analysis.docx. It must begin with title exactly \"Foundations of Finance (Fall 2013) - Assignment Analysis\" and contain a table with columns in this exact order: Assignment_Name, Total_Submissions, Avg_Score, Late_Submissions, Late_Rate(%). Populate these rows sorted alphabetically by Assignment_Name, preserving 2 decimal places for averages/rates:\nCMA 34878 | 1470 | 83.32 | 36 | 2.45\nCMA 34879 | 1352 | 87.97 | 43 | 3.18\nCMA 34880 | 1252 | 76.50 | 61 | 4.87\nCMA 34881 | 1224 | 78.30 | 59 | 4.82\nCMA 34882 | 1193 | 78.65 | 75 | 6.29\nCMA 34883 | 1196 | 76.80 | 119 | 9.95\nCMA 34884 | 1160 | 76.16 | 88 | 7.59\nTMA 34873 | 1859 | 78.16 | 157 | 8.45\nTMA 34874 | 1661 | 72.45 | 193 | 11.62\nTMA 34875 | 1402 | 70.49 | 376 | 26.82\nTMA 34876 | 1313 | 71.05 | 268 | 20.41\nTMA 34877 | 1158 | 75.89 | 148 | 12.78\nUse a clean readable professional format. Verify the resulting DOCX text, title, table headers/order, 12 rows, and row ordering before returning. Do not create unrelated artifacts.\nBuild Word analysis",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_11",
+        "text": "Send a summary email to instructor@financeou.example.com from analytics@university.example.com with subject exactly \"Assignment Analysis Report - Foundations of Finance (Fall 2013)\". The plain-text body must clearly state: 12 assignments were analyzed; the highest average score was CMA 34879 at 87.97; the most late submissions were for TMA 34875 with 376; and include this respondent survey link exactly: https://docs.google.com/forms/d/f0e10800-3124-4659-81aa-e4ece196c10f/viewform . Mention that Assignment_Analysis.docx has been created, but do not attach it because the user requested a summary email and did not explicitly require an attachment. Send only one email, then return delivery confirmation/details.\nEmail assignment summary",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas",
+          "filesystem-workspace"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "gform",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "word",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

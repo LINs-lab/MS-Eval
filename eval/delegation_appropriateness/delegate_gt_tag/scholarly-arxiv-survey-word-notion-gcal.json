@@ -1,0 +1,456 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "scholarly-arxiv-survey-word-notion-gcal",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/scholarly-arxiv-survey-word-notion-gcal.task.md",
+    "oracle166_sha256": "7fdd0fb87a465251e886629909f0da888594405b34b565006c4fc132eb97bc05"
+  },
+  "label_cache_keys": [
+    "71461956d17da0491d4cfeb7ec00b4e806947be66467855e8ecf8bffd4ab0f1b"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 5,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (academic-literature-researcher 0): One explore sub-agent receives the literal chain-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, then returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (academic-literature-researcher 1): One explore sub-agent receives the literal tree-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (academic-literature-researcher 2): One explore sub-agent receives the literal self-consistency `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (academic-literature-researcher 3): One explore sub-agent receives the literal step-by-step verification `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (academic-literature-researcher 4): One explore sub-agent receives the literal automatic chain-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 5,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The document coder sole-writes LLM_Reasoning_Survey.docx in the workspace with the Word tools: document title/author metadata, then Title, Abstract, 1. Introduction, 2. Background, 3. Taxonomy of Methods (Heading-2 category subsections, Heading-3 per-method subsections), 4. Comparative Analysis containing a table with exactly the five required method columns populated from the frozen packet, and the remaining guideline-required sections; read the outline and full text back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 6,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): The Notion coder solely owns the Reasoning Papers database: search the workspace first and reuse an existing exact-title database, otherwise create it once under a suitable parent page with exactly the properties Title(title), Authors(rich_text), Year(number), Method(select), Key_Contribution(rich_text), Cited_By(number); add exactly five pages (one per frozen paper) with those properties, then retrieve the database and entries to verify.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 7,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "calendar",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 1): The calendar coder schedules the five reading-group sessions for 2026-03-16 through 2026-03-20, each exactly 10:00-11:00 UTC (start/end dateTime with Z suffix and timeZone UTC), one per paper, with summary exactly 'Reading Group: <topic>' and a description naming the full paper title, first author, year and arXiv ID; search exact summaries first and create only missing events, then get_event every retained ID.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (academic-literature-researcher 0): One explore sub-agent receives the literal chain-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, then returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (academic-literature-researcher 1): One explore sub-agent receives the literal tree-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (academic-literature-researcher 2): One explore sub-agent receives the literal self-consistency `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (academic-literature-researcher 3): One explore sub-agent receives the literal step-by-step verification `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (academic-literature-researcher 4): One explore sub-agent receives the literal automatic chain-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The document coder sole-writes LLM_Reasoning_Survey.docx in the workspace with the Word tools: document title/author metadata, then Title, Abstract, 1. Introduction, 2. Background, 3. Taxonomy of Methods (Heading-2 category subsections, Heading-3 per-method subsections), 4. Comparative Analysis containing a table with exactly the five required method columns populated from the frozen packet, and the remaining guideline-required sections; read the outline and full text back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 6,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): The Notion coder solely owns the Reasoning Papers database: search the workspace first and reuse an existing exact-title database, otherwise create it once under a suitable parent page with exactly the properties Title(title), Authors(rich_text), Year(number), Method(select), Key_Contribution(rich_text), Cited_By(number); add exactly five pages (one per frozen paper) with those properties, then retrieve the database and entries to verify.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 7,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "calendar",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 1): The calendar coder schedules the five reading-group sessions for 2026-03-16 through 2026-03-20, each exactly 10:00-11:00 UTC (start/end dateTime with Z suffix and timeZone UTC), one per paper, with summary exactly 'Reading Group: <topic>' and a description naming the full paper title, first author, year and arXiv ID; search exact summaries first and create only missing events, then get_event every retained ID.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:5:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 5,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:6:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 6,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:7:calendar",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 7,
+      "role": "calendar",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "calendar": 1,
+      "notion": 1,
+      "word": 1
+    },
+    "read": {
+      "scholarly-arxiv": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 8,
+    "units": 4,
+    "write_units": 3,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

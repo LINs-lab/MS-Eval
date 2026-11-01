@@ -1,0 +1,61 @@
+{
+  "input_hash": "d701c5d7248fccade0e3469c7eaf9663c378265389255c7a4b943f051733498a",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-support-csat-gform-gsheet-email",
+    "task_text": "You are a support operations analyst. Analyze the support center performance using the support tickets database.\n\nCalculate SLA compliance and customer satisfaction metrics per ticket priority. For SLA compliance, use these response time thresholds: High priority tickets must be responded to within 4 hours, Medium within 8 hours, and Low within 24 hours.\n\nFor each priority level compute the total ticket count, the number of SLA-compliant tickets, the compliance rate as a percentage rounded to 2 decimal places, and the average customer satisfaction score rounded to 2 decimal places.\n\nAll numeric values (ticket counts, compliance rates, CSAT scores) must be written as plain numbers without percent signs, currency symbols, thousand separators, or spreadsheet formulas. For example, write the compliance rate as 12.03 (meaning 12.03%), not as \"12.03%\", \"12.03 %\", \"12\", or \"=COUNT(...)/...\".\n\nCreate a Google Sheet titled Support Center Performance Dashboard with two sheets:\n\nSheet named SLA_Compliance with columns: Priority, Total_Tickets, SLA_Compliant, Compliance_Rate, Avg_CSAT. Include one row per priority (High, Medium, Low).\n\nSheet named Summary with two columns: Metric and Value. Include: Best_Priority (priority with highest average CSAT score) and Worst_SLA_Priority (priority with lowest SLA compliance rate).\n\nCreate a Google Forms survey titled Customer Support Satisfaction Survey with exactly 4 questions. The first question asks whether the issue was resolved satisfactorily with Yes, No, and Partially as options. The second asks how the customer would rate the response speed with numeric options from 1 to 5. The third asks how they would rate the support agent with numeric options from 1 to 5. The fourth asks whether they would contact the support team again with Yes and No as options.\n\nSend an email from analytics@company.example.com to support-management@company.example.com with subject Support Center Performance Report - SLA Compliance Analysis. The body should summarize key findings including SLA compliance rates and CSAT scores.\n\nThe SLA_Policy_Reference.pdf file in your workspace contains the SLA policy documentation for reference.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent and dispatch no sub-agent. Resolve the workspace, extract `SLA_Policy_Reference.pdf` with authorized local Python, inspect the support-ticket schema, and run one set-based aggregate for exactly High, Medium, and Low using response-time thresholds 4, 8, and 24 hours. Freeze numeric Total_Tickets, SLA_Compliant, 0–100 Compliance_Rate, Avg_CSAT, and raw denominators; rank Best_Priority by rounded two-decimal Avg_CSAT with deterministic ties and Worst_SLA_Priority by raw compliance rate.\n\nStart the independent external branches without a Wave. Search/reuse one exact-title `Support Center Performance Dashboard` spreadsheet or create once on zero matches; block duplicate titles/tabs, maintain only `SLA_Compliance` and `Summary`, write exact headers/three rows as numeric cells, and read both bounded ranges back. Separately call `create_form` exactly once for `Customer Support Satisfaction Survey`, retain `formId`, add the four task-worded questions sequentially with option sets `Yes/No/Partially`, `1/2/3/4/5`, `1/2/3/4/5`, and `Yes/No`, then call `get_form`; never retry an ambiguous create. Exhaust Sent pages for exact recipient `support-management@company.example.com` and task subject, send at most once from the configured account with all three rates/CSAT values, and read the retained message. Reconcile Sheet, Form, and email directly to the frozen aggregate and finish without an auditor.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Act as the enterprise-data analyst for a support operations task. Read-only analyze the support tickets database and the workspace policy PDF at /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-support-csat-gform-gsheet-email/workspace/SLA_Policy_Reference.pdf. Identify the relevant Snowflake support tickets table/schema and compute one row each for High, Medium, Low priority: total ticket count, SLA-compliant count using response thresholds High <=4 hours, Medium <=8 hours, Low <=24 hours, compliance rate percentage rounded to 2 decimals, and average CSAT rounded to 2 decimals. Determine Best_Priority by highest Avg_CSAT and Worst_SLA_Priority by lowest compliance rate. Clarify treatment of null response times/CSAT and ties based on the data/schema. Return exact plain numeric outputs plus concise key findings suitable for an email, and cite the database/table used. Do not modify anything.\nAnalyze SLA and CSAT",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_8",
+        "text": "Perform the following external workflow writes exactly, then verify by reading them back. 1) Create a Google Spreadsheet titled \"Support Center Performance Dashboard\". Rename its default sheet to \"SLA_Compliance\" and ensure exactly two sheets by adding \"Summary\". In SLA_Compliance write columns Priority, Total_Tickets, SLA_Compliant, Compliance_Rate, Avg_CSAT and rows: High,6466,778,12.03,3.26; Medium,15774,1645,10.43,3.26; Low,9348,4204,44.97,3.25. Every numeric entry must be a plain numeric cell value, no formulas or formatted strings with percent signs/separators. In Summary write columns Metric,Value and rows Best_Priority,Medium and Worst_SLA_Priority,Medium. 2) Create a Google Form titled \"Customer Support Satisfaction Survey\" with exactly 4 questions, all multiple choice and required: (1) \"Was your issue resolved satisfactorily?\" options Yes, No, Partially; (2) \"How would you rate the response speed?\" options 1, 2, 3, 4, 5; (3) \"How would you rate the support agent?\" options 1, 2, 3, 4, 5; (4) \"Would you contact the support team again?\" options Yes, No. Do not add other questions. Return spreadsheet ID/URL, form ID/URL, and read-back verification of sheet names/data and exact question count/options. Do not send email yet.\nBuild dashboard and survey",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_12",
+        "text": "Send exactly one email from analytics@company.example.com to support-management@company.example.com with subject \"Support Center Performance Report - SLA Compliance Analysis\". Use a concise professional plain-text body summarizing these exact findings: High: 6466 total, 778 SLA-compliant, compliance 12.03%, Avg CSAT 3.26; Medium: 15774 total, 1645 compliant, compliance 10.43%, Avg CSAT 3.26; Low: 9348 total, 4204 compliant, compliance 44.97%, Avg CSAT 3.25. State that Medium has the highest underlying average CSAT (displayed 3.26) and the lowest SLA compliance (10.43%), Low has strongest SLA compliance (44.97%), and all displayed Avg CSAT scores are below the policy target of 4.0. Include links to the created dashboard https://docs.google.com/spreadsheets/d/956e5dcd-5865-48fc-bc84-e024e57f97c8/edit and survey https://docs.google.com/forms/d/9c602290-2442-4678-b77b-700bbe0cacb1/viewform. Do not attach files, do not CC/BCC, and verify/send only once. Return send confirmation details.\nEmail performance report",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake",
+          "filesystem-workspace"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

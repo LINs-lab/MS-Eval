@@ -1,0 +1,36 @@
+{
+  "input_hash": "5cdf2166a5834a85677d5b7f58bfdf46df12b84dcdc432ac188df72c338089a0",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "wc-inventory-alert-gcal",
+    "task_text": "I manage the purchasing department for our online store and I need to set up restock alerts for products that are running low on inventory. Please pull the complete product catalog from our e-commerce platform and identify every product that is currently out of stock, meaning the stock quantity is zero.\n\nFor each out-of-stock product, I need you to create a calendar reminder so we do not forget to reorder. The calendar event should be scheduled on March 10, 2026, from 9:00 AM to 10:00 AM in the America/New_York timezone. The event title should be \"Restock: [Product Name]\" where the product name is truncated to the first 50 characters if it is longer than that. The description should read \"Product ID: [ID]. SKU: [SKU]. Category: [Category Name]. This product is currently out of stock and needs to be reordered.\" Use the first category name listed for each product. If a product has no category, write \"Uncategorized\" as the category.\n\nAfter creating the calendar events, send a single summary email from purchasing@ourstore.com to warehouse@ourstore.com with the subject \"Out of Stock Alert - March 2026\". The email body should list each out-of-stock product on its own line in the format \"ID [Product ID]: [Product Name] (SKU: [SKU])\" sorted by product ID ascending. At the bottom of the email, include a line that says \"Total out-of-stock products: [N]\" where N is the count.\n\nAlso save a plain text file called out_of_stock_report.txt in the workspace. Each line should contain \"[Product ID] - [Product Name] - [SKU] - [Category]\" for the out-of-stock products with each field separated by space-dash-space, sorted by product ID ascending.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Query the WooCommerce product endpoint with the out-of-stock filter at its maximum page size and retain only rows whose literal `stock_quantity` is `0`. Sort the verified list by numeric product ID and derive the report, events, and email from that one list. Write `out_of_stock_report.txt` once. In one native-parallel batch, search the exact 2026-03-10 09:00–10:00 America/New_York interval for every required `Restock: ...` title, create only missing events, and read each resulting event by ID. Then send exactly one email from `purchasing@ourstore.com` to `warehouse@ourstore.com` with subject `Out of Stock Alert - March 2026`, one sorted product line per item, and the exact total-count line.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are a planning sub-agent. Decompose the following task into ordered subtasks and return a structured plan. Do NOT perform any writes or mutations — read-only investigation is allowed if needed (you may query the WooCommerce product catalog via mcp__woocommerce__*read/list/get tools, inspect the filesystem workspace via mcp__filesystem__* tools, and inspect email/calendar state read-only).\n\nTASK (from the user, a purchasing department manager):\n\n1. Pull the COMPLETE product catalog from the WooCommerce e-commerce platform (use mcp__woocommerce__woo_products_list with pagination — perPage up to 100 — to fetch ALL products, not just the first page). Identify every product that is currently OUT OF STOCK, meaning stock_quantity is zero. Note: pay attention to how stock is represented (stock_quantity field, stock_status field). Report the exact interpretation of \"out of stock with quantity zero\" based on what the data shows, including whether manage_stock matters.\n\n2. For each out-of-stock product, create a Google Calendar event (mcp__google_calendar__create_event):\n   - Scheduled on March 10, 2026, 9:00 AM to 10:00 AM, timezone America/New_York.\n   - Title: \"Restock: [Product Name]\" where product name is truncated to first 50 characters if longer.\n   - Description: \"Product ID: [ID]. SKU: [SKU]. Category: [Category Name]. This product is currently out of stock and needs to be reordered.\"\n   - Use the FIRST category name listed for each product; if no category, use \"Uncategorized\".\n\n3. Send ONE summary email via mcp__emails__send_email:\n   - From purchasing@ourstore.com (use from_addr) to warehouse@ourstore.com.\n   - Subject: \"Out of Stock Alert - March 2026\".\n   - Body: each out-of-stock product on its own line \"ID [Product ID]: [Product Name] (SKU: [SKU])\", sorted by product ID ascending. At the bottom: \"Total out-of-stock products: [N]\" where N is the count.\n\n4. Save a plain text file out_of_stock_report.txt in the workspace (workspace path: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-wc-inventory-alert-gcal/workspace). Each line: \"[Product ID] - [Product Name] - [SKU] - [Category]\" (fields separated by \" - \"), sorted by product ID ascending.\n\nDELIVERABLE: Return a step-by-step plan with:\n- Ordered subtasks.\n- For each subtask: dispatch decision (self = main agent, explore = read-only subagent, coder = write-capable subagent), and whether it is independent/parallelizable or must wait on another subtask's output.\n- Any data-shape gotchas you discovered (e.g., how many products exist, how stock fields appear, whether SKU can be empty, pagination counts, product names longer than 50 chars, products with no categories).\n- A verification strategy for each deliverable (how to confirm calendar events exist, email sent, file contents correct).\n\nKeep the plan concrete and actionable.\nPlan restock alert task",
+        "is_plan": true
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce",
+          "filesystem-workspace",
+          "emails"
+        ],
+        "is_plan": true
+      }
+    ]
+  }
+}

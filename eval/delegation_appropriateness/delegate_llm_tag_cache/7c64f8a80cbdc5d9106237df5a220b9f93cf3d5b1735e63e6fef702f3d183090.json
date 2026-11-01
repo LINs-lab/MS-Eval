@@ -1,0 +1,60 @@
+{
+  "input_hash": "7c64f8a80cbdc5d9106237df5a220b9f93cf3d5b1735e63e6fef702f3d183090",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-sales-discount-gsheet-email",
+    "task_text": "I want to understand how discounts affect our sales performance across different customer segments. Please look at all delivered orders in our sales data warehouse and join them with customer information to group everything by customer segment.\n\nFor each segment, I need the total order count, how many of those orders had a discount applied (where the discount value is greater than zero), the average discount percentage among discounted orders rounded to 2 decimal places, total revenue rounded to 2 decimals, and revenue from discounted orders only rounded to 2 decimals.\n\nCreate a Google Sheet called \"Discount Analysis Report\" with a sheet named \"Segment Analysis\". The columns should be Segment, Order_Count, Discounted_Orders, Discount_Rate_Pct (which is the percentage of orders that had discounts, rounded to 1 decimal), Avg_Discount_Pct, Total_Revenue, Discounted_Revenue, and Revenue_Impact_Pct (the percentage of total revenue that comes from discounted orders, rounded to 1 decimal). Sort the rows by Discount_Rate_Pct from highest to lowest.\n\nAfter that, send an email to finance-team@company.com with the subject \"Segment Discount Analysis\" summarizing which customer segment uses discounts the most frequently and what the overall discount rate is across all segments.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete this small segment analysis directly in the main agent; do not dispatch any sub-agent. Run one set-based query joining delivered orders to customers and group by exact customer segment. Return for each segment total order count, count with `discount > 0`, average discount among discounted orders only, total revenue, and discounted-order revenue, plus overall order and discounted-order controls. Compute the two rate columns from raw numerators and denominators, preserve unrounded values for ranking, sort by raw Discount_Rate_Pct descending with a deterministic segment tie-break, and freeze the complete segment table.\n\nFrom that frozen table, start the exact-title spreadsheet search/create branch and exact sent-mail search in the same native-parallel response. Own exactly one Google spreadsheet titled `Discount Analysis Report` and one sheet `Segment Analysis` with the eight requested columns, literal numeric values, two-decimal average discount/money fields, and one-decimal rate fields; read the full written range back. Independently search all pages of Sent mail for recipient `finance-team@company.com` and subject `Segment Discount Analysis`; send once only if no exact match exists, name the verified highest-frequency segment and overall discount rate, and read the retained message back. Reconcile spreadsheet rows and email facts with the same aggregates before completion.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Analyze the sales data warehouse for the requested report. Use all delivered orders only and join orders to customer information, grouped by customer segment. Determine for each segment: total order count; count of orders with discount value > 0; average discount percentage among discounted orders rounded to 2 decimals; total revenue rounded to 2 decimals; discounted-order revenue rounded to 2 decimals; discount rate percent (discounted/orders*100) rounded to 1 decimal; revenue impact percent (discounted revenue/total revenue*100) rounded to 1 decimal. Sort descending by discount rate. Also calculate the overall discount rate across all delivered orders and identify the segment with the highest discount frequency. Inspect schemas carefully to use the correct tables, join keys, delivery status, discount, discount percentage, and revenue fields. Read-only task: do not mutate anything. Return concise results, the exact SQL/query logic used, and any assumptions. Acceptance: complete segment-level figures plus overall rate and top segment, with no writes.\nAnalyze segment discounts",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_8",
+        "text": "Create the requested Google Spreadsheet and populate it using these verified warehouse results. Spreadsheet title: \"Discount Analysis Report\". Required sheet/tab name: \"Segment Analysis\". Required columns in this exact order: Segment, Order_Count, Discounted_Orders, Discount_Rate_Pct, Avg_Discount_Pct, Total_Revenue, Discounted_Revenue, Revenue_Impact_Pct. Rows sorted descending by Discount_Rate_Pct:\nSMB | 3390 | 1963 | 57.9 | 12.59 | 486092.70 | 277420.53 | 57.1\nConsumer | 3812 | 2168 | 56.9 | 12.68 | 601817.55 | 335838.74 | 55.8\nEnterprise | 3517 | 1996 | 56.8 | 12.57 | 567815.27 | 309793.55 | 54.6\nGovernment | 3314 | 1876 | 56.6 | 12.30 | 521424.14 | 285220.70 | 54.7\nUse numeric cell values for metrics, not formatted strings. Ensure there is exactly a sheet named Segment Analysis (rename the default tab as needed), write headers and all four rows, and verify by reading them back. Return spreadsheet ID, URL if available, sheet/tab confirmation, and readback data. Acceptance: correct title, tab, exact headers/order, exact sorted values.\nBuild discount analysis sheet",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_12",
+        "text": "Send an email to finance-team@company.com with subject exactly \"Segment Discount Analysis\". Summarize that SMB uses discounts most frequently at 57.9%, and that across all delivered orders the overall discount rate is 57.0% (8,003 discounted out of 14,033 delivered orders). Include the Google Sheet link for the completed report: https://docs.google.com/spreadsheets/d/e08407ae-b051-48b8-80f7-6709d0a964a2/edit . Keep it concise and professional. Perform the send, then return confirmation including recipient, exact subject, and send result/message ID if provided. Acceptance: message sent exactly once to the requested recipient with the specified subject and both summary facts.\nEmail finance summary",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "gsheet",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

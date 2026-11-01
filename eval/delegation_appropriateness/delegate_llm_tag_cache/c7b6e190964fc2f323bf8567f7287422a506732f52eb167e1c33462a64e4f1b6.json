@@ -1,0 +1,34 @@
+{
+  "input_hash": "c7b6e190964fc2f323bf8567f7287422a506732f52eb167e1c33462a64e4f1b6",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "canvas-enrollment-overview-excel-email",
+    "task_text": "I need to put together an enrollment overview for all our Spring 2014 courses. Please look through the course catalog and find every course that has \"Spring 2014\" in its name (equivalently, course codes ending in \"2014B\"). For each of those courses, count how many students are enrolled (only counting StudentEnrollment type) and how many teachers.\n\nPut everything into an Excel file called Spring2014_Enrollment.xlsx. The first sheet should be called \"Enrollment\" with columns Course_Name, Course_Code, Student_Count, Teacher_Count, and Student_Teacher_Ratio (students divided by teachers, rounded to 1 decimal, use 0 if there are no teachers). Sort this sheet by Student_Count from lowest to highest.\n\nAdd a second sheet called \"Summary\" with two columns Metric and Value. Include these rows: Total_Courses (how many Spring 2014 courses there are), Total_Students (sum of all students across courses), Avg_Students_Per_Course (rounded to the nearest whole number), Smallest_Course (the name of the course with the fewest students), and Largest_Course (the name of the course with the most students).\n\nAlso create a calendar event titled \"Spring 2014 Enrollment Review\" scheduled for March 14, 2026 from 2:00 PM to 3:00 PM UTC.\n\nFinally, send an email to registrar@university.edu with the subject \"Spring 2014 Enrollment Summary\" that includes the total number of courses, total students, and which course has the highest and lowest enrollment.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent must complete this six-course workflow directly; do not dispatch sub-agents. Resolve the accessible task workspace dynamically and place Spring2014_Enrollment.xlsx there.\n\nCall canvas_list_courses(include_ended=true), retain every and only course whose full name contains Spring 2014 or whose code ends in 2014B, and freeze its literal ID/code/name. For each retained course, issue StudentEnrollment and TeacherEnrollment canvas_get_course_grades calls together in one native-parallel response with page=1 and per_page=1. Use pagination.total_count for the two counts; do not fetch enrollment rows. Reject identity mismatches or duplicate/missing Spring courses.\n\nCompute a single canonical table with {course_name, course_code, student_count, teacher_count, student_teacher_ratio}, sorted by student_count ascending and course_code ascending for ties. Compute all Summary metrics once from that table, including deterministic smallest/largest course names, and freeze the exact email facts.\n\nThe main agent is the sole writer of Spring2014_Enrollment.xlsx. Create exactly Enrollment and Summary with the task's exact headers, literal values and rounding, then read both populated ranges back from the resolved path. Once the canonical payload is frozen, run the workbook branch, the exact calendar lookup for Spring 2014 Enrollment Review at 2026-03-14T14:00:00Z--15:00:00Z, and the exact Sent-mail lookup for registrar@university.edu / Spring 2014 Enrollment Summary natively in parallel where possible. Create only a missing exact event, leaving attendees empty and using the task's UTC times. Send only a missing exact-recipient/subject message and include the canonical course count, total students, largest course and smallest course. Read the event and message back; do not retry ambiguous creates.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are planning a multi-step task. Do NOT execute the task — only produce a detailed ordered plan.\n\nTASK DESCRIPTION (from the user):\n1. Find every course in the Canvas course catalog that has \"Spring 2014\" in its name (equivalently, course codes ending in \"2014B\").\n2. For each of those courses, count how many students are enrolled (only StudentEnrollment type) and how many teachers are enrolled (TeacherEnrollment type).\n3. Create an Excel file at the workspace path Spring2014_Enrollment.xlsx (workspace root is /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-canvas-enrollment-overview-excel-email/workspace) with:\n   - First sheet \"Enrollment\" with columns: Course_Name, Course_Code, Student_Count, Teacher_Count, Student_Teacher_Ratio (students divided by teachers, rounded to 1 decimal; use 0 if no teachers). Sort by Student_Count from lowest to highest.\n   - Second sheet \"Summary\" with columns Metric and Value, rows: Total_Courses, Total_Students, Avg_Students_Per_Course (rounded to nearest whole number), Smallest_Course (name of course with fewest students), Largest_Course (name of course with most students).\n4. Create a Google Calendar event titled \"Spring 2014 Enrollment Review\" on March 14, 2026, 2:00 PM - 3:00 PM UTC.\n5. Send an email to registrar@university.edu with subject \"Spring 2014 Enrollment Summary\" that includes: total number of courses, total students, and which course has the highest and lowest enrollment.\n\nAVAILABLE TOOLS (for the plan's read-only reconnaissance):\n- Canvas MCP tools (mcp__canvas__*): list_account_courses, get_course, get_course_grades (returns enrollments with type filtering), list_course_users, health_check, get_account, list_account_users, etc.\n- Excel MCP tools (mcp__excel__*): create_workbook, create_worksheet, write_data_to_excel, read_data_from_excel, etc.\n- Filesystem MCP tools (mcp__filesystem__*)\n- Email MCP tools (mcp__emails__*): send_email, etc.\n- Google Calendar MCP tools (mcp__google_calendar__*): create_event, etc.\n- mcp__local__python_execute for running Python code.\n\nYour plan must specify, for each subtask:\n- Dispatch decision: `self` (main agent), `explore`, or `coder`.\n- Whether the subtask is independent (parallelizable) or must wait on another subtask's output.\n\nPlease also do light read-only reconnaissance (e.g., Canvas health check, list accounts/courses to understand how courses are organized) so the plan can reference concrete IDs/structures. Keep the plan concise and actionable. Return the ordered subtask list with dependencies.\nPlan enrollment overview task",
+        "is_plan": true
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": true
+      }
+    ]
+  }
+}

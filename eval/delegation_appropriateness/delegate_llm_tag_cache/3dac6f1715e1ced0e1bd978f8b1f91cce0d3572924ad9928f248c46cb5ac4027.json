@@ -1,0 +1,120 @@
+{
+  "input_hash": "3dac6f1715e1ced0e1bd978f8b1f91cce0d3572924ad9928f248c46cb5ac4027",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "gt",
+    "task": "academic-presentation-builder",
+    "task_text": "I am working on a literature review about recent advances in Large Language Model reasoning and I need your help creating a structured review document and a presentation summarizing the key findings. Please search for papers about \"LLM reasoning\" and \"chain-of-thought\" methods using the academic search tools. You should find papers covering chain-of-thought prompting, self-consistency, tree of thoughts, reasoning via planning, and process-based supervision for verifying reasoning steps.\n\nOnce you have found the relevant papers, read their LaTeX sources to understand the detailed methods, experimental setups, and key results reported in each paper. Pay attention to benchmark results such as GSM8K accuracy, MATH benchmark performance, and other evaluation metrics mentioned in the experiments sections.\n\nAfter gathering all the information, create a Word document called LLM_Reasoning_Review.docx in the workspace. The document should have the title \"Literature Review: Advances in Large Language Model Reasoning\" followed by these sections. The first section should be called \"Introduction\" and contain a paragraph discussing the importance of reasoning capabilities in large language models and why this area of research has gained significant attention. The second section should be called \"Chain-of-Thought Methods\" and should cover chain-of-thought prompting and self-consistency approaches, mentioning key experimental results like GSM8K accuracy numbers. The third section should be called \"Tree-Based Reasoning\" and should cover tree of thoughts and planning-based reasoning approaches such as RAP with Monte Carlo Tree Search, including results from tasks like Game of 24 and Blocksworld. The fourth section should be called \"Verification and Reward Models\" and should cover process supervision for verifying reasoning steps, mentioning the MATH benchmark results comparing process-supervised and outcome-supervised reward models. The fifth section should be called \"Summary Table\" and must contain a table with exactly 5 rows of data (one for each paper you reviewed) and 4 columns: Paper Title, Year, Key Method, and Main Result. Fill in each row based on what you found from reading the papers. The sixth and final section should be called \"Conclusion\" and contain a brief paragraph summarizing the key trends and future directions in LLM reasoning research.\n\nNext, create a PowerPoint presentation called LLM_Reasoning_Slides.pptx in the workspace with exactly 7 slides. Slide 1 should be a title slide with the title \"Advances in LLM Reasoning\" and subtitle \"Literature Review 2022-2023\". Slide 2 should be titled \"Overview\" and list all 5 papers being reviewed. Slide 3 should be titled \"Chain-of-Thought Prompting\" and present the key method and results from the chain-of-thought and self-consistency papers. Slide 4 should be titled \"Tree-Based Reasoning\" and present the key method and results from the tree of thoughts and RAP papers. Slide 5 should be titled \"Process Supervision\" and present the key method and results from the step-by-step verification paper. Slide 6 should be titled \"Performance Comparison\" and contain a table comparing the methods across benchmarks. Slide 7 should be titled \"Conclusion\" and present the key takeaways from the literature review.\n\nFinally, use the terminal to count the number of words in both output documents and save the results to a file called word_count.txt in the workspace. Each line should follow the format \"LLM_Reasoning_Review.docx: N words\" and \"LLM_Reasoning_Slides.pptx: M words\" where N and M are the actual word counts extracted from the documents.\n\nThe three deliverables (LLM_Reasoning_Review.docx, LLM_Reasoning_Slides.pptx, and word_count.txt) are independent outputs. Create each one exactly once, and do not overwrite or delete a file that another step of the workflow has already produced.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, follow this exact orchestration plan. A wave must finish and return all stated handoffs before the next wave begins. Within a wave, dispatch exactly one sub-agent for each numbered sub-task and run those sub-agents concurrently.\n\nBefore Wave 1, the main agent must freeze the exact five-paper taxonomy and output contract from the task: chain-of-thought prompting, self-consistency, Tree of Thoughts, RAP/planning, and process supervision, together with the required benchmark fields. It must assign one stable paper to each slot and prevent duplicate ownership. Resolve the task-visible workspace directory from the runtime allowed-directory listing (or the literal accessible-workspace directory already supplied by the harness), freeze `<workspace_root>`, and reject bare `/workspace` and dumps/run-specific paths.\n\n1. Wave 1 — dispatch exactly 5 sub-agents in parallel, one for each numbered sub-task:\n\n   1. explore 0 (academic-literature-researcher 0): Use one explore sub-agent assigned exactly the paper \"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models\" (Jason Wei et al., 2022, arXiv:2201.11903, NeurIPS 2022).\n   2. explore 1 (academic-literature-researcher 1): Use one explore sub-agent assigned exactly the paper \"Self-Consistency Improves Chain of Thought Reasoning in Language Models\" (Xuezhi Wang et al., 2022, arXiv:2203.11171, ICLR 2023).\n   3. explore 2 (academic-literature-researcher 2): Use one explore sub-agent assigned exactly the paper \"Tree of Thoughts: Deliberate Problem Solving with Large Language Models\" (Shunyu Yao et al., 2023, arXiv:2305.10601, NeurIPS 2023).\n   4. explore 3 (academic-literature-researcher 3): Use one explore sub-agent assigned exactly the paper \"Reasoning with Language Model is Planning with World Model\" (the RAP paper, Shibo Hao et al., 2023, arXiv:2305.14992, EMNLP 2023).\n   5. explore 4 (academic-literature-researcher 4): Use one explore sub-agent assigned exactly the paper \"Let's Verify Step by Step\" (Hunter Lightman et al., 2023, arXiv:2305.20050, ICLR 2024, process-supervised reward models).\n\nEach Wave 1 sub-agent receives its exact assigned title/arXiv ID inline, confirms the ID via one academic search call, then uses the arxiv-latex sources read-only for only that paper, verifies identity by title and stable ID, and inspects the available methods and experiments sections, and return one compact source-faithful record with paper ID/title, section coverage, benchmark/task result evidence with model and setting context, and missing-field status. Explore is read-only, so do not write files or create or modify any final deliverable.\n\nAfter Wave 1, the main agent must reconcile the five paper IDs, reject unsupported metrics, and freeze one literal canonical five-row synthesis packet whose terminology and benchmark values are consumed unchanged by both document owners and the word-count step.\n\n2. Wave 2 — dispatch exactly 2 sub-agents in parallel, one for each numbered sub-task:\n\n   1. coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Review.docx` exclusively. Create it exactly once with the exact title and six required sections, a Summary Table with exactly five data rows and exactly the four required columns, and source-faithful GSM8K, Game of 24/Blocksworld, and MATH context where available. Read it back and return its path, heading list, table dimensions, five-paper coverage, and validation. Do not create slides or word_count.txt.\n\n   2. coder 1 (office-report-builder 1): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Slides.pptx` exclusively. Create it exactly once with exactly seven slides and the exact required slide titles/content roles, ensuring slide 6 is a real performance-comparison table. Read it back and return its path, slide count/titles, paper/benchmark coverage, and validation. Do not create the Word document or word_count.txt.\n\nAfter Wave 2, the main agent must verify the two artifacts against the same five-row packet and freeze their paths. It must then use the granted terminal/document extraction capabilities itself to count actual extracted words from the verified DOCX and PPTX, write `<workspace_root>/word_count.txt` exactly once with the two required filename/count lines, and read it back without altering either source document. Finally, it must verify all three deliverables, exact slide/table counts, word-count line format, and single-writer provenance before completion.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "wave_1",
+        "text": "explore 0 (academic-literature-researcher 0): Use one explore sub-agent assigned exactly the paper \"Chain-of-Thought Prompting Elicits Reasoning in Large Language Models\" (Jason Wei et al., 2022, arXiv:2201.11903, NeurIPS 2022).",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "wave_1",
+        "text": "explore 1 (academic-literature-researcher 1): Use one explore sub-agent assigned exactly the paper \"Self-Consistency Improves Chain of Thought Reasoning in Language Models\" (Xuezhi Wang et al., 2022, arXiv:2203.11171, ICLR 2023).",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "wave_1",
+        "text": "explore 2 (academic-literature-researcher 2): Use one explore sub-agent assigned exactly the paper \"Tree of Thoughts: Deliberate Problem Solving with Large Language Models\" (Shunyu Yao et al., 2023, arXiv:2305.10601, NeurIPS 2023).",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "wave_1",
+        "text": "explore 3 (academic-literature-researcher 3): Use one explore sub-agent assigned exactly the paper \"Reasoning with Language Model is Planning with World Model\" (the RAP paper, Shibo Hao et al., 2023, arXiv:2305.14992, EMNLP 2023).",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "wave_1",
+        "text": "explore 4 (academic-literature-researcher 4): Use one explore sub-agent assigned exactly the paper \"Let's Verify Step by Step\" (Hunter Lightman et al., 2023, arXiv:2305.20050, ICLR 2024, process-supervised reward models).",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "wave_2",
+        "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Review.docx` exclusively. Create it exactly once with the exact title and six required sections, a Summary Table with exactly five data rows and exactly the four required columns, and source-faithful GSM8K, Game of 24/Blocksworld, and MATH context where available. Read it back and return its path, heading list, table dimensions, five-paper coverage, and validation. Do not create slides or word_count.txt.",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "wave_2",
+        "text": "coder 1 (office-report-builder 1): Use one coder sub-agent to own `<workspace_root>/LLM_Reasoning_Slides.pptx` exclusively. Create it exactly once with exactly seven slides and the exact required slide titles/content roles, ensuring slide 6 is a real performance-comparison table. Read it back and return its path, slide count/titles, paper/benchmark coverage, and validation. Do not create the Word document or word_count.txt.",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "write",
+        "role": "word",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "write",
+        "role": "ppt",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

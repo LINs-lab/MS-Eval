@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gen: Under-delegation</title>
+  <style>
+    :root{--paper:#f3eadc;--ink:#1a1612;--mute:#6a5e50;--line:#c9b79a;--main:#2a251f;--ro:#e65500;--ro-bg:#f7e0cf;--rw:#0064c8;--rw-bg:#d5e5f6;--ok:#1a6844;--share:#efe6d4}
+    *{box-sizing:border-box}html,body{margin:0}body{background:radial-gradient(circle at 10% 0,rgba(255,255,255,.55),transparent 34%),repeating-linear-gradient(0deg,transparent 0 30px,rgba(110,88,58,.06) 31px),var(--paper);color:var(--ink);font:15px/1.35 "Iowan Old Style","Palatino Linotype",Palatino,"URW Palladio L","P052",Georgia,serif}
+    .sheet{width:min(1580px,calc(100vw - 20px));margin:10px auto 16px}.eyebrow{display:flex;justify-content:space-between;font:11px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+    h1{margin:3px 0 2px;font-size:32px;letter-spacing:-.03em;line-height:.95}.sub{margin:0 0 8px;color:var(--mute);max-width:100ch;font-size:13.5px}
+    .panel{border:1.5px solid var(--ink);background:rgba(255,253,246,.72);padding:6px 10px 7px;margin-bottom:6px}.panel h2{margin:0 0 4px;font-size:13px;font-family:"IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase}
+    .task-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.tid{font:12px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;background:var(--ink);color:var(--paper);padding:5px 8px}.blurb{margin:0;font-size:13.5px}.blurb b{font-style:italic}
+    .trsd-prose{font-size:13.5px}.trsd-prose .del{color:var(--ro);font-weight:600;background:rgba(247,224,207,.7);padding:0 4px;border-bottom:1.5px solid var(--ro)}
+    .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.metric{border:1px solid var(--line);background:#fffdf7;padding:6px 8px}.metric .k{font:10px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}.metric strong{display:block;font-size:23px;line-height:1.05;margin-top:3px}.metric em{font-size:11px;color:var(--mute);font-style:normal}
+    .compare{display:grid;grid-template-columns:1fr 1fr;gap:6px}.subbox{border:1px solid var(--line);padding:6px 8px;background:#fffdf7}.subbox h3{margin:0 0 3px;font-size:13px}.subbox p{margin:0;font-size:12px}.subbox ul{margin:4px 0 0;padding-left:17px;font-size:12px}.subbox li+li{margin-top:2px}.subbox .bad{color:var(--ro)}.subbox .good{color:var(--ok)}
+    .band{margin-bottom:6px}.hd{display:flex;justify-content:space-between;align-items:baseline;font:11px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;padding:5px 8px;border:1.5px solid var(--ink);background:#fffdf7}.hd .axis{letter-spacing:.1em;opacity:.55}.box{border:1.5px solid var(--ink);border-top:0;background:rgba(255,253,246,.55)}
+    .row{display:grid;grid-template-columns:248px 1fr 70px;gap:6px;padding:5px 8px;align-items:center}.mode h3{margin:0;font-size:14px}.mode p{margin:1px 0 0;font-size:11.5px;color:var(--mute)}.roster{display:flex;flex-wrap:wrap;gap:2px;margin-top:4px}.chip,.ag{display:inline-flex;align-items:center;gap:4px;border:1px solid currentColor;padding:2px 6px 2px 3px;font:10px/1.2 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;background:#fffdf7}.chip img,.ag img{width:14px;height:14px;object-fit:cover}.chip.ro,.ag.ro{color:var(--ro);background:var(--ro-bg)}.chip.rw,.ag.rw{color:var(--rw);background:var(--rw-bg)}.chip.off{opacity:.3}.chip.empty{color:var(--mute);border-style:dashed}
+    .score{display:flex;align-items:center;min-width:0}.mn,.gate{flex:0 0 auto;border:1px solid var(--ink);padding:4px 6px;text-align:center;min-width:66px;background:var(--main);color:var(--paper)}.mn small,.gate small,.wv small{display:block;font:9px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;opacity:.7}.mn b,.gate b{font-size:12px}.gate{background:var(--ro-bg);color:var(--ink);outline:2px solid var(--ro);outline-offset:2px}.wv{flex:0 1 auto;border:1px dashed #8e7d66;padding:3px 6px 4px 8px;background:rgba(255,255,255,.5);position:relative}.wv:before{content:"";position:absolute;left:3px;top:14px;bottom:6px;width:4px;border:1.5px solid var(--ink);border-right:0}.wv .pack{display:flex;flex-direction:column;gap:2px}.ag{font:11.5px/1.15 Georgia,serif;padding:2px 5px}.ag .nm{font:10px/1.15 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace}.arr{width:16px;height:2px;background:var(--ink);flex:0 0 16px;position:relative;margin:0 3px}.arr:after{content:"";position:absolute;right:-1px;top:-3px;border:4px solid transparent;border-left-color:var(--ink)}.n{text-align:right;font:11px/1.2 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;color:var(--mute)}.n strong{display:block;color:var(--ok);font:700 18px/1 Georgia,serif}
+    .wave-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.wave{border:1px dashed var(--ink);padding:6px 8px;background:#fffdf7}.wave h3{margin:0 0 3px;font-size:13px}.wave .num{font:10px/1 "IBM Plex Mono","Liberation Mono",ui-monospace,monospace;color:var(--ro);letter-spacing:.1em;text-transform:uppercase}.wave p{margin:0;font-size:12px}.wave ul{margin:4px 0 0;padding-left:17px;font-size:12px}.wave li+li{margin-top:2px}
+    .legend{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:6px;padding-top:6px;border-top:1px solid var(--line);color:var(--mute);font-size:12px}.keys{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.sw{width:11px;height:11px;border:1px solid var(--ink);display:inline-block;vertical-align:-1px;margin-right:4px}.sw.m{background:var(--main)}.sw.r{background:var(--ro-bg)}.sw.w{background:var(--rw-bg)}.mono{font-family:"IBM Plex Mono","Liberation Mono",ui-monospace,monospace;font-size:11px}
+    @media(max-width:1100px){.metric-grid,.compare,.wave-grid{grid-template-columns:1fr 1fr}.row{display:block}.score{margin-top:6px;flex-wrap:wrap;gap:3px}.n{text-align:left;margin-top:6px}}@media(max-width:600px){.metric-grid,.compare,.wave-grid{grid-template-columns:1fr}.eyebrow{display:block}.eyebrow span{display:block;margin-bottom:4px}h1{font-size:27px}}
+    @media print{body{background:#fff}.sheet{width:100%;margin:0}}
+  </style>
+</head>
+<body>
+<main class="sheet">
+  <div class="eyebrow"><span>MAD-SAE Evaluation Kit</span><span>Under-delegation · instantiated run</span></div>
+  <h1>Gen: Under-delegation</h1>
+  <p class="sub">This task was explicitly marked <b>need sub-agent</b>: it combines internal HR analytics, academic literature review, two Python scripts, an Excel workbook, a Word report, and a Notion action database. Auto (Gen) did the whole job in one main-agent lane, producing <b>100 Csteps</b>; the oracle split the independent branches and finished in <b>45 Csteps</b>.</p>
+
+  <section class="panel">
+    <div class="task-h"><h2>Task</h2><span class="tid">terminal-sf-arxiv-excel-word-notion</span></div>
+    <p class="blurb">Build an employee-retention strategy: read retention targets, methodology, and department contacts; query Snowflake for seven department flight-risk metrics; search arXiv for three retention papers; run <b>flight_risk_analysis.py</b> and <b>synthesis.py</b>; create <b>Retention_Strategy.xlsx</b>, <b>Retention_Strategy_Report.docx</b>, and a Notion database named <b>Retention Action Items</b>.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Observed signal</h2>
+    <div class="metric-grid">
+      <div class="metric"><span class="k">Prescribed</span><strong>5</strong><em>2 explore + 3 coders</em></div>
+      <div class="metric"><span class="k">Observed</span><strong>0</strong><em>0 parallel · 0 sequential sub-agents</em></div>
+      <div class="metric"><span class="k">Cstep inflation</span><strong>+55</strong><em>100 Gen − 45 Oracle</em></div>
+      <div class="metric"><span class="k">Ratio</span><strong>2.2×</strong><em>main-agent one-shot vs oracle</em></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="task-h"><h2>Task-Solving Rationale with Sub-Task Decomposition (TRSD)</h2><span class="tid" style="background:var(--ro)">annotation: 5-agent plan</span></div>
+    <p class="blurb trsd-prose">The prescribed decomposition has two clean dependency waves: <span class="del">Wave 1 launches two read-only explorers in parallel for Snowflake HR data and academic retention papers; Wave 2 launches three writers in parallel for Excel, Word, and Notion</span>. Gen ignored that structure, so one main context serialized source gathering, scripts, synthesis, three artifact writes, and verification.</p>
+  </section>
+
+  <section class="band">
+    <div class="hd">Execution traces <span class="axis">time &rarr; · every row carries its Csteps</span></div>
+    <article class="box row">
+      <div class="mode"><h3>Auto (Gen)</h3><p>Main agent owns every source, script, artifact, and verification step.</p><div class="roster"><span class="chip ro off"><img src="../../assets/agents/explore.png" alt="">explore x2</span><span class="chip rw off"><img src="../../assets/agents/coder.png" alt="">coder x3</span><span class="chip empty">empty roster at runtime</span></div></div>
+      <div class="score"><div class="mn"><small>Main</small><b>read files</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>Snowflake HR</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>arXiv papers</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>2 scripts</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>Excel</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>Word</b></div><div class="arr"></div><div class="mn"><small>Main</small><b>Notion · done</b></div></div>
+      <div class="n"><strong>100</strong>Csteps<br>0 delegates</div>
+    </article>
+    <article class="box row">
+      <div class="mode"><h3>Oracle</h3><p>Independent read branches and independent write branches are delegated in parallel.</p><div class="roster"><span class="chip ro"><img src="../../assets/agents/explore.png" alt="">explore x2</span><span class="chip rw"><img src="../../assets/agents/coder.png" alt="">coder x3</span></div></div>
+      <div class="score"><div class="mn"><small>Main</small><b>freeze inputs</b></div><div class="arr"></div><div class="wv"><small>W1 · parallel · 8 Csteps</small><div class="pack"><div class="ag ro"><img src="../../assets/agents/explore.png" alt=""><span class="nm">explore</span>Snowflake department metrics</div><div class="ag ro"><img src="../../assets/agents/explore.png" alt=""><span class="nm">explore</span>3 retention papers</div></div></div><div class="arr"></div><div class="mn"><small>Main</small><b>scripts + synthesis</b></div><div class="arr"></div><div class="wv"><small>W2 · parallel · 14 Csteps</small><div class="pack"><div class="ag rw"><img src="../../assets/agents/coder.png" alt=""><span class="nm">coder</span>Excel workbook</div><div class="ag rw"><img src="../../assets/agents/coder.png" alt=""><span class="nm">coder</span>Word report</div><div class="ag rw"><img src="../../assets/agents/coder.png" alt=""><span class="nm">coder</span>Notion action DB</div></div></div><div class="arr"></div><div class="mn"><small>Main</small><b>reconcile · done</b></div></div>
+      <div class="n"><strong>45</strong>Csteps<br>5 delegates</div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>Oracle workflow with Csteps</h2>
+    <div class="wave-grid">
+      <article class="wave"><span class="num">Main solo · 23 Csteps</span><h3>Freeze shared packet</h3><ul><li>Read retention targets, methodology, and contacts once.</li><li>Validate seven departments, thresholds, owners, and file paths.</li><li>Run scripts once after compact source handoffs return.</li></ul></article>
+      <article class="wave"><span class="num">Wave 1 · 2 explore · 8 Csteps</span><h3>Parallel source gathering</h3><ul><li>Explorer A queries Snowflake and returns seven department metrics.</li><li>Explorer B searches academic papers and returns three relevant studies.</li><li>Main freezes one canonical analysis packet.</li></ul></article>
+      <article class="wave"><span class="num">Wave 2 · 3 coders · 14 Csteps</span><h3>Parallel artifact writers</h3><ul><li>Excel coder writes three literal-number sheets.</li><li>Word coder writes the retention strategy report.</li><li>Notion coder creates one database and seven action pages.</li></ul></article>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Why this under-delegation is visible in Csteps</h2>
+    <div class="compare">
+      <div class="subbox"><h3>What Auto (Gen) still completed</h3><ul><li><b>Data:</b> seven departments with headcount, flight-risk count, percentages, and average satisfaction.</li><li><b>Research:</b> three retention papers folded into a synthesis JSON.</li><li><b>Artifacts:</b> Excel workbook, Word report, and Notion action database were produced; the run passed.</li></ul></div>
+      <div class="subbox"><h3 class="bad">What missing delegation cost</h3><ul><li class="bad">Snowflake querying and arXiv search were serialized instead of explored concurrently.</li><li class="bad">Excel, Word, and Notion were three independent write owners but stayed in one main-agent queue.</li><li class="bad">The main context accumulated source gathering, scripts, artifact creation, and read-back, inflating the trace to 100 Csteps.</li></ul></div>
+    </div>
+  </section>
+
+  <footer class="legend"><div class="keys"><span><i class="sw m"></i>Main</span><span><i class="sw r"></i>Read-only / missing</span><span><i class="sw w"></i>Writable coder</span><span>Dashed box = one prescribed wave</span></div><div class="mono">DeepSeek-V4-Flash-0731 · terminal-sf-arxiv-excel-word-notion · Gen 100 Csteps / Oracle 45 Csteps · 0 vs 5 sub-agents</div></footer>
+</main>
+</body>
+</html>

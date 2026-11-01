@@ -1,0 +1,233 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "yt-transcript-afrobeat-song-list-excel-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/yt-transcript-afrobeat-song-list-excel-email.task.md",
+    "oracle166_sha256": "7a2ae33c74221fadd47b0249a4190cb9c81e671cd673ba23c699c882eea65d6d"
+  },
+  "label_cache_keys": [
+    "4f03e2cd8be7334e2598e7f900be360ab1340f19d5acacc4514f796371b32eed"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Workbook writer — sole writer of Afrobeat_Tracklist.xlsx. Create it exactly once with exactly two sheets: Tracklist with columns Track_Number, Song_Title, Artist, Start_Time_Sec, Duration_Sec, Notes and every frozen row (at least twelve, sequential numbering, literal timings); Artist_Summary with columns Artist, Song_Count, Total_Duration_Sec and the frozen artist rows (at least four). Write literal values only, read both populated ranges back, and return path, sheet order, row counts and equality controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): Document writer — sole writer of Curator_Notes.docx. Create it exactly once with the level-1 heading Afrobeat Mix 2024 - Curator Notes, a Summary section stating the frozen total track count, unique-artist count, and total mix duration estimate, a Notable Tracks section covering the five frozen standout songs with their one-line justifications, and a Genre Analysis section with the two frozen style observations; read the document back and return title, section order and content controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): Wiki writer — sole owner of the Notion page. Search the exact title Afrobeat Mix 2024 Tracklist first; create or complete exactly one nonduplicate page containing every frozen tracklist row (track number, song title, artist) as content blocks plus the complete artist summary, and retrieve its title/body; never retry an ambiguous create.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Workbook writer — sole writer of Afrobeat_Tracklist.xlsx. Create it exactly once with exactly two sheets: Tracklist with columns Track_Number, Song_Title, Artist, Start_Time_Sec, Duration_Sec, Notes and every frozen row (at least twelve, sequential numbering, literal timings); Artist_Summary with columns Artist, Song_Count, Total_Duration_Sec and the frozen artist rows (at least four). Write literal values only, read both populated ranges back, and return path, sheet order, row counts and equality controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): Document writer — sole writer of Curator_Notes.docx. Create it exactly once with the level-1 heading Afrobeat Mix 2024 - Curator Notes, a Summary section stating the frozen total track count, unique-artist count, and total mix duration estimate, a Notable Tracks section covering the five frozen standout songs with their one-line justifications, and a Genre Analysis section with the two frozen style observations; read the document back and return title, section order and content controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): Wiki writer — sole owner of the Notion page. Search the exact title Afrobeat Mix 2024 Tracklist first; create or complete exactly one nonduplicate page containing every frozen tracklist row (track number, song title, artist) as content blocks plus the complete artist summary, and retrieve its title/body; never retry an ambiguous create.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:word",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:2:notion",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 2,
+      "role": "notion",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "notion": 1,
+      "word": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 3,
+    "units": 3,
+    "write_units": 3,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

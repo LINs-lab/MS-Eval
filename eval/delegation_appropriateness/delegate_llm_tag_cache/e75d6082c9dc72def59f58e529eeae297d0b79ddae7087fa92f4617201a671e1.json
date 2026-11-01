@@ -1,0 +1,47 @@
+{
+  "input_hash": "e75d6082c9dc72def59f58e529eeae297d0b79ddae7087fa92f4617201a671e1",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "wc-inventory-alert-gcal",
+    "task_text": "I manage the purchasing department for our online store and I need to set up restock alerts for products that are running low on inventory. Please pull the complete product catalog from our e-commerce platform and identify every product that is currently out of stock, meaning the stock quantity is zero.\n\nFor each out-of-stock product, I need you to create a calendar reminder so we do not forget to reorder. The calendar event should be scheduled on March 10, 2026, from 9:00 AM to 10:00 AM in the America/New_York timezone. The event title should be \"Restock: [Product Name]\" where the product name is truncated to the first 50 characters if it is longer than that. The description should read \"Product ID: [ID]. SKU: [SKU]. Category: [Category Name]. This product is currently out of stock and needs to be reordered.\" Use the first category name listed for each product. If a product has no category, write \"Uncategorized\" as the category.\n\nAfter creating the calendar events, send a single summary email from purchasing@ourstore.com to warehouse@ourstore.com with the subject \"Out of Stock Alert - March 2026\". The email body should list each out-of-stock product on its own line in the format \"ID [Product ID]: [Product Name] (SKU: [SKU])\" sorted by product ID ascending. At the bottom of the email, include a line that says \"Total out-of-stock products: [N]\" where N is the count.\n\nAlso save a plain text file called out_of_stock_report.txt in the workspace. Each line should contain \"[Product ID] - [Product Name] - [SKU] - [Category]\" for the out-of-stock products with each field separated by space-dash-space, sorted by product ID ascending.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Query the WooCommerce product endpoint with the out-of-stock filter at its maximum page size and retain only rows whose literal `stock_quantity` is `0`. Sort the verified list by numeric product ID and derive the report, events, and email from that one list. Write `out_of_stock_report.txt` once. In one native-parallel batch, search the exact 2026-03-10 09:00–10:00 America/New_York interval for every required `Restock: ...` title, create only missing events, and read each resulting event by ID. Then send exactly one email from `purchasing@ourstore.com` to `warehouse@ourstore.com` with subject `Out of Stock Alert - March 2026`, one sorted product line per item, and the exact total-count line.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Pull the COMPLETE WooCommerce product catalog using pagination (up to 100/page, continue until exhausted). Identify every product whose stock_quantity is exactly 0. For each, return: numeric product ID, full product name, SKU (preserve empty if absent), and first listed category name; if no category use Uncategorized. Sort results by product ID ascending. Also report total catalog count checked, pagination evidence, and out-of-stock count. Read-only task; make no changes. Acceptance: no catalog page omitted and only stock_quantity == 0 included.\nFind all zero-stock products",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_11",
+        "text": "Perform these external writes exactly.\n\nCreate 5 separate Google Calendar events, all on 2026-03-10 from 09:00 to 10:00 with timezone America/New_York. Titles use exactly the supplied 50-character truncations and descriptions exactly as supplied:\n1) Title: Restock: Infinity (JBL Glide 500, 20 Hrs Playtime with Quic\nDescription: Product ID: 20. SKU: INFINITY-JBL-GLIDE-1020. Category: Electronics. This product is currently out of stock and needs to be reordered.\n2) Title: Restock: BOXTUDIO®- LIGHTBOX- Tabletop Portable PhotoStudio\nDescription: Product ID: 39. SKU: BOXTUDIO-LIGHTBOX-TA-1039. Category: Cameras. This product is currently out of stock and needs to be reordered.\n3) Title: Restock: TYPE-C Earphone for OnePlus 8 Pro , OnePlus Eight \n(Note: title has a space after 'Eight' because the first 50 chars end in a space.)\nDescription: Product ID: 45. SKU: TYPEC-EARPHONE-FOR-1045. Category: Audio. This product is currently out of stock and needs to be reordered.\n4) Title: Restock: 30kg digital scale for shop and kitchen green disp\nDescription: Product ID: 71. SKU: 30KG-DIGITAL-SCALE-1071. Category: Home Appliances. This product is currently out of stock and needs to be reordered.\n5) Title: Restock: Silencer Panels, Flame Retardant Sound‑Absorption,\nDescription: Product ID: 79. SKU: SILENCER-PANELS-FLAM-1079. Category: TV & Home Theater. This product is currently out of stock and needs to be reordered.\nUse ISO start 2026-03-10T09:00:00-04:00 and end 2026-03-10T10:00:00-04:00, both with timeZone America/New_York.\n\nThen send one email FROM purchasing@ourstore.com TO warehouse@ourstore.com, subject exactly: Out of Stock Alert - March 2026\nPlain text body exactly:\nID 20: Infinity (JBL Glide 500, 20 Hrs Playtime with Quick Charge, Wireless On Ear Headphone with Mic, Deep Bass, Dual Equalizer,... (SKU: INFINITY-JBL-GLIDE-1020)\nID 39: BOXTUDIO®- LIGHTBOX- Tabletop Portable PhotoStudio(40x40x40cms)- Product Photography Light Tent- Think Inside The Box !-10... (SKU: BOXTUDIO-LIGHTBOX-TA-1039)\nID 45: TYPE-C Earphone for OnePlus 8 Pro , OnePlus Eight Pro in Ear Type C Wired Earphones with Mic, Braided 1.2 Metre Cable, Met... (SKU: TYPEC-EARPHONE-FOR-1045)\nID 71: 30kg digital scale for shop and kitchen green display 72hrs battery backup weight machine (SKU: 30KG-DIGITAL-SCALE-1071)\nID 79: Silencer Panels, Flame Retardant Sound‑Absorption, Polyester Fiber Stable for Recording Studio Home Theater Black (SKU: SILENCER-PANELS-FLAM-1079)\n\nTotal out-of-stock products: 5\n\nAcceptance: Return all 5 calendar event IDs with title/timezone confirmation, and email send confirmation/message ID. Do not create duplicates or any other writes.\nCreate reminders and email",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "calendar",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

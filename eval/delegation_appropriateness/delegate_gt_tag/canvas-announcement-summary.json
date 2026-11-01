@@ -1,0 +1,143 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "canvas-announcement-summary",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/canvas-announcement-summary.task.md",
+    "oracle166_sha256": "77fd01571d60e53062bb7f884052d2968207d4297f892f471cbd780706ff19ea"
+  },
+  "label_cache_keys": [
+    "218b511fa66407bb38c0d04774517273b274ec5749d167ecfbdcd5bc6b22526b"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Create `<workspace_root>/Course_Announcements.xlsx` exactly once with only `Announcement Stats` and `Summary`. Write exact headers `Course_Code, Announcements, Earliest_Date, Latest_Date`, every canonical course row, UTC `YYYY-MM-DD` dates, and exactly the three vertical Summary metrics. Use literal numeric counts. Read back both complete populated ranges and return path, sheet order, row counts, and cell-equality controls. Do not send email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Create `<workspace_root>/Course_Announcements.xlsx` exactly once with only `Announcement Stats` and `Summary`. Write exact headers `Course_Code, Announcements, Earliest_Date, Latest_Date`, every canonical course row, UTC `YYYY-MM-DD` dates, and exactly the three vertical Summary metrics. Use literal numeric counts. Read back both complete populated ranges and return path, sheet order, row counts, and cell-equality controls. Do not send email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "excel",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 1,
+    "units": 1,
+    "write_units": 1,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

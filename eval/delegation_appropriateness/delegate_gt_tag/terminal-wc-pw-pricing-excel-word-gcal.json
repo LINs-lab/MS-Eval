@@ -1,0 +1,292 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-wc-pw-pricing-excel-word-gcal",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-wc-pw-pricing-excel-word-gcal.task.md",
+    "oracle166_sha256": "a852a08eaf150a03585ba8db24257d81dd77849f8dde6adcf4c99ae02af65116"
+  },
+  "label_cache_keys": [
+    "2e734aa5923482829f47341f7ab5fd399ea226061b9c3a31c0601be25ac26398"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): One strictly read-only WooCommerce catalog owner. Retrieve the complete catalog with the product-list operation (`perPage=100`, increasing pages through the terminal short/empty page). Use each product's current price (the `price` field, which already reflects any active sale/discount — never `regular_price`). Include a multi-category product in every one of its categories. Return the complete projection as compact rows `{name, price, categories:[...]}` plus product/category/page/null/duplicate controls. Do not write workspace files or create artifacts.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 1,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole writer of Competitive_Pricing_Report.xlsx. Create exactly Our_Products, Competitor_Prices and Price_Gap_Analysis with the literal headers, one row per product-category membership, required sorts, current prices and literal gap/recommendation values. Read every populated range back and validate against source rows and price_analysis_output.txt.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): Sole writer of Pricing_Strategy_Report.docx. Use exact title Competitive Pricing Analysis Report and explicit styled headings Executive Summary and Conclusion. Between them create one headed section per overlapping category containing both averages, signed gap percentage and exact recommendation. The Executive Summary must be a substantive paragraph describing the overall pricing position. Read the document outline and full text back and require the exact Executive Summary heading, every overlapping category, every signed gap/action, and Conclusion before return.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "calendar",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): Sole calendar writer. Materialize the alphabetical overlapping categories on consecutive business days starting 2026-03-10 (Tuesday), each 14:00-15:00 America/New_York, exactly one event per category with summary \"Price Review: <Category Name>\" and the signed gap percentage in the description. Issue exact summary/start/end searches together first, block duplicate matches, issue all missing creates once in one native-parallel response, and get_event every retained ID; never create a duplicate.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): One strictly read-only WooCommerce catalog owner. Retrieve the complete catalog with the product-list operation (`perPage=100`, increasing pages through the terminal short/empty page). Use each product's current price (the `price` field, which already reflects any active sale/discount — never `regular_price`). Include a multi-category product in every one of its categories. Return the complete projection as compact rows `{name, price, categories:[...]}` plus product/category/page/null/duplicate controls. Do not write workspace files or create artifacts.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole writer of Competitive_Pricing_Report.xlsx. Create exactly Our_Products, Competitor_Prices and Price_Gap_Analysis with the literal headers, one row per product-category membership, required sorts, current prices and literal gap/recommendation values. Read every populated range back and validate against source rows and price_analysis_output.txt.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): Sole writer of Pricing_Strategy_Report.docx. Use exact title Competitive Pricing Analysis Report and explicit styled headings Executive Summary and Conclusion. Between them create one headed section per overlapping category containing both averages, signed gap percentage and exact recommendation. The Executive Summary must be a substantive paragraph describing the overall pricing position. Read the document outline and full text back and require the exact Executive Summary heading, every overlapping category, every signed gap/action, and Conclusion before return.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "calendar",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): Sole calendar writer. Materialize the alphabetical overlapping categories on consecutive business days starting 2026-03-10 (Tuesday), each 14:00-15:00 America/New_York, exactly one event per category with summary \"Price Review: <Category Name>\" and the signed gap percentage in the description. Issue exact summary/start/end searches together first, block duplicate matches, issue all missing creates once in one native-parallel response, and get_event every retained ID; never create a duplicate.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:1:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 1,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:2:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:3:calendar",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "calendar",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:woocommerce",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "woocommerce",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "calendar": 1,
+      "excel": 1,
+      "word": 1
+    },
+    "read": {
+      "woocommerce": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 4,
+    "units": 4,
+    "write_units": 3,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "input_hash": "9291133d6b1034b7706ad470b92f982d3faabb7a5af50aa4e8b4a92fff28aa1f",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "fetch-canvas-syllabus-benchmark-excel-ppt",
+    "task_text": "The Office of Academic Affairs is conducting its annual review of course offerings and wants to compare our university's course metrics against national benchmarks. A benchmarking service provides national averages through a REST API endpoint at http://localhost:30203/api/benchmarks.json, which returns data including national average enrollment, assignment counts, and quiz counts for seven course discipline areas.\n\nOur university offers 22 courses through our learning management system across seven distinct course types. We need to understand how our courses compare to national standards in terms of enrollment numbers, number of assignments, and number of quizzes.\n\nStart by fetching the national benchmark data from the API endpoint. Then retrieve the full list of courses from the university learning management system. For each course, note the course name, total student enrollment, and count the number of assignments and quizzes associated with it. Use each course's reported total student count (`total_students`, i.e. student enrollments only — do not count teacher or TA enrollments) as the enrollment figure. Group the courses by their course type (the part of the course name before the semester and year in parentheses, for example \"Foundations of Finance\" from \"Foundations of Finance (Fall 2013)\") and compute the average enrollment, average assignment count, and average quiz count per course type.\n\nCreate an Excel file called \"Course_Benchmark_Analysis.xlsx\" in the workspace with three sheets.\n\nThe first sheet called \"National Benchmarks\" should have columns Course_Type, Discipline, National_Avg_Enrollment, National_Avg_Assignments, and National_Avg_Quizzes, populated with the benchmark API data for all seven course types.\n\nThe second sheet called \"Our Courses\" should list all 22 individual courses with columns Course_Name, Course_Type, Enrollment, Assignment_Count, and Quiz_Count.\n\nThe third sheet called \"Comparison\" should have columns Course_Type, Our_Avg_Enrollment, National_Avg_Enrollment, Enrollment_Diff, Our_Avg_Assignments, National_Avg_Assignments, Assignment_Diff, Our_Avg_Quizzes, National_Avg_Quizzes, and Quiz_Diff. The difference columns should be calculated as our average minus the national average. There should be 7 rows, one for each course type.\n\nNext, create a PowerPoint presentation called \"Academic_Benchmark_Presentation.pptx\" in the workspace. The presentation should have a title slide with the title \"Course Benchmark Analysis\" and a subtitle referencing the academic year. Include one slide per course type (7 slides) showing the course type name as the title and a brief comparison of enrollment and assignment metrics versus national benchmarks. Add a final summary slide identifying which course types exceed national benchmarks in enrollment and which fall below.\n\nFinally, send an email to dean@university.edu with the subject \"Annual Course Benchmark Report\". The sender address is fixed by the email environment; only the recipient and subject matter. The body should summarize which course types are above and below national enrollment benchmarks.\n\nSave all output files to the workspace directory.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, combine each course's assignment and quiz reads in one Explore agent and keep the two independent artifact writers parallel.\n\nBefore Wave 1, the main agent natively in parallel fetches http://localhost:30203/api/benchmarks.json and calls canvas_list_courses(include_ended=true). Validate exactly seven unique benchmark course types and unique Canvas IDs/codes/full names, retaining each course's reported total_students. Instantiate one Explore prompt per literal returned course.\n\n1. Wave 1 — dispatch exactly 22 explore sub-agents in parallel, one per literal course below:\n\n   1. explore 0 (enterprise-data-analyst 0): Course Explore agent for course_id=1 (AAA-2013J): call canvas_list_assignments(course_id=1, include_submissions=false) and canvas_list_quizzes(course_id=1) natively in parallel. Return only {course_id:1,course_code:\"AAA-2013J\",course_name,assignment_ids,assignment_count,quiz_ids,quiz_count,returned_counts,duplicate_ids}, using empty lists and zero counts when appropriate. Do not fetch submissions or modify Canvas.\n   2. explore 1 (enterprise-data-analyst 1): Course owner for course_id=2 (AAA-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   3. explore 2 (enterprise-data-analyst 2): Course owner for course_id=3 (BBB-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   4. explore 3 (enterprise-data-analyst 3): Course owner for course_id=4 (BBB-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   5. explore 4 (enterprise-data-analyst 4): Course owner for course_id=5 (BBB-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   6. explore 5 (enterprise-data-analyst 5): Course owner for course_id=6 (BBB-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   7. explore 6 (enterprise-data-analyst 6): Course owner for course_id=7 (CCC-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   8. explore 7 (enterprise-data-analyst 7): Course owner for course_id=8 (CCC-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   9. explore 8 (enterprise-data-analyst 8): Course owner for course_id=9 (DDD-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   10. explore 9 (enterprise-data-analyst 9): Course owner for course_id=10 (DDD-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   11. explore 10 (enterprise-data-analyst 10): Course owner for course_id=11 (DDD-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   12. explore 11 (enterprise-data-analyst 11): Course owner for course_id=12 (DDD-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   13. explore 12 (enterprise-data-analyst 12): Course owner for course_id=13 (EEE-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   14. explore 13 (enterprise-data-analyst 13): Course owner for course_id=14 (EEE-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   15. explore 14 (enterprise-data-analyst 14): Course owner for course_id=15 (EEE-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   16. explore 15 (enterprise-data-analyst 15): Course owner for course_id=16 (FFF-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   17. explore 16 (enterprise-data-analyst 16): Course owner for course_id=17 (FFF-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   18. explore 17 (enterprise-data-analyst 17): Course owner for course_id=18 (FFF-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   19. explore 18 (enterprise-data-analyst 18): Course owner for course_id=19 (FFF-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   20. explore 19 (enterprise-data-analyst 19): Course owner for course_id=20 (GGG-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   21. explore 20 (enterprise-data-analyst 20): Course owner for course_id=21 (GGG-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   22. explore 21 (enterprise-data-analyst 21): Course owner for course_id=22 (GGG-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n\nAfter Wave 1, the main agent requires exactly one result per frozen course, derives Course_Type by removing only the trailing semester/year parenthetical, joins to the seven benchmark rows, and computes per-type averages and university-minus-national differences from unrounded inputs. Freeze canonical National Benchmarks, 22-row Our Courses, seven-row Comparison, presentation payload, above/below enrollment classifications and email facts. Writers may not recompute groupings or classifications.\n\n2. Wave 2 — dispatch exactly 2 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One Coder is the sole writer of Course_Benchmark_Analysis.xlsx in the dynamically resolved workspace. Create exactly National Benchmarks, Our Courses, and Comparison with exact headers, 7/22/7 row coverage, literal values and task ordering, then read every populated range back.\n   2. coder 1 (office-report-builder 1): One Coder is the sole writer of Academic_Benchmark_Presentation.pptx in the same workspace. Consume only the frozen payload and create exactly nine slides: title with source-supported academic-year subtitle, seven literal course-type slides, and one final above/below summary; read all slide titles/text back.\n\nIn the same response that launches Wave 2, the main agent searches Sent mail for complete To dean@university.edu and subject Annual Course Benchmark Report. Read candidates to verify recipients, send exactly once only if absent using the frozen above/below classifications, and read the retained message back. After Wave 2, reconcile workbook, presentation and email against the same canonical payload; do not dispatch a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are planning a multi-step task. Do NOT execute the final artifacts; produce an ordered, detailed plan.\n\nTASK (from the Office of Academic Affairs):\n1. Fetch national benchmark data from REST API endpoint http://localhost:30203/api/benchmarks.json — it returns national average enrollment, assignment counts, and quiz counts for seven course discipline areas.\n2. Retrieve the full list of courses from the university LMS (Canvas). For each course, note: course name, total student enrollment (use the reported total student count `total_students` — student enrollments ONLY, do not count teacher or TA enrollments), and count the number of assignments and quizzes associated with it.\n3. Group the 22 courses by course type (the part of the course name before the semester and year in parentheses, e.g. \"Foundations of Finance\" from \"Foundations of Finance (Fall 2013)\"). Compute average enrollment, average assignment count, average quiz count per course type.\n4. Create Excel file \"Course_Benchmark_Analysis.xlsx\" in workspace with 3 sheets:\n   - Sheet \"National Benchmarks\": columns Course_Type, Discipline, National_Avg_Enrollment, National_Avg_Assignments, National_Avg_Quizzes — from the benchmark API for all 7 course types.\n   - Sheet \"Our Courses\": all 22 courses, columns Course_Name, Course_Type, Enrollment, Assignment_Count, Quiz_Count.\n   - Sheet \"Comparison\": columns Course_Type, Our_Avg_Enrollment, National_Avg_Enrollment, Enrollment_Diff, Our_Avg_Assignments, National_Avg_Assignments, Assignment_Diff, Our_Avg_Quizzes, National_Avg_Quizzes, Quiz_Diff. Diffs = our avg minus national avg. 7 rows, one per course type.\n5. Create PowerPoint \"Academic_Benchmark_Presentation.pptx\" in workspace: a title slide with title \"Course Benchmark Analysis\" and subtitle referencing the academic year; one slide per course type (7 slides) with the course type name as title and a brief comparison of enrollment and assignment metrics versus national benchmarks; a final summary slide identifying which course types exceed national benchmarks in enrollment and which fall below.\n6. Send an email to dean@university.edu with subject \"Annual Course Benchmark Report\", body summarizing which course types are above and below national enrollment benchmarks. Sender is fixed by the email environment; only recipient and subject matter.\n\nENVIRONMENT FACTS:\n- Workspace directory: /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-fetch-canvas-syllabus-benchmark-excel-ppt/workspace (all output files go here).\n- Canvas LMS tools available (mcp__canvas__*): list courses, get course grades/enrollments, list assignments, list quizzes, etc.\n- The benchmark API is fetched via mcp__fetch__fetch_json at http://localhost:30203/api/benchmarks.json\n- Tools available for Excel (mcp__excel__*) and PPTX (mcp__pptx__*), email (mcp__emails__*), local file/terminal tools.\n\nYOUR JOB:\nProduce an ordered plan of subtasks. For each subtask specify:\n- Dispatch decision: `self` (main agent), `explore` (read-only), or `coder` (execution).\n- Whether it is independent (parallelizable) or must wait for another subtask's output.\n- Concrete tool calls to use and any key data dependencies (e.g., Excel comparison sheet needs computed per-course-type averages; PPTX needs the same averages plus benchmark data; email needs the enrollment comparison results).\nAlso flag risks: e.g., how to reliably count student enrollments (filter enrollment types), how course type is parsed from names, how benchmark API course type keys map to our parsed course types, and verification steps for each deliverable.\n\nReturn the plan as structured text. Keep it concise but complete.\nPlan course benchmark task",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 1|Applied Analytics & Algorithms (Fall 2013) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 2|Applied Analytics & Algorithms (Fall 2014) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 3|Biochemistry & Bioinformatics (Fall 2013) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 4|Biochemistry & Bioinformatics (Fall 2014) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 5|Biochemistry & Bioinformatics (Spring 2013) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 6|Biochemistry & Bioinformatics (Spring 2014) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 7|Creative Computing & Culture (Fall 2014) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 8|Creative Computing & Culture (Spring 2014) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 9|Data-Driven Design (Fall 2013) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 10|Data-Driven Design (Fall 2014) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "wave": "message_6",
+        "text": "You are gathering read-only Canvas LMS data for one course. The item is: 11|Data-Driven Design (Spring 2013) (format: \"course_id|course_name\").\n\nSteps:\n1. Parse the course_id (number before the first \"|\") and course_name (text after \"|\").\n2. Call mcp__canvas__canvas_list_assignments with course_id = <course_id>.\n3. Call mcp__canvas__canvas_list_quizzes with course_id = <course_id>.\n4. Count the number of items in EACH returned array. Include ALL returned items (published or unpublished) — the count is simply the length of the array returned by each endpoint. Do NOT deduplicate or subtract anything.\n\nDo NOT call any write/update tools — this is read-only.\n\nReport back EXACTLY one line in this format:\ncourse_id=<course_id> | assignments=<N> | quizzes=<M>\n(No extra commentary needed.)\nCount assignments and quizzes per course",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

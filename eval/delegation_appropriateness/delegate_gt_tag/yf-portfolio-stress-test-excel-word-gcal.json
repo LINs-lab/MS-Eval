@@ -1,0 +1,497 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "yf-portfolio-stress-test-excel-word-gcal",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/yf-portfolio-stress-test-excel-word-gcal.task.md",
+    "oracle166_sha256": "60290deecfcba4a86ebcfe85bdad4087e0cb0609c66a92a9266acf3a77dd8cba"
+  },
+  "label_cache_keys": [
+    "f2e80d6d522d7a68bf1e179c0b8a34da8a5952b0f0ee2ffd9d958d3cf3c49bb9"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 6,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (financial-market-analyst 0): Use one explore sub-agent for `AMZN` only: call `get_historical_stock_prices(ticker=\"AMZN\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to its own runtime-unique JSON, read it back, and return only path/hash/count/date/duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (financial-market-analyst 1): Use one explore sub-agent for `GOOGL` only: call `get_historical_stock_prices(ticker=\"GOOGL\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `GOOGL` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (financial-market-analyst 2): Use one explore sub-agent for `JNJ` only: call `get_historical_stock_prices(ticker=\"JNJ\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `JNJ` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (financial-market-analyst 3): Use one explore sub-agent for `JPM` only: call `get_historical_stock_prices(ticker=\"JPM\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `JPM` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (financial-market-analyst 4): Use one explore sub-agent for `XOM` only: call `get_historical_stock_prices(ticker=\"XOM\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `XOM` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 5 (financial-market-analyst 5): Use one explore sub-agent for `GC=F` only: call `get_historical_stock_prices(ticker=\"GC=F\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `GC=F` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 6,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Use one Coder sub-agent as the sole writer of `Stress_Test_Report.xlsx`. Create the exact three sheets once from canonical JSON, with exact row order, summary rows, rounding, and literal values only. Read all sheets back and return path plus row/value/formula-absence checks.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 7,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): Use one Coder sub-agent as the sole writer of `Risk_Assessment.docx`. Create the exact title/sections once, cover all four scenarios and canonical risk metrics, make recommendations conditional on the verified breach flag, read it back, and return path plus heading/content checks.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 8,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "calendar",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): Sole calendar owner. Call `list_events` natively in parallel for narrow ISO ranges around the four weekly dates 2026-03-16, 03-23, 03-30, and 04-06 with sufficient `maxResults` and `orderBy=\"startTime\"`, inspect exact title/time locally, and call `create_event` only for missing 10:00–11:00 meetings in scenario order using exact ISO `start.dateTime`/`end.dateTime` plus the canonical signed projected impact. Omit `timeZone` unless the task-visible guidelines supply one, retain each returned/reused ID, and read it with `get_event`.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (financial-market-analyst 0): Use one explore sub-agent for `AMZN` only: call `get_historical_stock_prices(ticker=\"AMZN\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to its own runtime-unique JSON, read it back, and return only path/hash/count/date/duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (financial-market-analyst 1): Use one explore sub-agent for `GOOGL` only: call `get_historical_stock_prices(ticker=\"GOOGL\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `GOOGL` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (financial-market-analyst 2): Use one explore sub-agent for `JNJ` only: call `get_historical_stock_prices(ticker=\"JNJ\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `JNJ` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (financial-market-analyst 3): Use one explore sub-agent for `JPM` only: call `get_historical_stock_prices(ticker=\"JPM\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `JPM` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (financial-market-analyst 4): Use one explore sub-agent for `XOM` only: call `get_historical_stock_prices(ticker=\"XOM\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `XOM` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 5 (financial-market-analyst 5): Use one explore sub-agent for `GC=F` only: call `get_historical_stock_prices(ticker=\"GC=F\", period=\"max\", interval=\"1d\", auto_adjust=true)`, persist every valid sorted Date/Close row to a runtime-unique `GC=F` JSON, read it back, and return only path, SHA-256, row count/date bounds, and duplicate/missing controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 6,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Use one Coder sub-agent as the sole writer of `Stress_Test_Report.xlsx`. Create the exact three sheets once from canonical JSON, with exact row order, summary rows, rounding, and literal values only. Read all sheets back and return path plus row/value/formula-absence checks.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 7,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): Use one Coder sub-agent as the sole writer of `Risk_Assessment.docx`. Create the exact title/sections once, cover all four scenarios and canonical risk metrics, make recommendations conditional on the verified breach flag, read it back, and return path plus heading/content checks.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 8,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "calendar",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): Sole calendar owner. Call `list_events` natively in parallel for narrow ISO ranges around the four weekly dates 2026-03-16, 03-23, 03-30, and 04-06 with sufficient `maxResults` and `orderBy=\"startTime\"`, inspect exact title/time locally, and call `create_event` only for missing 10:00–11:00 meetings in scenario order using exact ISO `start.dateTime`/`end.dateTime` plus the canonical signed projected impact. Omit `timeZone` unless the task-visible guidelines supply one, retain each returned/reused ID, and read it with `get_event`.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:6:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 6,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:7:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 7,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:8:calendar",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 8,
+      "role": "calendar",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:yahoo-finance",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "yahoo-finance",
+      "source_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "calendar": 1,
+      "excel": 1,
+      "word": 1
+    },
+    "read": {
+      "yahoo-finance": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 9,
+    "units": 4,
+    "write_units": 3,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

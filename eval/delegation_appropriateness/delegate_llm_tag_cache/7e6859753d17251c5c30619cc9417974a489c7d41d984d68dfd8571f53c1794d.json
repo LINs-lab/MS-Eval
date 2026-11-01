@@ -1,0 +1,34 @@
+{
+  "input_hash": "7e6859753d17251c5c30619cc9417974a489c7d41d984d68dfd8571f53c1794d",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "howtocook-weekly-gsheet-gcal",
+    "task_text": "You are working for a meal planning service that creates weekly meal plans using traditional Chinese recipes. Your task is to design a complete seven-day meal plan and set up scheduling and record-keeping for the service.\n\nUse the HowToCook recipe database to explore available recipes across different categories. Browse recipes from at least three different categories such as breakfast dishes, meat dishes, vegetable dishes, soups, and staple foods. Select 21 recipes total to cover seven days of meals with three meals per day: breakfast, lunch, and dinner.\n\nCreate a Google Sheet called \"Weekly Meal Plan\" with columns Day (values 1 through 7), Meal_Type (Breakfast, Lunch, or Dinner), Recipe_Name (the English translation of the recipe name), Prep_Time (estimated preparation time in minutes as a number), and Difficulty (Easy, Medium, or Hard). The sheet should have exactly 21 data rows plus a header row. Use Difficulty Easy for recipes with 5 or fewer cooking steps, Medium for 6 to 10 steps, and Hard for more than 10 steps. Estimate Prep_Time based on recipe complexity: Easy recipes take about 15 minutes, Medium recipes about 30 minutes, and Hard recipes about 60 minutes.\n\nSchedule seven dinner preparation events in Google Calendar, one for each day from April 7 through April 13, 2026. Each event should be titled \"Dinner Prep - Day X\" where X is the day number (1 through 7). Schedule each event from 18:00 to 19:00. In the event description, include the name of the dinner recipe for that day.\n\nSend an email to meal_planning@service.com with subject \"Weekly Meal Plan Ready\" that summarizes the 7-day meal plan and mentions that the Google Sheet and calendar events have been created.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; the category lists and 21 one-record detail calls are compact and need no delegation. HowToCook is read-only.\n\nFirst call the exact category queries `早餐`, `素菜`, and `荤菜` in one native-parallel response. Their complete unpaginated result sizes are small enough to inspect directly. Select seven distinct IDs from each category and freeze the deterministic assignment Day 1-7 × Breakfast/Lunch/Dinner, using breakfast IDs only for Breakfast, vegetable IDs only for Lunch, and meat IDs only for Dinner. Require 21 unique IDs overall.\n\nNext call the exact-ID recipe-detail operation for all 21 frozen IDs in one native-parallel response. Verify each returned ID/name/category, translate the full recipe name into English, count the complete ordered cooking steps, and compute Difficulty exactly: Easy for at most 5 steps, Medium for 6-10, Hard above 10; Prep_Time is respectively the literal number 15, 30, or 60. Freeze exactly 21 rows in Day order with Breakfast, Lunch, Dinner within each day.\n\nFrom that table start three independent branches in one native-parallel response: create exactly one Google spreadsheet titled `Weekly Meal Plan` with one sheet, the exact five headers, and exactly 21 data rows; exhaust event searches and create only missing `Dinner Prep - Day X` events for April 7-13, 2026 from 18:00 to 19:00 with the matching English dinner name in each description; and exhaust Sent-mail search for recipient `meal_planning@service.com` and exact subject `Weekly Meal Plan Ready`, sending it only if absent. Do not add an unstated timezone. Read the full sheet range, all seven retained events, and the retained email back in native-parallel batches and reconcile all recipe names before completion.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_18",
+        "text": "You are helping a meal-planning service classify 21 traditional Chinese recipes by number of cooking steps. The recipe database is accessed through the HowToCook MCP server (tools prefixed mcp__howtocook__).\n\nTASK:\nFor EACH of the 21 recipe names listed below, call the tool mcp__howtocook__mcp_howtocook_getRecipeById with the recipe name as the query (it supports fuzzy matching by name). From the returned JSON, find the \"steps\" array — it is a list of objects each with a \"step\" number. Count the number of step objects (i.e., the total number of cooking steps). Report the count for each recipe.\n\nRECIPES (21):\n1. 燕麦鸡蛋饼\n2. 茶叶蛋\n3. 蒸水蛋\n4. 手抓饼\n5. 鸡蛋三明治\n6. 桂圆红枣粥\n7. 蛋煎糍粑\n8. 蛋炒饭\n9. 西红柿鸡蛋挂面\n10. 酸辣土豆丝\n11. 手撕包菜\n12. 炒河粉\n13. 地三鲜\n14. 西红柿炒鸡蛋\n15. 可乐鸡翅\n16. 宫保鸡丁\n17. 麻婆豆腐\n18. 糖醋里脊\n19. 黄焖鸡\n20. 孜然牛肉\n21. 鱼香肉丝\n\nIf a recipe's steps array is empty or missing, note that explicitly. If the returned recipe appears to be a different dish than requested, note the actual dish name.\n\nDELIVERABLE:\nReturn a plain text table with exactly 21 rows, one per recipe, in this format:\nChineseName | NumberOfSteps\ne.g. 可乐鸡翅 | 7\n\nAlso include a brief note if any recipe could not be found. Do not do anything else — no files, no writes, just return the counts.\nCount steps for 21 recipes",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "howtocook"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

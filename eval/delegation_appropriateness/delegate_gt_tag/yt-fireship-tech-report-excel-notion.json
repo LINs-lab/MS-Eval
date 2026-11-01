@@ -1,0 +1,292 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "yt-fireship-tech-report-excel-notion",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/yt-fireship-tech-report-excel-notion.task.md",
+    "oracle166_sha256": "750619cc65faaa0518494e0412cf25e2289a5f6ba4f5825c67fb4ba2d3510d42"
+  },
+  "label_cache_keys": [
+    "1f4aff24152164a3b7036611206b8ea08121026ea051b98b411273d043a76fb6"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "youtube"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (web-domain-researcher 0): Locate the Fireship channel and retrieve its full video list; filter to videos published between 2024-01-01 and 2025-12-31 inclusive, sort by view count descending, and select the top 10 (or all available if fewer than 10). For each selected video collect `video_id`, `title`, `published_date` (YYYY-MM-DD), `duration_seconds`, `view_count`, `like_count`, and a concise `primary_topic` technology label derived from the video tags or, if tags are unavailable, the title keywords. Return the compact ten-row table plus channel/page/date/count controls. Do not write files or create deliverables.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 1,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole writer of `Tech_Trend_Report.xlsx`. Read only the frozen packet. Create a `Videos` sheet holding exactly 10 data rows (one per video, in the given order) with columns `Video_ID, Title, Published_Date, Duration_Seconds, View_Count, Like_Count, Primary_Topic` in that order, and a `Topic_Summary` sheet with one row per distinct `Primary_Topic` giving `Video_Count`, `Total_Views`, and `Avg_Duration` (rounded to at most 2 decimals) computed from the frozen Videos data. If the video data is incomplete, build the workbook with the valid rows. Write literal values and read every populated range back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): Sole Notion owner of a page titled exactly `Fireship Tech Trends Q1 2026`. Search the exact title first, create at most once on zero matches, and block on duplicates. Include an `Overview` heading with a summary paragraph covering the 10 videos analyzed in 2024-2025, the most frequent topic(s) by video count, and the top topic by total views. Add a `Top 5 Technology Topics by Total Views` section with a table of Topic, Video_Count, and Total_Views for the top 5 topics sorted by Total_Views descending. Read the page back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "calendar",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 1): Sole calendar owner. Search existing `Tech Review` events in March 2026, then create a weekly recurring event titled `Tech Review Meeting` starting Monday 2026-03-09 from 14:00 to 15:00 UTC, repeating every Monday at that time. If an identical event (same title, start time, and weekly recurrence) already exists, treat it as the deliverable instead of creating a duplicate. Read the retained event back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "youtube"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (web-domain-researcher 0): Locate the Fireship channel and retrieve its full video list; filter to videos published between 2024-01-01 and 2025-12-31 inclusive, sort by view count descending, and select the top 10 (or all available if fewer than 10). For each selected video collect `video_id`, `title`, `published_date` (YYYY-MM-DD), `duration_seconds`, `view_count`, `like_count`, and a concise `primary_topic` technology label derived from the video tags or, if tags are unavailable, the title keywords. Return the compact ten-row table plus channel/page/date/count controls. Do not write files or create deliverables.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole writer of `Tech_Trend_Report.xlsx`. Read only the frozen packet. Create a `Videos` sheet holding exactly 10 data rows (one per video, in the given order) with columns `Video_ID, Title, Published_Date, Duration_Seconds, View_Count, Like_Count, Primary_Topic` in that order, and a `Topic_Summary` sheet with one row per distinct `Primary_Topic` giving `Video_Count`, `Total_Views`, and `Avg_Duration` (rounded to at most 2 decimals) computed from the frozen Videos data. If the video data is incomplete, build the workbook with the valid rows. Write literal values and read every populated range back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): Sole Notion owner of a page titled exactly `Fireship Tech Trends Q1 2026`. Search the exact title first, create at most once on zero matches, and block on duplicates. Include an `Overview` heading with a summary paragraph covering the 10 videos analyzed in 2024-2025, the most frequent topic(s) by video count, and the top topic by total views. Add a `Top 5 Technology Topics by Total Views` section with a table of Topic, Video_Count, and Total_Views for the top 5 topics sorted by Total_Views descending. Read the page back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "calendar",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 1): Sole calendar owner. Search existing `Tech Review` events in March 2026, then create a weekly recurring event titled `Tech Review Meeting` starting Monday 2026-03-09 from 14:00 to 15:00 UTC, repeating every Monday at that time. If an identical event (same title, start time, and weekly recurrence) already exists, treat it as the deliverable instead of creating a duplicate. Read the retained event back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:1:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 1,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:2:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:3:calendar",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "calendar",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:youtube",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "youtube",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "calendar": 1,
+      "excel": 1,
+      "notion": 1
+    },
+    "read": {
+      "youtube": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 4,
+    "units": 4,
+    "write_units": 3,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

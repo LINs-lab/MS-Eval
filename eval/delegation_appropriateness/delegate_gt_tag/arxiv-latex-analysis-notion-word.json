@@ -1,0 +1,188 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "arxiv-latex-analysis-notion-word",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/arxiv-latex-analysis-notion-word.task.md",
+    "oracle166_sha256": "bd6ca39ff7be3b758206e6a526617f0d6781909f2964bcad6ee0f28b65b1d1b8"
+  },
+  "label_cache_keys": [
+    "3e927e40f0d8189accfa2607c596be52f0593f76aede94813934ef608a71d799"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (external-workflow-operator 0): Notion owner: search exact titles `Paper: <canonical title>`; reuse one exact match, create at most one page on zero matches, and block on duplicates. Own all three pages in one agent so parent IDs and idempotency stay consistent. Each page must contain substantive Contribution, Methodology, and Findings blocks copied from the canonical packet. Read all three pages back and return IDs, exact titles, stable-ID coverage, and block validation. Do not write the Word file or email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 0): Word owner: create `<workspace_root>/Paper_Analysis_Report.docx` exactly once, preferably atomically with `python-docx`, with the required report title, one clearly headed section per canonical paper, and a final Comparative Analysis grounded only in those records. Read it back and return path, heading order, exact paper/title coverage, and validation. Do not modify Notion or email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (external-workflow-operator 0): Notion owner: search exact titles `Paper: <canonical title>`; reuse one exact match, create at most one page on zero matches, and block on duplicates. Own all three pages in one agent so parent IDs and idempotency stay consistent. Each page must contain substantive Contribution, Methodology, and Findings blocks copied from the canonical packet. Read all three pages back and return IDs, exact titles, stable-ID coverage, and block validation. Do not write the Word file or email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 0): Word owner: create `<workspace_root>/Paper_Analysis_Report.docx` exactly once, preferably atomically with `python-docx`, with the required report title, one clearly headed section per canonical paper, and a final Comparative Analysis grounded only in those records. Read it back and return path, heading order, exact paper/title coverage, and validation. Do not modify Notion or email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:notion",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:word",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "word",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "notion": 1,
+      "word": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 2,
+    "units": 2,
+    "write_units": 2,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

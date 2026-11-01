@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Execution Paradigms — Single-Agent vs MAD-SAE</title>
+  <style>
+    :root {
+      --paper: #f3eadc;
+      --ink: #1a1612;
+      --mute: #6a5e50;
+      --line: #c9b79a;
+      --main: #2a251f;
+      --ro: #e65500;
+      --ro-bg: #f7e0cf;
+      --rw: #0064c8;
+      --rw-bg: #d5e5f6;
+      --ok: #1a6844;
+      --share: #efe6d4;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      background:
+        radial-gradient(circle at 10% 0, rgba(255,255,255,.55), transparent 34%),
+        repeating-linear-gradient(0deg, transparent 0 30px, rgba(110,88,58,.06) 31px),
+        var(--paper);
+      color: var(--ink);
+      font: 15px/1.35 "Iowan Old Style", "Palatino Linotype", Palatino, "URW Palladio L", "P052", Georgia, serif;
+    }
+    .sheet { width: min(1580px, calc(100vw - 20px)); margin: 10px auto 16px; }
+    .eyebrow {
+      display: flex; justify-content: space-between;
+      font: 11px/1 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+      letter-spacing: .16em; text-transform: uppercase; color: var(--mute);
+    }
+    h1 { margin: 3px 0 2px; font-size: 32px; letter-spacing: -.03em; line-height: .95; }
+    .sub { margin: 0 0 8px; color: var(--mute); max-width: 88ch; font-size: 13.5px; }
+
+    .panel {
+      border: 1.5px solid var(--ink);
+      background: rgba(255,253,246,.72);
+      padding: 6px 10px 7px;
+      margin-bottom: 6px;
+    }
+    .panel h2 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      font-family: "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+      letter-spacing: .14em; text-transform: uppercase;
+    }
+    .task-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .tid {
+      font: 12px/1 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+      background: var(--ink); color: var(--paper); padding: 5px 8px;
+    }
+    .blurb { margin: 0; font-size: 13.5px; max-width: none; }
+    .blurb b { font-style: italic; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 3px; }
+    .tag {
+      border: 1px solid var(--ink);
+      padding: 2px 7px;
+      font: 11px/1.3 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+      background: #fffdf7;
+    }
+    .tag.dim { opacity: .4; text-decoration: line-through; }
+    .tag.add { background: var(--rw-bg); border-color: var(--rw); color: var(--rw); }
+    .tag.ro { color: var(--ro); border-color: var(--ro); background: var(--ro-bg); }
+    .tag.rw { color: var(--rw); border-color: var(--rw); background: var(--rw-bg); }
+    .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px; }
+    .tools p { margin: 0 0 2px; font-size: 11.5px; color: var(--mute); }
+    .tools p.block { margin-top: 5px; }
+
+    /* inheritance */
+    .stack { display: grid; gap: 4px; }
+    .layer {
+      border: 1.5px solid var(--ink);
+      padding: 5px 8px;
+      background: var(--share);
+    }
+    .layer .k {
+      font: 10px/1 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--mute);
+    }
+    .layer ul, .uniq ul {
+      margin: 3px 0 0; padding-left: 15px; font-size: 12.5px;
+    }
+    .uniq ul { color: #3d352b; }
+    .uniq ul li + li { margin-top: 1px; }
+    .kids {
+      display: grid;
+      grid-template-columns: 0.72fr 1.28fr;
+      gap: 5px;
+      position: relative;
+    }
+    .kids:before {
+      content: "";
+      position: absolute;
+      left: 36%; top: -4px;
+      width: 1.5px; height: 4px;
+      background: var(--ink);
+    }
+    .mad-kids {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 5px;
+    }
+    .uniq {
+      border: 1.5px dashed var(--ink);
+      padding: 5px 6px 6px;
+      background: #fffdf7;
+      min-height: 100%;
+    }
+    .uniq h3 { margin: 0 0 2px; font-size: 13px; }
+    .uniq p { margin: 0; font-size: 12px; color: #3d352b; }
+
+    /* execution bands */
+    .band { margin-bottom: 6px; }
+    .hd {
+      display: flex; justify-content: space-between; align-items: baseline;
+      font: 11px/1 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+      letter-spacing: .14em; text-transform: uppercase;
+      padding: 5px 8px;
+      border: 1.5px solid var(--ink);
+      background: #fffdf7;
+    }
+    .hd .axis { letter-spacing: .1em; opacity: .55; }
+    .box { border: 1.5px solid var(--ink); border-top: 0; background: rgba(255,253,246,.55); }
+    .row {
+      display: grid;
+      grid-template-columns: 248px 1fr 52px;
+      gap: 6px;
+      padding: 5px 8px;
+      align-items: center;
+    }
+    .row + .row { border-top: 1px solid var(--line); }
+    .mode h3 { margin: 0; font-size: 14px; }
+    .mode p { margin: 1px 0 0; font-size: 11.5px; color: var(--mute); }
+    .roster { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 4px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      border: 1px solid currentColor;
+      padding: 2px 6px 2px 3px;
+      font: 10px/1.2 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+      background: #fffdf7; max-width: 100%;
+    }
+    .chip img { width: 14px; height: 14px; object-fit: cover; flex: 0 0 auto; }
+    .chip.ro { color: var(--ro); }
+    .chip.rw { color: var(--rw); }
+    .chip.off { opacity: .3; }
+    .chip.empty { color: var(--mute); border-style: dashed; }
+
+    .score { display: flex; align-items: center; min-width: 0; }
+    .mn, .gate {
+      flex: 0 0 auto;
+      border: 1px solid var(--ink);
+      padding: 4px 6px;
+      text-align: center;
+      min-width: 62px;
+      background: var(--main);
+      color: var(--paper);
+    }
+    .mn small, .gate small, .wv small {
+      display: block;
+      font: 9px/1 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+      letter-spacing: .08em; text-transform: uppercase; opacity: .7;
+    }
+    .mn b, .gate b { font-size: 12px; }
+    .gate {
+      background: var(--ro-bg); color: var(--ink);
+      outline: 2px solid var(--ro); outline-offset: 2px;
+    }
+    .wv {
+      flex: 0 1 auto;
+      border: 1px dashed #8e7d66;
+      padding: 3px 6px 4px 8px;
+      background: rgba(255,255,255,.5);
+      position: relative;
+    }
+    .wv:before {
+      content: "";
+      position: absolute; left: 3px; top: 14px; bottom: 6px;
+      width: 4px; border: 1.5px solid var(--ink); border-right: 0;
+    }
+    .wv .pack { display: flex; flex-direction: column; gap: 2px; }
+    .ag {
+      display: flex; align-items: center; gap: 4px;
+      border: 1px solid currentColor;
+      padding: 2px 5px;
+      background: #fff;
+      font-size: 11.5px; line-height: 1.15;
+    }
+    .ag img { width: 16px; height: 16px; object-fit: cover; }
+    .ag .nm { font: 10px/1.15 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace; }
+    .ag.ro { color: var(--ro); background: var(--ro-bg); }
+    .ag.rw { color: var(--rw); background: var(--rw-bg); }
+    .arr {
+      width: 16px; height: 2px; background: var(--ink);
+      flex: 0 0 16px; position: relative; margin: 0 3px;
+    }
+    .arr:after {
+      content: ""; position: absolute; right: -1px; top: -3px;
+      border: 4px solid transparent; border-left-color: var(--ink);
+    }
+    .n {
+      text-align: right;
+      font: 11px/1.2 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+      color: var(--mute);
+    }
+    .n strong {
+      display: block; color: var(--ok);
+      font: 700 18px/1 "Iowan Old Style", Palatino, Georgia, serif;
+    }
+
+    /* TRSD — prose, delegation highlighted inline */
+    .trsd-prose { font-size: 13.5px; }
+    .trsd-prose .del {
+      color: var(--ro);
+      font-weight: 600;
+      background: rgba(247,224,207,.7);
+      padding: 0 4px;
+      border-bottom: 1.5px solid var(--ro);
+    }
+
+    .subs { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6px; }
+    .subbox { border: 1px solid var(--line); padding: 5px 6px; background: #fffdf7; }
+    .subbox h3 { margin: 0 0 4px; font-size: 13px; }
+    .role {
+      display: grid;
+      grid-template-columns: 16px 1fr;
+      gap: 5px;
+      align-items: start;
+      margin: 0 0 3px;
+      font-size: 12px;
+    }
+    .role img { width: 18px; height: 18px; object-fit: cover; }
+    .role b {
+      font: 11px/1.2 "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace;
+    }
+    .role i { font-style: italic; color: var(--mute); }
+
+    .legend {
+      display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line);
+      color: var(--mute); font-size: 12px;
+    }
+    .keys { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .sw { width: 11px; height: 11px; border: 1px solid var(--ink); display: inline-block; vertical-align: -1px; margin-right: 4px; }
+    .sw.m { background: var(--main); }
+    .sw.r { background: var(--ro-bg); }
+    .sw.w { background: var(--rw-bg); }
+    .mono { font-family: "IBM Plex Mono", "Liberation Mono", ui-monospace, monospace; font-size: 11px; }
+
+    @media (max-width: 1100px) {
+      .tools, .kids, .mad-kids, .subs, .row { display: block; }
+      .n { text-align: left; margin-top: 6px; }
+    }
+    @media print { body { background: #fff; } .sheet { width: 100%; margin: 0; } }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <div class="eyebrow">
+      <span>MAD-SAE Evaluation Kit</span>
+      <span>Tools · principles · instantiated run</span>
+    </div>
+    <h1>Execution Paradigms</h1>
+    <p class="sub">
+      Same task, same evaluator. Single-Agent is the base. MAD-SAE inherits its boundary and
+      completion rule; each mode then adds only its roster and orchestration constraint.
+    </p>
+
+    <section class="panel">
+      <div class="task-h">
+        <h2>Task</h2>
+        <span class="tid">arxiv-survey-presentation</span>
+      </div>
+      <p class="blurb">
+        Prepare an NLP / LLM-reasoning survey: read the local methodology guide and freeze
+        comparison criteria; retrieve five recent arXiv papers and extract LaTeX-backed
+        method, dataset, finding, and section counts; then write
+        <b>Survey_Data.xlsx</b> (three literal sheets, one writer) and
+        <b>NLP_Survey.pptx</b> (at least six slides, one writer).
+      </p>
+    </section>
+
+    <section class="panel">
+      <div class="task-h">
+        <h2>Task-Solving Rationale with Sub-Task Decomposition (TRSD)</h2>
+        <span class="tid" style="background:var(--ro)">annotated oracle plan</span>
+      </div>
+      <p class="blurb trsd-prose">
+        The main agent first freezes the schema and verifies source capability. It then
+        <span class="del">delegates Wave 1: two parallel explore sub-agents</span> — one returns the
+        methodology packet, the other the candidate manifest — and freezes one distinct paper per row.
+        <span class="del">Wave 2: five parallel explore sub-agents, one paper each</span>, return compact
+        records. After computing the taxonomy and statistics once, the main agent
+        <span class="del">delegates Wave 3: two parallel coder sub-agents with exclusive file
+        ownership</span> — <b>Survey_Data.xlsx</b> and <b>NLP_Survey.pptx</b> — then reconciles both
+        files and claims done.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>Supported tools</h2>
+      <div class="tools">
+        <div>
+          <p>Shared by SA and MAD-SAE</p>
+          <div class="chips">
+            <span class="tag">TodoList</span>
+            <span class="tag">task MCP</span>
+            <span class="tag">claim_done</span>
+            <span class="tag">python_execute</span>
+          </div>
+          <p class="block">Masked on every arm (Kimi native)</p>
+          <div class="chips">
+            <span class="tag dim">Read / Write / Edit</span>
+            <span class="tag dim">Bash / Shell</span>
+            <span class="tag dim">Browser / WebFetch</span>
+          </div>
+        </div>
+        <div>
+          <p>MAD-SAE only — Agent-Delegation tools</p>
+          <div class="chips">
+            <span class="tag add">Agent</span>
+            <span class="tag add">AgentSwarm</span>
+          </div>
+          <p class="block">Sub-agent least privilege</p>
+          <div class="chips">
+            <span class="tag">role allowlist</span>
+            <span class="tag dim">no claim_done</span>
+            <span class="tag dim">no nested AD</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Principles — inherited substrate, then mode-specific add-ons</h2>
+      <div class="stack">
+        <div class="layer">
+          <div class="k">Shared by every arm · from Single-Agent p_sys</div>
+          <ul>
+            <li><b>Core.</b> Solve the task with granted tools; realize every artifact and side effect. One-step work stays on the main agent; independent calls may ship as a native bundle.</li>
+            <li><b>Visible boundary.</b> Workspace + task tools only. No harness / evaluator / ground-truth probing. Do not repair infrastructure.</li>
+            <li><b>Completion.</b> A written “done” is not done. Only <code>claim_done</code> ends the episode, and it ends it instantly.</li>
+          </ul>
+        </div>
+        <div class="kids">
+          <div class="uniq">
+            <h3>Single-Agent — keeps the substrate as-is</h3>
+            <ul>
+              <li>Empty roster; no Agent / AgentSwarm</li>
+              <li>Parallelism = native tool bundle only</li>
+              <li>One context window</li>
+            </ul>
+          </div>
+          <div class="uniq">
+            <h3>MAD-SAE — inherits boundary + completion, then adds</h3>
+            <ul>
+              <li>Only main may <code>claim_done</code></li>
+              <li>Delegate iff multi-step and independently verifiable</li>
+              <li>Self-contained prompt; reuse returned facts / paths / IDs</li>
+              <li>Read-only roles cannot write</li>
+              <li>Heterogeneous ∥ → concurrent <code>Agent</code>; homogeneous batch → <code>AgentSwarm</code></li>
+            </ul>
+            <div class="mad-kids">
+              <div class="uniq">
+                <h3>Auto (Gen)</h3>
+                <ul>
+                  <li>Free whether / when / whom</li>
+                  <li>Roster: plan, explore, coder</li>
+                </ul>
+              </div>
+              <div class="uniq">
+                <h3>Auto (Spec)</h3>
+                <ul>
+                  <li>Same free timing</li>
+                  <li>Dispatch the <i>narrowest</i> specialist</li>
+                  <li>No match → do it yourself; do not invent a generalist</li>
+                </ul>
+              </div>
+              <div class="uniq">
+                <h3>Plan-1st</h3>
+                <ul>
+                  <li>First dispatch must be plan</li>
+                  <li>Then follow self / explore / coder order</li>
+                  <li>Deviate only if evidence contradicts the plan</li>
+                </ul>
+              </div>
+              <div class="uniq">
+                <h3>Oracle</h3>
+                <ul>
+                  <li>Main prompt ≈ Auto (Gen)</li>
+                  <li>Golden TRSD appended to the task</li>
+                  <li>Follow those waves, roles, and counts exactly</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="hd">Single-Agent <span class="axis">time → · one context · no wave</span></div>
+      <article class="box row">
+        <div class="mode">
+          <h3>Single-Agent</h3>
+          <p>Lone main agent. Empty roster. Native bundles only.</p>
+          <div class="roster">
+            <span class="chip empty">no sub-agents</span>
+          </div>
+        </div>
+        <div class="score">
+          <div class="mn"><small>Main</small><b>guide</b></div>
+          <div class="arr"></div>
+          <div class="mn"><small>Main</small><b>search papers</b></div>
+          <div class="arr"></div>
+          <div class="mn"><small>Main</small><b>read 5 LaTeX</b></div>
+          <div class="arr"></div>
+          <div class="mn"><small>Main</small><b>write xlsx</b></div>
+          <div class="arr"></div>
+          <div class="mn"><small>Main</small><b>write pptx</b></div>
+          <div class="arr"></div>
+          <div class="mn"><small>Main</small><b>claim_done</b></div>
+        </div>
+        <div class="n"><strong>65</strong>CSteps</div>
+      </article>
+    </section>
+
+    <section class="band">
+      <div class="hd">Main-Agent Delegation, Sub-Agent Execution (MAD-SAE) <span class="axis">time → · stacked = parallel wave</span></div>
+
+      <article class="box row">
+        <div class="mode">
+          <h3>Auto (Gen)</h3>
+          <p>Free delegation over the coarse trio.</p>
+          <div class="roster">
+            <span class="chip ro off"><img src="assets/agents/plan.png" alt="" />plan</span>
+            <span class="chip ro off"><img src="assets/agents/explore.png" alt="" />explore</span>
+            <span class="chip rw"><img src="assets/agents/coder.png" alt="" />coder</span>
+          </div>
+        </div>
+        <div class="score">
+          <div class="mn"><small>Main</small><b>self-research</b></div>
+          <div class="arr"></div>
+          <div class="wv">
+            <small>wave · writers</small>
+            <div class="pack">
+              <div class="ag rw"><img src="assets/agents/coder.png" alt="" /><span class="nm">coder</span>xlsx</div>
+              <div class="ag rw"><img src="assets/agents/coder.png" alt="" /><span class="nm">coder</span>pptx</div>
+            </div>
+          </div>
+          <div class="arr"></div>
+          <div class="mn"><small>Main</small><b>verify · done</b></div>
+        </div>
+        <div class="n"><strong>45</strong>vs 65</div>
+      </article>
+
+      <article class="box row">
+        <div class="mode">
+          <h3>Auto (Spec)</h3>
+          <p>Narrowest specialist, or self.</p>
+          <div class="roster">
+            <span class="chip ro off"><img src="assets/agents/plan.png" alt="" />plan</span>
+            <span class="chip ro"><img src="assets/agents/academic-literature-researcher.png" alt="" />academic-literature-researcher</span>
+            <span class="chip ro off"><img src="assets/agents/enterprise-data-analyst.png" alt="" />enterprise-data-analyst</span>
+            <span class="chip ro off"><img src="assets/agents/financial-market-analyst.png" alt="" />financial-market-analyst</span>
+            <span class="chip ro off"><img src="assets/agents/web-domain-researcher.png" alt="" />web-domain-researcher</span>
+            <span class="chip rw off"><img src="assets/agents/external-workflow-operator.png" alt="" />external-workflow-operator</span>
+            <span class="chip rw"><img src="assets/agents/office-report-builder.png" alt="" />office-report-builder</span>
+          </div>
+        </div>
+        <div class="score">
+          <div class="mn"><small>Main</small><b>search</b></div>
+          <div class="arr"></div>
+          <div class="wv">
+            <small>read specialist</small>
+            <div class="pack">
+              <div class="ag ro"><img src="assets/agents/academic-literature-researcher.png" alt="" /><span class="nm">academic-literature-researcher</span>5 papers</div>
+            </div>
+          </div>
+          <div class="arr"></div>
+          <div class="wv">
+            <small>write specialists</small>
+            <div class="pack">
+              <div class="ag rw"><img src="assets/agents/office-report-builder.png" alt="" /><span class="nm">office-report-builder</span>xlsx</div>
+              <div class="ag rw"><img src="assets/agents/office-report-builder.png" alt="" /><span class="nm">office-report-builder</span>pptx</div>
+            </div>
+          </div>
+          <div class="arr"></div>
+          <div class="mn"><small>Main</small><b>verify · done</b></div>
+        </div>
+        <div class="n"><strong>46</strong>vs 65</div>
+      </article>
+
+      <article class="box row">
+        <div class="mode">
+          <h3>Plan-1st</h3>
+          <p>Mandatory first plan, then follow it.</p>
+          <div class="roster">
+            <span class="chip ro"><img src="assets/agents/plan.png" alt="" />plan</span>
+            <span class="chip ro off"><img src="assets/agents/explore.png" alt="" />explore</span>
+            <span class="chip rw"><img src="assets/agents/coder.png" alt="" />coder</span>
+          </div>
+        </div>
+        <div class="score">
+          <div class="gate"><small>mandatory</small><b>plan</b></div>
+          <div class="arr"></div>
+          <div class="wv">
+            <small>plan → coder</small>
+            <div class="pack">
+              <div class="ag rw"><img src="assets/agents/coder.png" alt="" /><span class="nm">coder</span>research</div>
+            </div>
+          </div>
+          <div class="arr"></div>
+          <div class="wv">
+            <small>then writers</small>
+            <div class="pack">
+              <div class="ag rw"><img src="assets/agents/coder.png" alt="" /><span class="nm">coder</span>xlsx</div>
+              <div class="ag rw"><img src="assets/agents/coder.png" alt="" /><span class="nm">coder</span>pptx</div>
+            </div>
+          </div>
+          <div class="arr"></div>
+          <div class="mn"><small>Main</small><b>verify · done</b></div>
+        </div>
+        <div class="n"><strong>62</strong>vs 65</div>
+      </article>
+
+      <article class="box row">
+        <div class="mode">
+          <h3>Oracle</h3>
+          <p>Follow the appended TRSD waves exactly.</p>
+          <div class="roster">
+            <span class="chip ro off"><img src="assets/agents/plan.png" alt="" />plan</span>
+            <span class="chip ro"><img src="assets/agents/explore.png" alt="" />explore</span>
+            <span class="chip rw"><img src="assets/agents/coder.png" alt="" />coder</span>
+          </div>
+        </div>
+        <div class="score">
+          <div class="mn"><small>Main</small><b>freeze schema</b></div>
+          <div class="arr"></div>
+          <div class="wv">
+            <small>W1 · 2 explore</small>
+            <div class="pack">
+              <div class="ag ro"><img src="assets/agents/explore.png" alt="" /><span class="nm">explore</span>guide</div>
+              <div class="ag ro"><img src="assets/agents/explore.png" alt="" /><span class="nm">explore</span>scout</div>
+            </div>
+          </div>
+          <div class="arr"></div>
+          <div class="wv">
+            <small>W2 · 5 papers</small>
+            <div class="pack">
+              <div class="ag ro"><span class="nm">explore</span>paper 1</div>
+              <div class="ag ro"><span class="nm">explore</span>paper 2</div>
+              <div class="ag ro"><span class="nm">explore</span>paper 3</div>
+              <div class="ag ro"><span class="nm">explore</span>paper 4</div>
+              <div class="ag ro"><span class="nm">explore</span>paper 5</div>
+            </div>
+          </div>
+          <div class="arr"></div>
+          <div class="wv">
+            <small>W3 · 2 writers</small>
+            <div class="pack">
+              <div class="ag rw"><img src="assets/agents/coder.png" alt="" /><span class="nm">coder</span>xlsx</div>
+              <div class="ag rw"><img src="assets/agents/coder.png" alt="" /><span class="nm">coder</span>pptx</div>
+            </div>
+          </div>
+          <div class="arr"></div>
+          <div class="mn"><small>Main</small><b>reconcile · done</b></div>
+        </div>
+        <div class="n"><strong>41</strong>vs 65</div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Sub-agent principles — isolated workers under the main agent</h2>
+      <p class="blurb" style="margin-bottom:6px">
+        Every sub-agent inherits the visible boundary, runs in an isolated context
+        (the assignment must be self-contained), and is forbidden to call
+        <code>claim_done</code> or to nest Agent / AgentSwarm. Read-only roles cannot mutate state.
+      </p>
+      <div class="subs">
+        <div class="subbox">
+          <h3>Coarse roster · Auto (Gen), Plan-1st, Oracle</h3>
+          <div class="role"><img src="assets/agents/plan.png" alt="" /><div><b class="tag ro" style="border:0;padding:0;background:none">plan</b> — read-only. Ordered decomposition and validation; never write.</div></div>
+          <div class="role"><img src="assets/agents/explore.png" alt="" /><div><b class="tag ro" style="border:0;padding:0;background:none">explore</b> — read-only. Gather evidence; return structured findings.</div></div>
+          <div class="role"><img src="assets/agents/coder.png" alt="" /><div><b class="tag rw" style="border:0;padding:0;background:none">coder</b> — writable. Execute a scoped artifact / side-effect; return paths and IDs.</div></div>
+        </div>
+        <div class="subbox">
+          <h3>Specialist roster · Auto (Spec) keeps plan, replaces explore / coder</h3>
+          <div class="role"><img src="assets/agents/plan.png" alt="" /><div><b>plan</b> — same as coarse.</div></div>
+          <div class="role"><img src="assets/agents/academic-literature-researcher.png" alt="" /><div><b>academic-literature-researcher</b> — RO. Papers, sections, scholarly metadata.</div></div>
+          <div class="role"><img src="assets/agents/web-domain-researcher.png" alt="" /><div><b>web-domain-researcher</b> — RO. Pages, APIs, recipes, rail, video / transcript.</div></div>
+          <div class="role"><img src="assets/agents/enterprise-data-analyst.png" alt="" /><div><b>enterprise-data-analyst</b> — RO. Canvas, Snowflake, WooCommerce, supplied docs.</div></div>
+          <div class="role"><img src="assets/agents/financial-market-analyst.png" alt="" /><div><b>financial-market-analyst</b> — RO. Prices, statements, finance news.</div></div>
+          <div class="role"><img src="assets/agents/office-report-builder.png" alt="" /><div><b>office-report-builder</b> — RW. Local Excel / Word / PPT / PDF / datasets.</div></div>
+          <div class="role"><img src="assets/agents/external-workflow-operator.png" alt="" /><div><b>external-workflow-operator</b> — RW. Email, calendar, forms, cloud sheets, Notion.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="legend">
+      <div class="keys">
+        <span><i class="sw m"></i>Main</span>
+        <span><i class="sw r"></i>Read-only</span>
+        <span><i class="sw w"></i>Writable</span>
+        <span>Dimmed chip = unused roster slot</span>
+        <span>Dashed box = one wave</span>
+      </div>
+      <div class="mono">DeepSeek-V4-Flash-0731 · arxiv-survey-presentation · all arms success</div>
+    </footer>
+  </main>
+</body>
+</html>

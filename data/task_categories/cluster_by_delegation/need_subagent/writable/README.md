@@ -1,0 +1,27 @@
+# Writable
+
+Task membership is recorded in the adjacent text list. Each link below points to the canonical task in `data/oracle166/`.
+
+- [arxiv-latex-analysis-notion-word](../../../../oracle166/arxiv-latex-analysis-notion-word.task.md)
+- [arxiv-latex-reasoning-gsheet](../../../../oracle166/arxiv-latex-reasoning-gsheet.task.md)
+- [canvas-announcement-summary](../../../../oracle166/canvas-announcement-summary.task.md)
+- [canvas-assignment-deadline-word-gcal](../../../../oracle166/canvas-assignment-deadline-word-gcal.task.md)
+- [canvas-course-notion-wiki](../../../../oracle166/canvas-course-notion-wiki.task.md)
+- [canvas-enrollment-overview-gsheet-ppt](../../../../oracle166/canvas-enrollment-overview-gsheet-ppt.task.md)
+- [canvas-faculty-workload-review](../../../../oracle166/canvas-faculty-workload-review.task.md)
+- [customer-satisfaction-analytics-framework](../../../../oracle166/customer-satisfaction-analytics-framework.task.md)
+- [fetch-email-gcal-scheduler-excel-word](../../../../oracle166/fetch-email-gcal-scheduler-excel-word.task.md)
+- [fetch-notion-monitoring](../../../../oracle166/fetch-notion-monitoring.task.md)
+- [fetch-sf-hr-benchmark-excel-word](../../../../oracle166/fetch-sf-hr-benchmark-excel-word.task.md)
+- [gform-snowflake-feedback](../../../../oracle166/gform-snowflake-feedback.task.md)
+- [howtocook-workshop-materials](../../../../oracle166/howtocook-workshop-materials.task.md)
+- [playwright-arxiv-review-criteria-word-gsheet](../../../../oracle166/playwright-arxiv-review-criteria-word-gsheet.task.md)
+- [ppt-snowflake-executive](../../../../oracle166/ppt-snowflake-executive.task.md)
+- [sf-hr-dept-budget-ppt-email](../../../../oracle166/sf-hr-dept-budget-ppt-email.task.md)
+- [sf-sales-product-ranking-ppt](../../../../oracle166/sf-sales-product-ranking-ppt.task.md)
+- [sf-workforce-compensation-sheet](../../../../oracle166/sf-workforce-compensation-sheet.task.md)
+- [supplier-contract-compliance-audit](../../../../oracle166/supplier-contract-compliance-audit.task.md)
+- [terminal-wc-excel-gsheet-gcal-email](../../../../oracle166/terminal-wc-excel-gsheet-gcal-email.task.md)
+- [wc-tax-compliance-excel-gcal-gform](../../../../oracle166/wc-tax-compliance-excel-gcal-gform.task.md)
+- [yt-fireship-ppt-gcal-email](../../../../oracle166/yt-fireship-ppt-gcal-email.task.md)
+- [yt-transcript-afrobeat-song-list-excel-email](../../../../oracle166/yt-transcript-afrobeat-song-list-excel-email.task.md)

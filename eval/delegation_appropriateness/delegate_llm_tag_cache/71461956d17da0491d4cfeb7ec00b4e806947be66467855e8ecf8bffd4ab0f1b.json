@@ -1,0 +1,133 @@
+{
+  "input_hash": "71461956d17da0491d4cfeb7ec00b4e806947be66467855e8ecf8bffd4ab0f1b",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "gt",
+    "task": "scholarly-arxiv-survey-word-notion-gcal",
+    "task_text": "I lead a research group and we're starting a deep dive into reasoning methods for large language models. There's a PDF in your workspace called Survey_Guidelines.pdf that outlines the structure we want, and a guide.md with some notes on how to organize the taxonomy and comparison criteria.\n\nI need you to search for recent papers on chain-of-thought prompting, tree-of-thought reasoning, self-consistency decoding, step-by-step verification, and automatic chain-of-thought generation. There should be several relevant papers in the database. Download and read through them to understand the key contributions and methodologies.\n\nOnce you've reviewed the papers, write a comprehensive survey document called LLM_Reasoning_Survey.docx. It should follow the structure in the guidelines: start with an abstract summarizing the survey, then an introduction to the field, a background section, a taxonomy of methods section broken into subsections for each reasoning approach, a comparative analysis section with a table comparing the methods, a section on open challenges, and a conclusion. Each method subsection should reference the corresponding paper and summarize the key ideas, methodology, and results. Make sure you cover at least five distinct reasoning methods. Use proper Word heading styles (Heading 1 / Heading 2) for the section and subsection titles so the document is well structured.\n\nAlso, create a database in our team's Notion workspace called \"Reasoning Papers\" to track these papers. The database should have these properties: Title (title type), Authors (rich_text), Year (number), Method (select), Key_Contribution (rich_text), and Cited_By (number). Add an entry for each relevant reasoning paper you found.\n\nFinally, schedule five reading group sessions on the calendar for the week of March 16 through March 20, 2026. Each session should be one hour long and cover one paper. Title them \"Reading Group: [short topic]\" where the topic reflects the paper being discussed, like \"Reading Group: Chain-of-Thought\" or \"Reading Group: Tree-of-Thought\". Schedule them from 10:00 to 11:00 each day, Monday through Friday. Make the 10:00-11:00 wall-clock time unambiguous by providing the event times as UTC (for example \"2026-03-16T10:00:00Z\" or \"2026-03-16T10:00:00\"), or by supplying an ISO time with a timezone offset and passing the corresponding timeZone field (for example start time \"2026-03-16T10:00:00+08:00\" with timeZone \"Asia/Shanghai\").\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent must first read `Survey_Guidelines.pdf` and `guide.md` and freeze the document taxonomy and comparison fields. The guide does not identify papers, so for each literal method query `chain-of-thought prompting`, `tree of thoughts`, `self-consistency chain of thought`, `step-by-step verification`, and `automatic chain of thought`, the main agent must issue `search-arxiv(keyword=<method query>)` and `search_papers(query=<method query>,max_results=10)` as native-parallel discovery calls. Reconcile candidates by exact arXiv ID/title and freeze exactly one source-supported distinct `{method,paper_id,title}` assignment for each required method. Do not dispatch Wave 1 until all five literal assignments exist; report a discovery blocker rather than assigning an unnamed paper.\n\n1. Wave 1 — dispatch exactly 5 explore sub-agents in parallel:\n\n   1. explore 0 (academic-literature-researcher 0): One explore sub-agent receives the literal chain-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, then returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.\n\n   2. explore 1 (academic-literature-researcher 1): One explore sub-agent receives the literal tree-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.\n\n   3. explore 2 (academic-literature-researcher 2): One explore sub-agent receives the literal self-consistency `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.\n\n   4. explore 3 (academic-literature-researcher 3): One explore sub-agent receives the literal step-by-step verification `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.\n\n   5. explore 4 (academic-literature-researcher 4): One explore sub-agent receives the literal automatic chain-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.\n\nAfter Wave 1, the main agent must reject a missing/mismatched ID, duplicate paper, or unsupported evidence field, freeze one canonical five-paper packet (method, paper_id, title, authors, year, key_contribution, results, cited_by), and derive the survey taxonomy and comparison rows from it.\n\n2. Wave 2 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): The document coder sole-writes LLM_Reasoning_Survey.docx in the workspace with the Word tools: document title/author metadata, then Title, Abstract, 1. Introduction, 2. Background, 3. Taxonomy of Methods (Heading-2 category subsections, Heading-3 per-method subsections), 4. Comparative Analysis containing a table with exactly the five required method columns populated from the frozen packet, and the remaining guideline-required sections; read the outline and full text back.\n   2. coder 1 (external-workflow-operator 0): The Notion coder solely owns the Reasoning Papers database: search the workspace first and reuse an existing exact-title database, otherwise create it once under a suitable parent page with exactly the properties Title(title), Authors(rich_text), Year(number), Method(select), Key_Contribution(rich_text), Cited_By(number); add exactly five pages (one per frozen paper) with those properties, then retrieve the database and entries to verify.\n   3. coder 2 (external-workflow-operator 1): The calendar coder schedules the five reading-group sessions for 2026-03-16 through 2026-03-20, each exactly 10:00-11:00 UTC (start/end dateTime with Z suffix and timeZone UTC), one per paper, with summary exactly 'Reading Group: <topic>' and a description naming the full paper title, first author, year and arXiv ID; search exact summaries first and create only missing events, then get_event every retained ID.\n\nAfter Wave 2, the main agent reconciles the document outline/table, the five Notion entries and the five retained event IDs against the same canonical packet, then calls claim_done. Do not dispatch any further agent and do not add a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "wave_1",
+        "text": "explore 0 (academic-literature-researcher 0): One explore sub-agent receives the literal chain-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, then returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "wave_1",
+        "text": "explore 1 (academic-literature-researcher 1): One explore sub-agent receives the literal tree-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "wave_1",
+        "text": "explore 2 (academic-literature-researcher 2): One explore sub-agent receives the literal self-consistency `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "wave_1",
+        "text": "explore 3 (academic-literature-researcher 3): One explore sub-agent receives the literal step-by-step verification `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "wave_1",
+        "text": "explore 4 (academic-literature-researcher 4): One explore sub-agent receives the literal automatic chain-of-thought `{paper_id,title}` assignment, calls `read_paper(paper_id=<paper_id>)` and `search-google-scholar(keyword=<exact title>)`, and returns `{paper_id,title,authors,year,method,key_contribution,results,cited_by,evidence}`.",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "wave_2",
+        "text": "coder 0 (office-report-builder 0): The document coder sole-writes LLM_Reasoning_Survey.docx in the workspace with the Word tools: document title/author metadata, then Title, Abstract, 1. Introduction, 2. Background, 3. Taxonomy of Methods (Heading-2 category subsections, Heading-3 per-method subsections), 4. Comparative Analysis containing a table with exactly the five required method columns populated from the frozen packet, and the remaining guideline-required sections; read the outline and full text back.",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "wave_2",
+        "text": "coder 1 (external-workflow-operator 0): The Notion coder solely owns the Reasoning Papers database: search the workspace first and reuse an existing exact-title database, otherwise create it once under a suitable parent page with exactly the properties Title(title), Authors(rich_text), Year(number), Method(select), Key_Contribution(rich_text), Cited_By(number); add exactly five pages (one per frozen paper) with those properties, then retrieve the database and entries to verify.",
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "wave": "wave_2",
+        "text": "coder 2 (external-workflow-operator 1): The calendar coder schedules the five reading-group sessions for 2026-03-16 through 2026-03-20, each exactly 10:00-11:00 UTC (start/end dateTime with Z suffix and timeZone UTC), one per paper, with summary exactly 'Reading Group: <topic>' and a description naming the full paper title, first author, year and arXiv ID; search exact summaries first and create only missing events, then get_event every retained ID.",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "scholarly-arxiv"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "write",
+        "role": "word",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "write",
+        "role": "notion",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "rw": "write",
+        "role": "calendar",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

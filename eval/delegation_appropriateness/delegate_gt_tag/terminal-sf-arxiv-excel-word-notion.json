@@ -1,0 +1,343 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-sf-arxiv-excel-word-notion",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-sf-arxiv-excel-word-notion.task.md",
+    "oracle166_sha256": "e2b5e73f670889cd825cd8279581fb06bec892fa58689d47b55570127e414755"
+  },
+  "label_cache_keys": [
+    "0e0febfb482de80bf3b62694ae724aa672190461852f1501c00ebc5da32832df"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "snowflake"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): One explore sub-agent runs one set-based query over `HR_ANALYTICS.PUBLIC.EMPLOYEES` and returns exactly the seven department rows with headcount, flight-risk count, raw percentage, and average satisfaction plus total controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (academic-literature-researcher 0): One explore sub-agent runs one bounded employee-retention search, rejects unrelated papers by title/abstract, and returns exactly the three strongest relevant paper IDs, titles, abstracts, key findings, and applicability evidence.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The Excel coder solely creates `Retention_Strategy.xlsx`, using one bulk write for each exact sheet, literal numbers, all seven departments, and exactly three papers, then one read-back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "word",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): The Word coder solely creates `Retention_Strategy_Report.docx` with one bulk structured body containing the exact title, Executive Summary, Data Analysis, Research Findings, and Recommendations; it must name at least five departments and all priority levels, then read back once.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): The Notion coder solely owns `Retention Action Items`: exact-title search and duplicate gate, create at most one database with the exact schema, and upsert exactly one page per seven literal department names with matching Strategy, Priority, Status `Not Started`, and Owner, followed by one query/read-back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "snowflake"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): One explore sub-agent runs one set-based query over `HR_ANALYTICS.PUBLIC.EMPLOYEES` and returns exactly the seven department rows with headcount, flight-risk count, raw percentage, and average satisfaction plus total controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (academic-literature-researcher 0): One explore sub-agent runs one bounded employee-retention search, rejects unrelated papers by title/abstract, and returns exactly the three strongest relevant paper IDs, titles, abstracts, key findings, and applicability evidence.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The Excel coder solely creates `Retention_Strategy.xlsx`, using one bulk write for each exact sheet, literal numbers, all seven departments, and exactly three papers, then one read-back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "word",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): The Word coder solely creates `Retention_Strategy_Report.docx` with one bulk structured body containing the exact title, Executive Summary, Data Analysis, Research Findings, and Recommendations; it must name at least five departments and all priority levels, then read back once.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): The Notion coder solely owns `Retention Action Items`: exact-title search and duplicate gate, create at most one database with the exact schema, and upsert exactly one page per seven literal department names with matching Strategy, Priority, Status `Not Started`, and Owner, followed by one query/read-back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:2:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:3:word",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "word",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:4:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 4,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:snowflake",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "snowflake",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "notion": 1,
+      "word": 1
+    },
+    "read": {
+      "scholarly-arxiv": 1,
+      "snowflake": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 5,
+    "units": 5,
+    "write_units": 3,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

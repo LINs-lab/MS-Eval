@@ -1,0 +1,298 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "12306-howtocook-team-trip-catering-excel-gcal",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/12306-howtocook-team-trip-catering-excel-gcal.task.md",
+    "oracle166_sha256": "72a64a2d2c3018cc3781aee20c803aa6be024d4be4cef68aa66f59bbe0dc14ea"
+  },
+  "label_cache_keys": [
+    "7a22a5384993871be5151c3e4bb30b45b78e22e52b651d7d559071260af3661e"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "rail_12306"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (web-domain-researcher 0): Use one explore sub-agent to own the rail evidence branch. Call the rail tools in their required sequence: get the current date, resolve the specific Beijing South and Shanghai Hongqiao station codes, query every eligible high-speed service for 2026-03-10 without an artificial result limit, select the earliest departure that can arrive before the afternoon activities, and use the returned actual train_no—not its display code—to retrieve the complete ordered route. Return the selected service and compact controls, preserving departure, arrival, duration, every returned second-, first-, and business-class price/availability field, the second-class total for 15, query/result counts, identifiers, and validation status. Do not write files, create deliverables, or alter rail state.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "howtocook"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (web-domain-researcher 1): Use one explore sub-agent to own the dinner evidence branch. Use the granted HowToCook catalog read-only; exhaust the available catalog/category results, gather at least five genuine starter options, five genuine Chinese home-style main options, and three genuine dessert-or-soup options, then select exactly two starters, three mains, and one dessert or soup. Retrieve each selected recipe's full details by its returned identifier/name and derive scaled quantities or notes for 15 without claiming that the tool natively supports 15 when its people-count tools cap at 10. Return a compact six-dish record with base yield, ingredients, cooking time, candidate/selected counts, selected names, scale basis, and validation status. Do not write files or create final deliverables.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own Team_Trip_Plan.xlsx exclusively. Consume the frozen train/menu evidence, create the workbook exactly once with Travel, Menu, and Timeline, and write the exact required headers and literal values or the explicitly permitted travel-budget formula. Keep the six menu rows scaled to a serving yield of 15 and build a chronological timeline with at least six required activities. Read back every sheet and return the workbook path, sheet order, row counts, key totals, and header/value validation. Do not create or modify Notion, calendar, or email state.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): Use one coder sub-agent to own only the dynamic Notion page. Search first for an existing matching trip page, create exactly one substantive page if absent, use the frozen train and dish names in its content, then read it back and return the page ID, exact title/content controls, and verification. Do not write the workbook, calendar, or email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "rail_12306"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (web-domain-researcher 0): Use one explore sub-agent to own the rail evidence branch. Call the rail tools in their required sequence: get the current date, resolve the specific Beijing South and Shanghai Hongqiao station codes, query every eligible high-speed service for 2026-03-10 without an artificial result limit, select the earliest departure that can arrive before the afternoon activities, and use the returned actual train_no—not its display code—to retrieve the complete ordered route. Return the selected service and compact controls, preserving departure, arrival, duration, every returned second-, first-, and business-class price/availability field, the second-class total for 15, query/result counts, identifiers, and validation status. Do not write files, create deliverables, or alter rail state.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "howtocook"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (web-domain-researcher 1): Use one explore sub-agent to own the dinner evidence branch. Use the granted HowToCook catalog read-only; exhaust the available catalog/category results, gather at least five genuine starter options, five genuine Chinese home-style main options, and three genuine dessert-or-soup options, then select exactly two starters, three mains, and one dessert or soup. Retrieve each selected recipe's full details by its returned identifier/name and derive scaled quantities or notes for 15 without claiming that the tool natively supports 15 when its people-count tools cap at 10. Return a compact six-dish record with base yield, ingredients, cooking time, candidate/selected counts, selected names, scale basis, and validation status. Do not write files or create final deliverables.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Use one coder sub-agent to own Team_Trip_Plan.xlsx exclusively. Consume the frozen train/menu evidence, create the workbook exactly once with Travel, Menu, and Timeline, and write the exact required headers and literal values or the explicitly permitted travel-budget formula. Keep the six menu rows scaled to a serving yield of 15 and build a chronological timeline with at least six required activities. Read back every sheet and return the workbook path, sheet order, row counts, key totals, and header/value validation. Do not create or modify Notion, calendar, or email state.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): Use one coder sub-agent to own only the dynamic Notion page. Search first for an existing matching trip page, create exactly one substantive page if absent, use the frozen train and dish names in its content, then read it back and return the page ID, exact title/content controls, and verification. Do not write the workbook, calendar, or email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:2:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:3:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:howtocook",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "howtocook",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:rail_12306",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "rail_12306",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "notion": 1
+    },
+    "read": {
+      "howtocook": 1,
+      "rail_12306": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 4,
+    "units": 4,
+    "write_units": 2,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

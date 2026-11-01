@@ -1,0 +1,233 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "canvas-faculty-workload-review",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/canvas-faculty-workload-review.task.md",
+    "oracle166_sha256": "71d4bb89c49fdb68e4da7fe31f89ac754d595dbb8c9f4f3b7c0b443bbc320e5e"
+  },
+  "label_cache_keys": [
+    "0bac035c6b454649a0797e5b81278fca8506c03651ab514665521da81b9e366b"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole writer of Faculty_Workload.xlsx. Build exactly two sheets from the JSON: \"Instructor Load\" with the header row Instructor, Courses_Count, Total_Students, Total_Assignments, Est_Grading_Hours, Weekly_Grading_Hours, Overloaded_YN and one row per instructor_load entry in the given order (hours as numeric values rounded to 1 decimal); \"Department Summary\" with the header row Department, Instructor_Count, Course_Count, Total_Students and one row per department_summary entry. Write to the runtime workspace path, then read back both sheets fully to verify headers, order and row counts.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "gsheet",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): Sole owner of the exact-title Google spreadsheet \"Faculty Workload Analysis\". Search/reuse-or-create at most once, keep exactly one sheet named \"Instructor Load\", write the frozen instructor_load table with the same header and values, then read it back and report the spreadsheet ID, title, sheet name and data-row count.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (office-report-builder 1): Sole writer of Workload_Review.pptx. Build exactly four slides from the JSON: title slide; an overview slide stating total_instructors and total_overloaded; a department breakdown slide covering all departments; and an evidence-based recommendations slide for rebalancing overloaded departments. Verify slide titles and every numeric claim through presentation info and text extraction.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole writer of Faculty_Workload.xlsx. Build exactly two sheets from the JSON: \"Instructor Load\" with the header row Instructor, Courses_Count, Total_Students, Total_Assignments, Est_Grading_Hours, Weekly_Grading_Hours, Overloaded_YN and one row per instructor_load entry in the given order (hours as numeric values rounded to 1 decimal); \"Department Summary\" with the header row Department, Instructor_Count, Course_Count, Total_Students and one row per department_summary entry. Write to the runtime workspace path, then read back both sheets fully to verify headers, order and row counts.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "gsheet",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): Sole owner of the exact-title Google spreadsheet \"Faculty Workload Analysis\". Search/reuse-or-create at most once, keep exactly one sheet named \"Instructor Load\", write the frozen instructor_load table with the same header and values, then read it back and report the spreadsheet ID, title, sheet name and data-row count.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (office-report-builder 1): Sole writer of Workload_Review.pptx. Build exactly four slides from the JSON: title slide; an overview slide stating total_instructors and total_overloaded; a department breakdown slide covering all departments; and an evidence-based recommendations slide for rebalancing overloaded departments. Verify slide titles and every numeric claim through presentation info and text extraction.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:gsheet",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "gsheet",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:2:ppt",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 2,
+      "role": "ppt",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "gsheet": 1,
+      "ppt": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 3,
+    "units": 3,
+    "write_units": 3,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

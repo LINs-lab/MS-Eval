@@ -1,0 +1,61 @@
+{
+  "input_hash": "cfd1edec499d2207f455c407e8f2f6352c052e0540fdeffceb1f456ea467060b",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "sf-sales-region-forecast-gcal-excel",
+    "task_text": "The VP of Sales wants to track how actual regional revenue compares to the annual targets set at the beginning of the year. There is a PDF file called Sales_Targets.pdf in the workspace that contains the 2026 annual revenue targets approved for each sales region. Please read that document first to get the target figures.\n\nThen connect to the data warehouse and query the actual total revenue and order count grouped by customer region. These actuals must be based on ALL orders regardless of order status — include Delivered, Shipped, Processing, and Cancelled orders alike.\n\nCreate an Excel file called Regional_Forecast.xlsx in the workspace with two sheets.\n\nThe first sheet should be called \"Region Performance\" with five columns: Region (sorted alphabetically), Target (from the PDF), Actual (from the database), Variance (which is Actual minus Target rounded to 2 decimal places), and Variance_Pct (which is Variance divided by Target multiplied by 100, rounded to 1 decimal place).\n\nThe second sheet should be called \"Summary\" with two columns: Metric and Value. Include rows for Total_Target (sum of all regional targets), Total_Actual (sum of all actual revenues), Total_Variance (Total_Actual minus Total_Target), Met_Target_Count (number of regions where Actual is greater than or equal to Target), and Missed_Target_Count (number of regions where Actual is below Target).\n\nAfter creating the Excel file, schedule a Google Calendar event called \"Quarterly Forecast Review\" on March 31, 2026 from 14:00 to 15:30. Schedule it as a single event (do not set a time zone or recurrence rule — the calendar stores times in UTC, so pass the start and end times without a time zone parameter).\n\nFinally, send an email to vp_sales@company.com with a subject referencing the regional forecast report and a body that summarizes which regions are meeting their targets, the total variance figure, and confirms that a quarterly review meeting has been scheduled.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Read `Sales_Targets.pdf` and run one all-status, set-based regional warehouse aggregate as native-parallel calls. Preserve exact region labels, reconcile the two small result sets, and compute literal Target, Actual, Variance, and Variance_Pct values plus the five Summary metrics. Create `Regional_Forecast.xlsx` with two bulk sheet writes and one read-back. Independently search/create/read back the single non-recurring `Quarterly Forecast Review` event at the literal offset-free times 2026-03-31 14:00–15:30, omitting timezone and recurrence fields. Then send exactly one email to `vp_sales@company.com` that names the regions meeting target, the verified total variance, and the scheduled meeting.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Gather the source data needed for a regional forecast report. Workspace boundary is /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-sales-region-forecast-gcal-excel/workspace. First read Sales_Targets.pdf there and extract every 2026 annual revenue target by sales region. Then inspect the available Snowflake warehouse schema and query actual total revenue and order count grouped by customer region, using ALL orders regardless of status (including Delivered, Shipped, Processing, Cancelled). Return: (1) exact PDF targets with region names and amounts, (2) actual revenue and order counts by region, (3) the fully qualified tables/columns used and SQL, and (4) reconciliation notes, especially any regions existing only in one source. Do not write files or mutate any state.\nExtract targets and actuals",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_8",
+        "text": "Create and verify an Excel workbook at /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-sales-region-forecast-gcal-excel/workspace/Regional_Forecast.xlsx using the exact data below. Sheet 1 name: Region Performance. Columns exactly: Region, Target, Actual, Variance, Variance_Pct. Sort alphabetically and include: Asia Pacific target 575000.00 actual 642644.81; Europe 590000.00 actual 648798.47; Latin America 480000.00 actual 549129.15; Middle East 540000.00 actual 602107.55; North America 550000.00 actual 606318.35. Variance must be Actual-Target rounded to 2 decimals; Variance_Pct must be Variance/Target*100 rounded to 1 decimal. Sheet 2 name: Summary, columns exactly Metric and Value, rows: Total_Target 2735000.00; Total_Actual 3048998.33; Total_Variance 313998.33; Met_Target_Count 5; Missed_Target_Count 0. Prefer Excel formulas for calculated fields/totals where reliable, and apply sensible currency/percentage-equivalent numeric formatting (Variance_Pct values are numeric percentage points, e.g. 11.8, not 0.118). Make headers readable and create exactly the required two sheets. Verify by reading the finished workbook and report its path, sheet names, values/formulas, and successful checks.\nBuild forecast workbook",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_12",
+        "text": "Perform the two required external writes, then verify and return IDs/results. (1) Create one single Google Calendar event titled exactly \"Quarterly Forecast Review\" starting 2026-03-31T14:00:00 and ending 2026-03-31T15:30:00. Do not pass a time zone and do not set recurrence. (2) Send an email to vp_sales@company.com with a subject referencing the regional forecast report. The body must state that all five regions—Asia Pacific, Europe, Latin America, Middle East, and North America—are meeting or exceeding their annual targets; state the total variance as positive $313,998.33 (Total Actual $3,048,998.33 minus Total Target $2,735,000.00); and confirm the Quarterly Forecast Review has been scheduled for March 31, 2026, 14:00–15:30 UTC. Mention that Regional_Forecast.xlsx was created; attach /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-sales-region-forecast-gcal-excel/workspace/Regional_Forecast.xlsx if attachment support succeeds. Use plain professional language. Acceptance: exactly one non-recurring event created with no explicit timezone field, and one email sent to the exact recipient. Return calendar event ID/details and email send confirmation.\nSchedule review and email",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "filesystem-workspace",
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "calendar",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,507 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-canvas-wc-excel-ppt-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-canvas-wc-excel-ppt-email.task.md",
+    "oracle166_sha256": "f8ec4df9460d79948989e37753a50197ba1ad66d084a711dab0d380b3cfb4119"
+  },
+  "label_cache_keys": [
+    "297ec5ab052c2232f6839f7e7b2c16eb90ba3b1a36624230701869ee2f86ee1a"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 6,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): Course owner for registry course 1. Verify course/users and assignments, call canvas_list_student_submissions(grouped=false,per_page=100,page=1) for the live assignment inventory, then issue every remaining literal page from total_pages in native-parallel batches. Retain every numeric score with literal submission row.id/user_id and obtain the complete in-course user map using full_output_path for oversized rosters. Persist one unique course JSON and return path/hash, course/assignment/page/submission/user controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "canvas"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 1): Course owner for registry course 2 — same literal recipe, only the course identity and unique JSON path substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (enterprise-data-analyst 2): Woo order owner for registry customer group 1/4 (five bookstore_customer_id values) plus the verified product-map path/hash. For each customer paginate woo_orders_list(customer=<id>,page=1,perPage=100,status omitted) through every page and include every order status. For each line item, classify it as Cameras/Electronics from the line item's own category names first, otherwise from the verified live product_id category map; never restrict spend to a stale candidate-ID manifest. Sum literal line-item total, quantity, and count an order once when it contains any qualifying line. Return compact customer rows and page/status/line-item controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 3,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 3 (enterprise-data-analyst 3): Woo order owner for registry customer group 2/4 — same literal recipe, only the five customer IDs substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 4 (enterprise-data-analyst 4): Woo order owner for registry customer group 3/4 — same literal recipe, only the five customer IDs substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 5,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 5 (enterprise-data-analyst 5): Woo order owner for registry customer group 4/4 — same literal recipe, only the five customer IDs substituted.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 6,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Sole writer of Student_Purchase_Analysis.xlsx with the exact four sheets, identical matched population, literal statistics, at least three evidence-based recommendations and full range read-back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 7,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): Sole writer of Purchase_Behavior_Presentation.pptx with exactly the five requested slides and text/title read-back. It must explicitly state the matched-student count and signed correlation coefficient.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 8,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "email",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 2 (external-workflow-operator 0): Sole owner of the two emails. For each exact recipient/subject, paginate Sent search and read candidates, send at most once with canonical matched count/correlation and required means/recommendation, then read back.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): Course owner for registry course 1. Verify course/users and assignments, call canvas_list_student_submissions(grouped=false,per_page=100,page=1) for the live assignment inventory, then issue every remaining literal page from total_pages in native-parallel batches. Retain every numeric score with literal submission row.id/user_id and obtain the complete in-course user map using full_output_path for oversized rosters. Persist one unique course JSON and return path/hash, course/assignment/page/submission/user controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "canvas"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 1): Course owner for registry course 2 — same literal recipe, only the course identity and unique JSON path substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (enterprise-data-analyst 2): Woo order owner for registry customer group 1/4 (five bookstore_customer_id values) plus the verified product-map path/hash. For each customer paginate woo_orders_list(customer=<id>,page=1,perPage=100,status omitted) through every page and include every order status. For each line item, classify it as Cameras/Electronics from the line item's own category names first, otherwise from the verified live product_id category map; never restrict spend to a stale candidate-ID manifest. Sum literal line-item total, quantity, and count an order once when it contains any qualifying line. Return compact customer rows and page/status/line-item controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 3 (enterprise-data-analyst 3): Woo order owner for registry customer group 2/4 — same literal recipe, only the five customer IDs substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 4 (enterprise-data-analyst 4): Woo order owner for registry customer group 3/4 — same literal recipe, only the five customer IDs substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 5,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 5 (enterprise-data-analyst 5): Woo order owner for registry customer group 4/4 — same literal recipe, only the five customer IDs substituted.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 6,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Sole writer of Student_Purchase_Analysis.xlsx with the exact four sheets, identical matched population, literal statistics, at least three evidence-based recommendations and full range read-back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 7,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): Sole writer of Purchase_Behavior_Presentation.pptx with exactly the five requested slides and text/title read-back. It must explicitly state the matched-student count and signed correlation coefficient.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 8,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "email",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 2 (external-workflow-operator 0): Sole owner of the two emails. For each exact recipient/subject, paginate Sent search and read candidates, send at most once with canonical matched count/correlation and required means/recommendation, then read back.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:6:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 6,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:7:ppt",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 7,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:8:email",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 8,
+      "role": "email",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:canvas",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "canvas",
+      "source_nodes": [
+        0,
+        1
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:woocommerce",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "woocommerce",
+      "source_nodes": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "email": 1,
+      "excel": 1,
+      "ppt": 1
+    },
+    "read": {
+      "canvas": 1,
+      "woocommerce": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 9,
+    "units": 5,
+    "write_units": 3,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

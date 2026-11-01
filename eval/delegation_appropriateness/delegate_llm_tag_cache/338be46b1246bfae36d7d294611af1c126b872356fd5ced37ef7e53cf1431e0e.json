@@ -1,0 +1,199 @@
+{
+  "input_hash": "338be46b1246bfae36d7d294611af1c126b872356fd5ced37ef7e53cf1431e0e",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "canvas-late-submission-gcal",
+    "task_text": "Our academic affairs team needs a comprehensive report on late submissions across all courses in the learning management system. Please query all submissions that are flagged as late (late = true) and compile the results. The scope is the ENTIRE learning management system: cover every course stored in it, across all terms and semesters, and do not restrict the query to a single course, a single term, a specific instructor, or only currently active courses. Each semester offering of a subject (e.g., a Fall 2013 offering and a Spring 2014 offering of the same subject) is a separate course and must be reported as its own row. A submission counts as late whenever its late flag is true, regardless of grading status or workflow state.\n\nCreate an Excel file called Late_Submissions.xlsx in the workspace with two sheets. The first sheet \"By Course\" should have one row per course that has at least one late submission — every such course in the system must get a row — with columns Course_Name, Late_Count showing the total number of late submissions per course (counting every late submission in that course, across all of its assignments and all enrolled students), and Unique_Students showing how many distinct students submitted late work in that course. Sort the rows by Late_Count in descending order. The second sheet \"Top Offenders\" should list the top 10 student-course combinations with the most late submissions, having columns Student_Name, Course, and Late_Count, sorted by Late_Count descending.\n\nFor each course that has late submissions, create a calendar event titled \"Review Meeting - [course name]\" scheduled for March 13, 2026 at 10:00 AM lasting one hour — one event per such course, with no courses omitted. The event description should mention the number of late submissions and unique students affected in that course.\n\nFinally, send an email to academic.affairs@university.example.com with the subject \"Late Submission Report\" summarizing the findings. The email body should mention the total number of courses with late submissions, the total count of late submissions across all courses, and the names of the top 3 courses with the most late submissions.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, partition by course once, not by assignment page; the main agent aggregates, then dispatches three independent output writers. Canvas is read-only. Resolve the runtime workspace dynamically and create one unique JSON path per course.\n\nThe main agent calls canvas_list_courses(include_ended=true) once and freezes the complete 22-row course_id/course_code/full-name mapping. The exact full Canvas name is the canonical course identity; never reconstruct it from a code or merge semester offerings.\n\nWave 1 — dispatch exactly 22 explore sub-agents in parallel, one per literal course below:\n\n   1. explore 0 (enterprise-data-analyst 0): Course owner for course_id=1 (AAA-2013J). Call canvas_list_assignments(course_id=1, include_submissions=false) once and handle every returned assignment; call page 1 for every assignment and canvas_list_course_users(course_id=1) together in one native-parallel response; every assignment call uses canvas_list_assignment_submissions(course_id=1, assignment_id=<assignment_id>, late=true, page=1, per_page=100), then issue every remaining literal assignment/page identity revealed by total_pages in native-parallel batches, including zero-result assignments; if the user result is oversized, read the complete full_output_path rather than a truncated chat preview; retain only rows whose literal late flag is true, use row.id as submission identity, join user_id only to this course's complete map, and write a compact course JSON with exact full course name, every late submission identity/user_id, per-user late counts, Late_Count, Unique_Students, all assignment/page controls, and unresolved/duplicate controls; read it back and return only path/hash, course identity, assignment/page counts, Late_Count, Unique_Students and unresolved/duplicate controls.\n   2. explore 1 (enterprise-data-analyst 1): Course owner for course_id=2 (AAA-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   3. explore 2 (enterprise-data-analyst 2): Course owner for course_id=3 (BBB-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   4. explore 3 (enterprise-data-analyst 3): Course owner for course_id=4 (BBB-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   5. explore 4 (enterprise-data-analyst 4): Course owner for course_id=5 (BBB-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   6. explore 5 (enterprise-data-analyst 5): Course owner for course_id=6 (BBB-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   7. explore 6 (enterprise-data-analyst 6): Course owner for course_id=7 (CCC-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   8. explore 7 (enterprise-data-analyst 7): Course owner for course_id=8 (CCC-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   9. explore 8 (enterprise-data-analyst 8): Course owner for course_id=9 (DDD-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   10. explore 9 (enterprise-data-analyst 9): Course owner for course_id=10 (DDD-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   11. explore 10 (enterprise-data-analyst 10): Course owner for course_id=11 (DDD-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   12. explore 11 (enterprise-data-analyst 11): Course owner for course_id=12 (DDD-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   13. explore 12 (enterprise-data-analyst 12): Course owner for course_id=13 (EEE-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   14. explore 13 (enterprise-data-analyst 13): Course owner for course_id=14 (EEE-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   15. explore 14 (enterprise-data-analyst 14): Course owner for course_id=15 (EEE-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   16. explore 15 (enterprise-data-analyst 15): Course owner for course_id=16 (FFF-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   17. explore 16 (enterprise-data-analyst 16): Course owner for course_id=17 (FFF-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   18. explore 17 (enterprise-data-analyst 17): Course owner for course_id=18 (FFF-2013B) — same literal recipe, only the course identity and unique JSON path substituted.\n   19. explore 18 (enterprise-data-analyst 18): Course owner for course_id=19 (FFF-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n   20. explore 19 (enterprise-data-analyst 19): Course owner for course_id=20 (GGG-2013J) — same literal recipe, only the course identity and unique JSON path substituted.\n   21. explore 20 (enterprise-data-analyst 20): Course owner for course_id=21 (GGG-2014J) — same literal recipe, only the course identity and unique JSON path substituted.\n   22. explore 21 (enterprise-data-analyst 21): Course owner for course_id=22 (GGG-2014B) — same literal recipe, only the course identity and unique JSON path substituted.\n\nA course owner must block on incomplete pagination or an unresolved late-submission user. After the wave, the main agent requires all 22 course receipts, every live assignment once, and disjoint submission IDs. It freezes all positive-course rows, global late total, and the top ten student-course combinations. Top offenders are grouped by (course_id,user_id), joined to the exact in-course Student_Name, and sorted by Late_Count descending, Student_Name ascending, then full Course name; do not aggregate the same name across courses or use enrollment/account IDs as names. Top-three courses sort by Late_Count descending with full-name ties.\n\nThen dispatch the three independent output branches in one native-parallel response:\n\n1. coder 0 (office-report-builder 0): Sole-write Late_Submissions.xlsx with exactly By Course and Top Offenders, the literal headers, one row for every positive course and exactly ten canonical offender rows. Read both full ranges back and compare exact names/counts.\n2. coder 1 (external-workflow-operator 0): List events covering 2026-03-13, then locally match exact summary/start/end. For every positive course, retain or create at most once Review Meeting - <full course name> with start.dateTime=\"2026-03-13T10:00:00\" and end.dateTime=\"2026-03-13T11:00:00\"; do not append Z or convert the literal 10:00 to UTC. Include Late_Count and Unique_Students in the description. Issue missing creates together, never retry an ambiguous create, and get_event every retained ID; require the returned datetime text to contain the literal date and 10:00.\n3. coder 2 (external-workflow-operator 1): Paginate Sent mail, read candidates, and match exact recipient academic.affairs@university.example.com plus subject Late Submission Report. Send at most once with positive-course count, global late total and the three full course names, then search/read back exactly one match.\n\nDo not dispatch aggregation or audit agents after the output wave. Final acceptance uses external workbook cells, retained event datetimes and retained email, not only the canonical JSON.\n",
+    "nodes": [
+      {
+        "id": 12,
+        "wave": "message_67",
+        "text": "You are a read-only data analyst for Canvas LMS. Your ONLY job is to fetch the specified list of late submission pages and save user_ids to a file.\n\n## Missing Pages to Fetch\n[(7,2,1),(11,2,1),(8,2,2),(9,2,2),(10,2,2),(10,2,3)]\n\nEach entry is a tuple (assignment_id, course_id, page_number).\n\n## Method\nFor each tuple in the list:\n1. Call `canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n2. Extract all user_ids from submissions where late=true\n\n## Output File\nWrite a JSON file at `/workspace/dumps/kimi-code_MiniMax-M3/SingleUserTurn-canvas-late-submission-gcal/workspace/late_data_<unique_id>.json` with this structure:\n```json\n{\n  \"pages\": {\n    \"<assignment_id>_<page>\": [<list of user_ids>],\n    ...\n  }\n}\n```\n\nReplace `<unique_id>` with a random string (e.g., the first 8 chars of the assignment ids you processed).\n\n## Critical\n- **late=true filter is mandatory**\n- **Use per_page=100** to minimize calls\n- Don't worry about deduplication across pages - the main agent will aggregate\n\n## Final Response\nAfter writing the JSON file, return ONLY the filename and the count of user_ids collected.\nFetch missing late submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "wave": "message_67",
+        "text": "You are a read-only data analyst for Canvas LMS. Your ONLY job is to fetch the specified list of late submission pages and save user_ids to a file.\n\n## Missing Pages to Fetch\n[(25,3,1),(25,3,2),(25,3,3),(25,3,4),(25,3,5),(25,3,6),(25,3,7),(25,3,8),(25,3,9),(25,3,10),(25,3,11),(25,3,12),(25,3,13),(25,3,14),(25,3,15)]\n\nEach entry is a tuple (assignment_id, course_id, page_number).\n\n## Method\nFor each tuple in the list:\n1. Call `canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n2. Extract all user_ids from submissions where late=true\n\n## Output File\nWrite a JSON file at `/workspace/dumps/kimi-code_MiniMax-M3/SingleUserTurn-canvas-late-submission-gcal/workspace/late_data_<unique_id>.json` with this structure:\n```json\n{\n  \"pages\": {\n    \"<assignment_id>_<page>\": [<list of user_ids>],\n    ...\n  }\n}\n```\n\nReplace `<unique_id>` with a random string (e.g., the first 8 chars of the assignment ids you processed).\n\n## Critical\n- **late=true filter is mandatory**\n- **Use per_page=100** to minimize calls\n- Don't worry about deduplication across pages - the main agent will aggregate\n\n## Final Response\nAfter writing the JSON file, return ONLY the filename and the count of user_ids collected.\nFetch missing late submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "wave": "message_67",
+        "text": "You are a read-only data analyst for Canvas LMS. Your ONLY job is to fetch the specified list of late submission pages and save user_ids to a file.\n\n## Missing Pages to Fetch\n[(26,3,1),(26,3,2),(26,3,3),(26,3,4),(26,3,5),(26,3,6),(26,3,7),(26,3,8),(26,3,9),(26,3,10),(26,3,11),(26,3,12),(26,3,13),(26,3,14)]\n\nEach entry is a tuple (assignment_id, course_id, page_number).\n\n## Method\nFor each tuple in the list:\n1. Call `canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n2. Extract all user_ids from submissions where late=true\n\n## Output File\nWrite a JSON file at `/workspace/dumps/kimi-code_MiniMax-M3/SingleUserTurn-canvas-late-submission-gcal/workspace/late_data_<unique_id>.json` with this structure:\n```json\n{\n  \"pages\": {\n    \"<assignment_id>_<page>\": [<list of user_ids>],\n    ...\n  }\n}\n```\n\nReplace `<unique_id>` with a random string (e.g., the first 8 chars of the assignment ids you processed).\n\n## Critical\n- **late=true filter is mandatory**\n- **Use per_page=100** to minimize calls\n- Don't worry about deduplication across pages - the main agent will aggregate\n\n## Final Response\nAfter writing the JSON file, return ONLY the filename and the count of user_ids collected.\nFetch missing late submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "wave": "message_67",
+        "text": "You are a read-only data analyst for Canvas LMS. Your ONLY job is to fetch the specified list of late submission pages and save user_ids to a file.\n\n## Missing Pages to Fetch\n[(27,3,1),(27,3,2),(27,3,3),(27,3,4),(27,3,5),(27,3,6),(27,3,7),(27,3,8),(27,3,9),(27,3,10),(27,3,11),(27,3,12),(27,3,13)]\n\nEach entry is a tuple (assignment_id, course_id, page_number).\n\n## Method\nFor each tuple in the list:\n1. Call `canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n2. Extract all user_ids from submissions where late=true\n\n## Output File\nWrite a JSON file at `/workspace/dumps/kimi-code_MiniMax-M3/SingleUserTurn-canvas-late-submission-gcal/workspace/late_data_<unique_id>.json` with this structure:\n```json\n{\n  \"pages\": {\n    \"<assignment_id>_<page>\": [<list of user_ids>],\n    ...\n  }\n}\n```\n\nReplace `<unique_id>` with a random string (e.g., the first 8 chars of the assignment ids you processed).\n\n## Critical\n- **late=true filter is mandatory**\n- **Use per_page=100** to minimize calls\n- Don't worry about deduplication across pages - the main agent will aggregate\n\n## Final Response\nAfter writing the JSON file, return ONLY the filename and the count of user_ids collected.\nFetch missing late submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "wave": "message_67",
+        "text": "You are a read-only data analyst for Canvas LMS. Your ONLY job is to fetch the specified list of late submission pages and save user_ids to a file.\n\n## Missing Pages to Fetch\n[(28,3,1),(28,3,2),(28,3,3),(28,3,4),(28,3,5),(28,3,6),(28,3,7),(28,3,8),(28,3,9),(28,3,10),(28,3,11),(28,3,12)]\n\nEach entry is a tuple (assignment_id, course_id, page_number).\n\n## Method\nFor each tuple in the list:\n1. Call `canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n2. Extract all user_ids from submissions where late=true\n\n## Output File\nWrite a JSON file at `/workspace/dumps/kimi-code_MiniMax-M3/SingleUserTurn-canvas-late-submission-gcal/workspace/late_data_<unique_id>.json` with this structure:\n```json\n{\n  \"pages\": {\n    \"<assignment_id>_<page>\": [<list of user_ids>],\n    ...\n  }\n}\n```\n\nReplace `<unique_id>` with a random string (e.g., the first 8 chars of the assignment ids you processed).\n\n## Critical\n- **late=true filter is mandatory**\n- **Use per_page=100** to minimize calls\n- Don't worry about deduplication across pages - the main agent will aggregate\n\n## Final Response\nAfter writing the JSON file, return ONLY the filename and the count of user_ids collected.\nFetch missing late submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "wave": "message_67",
+        "text": "You are a read-only data analyst for Canvas LMS. Your ONLY job is to fetch the specified list of late submission pages and save user_ids to a file.\n\n## Missing Pages to Fetch\n[(29,3,1),(29,3,2),(29,3,3),(29,3,4),(29,3,5),(29,3,6),(29,3,7),(29,3,8),(29,3,9),(29,3,10),(29,3,11),(29,3,12)]\n\nEach entry is a tuple (assignment_id, course_id, page_number).\n\n## Method\nFor each tuple in the list:\n1. Call `canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n2. Extract all user_ids from submissions where late=true\n\n## Output File\nWrite a JSON file at `/workspace/dumps/kimi-code_MiniMax-M3/SingleUserTurn-canvas-late-submission-gcal/workspace/late_data_<unique_id>.json` with this structure:\n```json\n{\n  \"pages\": {\n    \"<assignment_id>_<page>\": [<list of user_ids>],\n    ...\n  }\n}\n```\n\nReplace `<unique_id>` with a random string (e.g., the first 8 chars of the assignment ids you processed).\n\n## Critical\n- **late=true filter is mandatory**\n- **Use per_page=100** to minimize calls\n- Don't worry about deduplication across pages - the main agent will aggregate\n\n## Final Response\nAfter writing the JSON file, return ONLY the filename and the count of user_ids collected.\nFetch missing late submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "wave": "message_67",
+        "text": "You are a read-only data analyst for Canvas LMS. Your ONLY job is to fetch the specified list of late submission pages and save user_ids to a file.\n\n## Missing Pages to Fetch\n[(30,3,2),(31,3,3),(32,3,3),(33,3,3),(34,3,4),(35,3,2)]\n\nEach entry is a tuple (assignment_id, course_id, page_number).\n\n## Method\nFor each tuple in the list:\n1. Call `canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n2. Extract all user_ids from submissions where late=true\n\n## Output File\nWrite a JSON file at `/workspace/dumps/kimi-code_MiniMax-M3/SingleUserTurn-canvas-late-submission-gcal/workspace/late_data_<unique_id>.json` with this structure:\n```json\n{\n  \"pages\": {\n    \"<assignment_id>_<page>\": [<list of user_ids>],\n    ...\n  }\n}\n```\n\nReplace `<unique_id>` with a random string (e.g., the first 8 chars of the assignment ids you processed).\n\n## Critical\n- **late=true filter is mandatory**\n- **Use per_page=100** to minimize calls\n- Don't worry about deduplication across pages - the main agent will aggregate\n\n## Final Response\nAfter writing the JSON file, return ONLY the filename and the count of user_ids collected.\nFetch missing late submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "wave": "message_67",
+        "text": "You are a read-only data analyst for Canvas LMS. Your ONLY job is to fetch the specified list of late submission pages and save user_ids to a file.\n\n## Missing Pages to Fetch\n[(36,3,0)]\n\nEach entry is a tuple (assignment_id, course_id, page_number).\n\n## Method\nFor each tuple in the list:\n1. Call `canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n2. Extract all user_ids from submissions where late=true\n\n## Output File\nWrite a JSON file at `/workspace/dumps/kimi-code_MiniMax-M3/SingleUserTurn-canvas-late-submission-gcal/workspace/late_data_<unique_id>.json` with this structure:\n```json\n{\n  \"pages\": {\n    \"<assignment_id>_<page>\": [<list of user_ids>],\n    ...\n  }\n}\n```\n\nReplace `<unique_id>` with a random string (e.g., the first 8 chars of the assignment ids you processed).\n\n## Critical\n- **late=true filter is mandatory**\n- **Use per_page=100** to minimize calls\n- Don't worry about deduplication across pages - the main agent will aggregate\n\n## Final Response\nAfter writing the JSON file, return ONLY the filename and the count of user_ids collected.\nFetch missing late submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "wave": "message_85",
+        "text": "You are a read-only data analyst. Fetch late submission pages from Canvas API.\n\n## Pages to fetch\nEach tuple is (assignment_id, course_id, page_number).\n[[1,1,1],[2,1,2],[3,1,1],[4,1,2],[5,1,1],[7,2,1],[10,2,2],[11,2,1],[13,5,1],[13,5,2],[13,5,3],[13,5,4],[13,5,5],[13,5,6],[13,5,7],[13,5,8],[13,5,9],[13,5,10],[13,5,11],[13,5,12]]\n\n## Method\nFor each tuple, call:\n`canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n\nExtract user_id from each submission where late=true.\n\n## Output\nReturn ONLY the user_ids you extracted, in this format:\n```\nPAGES_DONE: <count>\nDATA: {\"<asst>_<page>\": [user_id, ...], ...}\n```\n\nBe concise. Don't repeat the input data.\nFetch missing late submission pages (batch 1)",
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "wave": "message_85",
+        "text": "You are a read-only data analyst. Fetch late submission pages from Canvas API.\n\n## Pages to fetch\nEach tuple is (assignment_id, course_id, page_number).\n[[13,5,13],[14,5,1],[14,5,2],[14,5,3],[14,5,4],[14,5,5],[14,5,6],[14,5,7],[14,5,8],[14,5,9],[14,5,10],[14,5,11],[15,5,1],[15,5,2],[15,5,3],[15,5,4],[15,5,5],[15,5,6],[15,5,7],[15,5,8]]\n\n## Method\nFor each tuple, call:\n`canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n\nExtract user_id from each submission where late=true.\n\n## Output\nReturn ONLY the user_ids you extracted, in this format:\n```\nPAGES_DONE: <count>\nDATA: {\"<asst>_<page>\": [user_id, ...], ...}\n```\n\nBe concise. Don't repeat the input data.\nFetch missing late submission pages (batch 1)",
+        "is_plan": false
+      },
+      {
+        "id": 22,
+        "wave": "message_85",
+        "text": "You are a read-only data analyst. Fetch late submission pages from Canvas API.\n\n## Pages to fetch\nEach tuple is (assignment_id, course_id, page_number).\n[[15,5,9],[15,5,10],[16,5,1],[16,5,2],[16,5,3],[16,5,4],[16,5,5],[16,5,6],[16,5,7],[16,5,8],[16,5,9],[16,5,10],[17,5,1],[17,5,2],[17,5,3],[17,5,4],[17,5,5],[17,5,6],[17,5,7],[17,5,8]]\n\n## Method\nFor each tuple, call:\n`canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n\nExtract user_id from each submission where late=true.\n\n## Output\nReturn ONLY the user_ids you extracted, in this format:\n```\nPAGES_DONE: <count>\nDATA: {\"<asst>_<page>\": [user_id, ...], ...}\n```\n\nBe concise. Don't repeat the input data.\nFetch missing late submission pages (batch 1)",
+        "is_plan": false
+      },
+      {
+        "id": 23,
+        "wave": "message_85",
+        "text": "You are a read-only data analyst. Fetch late submission pages from Canvas API.\n\n## Pages to fetch\nEach tuple is (assignment_id, course_id, page_number).\n[[17,5,9],[23,5,1],[25,3,1],[25,3,2],[25,3,3],[25,3,4],[25,3,5],[25,3,6],[25,3,7],[25,3,8],[25,3,9],[25,3,10],[25,3,11],[25,3,12],[25,3,13],[25,3,14],[25,3,15]]\n\n## Method\nFor each tuple, call:\n`canvas_list_assignment_submissions(course_id=<course_id>, assignment_id=<assignment_id>, late=true, per_page=100, page=<page_number>)`\n\nExtract user_id from each submission where late=true.\n\n## Output\nReturn ONLY the user_ids you extracted, in this format:\n```\nPAGES_DONE: <count>\nDATA: {\"<asst>_<page>\": [user_id, ...], ...}\n```\n\nBe concise. Don't repeat the input data.\nFetch missing late submission pages (batch 1)",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 12,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 22,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 23,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

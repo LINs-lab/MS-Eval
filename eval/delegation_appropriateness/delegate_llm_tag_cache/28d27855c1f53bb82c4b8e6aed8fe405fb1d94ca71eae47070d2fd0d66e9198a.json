@@ -1,0 +1,169 @@
+{
+  "input_hash": "28d27855c1f53bb82c4b8e6aed8fe405fb1d94ca71eae47070d2fd0d66e9198a",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "canvas-grade-summary",
+    "task_text": "I need a summary of overall student grades across all courses. For each course, query the learning management system for that course's enrollments with grades, and use each enrolled student's **current overall grade** — the `current_score` field inside each enrollment's grade record. Ignore enrollments that have no grade or a null `current_score`.\n\nCreate an Excel file called Canvas_Grade_Summary.xlsx with two sheets.\n\nThe first sheet, named \"Grade Summary\", should have exactly one row per course, with these columns in this order: **Course** (the course name), **Students_Graded** (the number of students in the course whose `current_score` is present/non-null), **Avg_Score**, **Max_Score**, and **Min_Score**. Avg_Score, Max_Score, and Min_Score are the average, maximum, and minimum of those students' `current_score` values, each rounded to 2 decimals. Sort the rows by Avg_Score descending.\n\nThe second sheet, named \"Summary\", should contain a header row with columns `Metric` and `Value`, followed by three rows: **Total_Courses** (the total number of courses), **Highest_Avg_Course** (the name of the course with the highest Avg_Score), and **Overall_Avg_Score** (the unweighted average of the per-course Avg_Score values across all courses, rounded to 2 decimals).\n\nAlso record these three summary metrics (Total_Courses, Highest_Avg_Course, Overall_Avg_Score) in a Google Sheet titled \"Grade Summary Report\" for the academic team to review.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, read every required score row but cap each sub-agent's raw Canvas input at four pages. Return only partial aggregates and never hard-code runtime course or page counts.\n\nThe main agent calls `canvas_list_courses(include_ended=true)`, validates unique course IDs/codes/full names, and issues one native-parallel discovery batch with `canvas_get_course_grades(course_id=<literal ID>, page=1, per_page=1, type=[\"StudentEnrollment\"])` for every returned course. Take `total_count` from pagination, compute `pages_at_100=ceil(total_count/100)`, and freeze one literal `{course_id,course_code,course_name,total_count,pages_at_100}` row per course. For each course, divide its consecutive page interval `1..pages_at_100` into non-overlapping consecutive work items of at most four pages; freeze every work item as `{course_id,course_code,course_name,total_count,page_start,page_end}` and verify their union is the complete page manifest. The current runtime manifest must fit one Wave of at most 128 items; if it does not, use the minimum number of additional consecutive waves required by the 128-agent cap without changing any item.\n\n1. Wave 1 — after the work-item manifest is frozen, dispatch exactly one explore sub-agent per item in one parallel response, never more than 128. Render the wave as numbered lines, N from 0:\n\n   1. explore 0 (enterprise-data-analyst 0): Page-chunk owner for frozen work item 1. It receives that item's complete literal `{course_id,course_code,course_name,total_count,page_start,page_end}`. In its first tool-call response it issues the one-to-four independent `canvas_get_course_grades(course_id=<literal ID>, page=<each integer page_start..page_end>, per_page=100, type=[\"StudentEnrollment\"])` calls natively in parallel. It verifies the returned pages equal that exact interval and every page reports the frozen `pagination.total_count`. From `enrollment.grades.current_score`, ignore nulls and return only `{course_id,course_code,course_name,total_count,page_start,page_end,pages_observed,returned_rows,graded_count,score_sum,score_min,score_max,duplicate_pages,missing_pages}`. Do not return enrollment IDs, score lists, or raw rows, and do not modify Canvas.\n   2. explore 1 (enterprise-data-analyst 1): Page-chunk owner for frozen work item 2 — same literal recipe, only that item's identity substituted.\n   ...\n   K. explore K-1 (enterprise-data-analyst K-1): Page-chunk owner for frozen work item K — same literal recipe, only that item's identity substituted. If K>128, keep this numbering across the minimum number of consecutive waves of at most 128.\n\nAfter the page-work Wave(s), the main agent requires exactly one compact record per frozen work item, rejects missing/duplicate pages, verifies every course's summed `returned_rows` equals its discovery `total_count`, and combines unrounded partials into a canonical course table `{course_name,students_graded,avg_score,max_score,min_score}`. Round course values only after combining unrounded sums, sort by Avg_Score descending with course name ascending for ties, and compute Total_Courses, Highest_Avg_Course, and the unweighted average of per-course rounded Avg_Score once.\n\n2. Wave 2 — dispatch exactly 2 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One Coder is the sole writer of Canvas_Grade_Summary.xlsx in the dynamically resolved task workspace. Create exactly Grade Summary and Summary with the exact headers, canonical rows and literal values; read both populated ranges back.\n   2. coder 1 (external-workflow-operator 0): One Coder is the sole owner of the Google spreadsheet titled Grade Summary Report. Create the spreadsheet once, write only the header plus the three canonical summary rows to the exact range A1:B4, and read A1:B4 back. Do not add diagnostic cells or any extra data range.\n\nThe main agent finally verifies both outputs against the same canonical metrics. No raw grade page, extra verification agent, or hidden expected value may be introduced.\n",
+    "nodes": [
+      {
+        "id": 12,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 13|Environmental Economics & Ethics (Fall 2013) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 14|Environmental Economics & Ethics (Fall 2014) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 15|Environmental Economics & Ethics (Spring 2014) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 16|Foundations of Finance (Fall 2013) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 17|Foundations of Finance (Fall 2014) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 18|Foundations of Finance (Spring 2013) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 19|Foundations of Finance (Spring 2014) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 20|Global Governance & Geopolitics (Fall 2013) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 21|Global Governance & Geopolitics (Fall 2014) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "wave": "message_7",
+        "text": "You are gathering grade statistics from the Canvas LMS for ONE course.\n\nCourse to process: 22|Global Governance & Geopolitics (Spring 2014) (format: COURSE_ID|COURSE_NAME). Parse the course ID (first part) and course name (second part).\n\nTask:\n1. Use the tool mcp__canvas__canvas_get_course_grades with course_id=<COURSE_ID>, per_page=100, page=1 to fetch the course's enrollments with grades. The response contains an \"enrollments\" array and a \"pagination\" object. Keep paging (increment page) until pagination.has_more is false. Fetch ALL pages - do not stop early.\n2. For each enrollment, only consider entries where \"type\" is \"StudentEnrollment\" (i.e., actual students). From each such enrollment, extract the value of grades.current_score. IMPORTANT: Ignore (exclude) any enrollment that has no \"grades\" object, an empty grades object, or where grades.current_score is missing or null. Only include numeric current_score values.\n3. Compute from the included current_score values:\n   - graded_count: number of included students\n   - sum_of_scores: sum of all included current_score values\n   - max_score: maximum value\n   - min_score: minimum value\n   If graded_count is 0, report sum=0, max=None, min=None.\n\nReport back EXACTLY this format (nothing else needed):\nCourse ID: <id>\nCourse Name: <name>\nGraded Count: <count>\nSum of Scores: <sum with full precision>\nMax Score: <max>\nMin Score: <min>\n\nDo not write any files. Do not modify anything. Only read from Canvas and report the statistics. If you encounter any error fetching a course, report the error clearly.\nGather per-course grade stats from Canvas",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 12,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 13,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 14,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 15,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 16,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 17,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 18,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 19,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 20,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 21,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

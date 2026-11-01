@@ -1,0 +1,247 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "arxiv-federated-learning-notion",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/arxiv-federated-learning-notion.task.md",
+    "oracle166_sha256": "45d2f05daaee13a0590146a0eb3c1214488e97a3c3594ed97dc3e08101987908"
+  },
+  "label_cache_keys": [
+    "a746d87accd59e75daee3092d3911138d88a3116fb654aba184190c6c4b5be46"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "scholarly-arxiv"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (academic-literature-researcher 0): Use one explore sub-agent to own complete read-only paper discovery. Issue complementary task-derived federated-learning queries to the local arXiv search at its supported per-call result bound, union and deduplicate the returned records by stable ID, and retain every genuinely relevant result including foundational and survey work. Because the search exposes no cursor or list-all operation, do not claim coverage beyond this observed query union. Preserve full title, complete authors, abstract, published date/year, and abstract character count, and return the normalized union directly with per-query/union/retained counts, IDs, year range, and abstract-length controls. Explore is read-only, so do not write files or create Notion or Excel state.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 1,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "notion",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (external-workflow-operator 0): Use one coder sub-agent to own the Notion hierarchy exclusively. Search for an existing Federated Learning Research Hub, create at most one parent page, then create exactly one Paper Index child database under that returned parent and add one entry per frozen paper with title, authors, and a source-faithful short summary. Keep the whole create-parent → create-database → populate → read-back sequence in this agent. Return page/database IDs, entry count, covered IDs/titles, and validation. Do not write Excel.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 0): Use one coder sub-agent to own Federated_Learning_Papers.xlsx exclusively. Create exactly Paper Details and Summary with the exact required headers, one row per frozen paper, literal numeric abstract lengths and metrics, and the rounded average, earliest year, and latest year. Read back both sheets and return path, row counts, summary values, and header/value validation. Do not modify Notion.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "scholarly-arxiv"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (academic-literature-researcher 0): Use one explore sub-agent to own complete read-only paper discovery. Issue complementary task-derived federated-learning queries to the local arXiv search at its supported per-call result bound, union and deduplicate the returned records by stable ID, and retain every genuinely relevant result including foundational and survey work. Because the search exposes no cursor or list-all operation, do not claim coverage beyond this observed query union. Preserve full title, complete authors, abstract, published date/year, and abstract character count, and return the normalized union directly with per-query/union/retained counts, IDs, year range, and abstract-length controls. Explore is read-only, so do not write files or create Notion or Excel state.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "notion",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (external-workflow-operator 0): Use one coder sub-agent to own the Notion hierarchy exclusively. Search for an existing Federated Learning Research Hub, create at most one parent page, then create exactly one Paper Index child database under that returned parent and add one entry per frozen paper with title, authors, and a source-faithful short summary. Keep the whole create-parent → create-database → populate → read-back sequence in this agent. Return page/database IDs, entry count, covered IDs/titles, and validation. Do not write Excel.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 0): Use one coder sub-agent to own Federated_Learning_Papers.xlsx exclusively. Create exactly Paper Details and Summary with the exact required headers, one row per frozen paper, literal numeric abstract lengths and metrics, and the rounded average, earliest year, and latest year. Read back both sheets and return path, row counts, summary values, and header/value validation. Do not modify Notion.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:1:notion",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 1,
+      "role": "notion",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:2:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:scholarly-arxiv",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "scholarly-arxiv",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "notion": 1
+    },
+    "read": {
+      "scholarly-arxiv": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 3,
+    "units": 3,
+    "write_units": 2,
+    "read_clusters": 1,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

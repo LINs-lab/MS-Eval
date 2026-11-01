@@ -1,0 +1,60 @@
+{
+  "input_hash": "4ac0d44740e80b9e30d7d99d722e7a4a61fdca460b5d06e1b92688a4f973bfe0",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-hr-promotion-review",
+    "task_text": "Our annual promotion cycle is coming up and I need to identify eligible candidates across the company. An employee is eligible for promotion if they have a performance rating of 4 or higher and at least 5 years of experience. Please pull this data from our data warehouse.\n\nCreate an Excel file called Promotion_Candidates.xlsx in the workspace with two sheets. The first sheet \"By Department\" should have columns Department, Eligible_Count, Avg_Salary rounded to 2 decimals, Avg_Experience rounded to 1 decimal, and Avg_Rating rounded to 2 decimals. Sort by Department alphabetically.\n\nThe second sheet \"Summary\" should have Metric and Value columns with Total_Eligible being the total count across all departments, Avg_Salary_Eligible as the weighted average salary of all eligible employees rounded to 2 decimals, and Avg_Experience_Eligible as the weighted average experience rounded to 1 decimal.\n\nAfter creating the report, send an email to hr-director@company.com with subject \"Promotion Cycle: Eligible Candidates Summary\" that mentions the total number of eligible candidates and briefly describes the department with the highest count.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Freeze the task-visible agent-workspace absolute path from the Visible Boundary/current working directory. Run one set-based warehouse query using the literal predicate `performance_rating >= 4 AND years_of_experience >= 5`, returning each department's eligible count and raw salary/experience/rating aggregates plus company-wide aggregates. Compute the requested weighted summary from employee aggregates, not averages of department averages, and select the highest-count department deterministically.\n\nFrom that one frozen result, create `<agent_workspace>/Promotion_Candidates.xlsx` with only the two exact sheets/headers/metrics in the task, alphabetical departments, literal values, and requested rounding; in the same native-parallel response send exactly one email to `hr-director@company.com` with subject `Promotion Cycle: Eligible Candidates Summary`. Read the two populated ranges back once, reconcile them to the query, and finish. Do not search Sent folders, retry folder aliases, read the sent message back, or add a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Query the company's Snowflake data warehouse to identify employees eligible for promotion under: performance rating >= 4 and years of experience >= 5. Determine the relevant database/schema/table(s) yourself. Return (1) department-level rows sorted alphabetically with Department, Eligible_Count, Avg_Salary rounded 2 decimals, Avg_Experience rounded 1 decimal, Avg_Rating rounded 2 decimals; (2) Total_Eligible; (3) weighted/global Avg_Salary_Eligible rounded 2 decimals and Avg_Experience_Eligible rounded 1 decimal; (4) department with highest eligible count, with deterministic handling/reporting of ties. Include the exact SQL used and key source table(s), and verify department counts sum to total. Read-only; do not create files or modify data. This is for an HR promotion review report.\nFind eligible promotion data",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_4",
+        "text": "Create `/workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-promotion-review/workspace/Promotion_Candidates.xlsx` using the exact data below. It must contain exactly two sheets in this order if practical: `By Department` and `Summary`.\n\n`By Department` columns: Department, Eligible_Count, Avg_Salary, Avg_Experience, Avg_Rating. Rows sorted alphabetically:\nEngineering | 1424 | 60600.85 | 14.1 | 4.29\nFinance | 1444 | 58930.16 | 13.9 | 4.29\nHR | 1412 | 60658.10 | 14.4 | 4.31\nOperations | 1371 | 58720.23 | 14.4 | 4.29\nR&D | 1368 | 58410.80 | 14.5 | 4.28\nSales | 1432 | 60014.46 | 14.2 | 4.26\nSupport | 1363 | 60447.76 | 14.4 | 4.30\n\n`Summary` columns: Metric, Value. Rows:\nTotal_Eligible | 9814\nAvg_Salary_Eligible | 59688.45\nAvg_Experience_Eligible | 14.3\n\nApply professional formatting: bold headers, sensible column widths, frozen header rows, autofilter/table if supported. Ensure salary cells display 2 decimals; department average experience displays 1 decimal; average ratings display 2 decimals; Summary Value formats should appropriately preserve 9814 as integer, 59688.45 as 2 decimals, and 14.3 as 1 decimal. Do not add extra data sheets. Verify the saved workbook by reading it back and report exact path, sheet names, ranges/values, and formatting verification. Do not alter any other files.\nBuild promotion workbook",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_6",
+        "text": "Send an email to `hr-director@company.com` with subject exactly `Promotion Cycle: Eligible Candidates Summary`. The body should be concise and professional, stating that 9,814 employees meet the promotion eligibility criteria (performance rating of 4 or higher and at least 5 years of experience). Briefly describe the department with the highest count: Finance has the highest number with 1,444 eligible employees, representing approximately 14.7% of all eligible candidates. Mention that the attached report provides department-level averages and overall summary. Attach `/workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-promotion-review/workspace/Promotion_Candidates.xlsx`. Verify the send result and return recipient, subject, attachment, and message/send ID if available. Do not send any other email.\nEmail HR promotion summary",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

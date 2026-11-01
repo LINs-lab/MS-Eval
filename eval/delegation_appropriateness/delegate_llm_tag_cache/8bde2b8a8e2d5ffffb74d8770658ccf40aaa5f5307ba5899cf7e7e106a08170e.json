@@ -1,0 +1,49 @@
+{
+  "input_hash": "8bde2b8a8e2d5ffffb74d8770658ccf40aaa5f5307ba5899cf7e7e106a08170e",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "fetch-wc-inventory-forecast-excel-gcal-email",
+    "task_text": "I need to forecast our inventory needs and plan restocking. There is a supplier catalog API at http://localhost:30306/api/supplier_catalog.json with lead times and minimum order quantities for our suppliers. Please fetch that data.\n\nThen check our online store for current product stock levels, sales figures, and product details.\n\nUse the terminal to create and run a Python script called inventory_forecaster.py in the workspace that reads supplier_data.json and product_stock.json (create both), calculates daily sales rates and days of remaining stock for each product, and outputs restock_plan.json. Daily rate is Total_Sales divided by 90 (assuming 90-day sales window). Days remaining is Current_Stock divided by daily rate. A product needs restock if days remaining is less than 30.\n\nCreate an Excel file called Inventory_Forecast_Report.xlsx with three sheets. The first sheet Stock_Status should have columns Product, Current_Stock, Total_Sales, Daily_Rate (round to 2 decimals), Days_Remaining (round to 1 decimal), and Needs_Restock (\"Yes\" if under 30 days, \"No\" otherwise). Sort by Product name alphabetically.\n\nThe second sheet Supplier_Info should list each supplier with columns Supplier, Lead_Time_Days, Min_Order_Qty, and Reliability_Score.\n\nThe third sheet Restock_Summary should have Metric and Value columns with Total_Products_Analyzed, Products_Need_Restock, Products_Healthy, Avg_Days_Remaining (round to 1 decimal).\n\nSchedule a calendar event \"Inventory Review Meeting\" on March 12, 2026 from 9:00 AM to 10:00 AM UTC with a description listing products that need restocking. Also send an email to procurement@company.com with subject \"Urgent Restock Alert\" listing the products that need immediate restocking.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, use exactly one read-only source wave.\n\n1. Wave 1 — dispatch exactly 2 explore sub-agents in parallel:\n\n   1. explore 0 (web-domain-researcher 0): One explore sub-agent fetches `http://localhost:30306/api/supplier_catalog.json` exactly once and returns every supplier row with field and count controls.\n   2. explore 1 (enterprise-data-analyst 0): One explore sub-agent exhausts `woo_products_list` at `perPage=100` and returns one compact row per product containing exact ID, name, stock quantity, and total sales, plus page/count/null/duplicate controls. Do not modify the store or create files.\n\nAfter Wave 1, the main agent writes `supplier_data.json` and `product_stock.json`, writes and runs `inventory_forecaster.py` once, and verifies `restock_plan.json`. Use `daily_rate = total_sales / 90`; for zero sales use a non-restock infinite/explicit sentinel consistently rather than dividing by zero; otherwise use `days_remaining = stock / daily_rate` and `Needs_Restock = Yes` iff days remaining is below 30. Create `Inventory_Forecast_Report.xlsx` directly with the exact three sheets, headers, product sorting, supplier rows, four Summary metrics, literal values, and requested rounding. In parallel with the final workbook branch, search/create/read back the fixed `Inventory Review Meeting` at 2026-03-12 09:00–10:00 UTC; after the verified restock list exists, send exactly one `Urgent Restock Alert` email to `procurement@company.com`. Read each final artifact once and do not dispatch another wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are a read-only exploration agent. Your task: fetch the supplier catalog from `http://localhost:30306/api/supplier_catalog.json` EXACTLY ONCE (do not fetch it more than once, do not fetch any other URLs).\n\nUse the mcp__fetch__fetch_json tool (or fetch_txt/fetch_html if JSON fails) with that URL.\n\nThen report back:\n1. The exact total count of supplier rows returned.\n2. Every supplier row as a compact structured list — include ALL fields exactly as returned (e.g., Supplier/name, Lead_Time_Days, Min_Order_Qty, Reliability_Score, or whatever field names actually appear).\n3. Any null/missing values, duplicate supplier names, or anomalies you notice.\n4. The raw field names used in the JSON so they can be reproduced faithfully.\n\nDo NOT modify anything, do not create files, do not write to disk. Return the data as plain text in your final response.\nFetch supplier catalog JSON",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_2",
+        "text": "You are a read-only exploration agent analyzing a WooCommerce store. Your task: exhaustively list ALL products in the store using ONLY the mcp__woocommerce__woo_products_list tool, iterating pages at perPage=100 until you have retrieved every product (do not stop at page 1 if there are more products).\n\nFor each product, return one compact row containing EXACTLY these fields:\n- Product ID (id)\n- Product name (name)\n- SKU (sku)\n- Stock quantity (stock_quantity)\n- Total sales (total_sales)\n- Manage stock flag (manage_stock)\n- Stock status (stock_status)\n- Regular price (regular_price) / price\n\nReport back:\n1. Total number of products retrieved (count control).\n2. Number of pages you had to fetch.\n3. One compact row per product with the fields above.\n4. Any products with null/zero/missing stock_quantity, null total_sales, or duplicate IDs/names (anomaly controls).\n\nDo NOT modify the store (no create/update/delete), do NOT create files, do NOT write to disk. Return the data as plain text in your final response.\nExtract store product data",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "external-fetch"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

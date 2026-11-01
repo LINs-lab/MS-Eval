@@ -1,0 +1,143 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "fetch-email-gcal-scheduler-excel-word",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/fetch-email-gcal-scheduler-excel-word.task.md",
+    "oracle166_sha256": "efd225a7e4e235b9cc437f48b3eb813aa20e2cf8ba6cd9cd694e2dafaa5c6db8"
+  },
+  "label_cache_keys": [
+    "25001b1253e48852c6d977cd569ff7d2113e80beee54b3849c0ab7d1f3890df7"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "processor",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The Coder solely owns the processor branch in the resolved workspace. It receives both literal frozen payloads, writes runtime-unique external and internal JSON inputs, creates email_scheduler_processor.py, and runs it to produce email_scheduler_results.json. The script must align items explicitly, define Gap=Internal_Value-External_Benchmark, sort rows alphabetically, and emit literal summary metrics and evidence-bounded recommendations. Prefer one compact Python execution to write/run the processor, then read every file back. Return only exact paths, SHA-256 values, execution status, source/item totals, unmatched items, gap/sort checks and result schema controls; do not create reports or side effects.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "processor",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The Coder solely owns the processor branch in the resolved workspace. It receives both literal frozen payloads, writes runtime-unique external and internal JSON inputs, creates email_scheduler_processor.py, and runs it to produce email_scheduler_results.json. The script must align items explicitly, define Gap=Internal_Value-External_Benchmark, sort rows alphabetically, and emit literal summary metrics and evidence-bounded recommendations. Prefer one compact Python execution to write/run the processor, then read every file back. Return only exact paths, SHA-256 values, execution status, source/item totals, unmatched items, gap/sort checks and result schema controls; do not create reports or side effects.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:processor",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "processor",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "processor": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 1,
+    "units": 1,
+    "write_units": 1,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

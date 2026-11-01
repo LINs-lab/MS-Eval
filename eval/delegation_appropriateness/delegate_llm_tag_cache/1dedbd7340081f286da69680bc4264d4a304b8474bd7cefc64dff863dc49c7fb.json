@@ -1,0 +1,49 @@
+{
+  "input_hash": "1dedbd7340081f286da69680bc4264d4a304b8474bd7cefc64dff863dc49c7fb",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "wc-order-monthly-ppt-gcal",
+    "task_text": "The e-commerce manager wants a monthly sales performance presentation to share with stakeholders and needs a planning meeting scheduled. Analyze WooCommerce order data broken down by month to compute monthly revenue totals and order counts across all order statuses.\n\nCreate a PowerPoint presentation called Monthly_Sales_Review.pptx with the following slides. Slide 1 should be a title slide with \"Monthly Sales Performance Review\" as the title. Slide 2 should be titled \"Monthly Revenue Overview\" and contain a table showing each month (January through December), the number of orders, and the total revenue for that month. Slide 3 should be titled \"Order Volume Trends\" and describe the monthly order volume patterns. Slide 4 should be titled \"Key Insights\" and highlight the peak revenue month, the lowest revenue month, and total annual revenue. Slide 5 should be titled \"Next Steps\" with planned actions for improving sales performance.\n\nSchedule a Google Calendar event called \"Monthly Sales Review\" on 2026-04-15 from 14:00 to 15:00 with a description noting it is a stakeholder review of monthly sales performance.\n\nEmail the presentation to ecommerce_manager@store.com with subject \"Monthly Sales Performance Review\" and include the key revenue highlights in the email body.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent and dispatch no sub-agent. The complete order catalog, twelve monthly rows, five-slide deck, one fixed meeting, and one email form one compact workflow.\n\nResolve the workspace dynamically. Start the independent meeting inventory and order retrieval in the same response: call `list_events(timeMin=\"2026-04-15T00:00:00\", timeMax=\"2026-04-16T00:00:00\", maxResults=100, orderBy=\"startTime\")`, and call `woo_orders_list(perPage=100,page=1)` without `status`. Continue increasing order pages until a short or empty page, preserving all observed statuses; do not query by status/month and do not modify orders. Parse every observed order date and numeric total once, aggregate January through December counts and revenue including zero months, and freeze peak month, lowest month, and annual revenue with deterministic source-order tie handling.\n\nCreate `Monthly_Sales_Review.pptx` exactly once with one presentation ID and exactly the five requested slides, including all twelve monthly rows and insights derived only from the frozen table; read back the full slide inventory and verify every title/value. Filter the event inventory locally to exact `Monthly Sales Review` at 14:00–15:00, create once only if missing with exact `start.dateTime`/`end.dateTime` and description, retain the created/reused ID, and call `get_event`. Only after deck and event readback, check Sent mail for the exact recipient/subject; send one missing email with verified highlights and the presentation in the supported workspace-path `attachments` list, never retry an ambiguous send, and read back the attachment record before `claim_done`.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are planning a multi-step task. Produce an ordered, actionable plan (no execution — analysis only, using read-only tools if needed).\n\nTASK:\n1. Analyze WooCommerce order data broken down by month to compute monthly revenue totals and order counts across ALL order statuses. The order data lives in a WooCommerce store accessible via mcp__woocommerce__* tools (e.g. woo_orders_list with perPage up to 100, filters by status/date). Revenue should be computed from order totals (e.g. order \"total\" field). Months are January through December (the dataset likely spans some period; aggregate by calendar month).\n2. Create a PowerPoint presentation file named \"Monthly_Sales_Review.pptx\" (save into the workspace directory /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-wc-order-monthly-ppt-gcal/workspace) with exactly these 5 slides:\n   - Slide 1: Title slide, title \"Monthly Sales Performance Review\"\n   - Slide 2: Title \"Monthly Revenue Overview\" — a table listing each month January–December, the number of orders for that month, and the total revenue for that month\n   - Slide 3: Title \"Order Volume Trends\" — narrative describing monthly order volume patterns\n   - Slide 4: Title \"Key Insights\" — highlight the peak revenue month, lowest revenue month, and total annual revenue\n   - Slide 5: Title \"Next Steps\" — planned actions for improving sales performance\n   The pptx MCP server (mcp__pptx__*) manages presentations in memory; the final file must be saved via save_presentation to the workspace path.\n3. Schedule a Google Calendar event \"Monthly Sales Review\" on 2026-04-15 14:00–15:00, description noting it is a stakeholder review of monthly sales performance (mcp__google_calendar__create_event).\n4. Email the presentation to ecommerce_manager@store.com with subject \"Monthly Sales Performance Review\" and key revenue highlights (peak month, lowest month, annual total, order counts) in the body. The email MCP (mcp__emails__send_email) supports attachments — attach the saved pptx file. You may need to determine the absolute path of the saved pptx for the attachment.\n\nCONSTRAINTS:\n- Only the workspace /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-wc-order-monthly-ppt-gcal/workspace is writable. The final pptx must be saved there.\n- You may inspect WooCommerce data (read-only) to inform the plan, e.g. count orders, check date range, check the \"total\" field availability, and how many pages of orders exist (perPage max 100). Do NOT create/modify anything.\n- Note any risk: e.g., orders spanning multiple years (aggregate by calendar month across all years), or revenue field being string vs number.\n\nDELIVERABLE: A step-by-step plan with ordered subtasks, for each: dispatch decision (self / explore / coder), dependency (independent vs must-wait), and a short validation/acceptance criterion. Also recommend whether data extraction should be delegated to a coder sub-agent, and whether the pptx build should be a coder sub-agent or done by the main agent. Keep it concise.\nPlan task decomposition",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "You are extracting and aggregating WooCommerce order data for a monthly sales report. This is a data-processing task; use the mcp__woocommerce__* tools to read orders (READ-ONLY — do not create/update/delete anything).\n\nSTEP 1 — Fetch ALL orders:\nCall mcp__woocommerce__woo_orders_list with perPage=100, page=1, and page=2 (there are exactly 150 orders, IDs 1–150). Do NOT pass any status or date filters — you must include ALL order statuses (completed, processing, on-hold, pending, refunded, cancelled, failed). If you get fewer than 150 orders, fetch additional pages until you have all of them.\n\nSTEP 2 — Aggregate:\nFor each order, note:\n- date_created (ISO-8601 UTC string, e.g. \"2025-12-01T23:02:37.781Z\") → extract the calendar MONTH (1–12), ignoring the year (data spans 2025-03 to 2026-01, so aggregate purely by calendar month).\n- total (a string like \"98.95\") → parse with float().\n\nCompute for each calendar month January–December:\n- order count (number of orders created in that month, any year)\n- total revenue (sum of float(total), rounded to 2 decimals)\n\nAlso compute:\n- total order count (must equal 150)\n- total annual revenue (sum across all months)\n- peak revenue month (month with the highest revenue) and its revenue\n- lowest revenue month (month with the lowest revenue — months with zero orders have $0.00 revenue; report the lowest non-zero one AND note any months with zero orders) and its revenue\n- a brief month-over-month trend description for the narrative slide: which months had the highest/lowest order volumes, and whether order volume grows, declines, or has seasonal patterns across the year.\n\nSTEP 3 — Return a compact JSON result (do NOT dump raw order data):\n\n{\n  \"monthly\": [\n    {\"month\": \"January\", \"orders\": N, \"revenue\": 0.00},\n    ... exactly 12 entries, January through December in order ...\n  ],\n  \"total_orders\": 150,\n  \"total_revenue\": 12345.67,\n  \"peak_month\": \"December\",\n  \"peak_revenue\": 1234.56,\n  \"lowest_month\": \"February\",\n  \"lowest_revenue\": 0.00,\n  \"zero_revenue_months\": [\"January\", \"February\"],\n  \"date_range\": \"2025-03-05 to 2026-01-08\",\n  \"status_counts\": {\"completed\": 72, ...},\n  \"order_volume_trend_notes\": \"2-4 sentences describing monthly order volume patterns across the year\"\n}\n\nValidation before returning: sum of the 12 monthly order counts must equal total_orders (150); the sum of the 12 monthly revenues must equal total_revenue. Double-check the math. Return ONLY the final JSON plus the trend notes.\nAggregate WooCommerce monthly data",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+yt-12306-tech-conference-travel-notion-excel
+yt-fireship-ppt-gcal-email
+yt-fireship-tech-report-excel-notion
+yt-transcript-afrobeat-song-list-excel-email
+yt-fireship-gform-survey-excel-gcal
+yt-ml-repos-github-notion-excel-email
+yt-top-videos-excel-gcal
+yt-transcript-music-schedule-gcal-gsheet-word
+yt-transcript-notion-song-report-gcal-email

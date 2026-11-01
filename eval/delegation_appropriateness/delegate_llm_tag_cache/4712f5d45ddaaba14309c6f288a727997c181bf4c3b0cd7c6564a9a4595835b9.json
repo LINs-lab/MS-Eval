@@ -1,0 +1,199 @@
+{
+  "input_hash": "4712f5d45ddaaba14309c6f288a727997c181bf4c3b0cd7c6564a9a4595835b9",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "gt",
+    "task": "canvas-course-comparison",
+    "task_text": "I need a side-by-side comparison of all our Canvas courses. Pull data for each course including enrollment numbers, assignment counts, quiz counts, and discussion topic counts. Count every quiz that the learning management system returns for the course, including quizzes that are not yet published, so that the quiz count matches exactly what the system reports.\n\nCreate an Excel file called Canvas_Course_Comparison.xlsx with two sheets. The \"Course Comparison\" sheet should have Course_Code, Course_Name, Students, Assignments, Quizzes, and Discussions. Sort by Course_Code.\n\nThe \"Summary\" should have Total_Courses, Avg_Students_Per_Course rounded to nearest integer, and Most_Popular_Course code.\n\nLay out the \"Summary\" sheet vertically (two columns): put the metric name in column A and its value in column B, one metric per row. For example, row 1 is the header (Metric, Value); row 2 is Total_Courses with its value in column B; row 3 is Avg_Students_Per_Course with its value in column B; row 4 is Most_Popular_Course with its value in column B. Do not lay the summary out horizontally (metrics across columns in a single row) — use the vertical Metric/Value layout.\n\nAlso create a Google Sheet titled \"Course Comparison Dashboard\" with a sheet \"Data\" containing the same comparison data.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, combine each course's four object reads into one Explore agent and keep the two independent artifact writers parallel. Canvas is read-only; do not hardcode course or object IDs.\n\nBefore delegation, resolve the task-visible workspace directory from the runtime allowed-directory listing (or the literal accessible-workspace directory already supplied by the harness), freeze it as `<workspace_root>`, and reject bare `/workspace` and dumps/run-specific paths. The main agent calls `canvas_list_courses(include_ended=true)` once, deduplicates stable IDs, requires the 22 unique task-visible courses exactly as enumerated below, and freezes the exact returned `{course_id,course_code,course_name,total_students}` manifest sorted by course code. If count or identity is missing/duplicated, stop rather than guessing.\n\n1. Wave 1 — dispatch exactly 22 Explore sub-agents in parallel, one per literal course below. Every Explore agent issues its four calls in ONE native-parallel response and returns the compact report immediately — never run python_execute, iterate, or re-check:\n\n   1. explore 0 (enterprise-data-analyst 0): Explore agent for course_id=1 (AAA-2013J): in one native-parallel response call `canvas_get_course(course_id=1)` once; `canvas_list_assignments(course_id=1)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=1)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=1)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:1,course_code:\"AAA-2013J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   2. explore 1 (enterprise-data-analyst 1): Explore agent for course_id=2 (AAA-2014J): in one native-parallel response call `canvas_get_course(course_id=2)` once; `canvas_list_assignments(course_id=2)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=2)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=2)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:2,course_code:\"AAA-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   3. explore 2 (enterprise-data-analyst 2): Explore agent for course_id=3 (BBB-2013J): in one native-parallel response call `canvas_get_course(course_id=3)` once; `canvas_list_assignments(course_id=3)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=3)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=3)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:3,course_code:\"BBB-2013J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   4. explore 3 (enterprise-data-analyst 3): Explore agent for course_id=4 (BBB-2014J): in one native-parallel response call `canvas_get_course(course_id=4)` once; `canvas_list_assignments(course_id=4)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=4)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=4)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:4,course_code:\"BBB-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   5. explore 4 (enterprise-data-analyst 4): Explore agent for course_id=5 (BBB-2013B): in one native-parallel response call `canvas_get_course(course_id=5)` once; `canvas_list_assignments(course_id=5)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=5)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=5)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:5,course_code:\"BBB-2013B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   6. explore 5 (enterprise-data-analyst 5): Explore agent for course_id=6 (BBB-2014B): in one native-parallel response call `canvas_get_course(course_id=6)` once; `canvas_list_assignments(course_id=6)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=6)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=6)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:6,course_code:\"BBB-2014B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   7. explore 6 (enterprise-data-analyst 6): Explore agent for course_id=7 (CCC-2014J): in one native-parallel response call `canvas_get_course(course_id=7)` once; `canvas_list_assignments(course_id=7)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=7)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=7)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:7,course_code:\"CCC-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   8. explore 7 (enterprise-data-analyst 7): Explore agent for course_id=8 (CCC-2014B): in one native-parallel response call `canvas_get_course(course_id=8)` once; `canvas_list_assignments(course_id=8)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=8)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=8)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:8,course_code:\"CCC-2014B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   9. explore 8 (enterprise-data-analyst 8): Explore agent for course_id=9 (DDD-2013J): in one native-parallel response call `canvas_get_course(course_id=9)` once; `canvas_list_assignments(course_id=9)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=9)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=9)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:9,course_code:\"DDD-2013J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   10. explore 9 (enterprise-data-analyst 9): Explore agent for course_id=10 (DDD-2014J): in one native-parallel response call `canvas_get_course(course_id=10)` once; `canvas_list_assignments(course_id=10)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=10)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=10)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:10,course_code:\"DDD-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   11. explore 10 (enterprise-data-analyst 10): Explore agent for course_id=11 (DDD-2013B): in one native-parallel response call `canvas_get_course(course_id=11)` once; `canvas_list_assignments(course_id=11)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=11)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=11)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:11,course_code:\"DDD-2013B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   12. explore 11 (enterprise-data-analyst 11): Explore agent for course_id=12 (DDD-2014B): in one native-parallel response call `canvas_get_course(course_id=12)` once; `canvas_list_assignments(course_id=12)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=12)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=12)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:12,course_code:\"DDD-2014B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   13. explore 12 (enterprise-data-analyst 12): Explore agent for course_id=13 (EEE-2013J): in one native-parallel response call `canvas_get_course(course_id=13)` once; `canvas_list_assignments(course_id=13)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=13)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=13)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:13,course_code:\"EEE-2013J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   14. explore 13 (enterprise-data-analyst 13): Explore agent for course_id=14 (EEE-2014J): in one native-parallel response call `canvas_get_course(course_id=14)` once; `canvas_list_assignments(course_id=14)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=14)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=14)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:14,course_code:\"EEE-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   15. explore 14 (enterprise-data-analyst 14): Explore agent for course_id=15 (EEE-2014B): in one native-parallel response call `canvas_get_course(course_id=15)` once; `canvas_list_assignments(course_id=15)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=15)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=15)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:15,course_code:\"EEE-2014B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   16. explore 15 (enterprise-data-analyst 15): Explore agent for course_id=16 (FFF-2013J): in one native-parallel response call `canvas_get_course(course_id=16)` once; `canvas_list_assignments(course_id=16)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=16)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=16)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:16,course_code:\"FFF-2013J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   17. explore 16 (enterprise-data-analyst 16): Explore agent for course_id=17 (FFF-2014J): in one native-parallel response call `canvas_get_course(course_id=17)` once; `canvas_list_assignments(course_id=17)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=17)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=17)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:17,course_code:\"FFF-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   18. explore 17 (enterprise-data-analyst 17): Explore agent for course_id=18 (FFF-2013B): in one native-parallel response call `canvas_get_course(course_id=18)` once; `canvas_list_assignments(course_id=18)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=18)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=18)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:18,course_code:\"FFF-2013B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   19. explore 18 (enterprise-data-analyst 18): Explore agent for course_id=19 (FFF-2014B): in one native-parallel response call `canvas_get_course(course_id=19)` once; `canvas_list_assignments(course_id=19)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=19)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=19)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:19,course_code:\"FFF-2014B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   20. explore 19 (enterprise-data-analyst 19): Explore agent for course_id=20 (GGG-2013J): in one native-parallel response call `canvas_get_course(course_id=20)` once; `canvas_list_assignments(course_id=20)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=20)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=20)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:20,course_code:\"GGG-2013J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   21. explore 20 (enterprise-data-analyst 20): Explore agent for course_id=21 (GGG-2014J): in one native-parallel response call `canvas_get_course(course_id=21)` once; `canvas_list_assignments(course_id=21)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=21)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=21)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:21,course_code:\"GGG-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n   22. explore 21 (enterprise-data-analyst 21): Explore agent for course_id=22 (GGG-2014B): in one native-parallel response call `canvas_get_course(course_id=22)` once; `canvas_list_assignments(course_id=22)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=22)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=22)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:22,course_code:\"GGG-2014B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.\n\nAfter Wave 1, verify all 22 handoffs in one single pass (one check, never a per-course iteration): one valid combined handoff per course covering all four object types, joined only by course ID. Then freeze one literal canonical comparison payload with exact columns `Course_Code, Course_Name, Students, Assignments, Quizzes, Discussions`, code-sorted rows, and vertical Summary metrics `Total_Courses`, nearest-integer `Avg_Students_Per_Course`, and `Most_Popular_Course` (students descending, code ascending tie-break). Both writers consume this exact payload without recomputing counts.\n\nAfter Wave 1, the main agent requires exactly one handoff per frozen course in one single pass — with the literal counting rules honored: Assignment counts include EVERY returned item (no filtering) and Quiz counts include EVERY returned quiz including unpublished ones — then freezes the canonical 22-row comparison payload (course code, course name, enrollment, assignment count, quiz count, and any task-required derived columns) sorted per the task contract.\n\nThe main agent then directly, with no further delegation: (a) sole-writes <workspace_root>/Canvas_Course_Comparison.xlsx exactly once with only Course Comparison and Summary — the exact six headers, every canonical row, and the two-column Metric, Value Summary — using literal numerics and reading both complete populated ranges back; (b) sole-owns the Google spreadsheet titled Course Comparison Dashboard — search the exact title, reuse one exact match, create once on zero matches, block on duplicates — ensuring exactly one Data tab, writing only the literal 23-by-6 matrix (header plus 22 canonical course rows) to A1:F23, and reading A1:F23 back. Never create or rewrite after an ambiguous failure.\n\nAccept only after both outputs read back cell-for-cell against the same canonical payload. Do not dispatch any further agent after Wave 1 and do not add a verification wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "wave_1",
+        "text": "explore 0 (enterprise-data-analyst 0): Explore agent for course_id=1 (AAA-2013J): in one native-parallel response call `canvas_get_course(course_id=1)` once; `canvas_list_assignments(course_id=1)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=1)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=1)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:1,course_code:\"AAA-2013J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "wave_1",
+        "text": "explore 1 (enterprise-data-analyst 1): Explore agent for course_id=2 (AAA-2014J): in one native-parallel response call `canvas_get_course(course_id=2)` once; `canvas_list_assignments(course_id=2)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=2)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=2)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:2,course_code:\"AAA-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "wave_1",
+        "text": "explore 2 (enterprise-data-analyst 2): Explore agent for course_id=3 (BBB-2013J): in one native-parallel response call `canvas_get_course(course_id=3)` once; `canvas_list_assignments(course_id=3)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=3)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=3)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:3,course_code:\"BBB-2013J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "wave_1",
+        "text": "explore 3 (enterprise-data-analyst 3): Explore agent for course_id=4 (BBB-2014J): in one native-parallel response call `canvas_get_course(course_id=4)` once; `canvas_list_assignments(course_id=4)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=4)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=4)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:4,course_code:\"BBB-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "wave_1",
+        "text": "explore 4 (enterprise-data-analyst 4): Explore agent for course_id=5 (BBB-2013B): in one native-parallel response call `canvas_get_course(course_id=5)` once; `canvas_list_assignments(course_id=5)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=5)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=5)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:5,course_code:\"BBB-2013B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "wave_1",
+        "text": "explore 5 (enterprise-data-analyst 5): Explore agent for course_id=6 (BBB-2014B): in one native-parallel response call `canvas_get_course(course_id=6)` once; `canvas_list_assignments(course_id=6)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=6)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=6)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:6,course_code:\"BBB-2014B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "wave_1",
+        "text": "explore 6 (enterprise-data-analyst 6): Explore agent for course_id=7 (CCC-2014J): in one native-parallel response call `canvas_get_course(course_id=7)` once; `canvas_list_assignments(course_id=7)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=7)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=7)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:7,course_code:\"CCC-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "wave": "wave_1",
+        "text": "explore 7 (enterprise-data-analyst 7): Explore agent for course_id=8 (CCC-2014B): in one native-parallel response call `canvas_get_course(course_id=8)` once; `canvas_list_assignments(course_id=8)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=8)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=8)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:8,course_code:\"CCC-2014B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "wave": "wave_1",
+        "text": "explore 8 (enterprise-data-analyst 8): Explore agent for course_id=9 (DDD-2013J): in one native-parallel response call `canvas_get_course(course_id=9)` once; `canvas_list_assignments(course_id=9)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=9)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=9)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:9,course_code:\"DDD-2013J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "wave": "wave_1",
+        "text": "explore 9 (enterprise-data-analyst 9): Explore agent for course_id=10 (DDD-2014J): in one native-parallel response call `canvas_get_course(course_id=10)` once; `canvas_list_assignments(course_id=10)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=10)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=10)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:10,course_code:\"DDD-2014J\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "wave": "wave_1",
+        "text": "explore 10 (enterprise-data-analyst 10): Explore agent for course_id=11 (DDD-2013B): in one native-parallel response call `canvas_get_course(course_id=11)` once; `canvas_list_assignments(course_id=11)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=11)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=11)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:11,course_code:\"DDD-2013B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "wave": "wave_1",
+        "text": "explore 11 (enterprise-data-analyst 11): Explore agent for course_id=12 (DDD-2014B): in one native-parallel response call `canvas_get_course(course_id=12)` once; `canvas_list_assignments(course_id=12)` once, following any exposed pagination to completion and deduplicating stable assignment IDs; `canvas_list_quizzes(course_id=12)` once, including unpublished records and following only returned pagination while deduplicating stable quiz IDs; and `canvas_list_discussion_topics(course_id=12)` once, following only returned pagination while deduplicating stable topic IDs. Return only `{course_id:12,course_code:\"DDD-2014B\",course_name,total_students,assignment_count,quiz_count,discussion_count,duplicate_ids,page_controls}`. Make no writes and do not return full item arrays.",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

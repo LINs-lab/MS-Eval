@@ -1,0 +1,35 @@
+{
+  "input_hash": "193a9765c85cc72eb6b4856de784a12dbe322d8aebc17a58d9e0715c0add8e5c",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "sf-support-priority-review",
+    "task_text": "I need a support ticket analysis broken down by priority level. Please pull the data from our support center database and analyze how well we are meeting our SLA targets. The SLA response time targets are 4 hours for High priority, 8 hours for Medium, and 24 hours for Low priority tickets.\n\nCreate an Excel file called Support_Priority_Report.xlsx with two sheets. The first sheet \"Priority Analysis\" should have columns Priority, Ticket_Count, Avg_Response_Hrs rounded to 2 decimals, SLA_Target_Hrs from the targets above, SLA_Met which is \"Yes\" if average response time is within the SLA target or \"No\" otherwise, and Avg_CSAT (average customer satisfaction) rounded to 2 decimals. Sort by Priority alphabetically.\n\nThe second sheet \"Summary\" with Metric and Value columns should include Total_Tickets, Overall_Avg_CSAT as a weighted average by ticket count rounded to 2 decimals, Priorities_Meeting_SLA count, and Priorities_Missing_SLA count.\n\nAfter creating the report, send an email to support-manager@company.com with subject \"Support Priority Analysis Report\" summarizing the findings and flagging any priorities that are not meeting SLA.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent must complete it directly and must not dispatch a sub-agent. Inspect the support-ticket schema and issue one compact server-side aggregate grouped by exact priority for ticket count, raw average response hours, and raw average CSAT. Apply the literal targets High=4, Medium=8, Low=24; SLA_Met is Yes only when the group average response time is at or below its target. Compute Overall_Avg_CSAT as sum(priority_avg_csat * priority_count) / sum(priority_count), not as an unweighted mean of priorities.\n\nResolve the real task workspace dynamically. Create Support_Priority_Report.xlsx once with the exact two sheets/headers, alphabetical priorities, literal numeric values and requested rounding; read both populated ranges back. Only after the workbook values and missing-SLA priority list are frozen, paginate Sent-mail search for recipient support-manager@company.com plus exact subject Support Priority Analysis Report, send at most one missing message, and read the retained message back. Finish after one reconciliation of totals, weighted CSAT, SLA counts, and email claims; do not create a validation wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "You are a planning sub-agent. Decompose the following task into ordered subtasks. Do NOT execute the task; produce a plan only. You may use read-only tools (Snowflake queries, filesystem reads) to gather context needed for the plan (e.g., inspect the support database schema to identify the relevant tables/columns for tickets, priorities, response times, and CSAT).\n\nTASK DESCRIPTION:\nA user needs a support ticket analysis broken down by priority level, using data from the support center database (available via the Snowflake MCP server - list databases/schemas/tables to find the relevant support/ticket data). Analyze how well SLA targets are met:\n- SLA response time targets: 4 hours for High priority, 8 hours for Medium, 24 hours for Low priority.\n\nDeliverables:\n1. Create an Excel file named Support_Priority_Report.xlsx (in the workspace directory /workspace/dumps/kimi-code_deepseek-v4-flash/SingleUserTurn-sf-support-priority-review/workspace) with two sheets:\n   - Sheet 1 \"Priority Analysis\" with columns: Priority, Ticket_Count, Avg_Response_Hrs (rounded to 2 decimals), SLA_Target_Hrs (from the targets above), SLA_Met (\"Yes\" if avg response time is within SLA target, else \"No\"), Avg_CSAT (rounded to 2 decimals). Rows sorted by Priority alphabetically (High, Low, Medium).\n   - Sheet 2 \"Summary\" with Metric and Value columns: Total_Tickets, Overall_Avg_CSAT (weighted average by ticket count, rounded to 2 decimals), Priorities_Meeting_SLA (count), Priorities_Missing_SLA (count).\n2. Send an email to support-manager@company.com with subject \"Support Priority Analysis Report\", summarizing findings and flagging priorities not meeting SLA.\n\nFor each subtask in your plan, specify:\n- Dispatch decision: `self` (main agent), `explore`, or `coder`.\n- Whether the subtask is independent of its siblings (parallelizable) or must wait for another subtask's output.\n\nAlso identify: which Snowflake tables contain ticket data (priority, response time, CSAT), the exact column names, and any data-quality considerations (nulls, units of time, etc.). Return the plan with concrete subtasks in dependency order.\nPlan support ticket analysis task",
+        "is_plan": true
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake",
+          "filesystem-workspace"
+        ],
+        "is_plan": true
+      }
+    ]
+  }
+}

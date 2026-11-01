@@ -1,0 +1,86 @@
+{
+  "input_hash": "2e7b3b7f66bed8ef3c59fc5bf8d66b667faff81e32bcccc51c7c89d5fde94f6e",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "sf-hr-worklife-notion-excel",
+    "task_text": "The HR leadership team wants to understand work-life balance and job satisfaction scores across departments to prioritize employee wellbeing initiatives. Please connect to the data warehouse and query the average work-life balance score and average job satisfaction score for employees in each department. Include the employee count per department in your results.\n\nCreate an Excel file called WL_Balance_Report.xlsx in the workspace with two sheets.\n\nThe first sheet should be called \"Department Analysis\" with five columns: Department (sorted alphabetically), Employee_Count, Avg_WLB (average work-life balance rounded to 2 decimal places), Avg_Job_Satisfaction (rounded to 2 decimal places), and Combined_Score which is the simple average of Avg_WLB and Avg_Job_Satisfaction for that department, rounded to 2 decimal places.\n\nThe second sheet should be called \"Findings\" with two columns: Metric and Value. Include rows for Total_Employees (sum of all employees), Overall_Avg_WLB (weighted average across all departments rounded to 2 decimals), Overall_Avg_Job_Satisfaction (weighted average rounded to 2 decimals), Best_WLB_Department (department with the highest average WLB), Best_JS_Department (department with highest average job satisfaction), and Departments_Analyzed (count of departments).\n\nAfter creating the Excel file, create a knowledge base page called \"HR Wellbeing Dashboard\" with content blocks that summarize the key findings from the analysis. The page should mention the overall average work-life balance and job satisfaction scores and highlight which departments perform best on each metric. When multiple departments are tied at the rounded score, you may report any one of them.\n\nFinally, send an email to hr_director@company.com with a subject that references the wellbeing analysis and a body that summarizes the top-level findings across departments.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent. Run one compact department aggregate and one company aggregate, compute weighted overall values and each literal Combined_Score, then create WL_Balance_Report.xlsx and exactly one HR Wellbeing Dashboard page with native parallel tool calls in the same response. Preserve alphabetical departments, raw ranking/tie evidence, exact metric labels, and cross-output values; verify both outputs before sending the required email.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Plan this multi-system task end to end. Goal: query Snowflake for average work-life balance and job satisfaction plus employee count by department; create /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-worklife-notion-excel/workspace/WL_Balance_Report.xlsx with exact sheets/metrics; create Notion knowledge base page titled HR Wellbeing Dashboard summarizing findings; email hr_director@company.com with top-level findings. Identify likely Snowflake database/schema/table/column discovery steps, formulas/validation, and sequencing/delegation. Read-only; do not write anything. Return a concise actionable plan and likely risks.\nPlan HR wellbeing workflow",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "Query Snowflake and return verified department-level work-life balance/job satisfaction analysis. Source believed to be HR_ANALYTICS.PUBLIC.EMPLOYEES with DEPARTMENT, WORK_LIFE_BALANCE, JOB_SATISFACTION, EMPLOYEE_ID. Produce alphabetically sorted departments with employee count, raw average WLB, raw average job satisfaction, rounded 2-decimal values, and Combined_Score defined as simple average of the two rounded department averages then rounded to 2 decimals. Also calculate Total_Employees, weighted Overall_Avg_WLB and weighted Overall_Avg_Job_Satisfaction rounded to 2 decimals, best departments based on rounded values (any tied one), and Departments_Analyzed. Verify nulls/distinct employee semantics and count reconciliation. Read-only; do not create files or external records. Return exact values suitable for Excel/Notion/email.\nVerify HR warehouse metrics",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_10",
+        "text": "Create and validate this exact Excel artifact: /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-sf-hr-worklife-notion-excel/workspace/WL_Balance_Report.xlsx. Use two sheets only.\n\nSheet 1 exact name: Department Analysis. Exact columns in A1:E1: Department, Employee_Count, Avg_WLB, Avg_Job_Satisfaction, Combined_Score. Rows alphabetically:\nEngineering | 7096 | 4.53 | 6.58 | 5.56\nFinance | 7148 | 4.54 | 6.59 | 5.57\nHR | 7077 | 4.51 | 6.55 | 5.53\nOperations | 7120 | 4.54 | 6.53 | 5.54\nR&D | 7083 | 4.52 | 6.51 | 5.52\nSales | 7232 | 4.49 | 6.59 | 5.54\nSupport | 7244 | 4.53 | 6.53 | 5.53\nCombined_Score is the simple average of rounded Avg_WLB and Avg_Job_Satisfaction, rounded to 2 decimals. Store numeric values, and if feasible use formulas in E2:E8 consistent with this definition.\n\nSheet 2 exact name: Findings. Exact columns Metric, Value. Rows:\nTotal_Employees | 50000\nOverall_Avg_WLB | 4.52\nOverall_Avg_Job_Satisfaction | 6.55\nBest_WLB_Department | Finance\nBest_JS_Department | Finance\nDepartments_Analyzed | 7\n\nFormat professionally: bold/color headers, sensible widths, frozen header row on Department Analysis, autofilter/native table if feasible, integer/count formatting, averages and combined score displayed at 2 decimals. Do not add extra sheets. Reopen/read to validate exact sheet names, cells, numeric types/formulas, totals, and values. Return artifact path and detailed verification results.\nBuild HR Excel report",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_18",
+        "text": "Create and verify a Notion knowledge-base page titled exactly \"HR Wellbeing Dashboard\". Search first for a suitable existing knowledge-base/workspace parent and avoid duplicate exact-title pages if one already exists; if an exact-title page exists, update it to contain the required content rather than creating another. Content blocks must summarize: analysis covers 50,000 employees across 7 departments; overall weighted average work-life balance is 4.52; overall weighted average job satisfaction is 6.55; Finance is reported as best WLB department at rounded 4.54 (tied with Operations); Finance is reported as best job satisfaction department at rounded 6.59 (tied with Sales). Mention that rounded department differences are narrow, and state that the detailed workbook is WL_Balance_Report.xlsx. Use clear headings/bullets and optionally a compact department summary. Verify by retrieving the resulting page and its blocks. Return page ID/URL, parent chosen, whether created or updated, and verification evidence.\nCreate HR Notion dashboard",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_22",
+        "text": "Send one email to hr_director@company.com. Subject must reference the wellbeing analysis; use exactly: \"HR Wellbeing Analysis – Department Findings\". Body should be executive-level and summarize: analysis covered 50,000 employees across 7 departments; overall weighted average work-life balance is 4.52; overall weighted average job satisfaction is 6.55; Finance is reported as best WLB at 4.54, tied at rounded score with Operations; Finance is reported as best job satisfaction at 6.59, tied at rounded score with Sales; differences across departments are narrow; detailed results are in WL_Balance_Report.xlsx and the Notion page \"HR Wellbeing Dashboard\". Do not attach files. Send, then return delivery/tool confirmation including recipient and subject.\nEmail HR wellbeing findings",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "snowflake"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "notion",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "write",
+        "role": "email",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

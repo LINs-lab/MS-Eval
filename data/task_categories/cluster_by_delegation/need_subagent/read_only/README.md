@@ -1,0 +1,26 @@
+# Read Only
+
+Task membership is recorded in the adjacent text list. Each link below points to the canonical task in `data/oracle166/`.
+
+- [12306-wc-amazon-product-roadshow-excel-notion](../../../../oracle166/12306-wc-amazon-product-roadshow-excel-notion.task.md)
+- [academic-literature-review](../../../../oracle166/academic-literature-review.task.md)
+- [arxiv-research-pipeline-notion-excel](../../../../oracle166/arxiv-research-pipeline-notion-excel.task.md)
+- [canvas-at-risk-intervention](../../../../oracle166/canvas-at-risk-intervention.task.md)
+- [canvas-course-comparison](../../../../oracle166/canvas-course-comparison.task.md)
+- [canvas-course-feedback](../../../../oracle166/canvas-course-feedback.task.md)
+- [canvas-curriculum-audit](../../../../oracle166/canvas-curriculum-audit.task.md)
+- [canvas-grade-distribution-gform](../../../../oracle166/canvas-grade-distribution-gform.task.md)
+- [canvas-grade-equity-excel-word-gcal](../../../../oracle166/canvas-grade-equity-excel-word-gcal.task.md)
+- [canvas-grades-gsheet-pdf-email](../../../../oracle166/canvas-grades-gsheet-pdf-email.task.md)
+- [canvas-late-submission-gcal](../../../../oracle166/canvas-late-submission-gcal.task.md)
+- [canvas-quiz-analysis-ppt](../../../../oracle166/canvas-quiz-analysis-ppt.task.md)
+- [canvas-quiz-item-analysis-word-gcal-email](../../../../oracle166/canvas-quiz-item-analysis-word-gcal-email.task.md)
+- [canvas-ta-workload-excel-email](../../../../oracle166/canvas-ta-workload-excel-email.task.md)
+- [ecommerce-commodity-impact](../../../../oracle166/ecommerce-commodity-impact.task.md)
+- [ecommerce-market-benchmark](../../../../oracle166/ecommerce-market-benchmark.task.md)
+- [fetch-wc-inventory-forecast-excel-gcal-email](../../../../oracle166/fetch-wc-inventory-forecast-excel-gcal-email.task.md)
+- [playwright-howtocook-nutrition-gsheet-email](../../../../oracle166/playwright-howtocook-nutrition-gsheet-email.task.md)
+- [terminal-arxiv-latex-fetch-excel-notion](../../../../oracle166/terminal-arxiv-latex-fetch-excel-notion.task.md)
+- [terminal-arxiv-latex-pdf-gsheet-word](../../../../oracle166/terminal-arxiv-latex-pdf-gsheet-word.task.md)
+- [terminal-yf-canvas-excel-gcal-email](../../../../oracle166/terminal-yf-canvas-excel-gcal-email.task.md)
+- [wc-competitor-pw-pricing-excel-gcal](../../../../oracle166/wc-competitor-pw-pricing-excel-gcal.task.md)

@@ -1,0 +1,188 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-wc-excel-gsheet-gcal-email",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-wc-excel-gsheet-gcal-email.task.md",
+    "oracle166_sha256": "ba8242730d97c1a0e43c1417f15e42f7313917e0e046c326bd1120dd2f89a977"
+  },
+  "label_cache_keys": [
+    "d87bc52a74000569d241b485d7490164112aca1181197c7a3125b4b1c27348ec"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): Workbook writer — sole writer of Inventory_Lifecycle_Report.xlsx. Create it exactly once with exactly four sheets: Product_Inventory with columns product_name, category, price, stock_qty, stock_status, total_sales, days_of_supply and all 82 rows sorted by days_of_supply ascending; Reorder_Alerts with columns product_name, current_stock, reorder_point, urgency and only Critical/Out_of_Stock rows, Out_of_Stock first; Category_Summary with columns category, product_count, avg_stock, total_value, one row per category; Restock_Schedule with columns product_name, reorder_date, quantity, supplier and the frozen March 10, 2026 rows. Write literal values only, read all four populated ranges back, and return path, sheet order, row counts and equality controls.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "write",
+          "role": "gsheet",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (external-workflow-operator 0): External-services writer — sole owner of the three external outputs. Fully paginate the exact-title search for cloud spreadsheet Inventory Dashboard, create/reuse at most once, block duplicate titles/tabs, own exactly one Category_Summary tab, batch-write the frozen category rows and read them back; search the exact Inventory Restock Review Meeting on 2026-03-11 10:00-11:00 America/New_York, create at most once with the frozen critical-item count in the description, and get_event; paginate Sent search/read candidates for purchasing@company.com and exact subject Critical Inventory Alert - Restock Required, send at most once with the frozen out-of-stock/critical counts and the top three complete item names, then read it back.",
+          "domains_from": "preamble-fallback",
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): Workbook writer — sole writer of Inventory_Lifecycle_Report.xlsx. Create it exactly once with exactly four sheets: Product_Inventory with columns product_name, category, price, stock_qty, stock_status, total_sales, days_of_supply and all 82 rows sorted by days_of_supply ascending; Reorder_Alerts with columns product_name, current_stock, reorder_point, urgency and only Critical/Out_of_Stock rows, Out_of_Stock first; Category_Summary with columns category, product_count, avg_stock, total_value, one row per category; Restock_Schedule with columns product_name, reorder_date, quantity, supplier and the frozen March 10, 2026 rows. Write literal values only, read all four populated ranges back, and return path, sheet order, row counts and equality controls.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "write",
+      "role": "gsheet",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (external-workflow-operator 0): External-services writer — sole owner of the three external outputs. Fully paginate the exact-title search for cloud spreadsheet Inventory Dashboard, create/reuse at most once, block duplicate titles/tabs, own exactly one Category_Summary tab, batch-write the frozen category rows and read them back; search the exact Inventory Restock Review Meeting on 2026-03-11 10:00-11:00 America/New_York, create at most once with the frozen critical-item count in the description, and get_event; paginate Sent search/read candidates for purchasing@company.com and exact subject Critical Inventory Alert - Restock Required, send at most once with the frozen out-of-stock/critical counts and the top three complete item names, then read it back.",
+      "domains_from": "preamble-fallback",
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_1:0:excel",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 0,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_1:1:gsheet",
+      "kind": "write",
+      "wave": "wave_1",
+      "node": 1,
+      "role": "gsheet",
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "gsheet": 1
+    },
+    "read": {}
+  },
+  "counts": {
+    "waves": 1,
+    "nodes": 2,
+    "units": 2,
+    "write_units": 2,
+    "read_clusters": 0,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

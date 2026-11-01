@@ -1,0 +1,349 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "terminal-sf-wc-yf-excel-ppt",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/terminal-sf-wc-yf-excel-ppt.task.md",
+    "oracle166_sha256": "1fd23dc58415cf6d911b69c31d1de93da7ea96cba4f247f322c1d21946a8fc96"
+  },
+  "label_cache_keys": [
+    "6449de06aeb75b309f6f0ef87a6c6bb94a5f437fc73f7118b111bd6651eada20"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 3,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "snowflake"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): The Snowflake explore sub-agent returns only the complete four-segment aggregate, latest 12-month revenue trend, top-five products, and total controls, including every order status.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (enterprise-data-analyst 1): The WooCommerce explore sub-agent fully paginates products, orders, and customers at `perPage=100`, omitting the optional order-status argument. For each sold line item, join its product and assign revenue to only the first listed product category (`categories[0].name`); do not explode all category memberships, and exclude rows with no first category from the category table. Return category revenue and distinct sold-product count by that first category, plus all-status total customer/order/revenue/AOV and page/join controls. Do not persist raw rows or modify the store.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 2,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 2 (financial-market-analyst 0): The Yahoo Finance explore sub-agent issues the three independent latest-record calls for `^DJI`, `AMZN`, and `JPM` and returns exact symbol, latest date/close, and `longName`.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 3,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "excel",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): The Excel coder solely creates `Executive_Dashboard.xlsx`. Use bulk writes for exactly four sheets. `Ecommerce_Performance` must contain exactly one row per non-null first category observed in sold order line items, sorted by revenue descending; `Product_Count` is distinct sold products in that category and every row uses the same all-status overall AOV. Write exactly the five Unified_Dashboard KPI rows and literal target/status/source values.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 4,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "ppt",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 1 (office-report-builder 1): The PowerPoint coder solely creates `Executive_Briefing.pptx` under one presentation ID. Create exactly eight slides with the exact requested titles/content, use at most one bounded populate operation per slide, save once, and extract the full deck text once.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "snowflake"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): The Snowflake explore sub-agent returns only the complete four-segment aggregate, latest 12-month revenue trend, top-five products, and total controls, including every order status.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (enterprise-data-analyst 1): The WooCommerce explore sub-agent fully paginates products, orders, and customers at `perPage=100`, omitting the optional order-status argument. For each sold line item, join its product and assign revenue to only the first listed product category (`categories[0].name`); do not explode all category memberships, and exclude rows with no first category from the category table. Return category revenue and distinct sold-product count by that first category, plus all-status total customer/order/revenue/AOV and page/join controls. Do not persist raw rows or modify the store.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 2 (financial-market-analyst 0): The Yahoo Finance explore sub-agent issues the three independent latest-record calls for `^DJI`, `AMZN`, and `JPM` and returns exact symbol, latest date/close, and `longName`.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 3,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "excel",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): The Excel coder solely creates `Executive_Dashboard.xlsx`. Use bulk writes for exactly four sheets. `Ecommerce_Performance` must contain exactly one row per non-null first category observed in sold order line items, sorted by revenue descending; `Product_Count` is distinct sold products in that category and every row uses the same all-status overall AOV. Write exactly the five Unified_Dashboard KPI rows and literal target/status/source values.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 4,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "ppt",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 1 (office-report-builder 1): The PowerPoint coder solely creates `Executive_Briefing.pptx` under one presentation ID. Create exactly eight slides with the exact requested titles/content, use at most one bounded populate operation per slide, save once, and extract the full deck text once.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:3:excel",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 3,
+      "role": "excel",
+      "matchable": true
+    },
+    {
+      "id": "write:wave_2:4:ppt",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 4,
+      "role": "ppt",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:snowflake",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "snowflake",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:woocommerce",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "woocommerce",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:yahoo-finance",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "yahoo-finance",
+      "source_nodes": [
+        2
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "excel": 1,
+      "ppt": 1
+    },
+    "read": {
+      "snowflake": 1,
+      "woocommerce": 1,
+      "yahoo-finance": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 5,
+    "units": 5,
+    "write_units": 2,
+    "read_clusters": 3,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

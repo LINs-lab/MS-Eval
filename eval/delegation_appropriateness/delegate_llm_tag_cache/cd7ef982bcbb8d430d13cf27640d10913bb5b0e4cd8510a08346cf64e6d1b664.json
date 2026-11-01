@@ -1,0 +1,199 @@
+{
+  "input_hash": "cd7ef982bcbb8d430d13cf27640d10913bb5b0e4cd8510a08346cf64e6d1b664",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "terminal-yf-canvas-excel-gcal-email",
+    "task_text": "I am a finance professor planning a Financial Literacy Workshop series for students enrolled in my two Foundations of Finance courses (course IDs 16 and 17 in the learning management system). I need to combine student performance data with real market data to create a targeted workshop plan. Please start by reading the workshop_template.xlsx and workshop_guidelines.md files in your workspace for the output format and tier definitions, and also read contact_list.json for stakeholder email addresses.\n\nFirst, pull student submission data from both Foundations of Finance courses. For each student, calculate their average score as a percentage by averaging the per-submission percentages: for every graded submission compute score divided by points possible times 100, then average those values across all of the student's graded submissions. Then categorize each student into performance tiers: \"Needs Support\" for averages below 60, \"Developing\" for averages from 60 to 74.99, and \"Proficient\" for averages 75 and above. Write a Python script called categorize_students.py that does this categorization and outputs the tier counts per course, then run it.\n\nNext, pull recent stock price data for GOOGL, AMZN, and JPM from the financial data service. Write a Python script called find_market_events.py that identifies the top 3 biggest daily price moves (by absolute percentage change between open and close) from the most recent 30 days of trading data. The 30-day window is measured backward from the latest trading date present in the data for these symbols (not from the current wall-clock date). The script should output a file called market_events.json containing each event with the date, stock symbol, the percentage change rounded to 2 decimals, and a brief description like \"GOOGL surged 6.10% on strong earnings\" or \"JPM dropped -3.84% amid bank sector concerns\". Run this script.\n\nNow check the shared calendar for any existing events in the two-week window starting from today. I want to schedule three workshops, each 90 minutes long, at 2:00 PM. Use the America/New_York timezone for all calendar events in this task. The first workshop \"Intro to Markets\" should target the \"Needs Support\" tier and be scheduled on the first available weekday (Monday through Friday) in the two-week window that has no conflicting events between 1 PM and 4 PM. The second workshop \"Portfolio Basics\" targets the \"Developing\" tier and should be the next available weekday after the first. The third workshop \"Risk Management\" targets the \"Proficient\" tier and should be the next available weekday after the second. Create all three as calendar events with the description including which performance tier is the primary audience and the expected attendance count for that tier across both courses combined.\n\nCreate an Excel workbook called Financial_Literacy_Workshops.xlsx with three sheets. The first sheet \"Student_Tiers\" should have columns Course_ID, Course_Name, Needs_Support, Developing, Proficient, and Total_Students, with one row per course sorted by Course_ID. The second sheet \"Market_Events\" should have columns Date, Symbol, Change_Pct, and Event_Description, with the top 3 events sorted by absolute change descending. The third sheet \"Workshop_Schedule\" should have columns Workshop_Date, Topic, Target_Tier, and Expected_Attendance, with the expected attendance being the combined count of students in that tier from both courses. Use the workshop_template.xlsx header row for each sheet, and write every number as a literal value (do not use Excel formulas).\n\nSend an email to the finance students address from the contact list with the subject \"Financial Literacy Workshop Series Announcement\" containing the three workshop dates, topics, and a brief description of each session based on the market events identified. Then send a separate email to the department head address from the contact list with the subject \"Workshop Planning Summary\" that includes a summary of the student performance tiers across both courses and the planned workshop schedule.\n\nFinally, write a Python script called generate_outline.py that reads market_events.json and produces a workshop_materials.txt file. The outline should have a section for each of the three workshops, incorporating relevant market event examples as discussion points. Run the script so the output file is in your workspace.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, use exactly one parallel domain wave of two computing collectors — one for Canvas performance tiering, one for market events — so every large read AND its computation stay outside the main context; the main agent owns all outputs. Dynamically resolve the workspace, read workshop_template.xlsx, workshop_guidelines.md and contact_list.json, and freeze exact headers, tier rules, timezone and recipients.\n\nWave 1 — start two explore collectors in parallel:\n\n1. explore 0 (enterprise-data-analyst 0): Canvas tiering collector (strictly read-only on Canvas): for course 16 \"Foundations of Finance (Fall 2013)\" and course 17 \"Foundations of Finance (Fall 2014)\", call canvas_list_student_submissions(course_id=<literal>, per_page=100, page=1..) following pagination.has_more, always reading the FULL JSON from the output_path file when the preview is truncated. Keep every submission with a user_id. For each graded submission (numeric score AND numeric points_possible) compute the percentage 100*score/points_possible; skip ungraded/nil-score rows. Average per student within each course. Tier by average: \"Needs Support\" < 60, \"Developing\" 60-74.99, \"Proficient\" >= 75. Return ONLY the compact JSON {courses: [{course_id, course_name, tier_counts: {needs_support, developing, proficient}, total_students}], students: [{course_id, user_id, avg_pct, tier}]}. Do not write workspace files or modify Canvas.\n2. explore 1 (financial-market-analyst 0): Market events collector (strictly read-only on the price service): fetch complete daily OHLC histories for GOOGL, AMZN and JPM via the historical-prices tool (interval 1d, enough history such as 6mo, consistent auto_adjust). Find the latest trading date present across the three symbols — the window is the 30 most recent trading days ending on that date, NOT wall-clock based. Compute pct = 100*(Close-Open)/Open per daily row inside the window and take the global top 3 by ABSOLUTE change (deterministic tie-break by date then symbol). Return ONLY the compact JSON {window: {start, end}, events: [{date, symbol, change_pct (2 decimals), description}]} where description states the factual direction and magnitude only (e.g. \"GOOGL surged 6.10%\", \"JPM dropped -3.84%\"); do not invent news causes. Do not write workspace files.\n\nWhile the wave runs, the main agent lists calendar events in the two-week launch window. After the wave, it verifies both handoffs in one pass (both courses present, tier counts sum to totals; exactly 3 events inside the frozen window), then writes and runs the task-required scripts directly from the frozen rows: categorize_students.py (emitting the per-course tier counts it received) and find_market_events.py (emitting market_events.json with the three frozen events). It freezes two Student_Tiers rows, combined tier counts and three Market_Events rows.\n\nChoose the first three chronological weekdays whose 13:00-16:00 America/New_York windows do not overlap visible events, with literal 14:00-15:30 workshop times. The main agent then directly performs all outputs with no further delegation:\n\n- search/create/get exactly one event each for Intro to Markets/Needs Support, Portfolio Basics/Developing and Risk Management/Proficient, batching searches then missing creates then read-backs;\n- sole-write Financial_Literacy_Workshops.xlsx with exact template headers, two Student_Tiers rows, three Market_Events rows, three Workshop_Schedule rows, literal values (no formulas) and full read-back;\n- send at most once each for the finance-students announcement (subject \"Financial Literacy Workshop Series Announcement\") and the department-head planning summary (subject \"Workshop Planning Summary\") with exact contact-list addresses/subjects and canonical counts/schedule;\n- sole-write generate_outline.py and workshop_materials.txt with exactly three workshop sections and verified market examples, then read back.\n\nNo analysis, artifact, calendar, email or audit agents follow Wave 1. Final acceptance uses external workbook/event/email read-backs.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_29",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The data is paginated, and large tool responses are automatically saved to files in the workspace.\n\nYour task: call the tool mcp__canvas__canvas_list_student_submissions exactly 3 times, once for each of these pages, with these exact parameters:\n- course_id=16, grouped=false, per_page=100, page=2\n- course_id=16, grouped=false, per_page=100, page=3\n- course_id=16, grouped=false, per_page=100, page=4\n\nThe tool returns a preview; the full JSON output is auto-saved to a file path given in the response as output_path (under a .tool_results directory). You do NOT need to read or copy the submission data itself.\n\nAfter the 3 calls, reply with a compact report:\n1. The output_path for each of the 3 calls.\n2. The pagination info (page, total_pages, has_more) from each response.\n3. Any call that failed or did not produce an output_path.\nTest Canvas pagination saving",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=16, pages 5 through 24 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=16, pages 25 through 44 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=16, pages 45 through 64 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=16, pages 65 through 84 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=16, pages 85 through 104 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=16, pages 105 through 124 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=16, pages 125 through 144 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=16, pages 145 through 163 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=17, pages 2 through 21 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=17, pages 22 through 41 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "wave": "message_31",
+        "text": "You are collecting student submission data from a Canvas LMS for offline analysis. The Canvas tool returns paginated results; large responses are automatically saved to files in the workspace (.tool_results directory) and the tool response then includes an output_path.\n\nYour assignment: course_id=17, pages 42 through 61 (inclusive)\n\nFor EVERY page in your assigned page range (inclusive, ascending order), call the tool mcp__canvas__canvas_list_student_submissions with these exact parameters:\n- course_id: the course id from your assignment (as a number)\n- grouped: false\n- per_page: 100\n- page: the current page number\n\nRules:\n- Make exactly one call per page in your range; do not skip pages and do not fetch pages outside your range.\n- You do NOT need to read, copy, or summarize the submission data itself.\n- If a call fails or errors, retry it once before moving on.\n- Special case: if a call does NOT produce an output_path (i.e., the full JSON is returned inline because the response is small), extract from that page's JSON one line per submission in this exact CSV format: course_id,user_id,score,assignment_points_possible,workflow_state — and include those lines in your final report under a heading INLINE_DATA.\n\nFinal report (compact):\n1. Count of pages successfully fetched and list of any pages that failed after retry.\n2. The pagination block (total_count, total_pages) from your first call.\n3. INLINE_DATA section (or state 'none').\nFetch all Canvas submission pages",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

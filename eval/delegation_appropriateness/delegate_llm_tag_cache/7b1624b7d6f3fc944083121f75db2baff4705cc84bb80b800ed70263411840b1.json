@@ -1,0 +1,200 @@
+{
+  "input_hash": "7b1624b7d6f3fc944083121f75db2baff4705cc84bb80b800ed70263411840b1",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "canvas-grade-distribution-gform",
+    "task_text": "I work in the academic office and we want to review the grade distributions for our Spring 2014 courses and also collect student feedback through a survey.\n\nFirst, please look up all courses from Spring 2014 in our learning management system. For each course, I need to analyze the assignment submissions to compute grade statistics: the average score, the median score, the pass rate (percentage of submissions with score >= 60), and the total number of distinct students who submitted graded work (count each student once).\n\nCreate an Excel file called \"Grade_Distribution_Report.xlsx\" in the workspace with two sheets. The first sheet called \"Course Grades\" should have columns Course_Code, Course_Name, Avg_Grade, Median_Grade, Pass_Rate, and Total_Students. Include one row per Spring 2014 course. The second sheet called \"Summary\" should have columns Metric and Value with rows for Total_Courses (number of Spring 2014 courses), Overall_Avg_Grade (average across all courses), Highest_Avg_Course (name of course with highest average grade), and Lowest_Avg_Course (name of course with lowest average grade). Write all computed numbers as plain numeric values (do not write Excel formulas), and use the course code and full course name as they appear in the learning management system.\n\nSecond, create a survey form titled \"Spring 2014 Course Feedback Survey\" to collect student opinions. The form should have at least 4 questions: overall satisfaction with the course (as a choice question with options Excellent, Good, Fair, Poor), teaching quality rating (as a choice question with options 1 through 5), how they found the workload (as a choice question with options Too Light, Manageable, Heavy, Overwhelming), and an open-ended suggestions question (as a text question, not required).\n\nFinally, send an email from registrar@university.edu to students@university.edu with the subject \"Spring 2014 Course Feedback Survey\" informing students about the survey and encouraging them to participate.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, keep the large submission reads outside the main context with exactly one parallel collector wave, and let the main agent itself produce the workbook, the form and the email — no second wave.\n\nThe main agent resolves the accessible task workspace, calls canvas_list_courses(include_ended=true) once, and retains exactly the six Spring 2014 courses by full name/code (expected course_ids 6, 8, 12, 15, 19, 22). Validate unique course IDs, then dispatch one explore collector per course.\n\nWave 1 — dispatch exactly 6 explore sub-agents in parallel, one per literal Spring course. Every collector follows the same literal recipe with only its course substituted:\n\n1. explore 0 (enterprise-data-analyst 0): Collector for course_id=6 (course_code and course_name as listed). A strictly read-only Canvas collector: call canvas_list_student_submissions(course_id=6, per_page=100, page=1), then keep calling page=2,3,... while pagination.has_more is true. The tool result may be truncated in the chat preview — always read the FULL JSON from the output_path file given in the result. A submission counts as graded iff it has a non-null numeric score field and workflow_state == \"graded\". Scores are on a 0-100 percentage scale. Aggregate all graded submissions in one script execution and return ONLY the compact JSON {course_id:6, course_code, course_name, avg_score, median_score, pass_rate, total_students, graded_count, pages}, where avg_score/median_score are the mean/median of graded scores, pass_rate = 100 * count(score >= 60) / graded_count, and total_students = number of DISTINCT user_ids among graded submissions. Do not return the row set, write any workspace file, or modify Canvas.\n2. explore 1 (enterprise-data-analyst 1): Collector for course_id=8 — same literal recipe, only the course substituted.\n3. explore 2 (enterprise-data-analyst 2): Collector for course_id=12 — same literal recipe, only the course substituted.\n4. explore 3 (enterprise-data-analyst 3): Collector for course_id=15 — same literal recipe, only the course substituted.\n5. explore 4 (enterprise-data-analyst 4): Collector for course_id=19 — same literal recipe, only the course substituted.\n6. explore 5 (enterprise-data-analyst 5): Collector for course_id=22 — same literal recipe, only the course substituted.\n\nAfter Wave 1, verify all six handoffs in one single pass (never per-course iteration): exactly one handoff per course, non-null statistics, graded_count > 0. Compute the four Summary metrics from the six unrounded course averages: Overall_Avg_Grade as the equal-weight arithmetic mean of the six course averages (not a submission-weighted global average); Highest_Avg_Course / Lowest_Avg_Course by unrounded course averages with course_code ascending only as a tie-break; Total_Courses = 6.\n\nThe main agent then completes every output directly, with no further delegation: (a) build Grade_Distribution_Report.xlsx in the resolved workspace with exactly two sheets — \"Course Grades\" with header Course_Code, Course_Name, Avg_Grade, Median_Grade, Pass_Rate, Total_Students and one row per course, and \"Summary\" with header Metric, Value and the four metric rows — all values plain numbers (no Excel formulas), then read both populated ranges back; (b) call create_form(title=\"Spring 2014 Course Feedback Survey\") exactly once, add the four required questions sequentially with exact types/options/required flags (satisfaction choice Excellent/Good/Fair/Poor; teaching-quality choice 1-5; workload choice Too Light/Manageable/Heavy/Overwhelming; open-ended optional text suggestions), and verify with get_form(formId); (c) search Sent mail for From registrar@university.edu, To students@university.edu, subject Spring 2014 Course Feedback Survey, send exactly once only if no exact match exists, and read the retained message back. Finally run ONE reconciliation turn covering the workbook read-back, the form ID and the sent message, then call claim_done. Do not dispatch any agent after Wave 1, do not add a verification wave, and do not expose raw submission rows to the main context.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_29",
+        "text": "CONTEXT: We are computing grade statistics for Spring 2014 courses in a Canvas LMS. You are one of several parallel workers. Each worker fetches a few pages of assignment submissions for one course and saves the (user_id, score) pairs into small local JSON files for later aggregation by the lead agent.\n\nYOUR ASSIGNMENT: course_id = 15, pages 1 through 5.\n\nTOOLS YOU MUST USE: the Canvas read tool named `canvas_list_student_submissions` (parameters: course_id, grouped, page, per_page, student_ids), and `mcp__local__python_execute` to write files.\n\nSTEPS (follow exactly):\n1. For each page P in [1,2,3,4,5], call canvas_list_student_submissions with: course_id=15, grouped=false, student_ids=[\"all\"], per_page=100, page=P.\n2. From that response, collect every submission object whose \"score\" field is not null and not empty. For each one, form the pair [user_id, score_as_float]. (The \"score\" field arrives as a string like \"99.00\" — convert it to a float.)\n3. Immediately after each page, call mcp__local__python_execute with code like this, filling in that page's records:\n\n```python\nimport json\npath = \"/workspace/dumps/kimi-code_GLM-5.3/SingleUserTurn-canvas-grade-distribution-gform/workspace/sub_c15_p001.json\"\nrecs = [[8487, 99.0], [1234, 73.0]]  # <- replace with this page's pairs, in order\njson.dump(recs, open(path, \"w\"))\nprint(\"page 1:\", len(recs), \"records\")\n```\n\nFile naming: page 1 -> sub_c15_p001.json, page 2 -> sub_c15_p002.json, page 3 -> sub_c15_p003.json, page 4 -> sub_c15_p004.json, page 5 -> sub_c15_p005.json (zero-padded to 3 digits).\n\n4. After all 5 pages are saved, reply with a SHORT report (under 120 words): for each page, the number of records written and the total number of submissions returned on that page (including any whose score was null); plus the first 2 records of page 1; plus whether every score value was an integer or some had decimals. Do NOT paste the full submission data into your reply.\n\nRULES: Write ONLY the five files specified above, nothing else. Do not create, modify or delete any other file. If a page call fails or returns an error, retry once and then report it.\nPilot: fetch course 15 submissions",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=6; fetch pages 1 to 25\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=6; fetch pages 26 to 50\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=6; fetch pages 51 to 75\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=6; fetch pages 76 to 100\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=8; fetch pages 1 to 25\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=8; fetch pages 26 to 50\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=8; fetch pages 51 to 75\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=12; fetch pages 1 to 23\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=12; fetch pages 24 to 46\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=15; fetch pages 1 to 18\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "wave": "message_39",
+        "text": "You are a data-fetching worker in a Canvas LMS grade-statistics pipeline. Your ONLY job is to issue a series of read-only Canvas API calls, one per page, so that the complete JSON responses get auto-saved to disk. You must NOT analyze, count, aggregate, or transcribe the submission data itself.\n\nYOUR ASSIGNMENT: course_id=19; fetch pages 1 to 26\n\nSTEPS: For each page number P in your assigned range (in ascending order, one call at a time), call the Canvas tool `canvas_list_student_submissions` with EXACTLY these parameters:\n- course_id: the course id from your assignment\n- grouped: false\n- page: P\n- per_page: 100\n- student_ids: [\"all\"]\n\nRULES:\n- Make exactly one call per page; do not skip any page, do not call any page twice, and do not call any other Canvas endpoint.\n- Each response is large (>50,000 characters) and will appear truncated in your view, with a line like `output_path: /workspace/.../.tool_results/....txt`. This is EXPECTED AND CORRECT: the complete JSON is being auto-saved to disk by the harness. Do NOT open, read, or process those files, and do NOT transcribe any submission records.\n- If a call errors, retry that page once; if it fails again, note it and continue with the remaining pages.\n\nFINAL REPLY (under 80 words, no submission data): confirm your course_id, the assigned page range, the number of successful calls made, and list any page numbers that failed.\nFetch Canvas submission pages",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas",
+          "filesystem-workspace"
+        ],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 7,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 8,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 9,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 10,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 11,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "canvas"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

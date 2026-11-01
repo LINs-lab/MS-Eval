@@ -1,0 +1,94 @@
+{
+  "total_tasks": 166,
+  "need_delegation": 89,
+  "no_delegation": 77,
+  "category_counts": {
+    "no_delegation": 77,
+    "read_and_write": 44,
+    "writable": 23,
+    "read_only": 22
+  },
+  "domain_counts": {
+    "learning_management_system": 35,
+    "enterprise_data_warehouse": 47,
+    "e-commerce": 21,
+    "stock_market": 16,
+    "video_platform": 9,
+    "railway_system": 6,
+    "academic_research": 21,
+    "food_and_catering": 11
+  },
+  "no_delegation_domain_counts": {
+    "learning_management_system": 10,
+    "enterprise_data_warehouse": 32,
+    "e-commerce": 6,
+    "stock_market": 11,
+    "video_platform": 5,
+    "railway_system": 1,
+    "academic_research": 5,
+    "food_and_catering": 7
+  },
+  "unique_task_assignment": true,
+  "domain_coverage_complete": true,
+  "oracle_source_hashes_checked": 166,
+  "weighting": "one equal weight per task, across variable-depth rings",
+  "plotted_category_source": "curated annotations/delegation task lists",
+  "automatic_tag_disagreements": 7,
+  "top_level_sectors": 2,
+  "middle_sectors": 3,
+  "outer_sectors": 28,
+  "plot_rings": 3,
+  "no_delegation_domains_shown": 8,
+  "outer_radius": 1.0,
+  "middle_radius": 0.67,
+  "top_radius": 0.37,
+  "all_angles_proportional_to_task_counts": true,
+  "text_clipped": false,
+  "fonts_embedded": true,
+  "top_label_font_pt": 48,
+  "middle_label_font_pt": 64,
+  "outer_label_font_pt": 64,
+  "middle_label_font_sizes": {
+    "read_and_write": 64,
+    "writable": 64,
+    "read_only": 52
+  },
+  "external_domain_labels": 9,
+  "external_leader_label_sectors": [
+    "no_delegation:railway_system",
+    "read_and_write:food_and_catering",
+    "read_and_write:video_platform",
+    "read_only:food_and_catering",
+    "read_only:railway_system",
+    "read_only:stock_market",
+    "writable:e-commerce",
+    "writable:food_and_catering",
+    "writable:video_platform"
+  ],
+  "leader_label_radius": 1.055,
+  "compact_domain_labels": true,
+  "domain_abbreviation_map": {
+    "learning_management_system": "LMS",
+    "enterprise_data_warehouse": "EDW",
+    "e-commerce": "EC",
+    "stock_market": "SM",
+    "video_platform": "VP",
+    "railway_system": "RS",
+    "academic_research": "AR",
+    "food_and_catering": "FC"
+  },
+  "top_level_count_labels": true,
+  "top_count_labels_inline": true,
+  "middle_count_labels": true,
+  "middle_category_colors": {
+    "read_and_write": "#D9B24C",
+    "writable": "#E9BDA3",
+    "read_only": "#ACD4BF"
+  },
+  "compact_domain_font_sizes": [
+    48,
+    64
+  ],
+  "compact_domain_font_rule": "64 pt normally; 48 pt for 5-8 degree sectors; 36 pt for 3-5 degree sectors; 28 pt below 3 degrees; leader-line labels always 64 pt",
+  "hierarchy": "D_no-need -> domain; D_need -> read/write mode -> domain"
+}

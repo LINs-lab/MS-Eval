@@ -1,0 +1,75 @@
+{
+  "input_hash": "f6148f1ac40f135720c86759419ce31d96ca77735d1e35000c83dc9955d49061",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "terminal-wc-sf-revenue-reconcile-excel-ppt",
+    "task_text": "The finance team needs a cross-system revenue reconciliation between the e-commerce storefront and the enterprise data warehouse. There is a PDF file called Reconciliation_Guidelines.pdf in the workspace that describes the audit procedures and acceptable variance thresholds. There is also a JSON file called audit_thresholds.json that defines the tolerance levels for flagging discrepancies. Please read both files to understand the audit criteria.\n\nFirst, pull order and revenue data from the e-commerce platform. Get a summary of orders grouped by status, including the count of orders and total revenue for each status. Focus particularly on completed and processing orders as these represent confirmed revenue. Also calculate the average order value for these confirmed orders.\n\nNext, query the enterprise data warehouse for order data. Get a summary of orders grouped by shipping method, including order count and total revenue for each. Also get a breakdown by customer region. Note that the warehouse ORDERS table does not contain a region column; customer region is stored in the CUSTOMERS dimension table, so you must join ORDERS with CUSTOMERS on CUSTOMER_ID and then count orders and sum TOTAL_AMOUNT per region. Calculate the average order value across all warehouse orders.\n\nWrite and run a Python script called reconciliation_engine.py in the workspace. The script should read from two JSON files you create (wc_revenue_data.json and sf_revenue_data.json containing the data from both systems). For the cross-system comparison, follow the audit scope defined in Reconciliation_Guidelines.pdf: the WC side uses only confirmed orders (status completed plus processing), while the SF side uses all warehouse orders. Put these confirmed WC figures into wc_revenue_data.json and all SF figures into sf_revenue_data.json. The script should compute the following cross-system comparison metrics: total order count from each system, total revenue from each system, average order value from each system, and the percentage variance between the two systems for each of these metrics. It should output reconciliation_results.json.\n\nCreate an Excel file called Revenue_Reconciliation.xlsx in the workspace with four sheets.\n\nThe first sheet should be called WC_Summary with columns Status, Order_Count, and Total_Revenue. Include all order statuses from the e-commerce platform sorted by Total_Revenue descending. Add a total row at the bottom summing confirmed orders only (completed plus processing).\n\nThe second sheet should be called SF_Summary with columns Region, Order_Count, and Total_Revenue. Include all five regions from the data warehouse sorted by Total_Revenue descending. Add a total row at the bottom. Also include a second section below with a blank row separator showing the shipping method breakdown with columns Ship_Mode, Order_Count, and Total_Revenue.\n\nThe third sheet should be called Cross_Audit with columns Source, Metric, WC_Value, SF_Value, Variance_Pct (the percentage difference calculated as the absolute difference divided by the average of the two values times 100, rounded to one decimal place), and Flag (set to \"REVIEW\" if variance exceeds 50 percent, otherwise \"OK\"). The metrics to compare are Total_Orders, Total_Revenue, and Avg_Order_Value.\n\nThe fourth sheet should be called Recommendations with columns Finding_Number (1 through 5), Category, Finding, and Recommended_Action. Provide five findings based on the reconciliation results, such as the difference in scale between the two systems, the revenue gap, pricing strategy observations, and suggestions for system alignment.\n\nCreate a PowerPoint presentation called Reconciliation_Presentation.pptx in the workspace with at least five slides. The first slide should be a title slide with \"Revenue Reconciliation Audit Report\". The second slide should summarize the e-commerce platform data. The third slide should summarize the data warehouse figures. The fourth slide should present the cross-audit comparison with specific variance percentages. The fifth slide should list the key findings and recommended next steps.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, use two dependency waves. The main agent dynamically reads Reconciliation_Guidelines.pdf and audit_thresholds.json and freezes the scope: confirmed WooCommerce=completed+processing; Snowflake=all warehouse orders; Cross_Audit flag threshold=50%.\n\nWave 1 — dispatch exactly two source sub-agents in parallel:\n1. explore 0 (enterprise-data-analyst 0): One explore sub-agent exhausts woo_orders_list with perPage=100 and increasing pages, status omitted. Preserve every observed status and return per-status counts/revenue plus confirmed count/revenue/AOV, IDs/page/duplicate controls; no writes or mutations.\n2. explore 1 (enterprise-data-analyst 1): One explore sub-agent runs compact Snowflake aggregates for all-order totals/AOV, five customer regions via ORDERS.CUSTOMER_ID=CUSTOMERS.CUSTOMER_ID, and shipping-mode counts/revenue, with join/query controls and no order rows.\n\nAfter Wave 1, the main agent checks controls, writes wc_revenue_data.json and sf_revenue_data.json, then writes/runs reconciliation_engine.py. For Total_Orders, Total_Revenue and Avg_Order_Value compute 100*abs(WC-SF)/((WC+SF)/2), rounded one decimal, and REVIEW only when >50. Freeze reconciliation_results.json and five evidence-based recommendations.\n\nWave 2 — dispatch exactly two coder sub-agents in parallel:\n1. coder 0 (office-report-builder 0): Sole writer of Revenue_Reconciliation.xlsx with all status rows, confirmed WC total row, five region rows/all-SF total/shipping section, exact Cross_Audit metrics, five Recommendations rows, literal values and full read-back.\n2. coder 1 (office-report-builder 1): Sole writer of Reconciliation_Presentation.pptx with at least the five requested slides, exact source totals/variances/flags/findings and slide read-back.\n\nBoth writers self-verify inside their turn. The main agent compares only totals, symmetric variances, flags and recommendations; no additional repair/auditor wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_2",
+        "text": "Plan this cross-system revenue reconciliation end-to-end. Inputs in workspace /workspace/dumps/kimi-code_GPT-5.6-Sol/SingleUserTurn-terminal-wc-sf-revenue-reconcile-excel-ppt/workspace: Reconciliation_Guidelines.pdf and audit_thresholds.json. Required evidence: WooCommerce summary by all statuses (count/revenue), confirmed completed+processing totals and AOV; Snowflake ORDERS summaries by ship method and by region via CUSTOMERS join, and all-orders AOV. Required local outputs: wc_revenue_data.json, sf_revenue_data.json, reconciliation_engine.py executed to produce reconciliation_results.json, Revenue_Reconciliation.xlsx with four specified sheets/sections/format/sorting, and Reconciliation_Presentation.pptx with >=5 specified slides. Identify exact sequence, delegation split, likely schema/tool discovery needs, computations, and verification checklist. Read-only only; do not modify files.\nPlan reconciliation workflow",
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "wave": "message_6",
+        "text": "Perform the complete read-only evidence extraction for a revenue reconciliation. Workspace is /workspace/dumps/kimi-code_GPT-5.6-Sol/SingleUserTurn-terminal-wc-sf-revenue-reconcile-excel-ppt/workspace. Read Reconciliation_Guidelines.pdf and audit_thresholds.json and report exact audit scope, formula, thresholds, and any boundary rules. Pull all WooCommerce orders with complete pagination; summarize every order status with count and total revenue, sorted revenue descending, and calculate confirmed totals/AOV for completed+processing. For Snowflake, discover and use the relevant ORDERS and CUSTOMERS tables; confirm grain, calculate all-order count/revenue/AOV; summarize by shipping method; summarize all five regions by joining ORDERS to CUSTOMERS on CUSTOMER_ID. Validate no join multiplication/unmatched IDs. Return exact numeric results, concise provenance (tables/queries/pagination), and enough structured data for downstream JSON, Excel, and slides. Do not write or modify files.\nExtract reconciliation source data",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_8",
+        "text": "Create and verify all required local artifacts in /workspace/dumps/kimi-code_GPT-5.6-Sol/SingleUserTurn-terminal-wc-sf-revenue-reconcile-excel-ppt/workspace using the exact data below. You are write-capable. Required outputs: wc_revenue_data.json, sf_revenue_data.json, reconciliation_engine.py (must read those two JSONs plus audit_thresholds.json and, when run, compute symmetric variance abs(diff)/average*100 rounded 1 decimal and write reconciliation_results.json), execute script successfully, Revenue_Reconciliation.xlsx, Reconciliation_Presentation.pptx.\n\nAudit: WC scope completed+processing only; SF scope all orders. Variance threshold for Excel Flag is REVIEW if >50%, else OK. Audit guideline broader classes: <20 acceptable, 20-50 inclusive informational, >50 review.\n\nWC status data sorted revenue descending: completed 72/$30,296.82; processing 28/$9,121.35; on-hold 15/$6,845.70; cancelled 8/$4,547.42; pending 13/$4,514.01; refunded 9/$4,256.31; failed 5/$2,130.43. All-status 150/$61,712.04. Confirmed totals exactly 100 orders, $39,418.17, AOV 394.1817. WC IDs 1-150, all USD, 2 populated pages (100,50), source date range 2025-03-05 through 2026-03-04.\n\nSF overall one row/order: 20,000 orders; $3,048,998.33; AOV 152.4499165; dates 2024-03-05 through 2026-03-04; tables SALES_DW.PUBLIC.ORDERS and CUSTOMERS. Region sorted revenue: Europe 4100/$648,798.47; Asia Pacific 4198/$642,644.81; North America 4133/$606,318.35; Middle East 3872/$602,107.55; Latin America 3697/$549,129.15. Shipping sorted revenue: Standard 4990/$787,250.19; Express 5035/$778,103.43; Next Day 5028/$762,248.82; Economy 4947/$721,395.89. Join controls: pre/post 20000, unmatched 0, customers unique 2000, no multiplication.\n\nWorkbook requirements EXACT: file Revenue_Reconciliation.xlsx with four sheets named WC_Summary, SF_Summary, Cross_Audit, Recommendations. WC_Summary columns Status, Order_Count, Total_Revenue; include all statuses sorted Total_Revenue descending and final total row summing CONFIRMED ONLY (completed+processing), label clearly e.g. Confirmed Total. SF_Summary first section columns Region, Order_Count, Total_Revenue; all five regions sorted revenue desc; total row. Blank separator then second section columns Ship_Mode, Order_Count, Total_Revenue with shipping breakdown. Cross_Audit columns Source, Metric, WC_Value, SF_Value, Variance_Pct, Flag. Exactly metrics Total_Orders, Total_Revenue, Avg_Order_Value; variance one decimal from symmetric formula; Flag REVIEW >50 else OK. Use Source='WC Confirmed vs SF All'. Recommendations columns Finding_Number 1-5, Category, Finding, Recommended_Action; exactly five evidence-based findings covering scale/scope, revenue gap, AOV/pricing, date/scope alignment, segment controls/actions. Format professionally: readable widths, bold colored headers, currency formats, percentage shown as percentage values consistently, freeze panes, filters/tables where appropriate, REVIEW visually highlighted. Verify by reopening/reading key cells and workbook metadata.\n\nPresentation requirements EXACT: Reconciliation_Presentation.pptx, at least 5 slides: 1 title 'Revenue Reconciliation Audit Report'; 2 WC summary; 3 SF figures including overall and regional/shipping highlights; 4 cross-audit with specific variance percentages (198.0%, 194.9%, 88.4%); 5 key findings and recommended next steps (all five can be concise). Make professional and readable. Save and verify slide count and extracted text. Avoid unsupported file paths. Return output paths and verification details.\nBuild reconciliation artifacts",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_27",
+        "text": "Final verification found two issues. Please fix and re-verify: (1) In Revenue_Reconciliation.xlsx SF_Summary row 14 shipping total formulas incorrectly reference B9:B12 and C9:C12, which include the header and omit Economy. Change to =SUM(B10:B13) and =SUM(C10:C13), save, reopen, and verify. (2) sf_revenue_data.json source currently says 'Salesforce' and the presentation uses 'Salesforce figures/population'; this is a Snowflake data warehouse reconciliation, so change JSON source to 'Snowflake' and revise presentation wording to 'Snowflake' (including subtitle/title as applicable) without altering numeric content. Re-run reconciliation_engine.py after JSON correction, save presentation, reopen, and verify slide count/text. Return exact verification.\nFix verification issues",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [],
+        "is_plan": true
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce",
+          "snowflake",
+          "filesystem-workspace"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "write",
+        "role": "excel",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}

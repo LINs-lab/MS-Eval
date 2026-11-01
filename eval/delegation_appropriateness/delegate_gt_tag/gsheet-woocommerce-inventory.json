@@ -1,0 +1,253 @@
+{
+  "schema": "delegate-gt-tag-v4",
+  "vocab": "expanded-20260912-v2",
+  "tag_source": "llm",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "write_labels": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "other-write",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "matchable_roles": [
+    "calendar",
+    "email",
+    "excel",
+    "gform",
+    "gsheet",
+    "notion",
+    "pdf",
+    "ppt",
+    "processor",
+    "word"
+  ],
+  "domains": [
+    "canvas",
+    "emails",
+    "external-fetch",
+    "filesystem-workspace",
+    "github",
+    "howtocook",
+    "notion",
+    "playwright-web",
+    "rail_12306",
+    "scholarly-arxiv",
+    "snowflake",
+    "woocommerce",
+    "yahoo-finance",
+    "youtube"
+  ],
+  "task": "gsheet-woocommerce-inventory",
+  "need_delegation": true,
+  "source": {
+    "oracle166": "data/oracle166/gsheet-woocommerce-inventory.task.md",
+    "oracle166_sha256": "49ef60d9469e247e5553ccb3efdac4b6c5d08768d7c8cf1544e1f11ad8384e89"
+  },
+  "label_cache_keys": [
+    "a95b9b342a03ef7f03fbf15677d9379b17616eafc6f8c4cffd6ccdcc41226c80"
+  ],
+  "waves": [
+    {
+      "wave_id": "wave_1",
+      "n_agents": 2,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 0,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "woocommerce"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 0 (enterprise-data-analyst 0): Use one explore sub-agent for the complete WooCommerce product extraction only. Call the product-list operation with perPage=100 and increasing page numbers until the terminal short or empty page; omit status and category filters so every observed product is covered. Project each product to exact ID, full name, SKU, stock quantity, regular price, and the ordered category-name list, reject duplicate IDs, and persist the complete projection once to a runtime-unique products_raw.json. Return only {path, digest, pages, returned_product_count, unique_product_count, null_field_counts, terminal_page_count}; do not return all product rows in prose and do not create either spreadsheet or email.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        },
+        {
+          "node_id": 1,
+          "wave_id": "wave_1",
+          "rw": "read",
+          "role": null,
+          "domains": [
+            "yahoo-finance"
+          ],
+          "is_plan": false,
+          "declared": "explore",
+          "text": "explore 1 (financial-market-analyst 0): Use one explore sub-agent to retrieve historical daily prices for gold futures symbol GC=F (interval 1d), select the five most recent distinct trading dates, and return exactly five {date, close} rows sorted newest first plus symbol/date/count controls. Do not write files or create external state.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    },
+    {
+      "wave_id": "wave_2",
+      "n_agents": 1,
+      "n_agents_dynamic": false,
+      "nodes": [
+        {
+          "node_id": 2,
+          "wave_id": "wave_2",
+          "rw": "write",
+          "role": "processor",
+          "domains": [],
+          "is_plan": false,
+          "declared": "coder",
+          "text": "coder 0 (office-report-builder 0): One coder sub-agent is a pure computation owner. It reads only `products_raw.json` and the persisted gold rows, and in one script execution writes one JSON payload containing: the Category Inventory table (8 rows — `Product_Count`, `Total_Stock`, `Avg_Price` per category, first listed category for products with multiple categories, raw averages preserved until final two-decimal rounding); the Restock Alerts table (every product with stock strictly below 10); and the Gold Trend table (the five `{date, close}` rows). The payload script itself prints the table controls (8 category rows, low-stock count, 5 gold rows) as its only verification. Return only the payload path and those printed controls. Do not create Excel files, spreadsheets, or emails; do not run a separate validation script; do not re-run.",
+          "domains_from": null,
+          "n_agents": null,
+          "tool": null,
+          "profile": null,
+          "resume": null,
+          "call_id": null,
+          "raw_line": null,
+          "tag_source": "llm"
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": 0,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "woocommerce"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 0 (enterprise-data-analyst 0): Use one explore sub-agent for the complete WooCommerce product extraction only. Call the product-list operation with perPage=100 and increasing page numbers until the terminal short or empty page; omit status and category filters so every observed product is covered. Project each product to exact ID, full name, SKU, stock quantity, regular price, and the ordered category-name list, reject duplicate IDs, and persist the complete projection once to a runtime-unique products_raw.json. Return only {path, digest, pages, returned_product_count, unique_product_count, null_field_counts, terminal_page_count}; do not return all product rows in prose and do not create either spreadsheet or email.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 1,
+      "wave_id": "wave_1",
+      "rw": "read",
+      "role": null,
+      "domains": [
+        "yahoo-finance"
+      ],
+      "is_plan": false,
+      "declared": "explore",
+      "text": "explore 1 (financial-market-analyst 0): Use one explore sub-agent to retrieve historical daily prices for gold futures symbol GC=F (interval 1d), select the five most recent distinct trading dates, and return exactly five {date, close} rows sorted newest first plus symbol/date/count controls. Do not write files or create external state.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    },
+    {
+      "node_id": 2,
+      "wave_id": "wave_2",
+      "rw": "write",
+      "role": "processor",
+      "domains": [],
+      "is_plan": false,
+      "declared": "coder",
+      "text": "coder 0 (office-report-builder 0): One coder sub-agent is a pure computation owner. It reads only `products_raw.json` and the persisted gold rows, and in one script execution writes one JSON payload containing: the Category Inventory table (8 rows — `Product_Count`, `Total_Stock`, `Avg_Price` per category, first listed category for products with multiple categories, raw averages preserved until final two-decimal rounding); the Restock Alerts table (every product with stock strictly below 10); and the Gold Trend table (the five `{date, close}` rows). The payload script itself prints the table controls (8 category rows, low-stock count, 5 gold rows) as its only verification. Return only the payload path and those printed controls. Do not create Excel files, spreadsheets, or emails; do not run a separate validation script; do not re-run.",
+      "domains_from": null,
+      "n_agents": null,
+      "tool": null,
+      "profile": null,
+      "resume": null,
+      "call_id": null,
+      "raw_line": null,
+      "tag_source": "llm"
+    }
+  ],
+  "units": [
+    {
+      "id": "write:wave_2:2:processor",
+      "kind": "write",
+      "wave": "wave_2",
+      "node": 2,
+      "role": "processor",
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:woocommerce",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "woocommerce",
+      "source_nodes": [
+        0
+      ],
+      "matchable": true
+    },
+    {
+      "id": "read:wave_1:yahoo-finance",
+      "kind": "read",
+      "wave": "wave_1",
+      "domain": "yahoo-finance",
+      "source_nodes": [
+        1
+      ],
+      "matchable": true
+    }
+  ],
+  "bag": {
+    "write": {
+      "processor": 1
+    },
+    "read": {
+      "woocommerce": 1,
+      "yahoo-finance": 1
+    }
+  },
+  "counts": {
+    "waves": 2,
+    "nodes": 3,
+    "units": 3,
+    "write_units": 1,
+    "read_clusters": 2,
+    "other_write": 0,
+    "unlabeled_read_nodes": 0
+  }
+}

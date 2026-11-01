@@ -1,0 +1,34 @@
+{
+  "input_hash": "6af58333be767e039b158bd0098c790b242e5d430c0236227247e9c4356cc5e9",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "howtocook-event-catering-excel-word",
+    "task_text": "You are working for an event catering company that has been hired to plan a corporate team building event menu for 30 people. Your task is to design a complete catering plan and get client approval.\n\nUse the HowToCook recipe database to browse recipes across different categories. Select at least 8 dishes to create a full catering menu with appetizers, main courses, and at least one dessert or soup. Choose recipes that would work well for a corporate team building setting serving 30 people.\n\nCreate an Excel workbook called Catering_Plan.xlsx in your workspace with two sheets. The first sheet must be named Menu and include the columns Dish_Name, Category (use values like Appetizer, Main_Course, Soup, or Dessert), Servings_For_30 (the number of servings needed to feed the 30 guests, which is approximately 30 — one serving per guest — scaled up from the recipe's default serving count), Prep_Time_Minutes (estimated preparation time as a number), and Estimated_Cost_USD (estimated cost in US dollars as a number, estimate $3-8 per serving for most dishes). Write all numeric values (Servings_For_30, Prep_Time_Minutes, Estimated_Cost_USD, and any quantities) as literal numbers, not Excel formulas. The Menu sheet should have at least 8 data rows. The second sheet must be named Ingredients and include the columns Dish_Name, Ingredient, Quantity_For_30_People, and Unit.\n\nCreate a Word document called Catering_Proposal.docx in your workspace. Include an executive summary describing the event and your catering approach, a menu overview section listing all selected dishes with brief descriptions, and a preparation timeline section describing when each category of dish will be prepared on the event day.\n\nCreate a Google Form called \"Menu Approval Survey\" with questions to collect client feedback on the proposed menu. Include at least three questions: one asking the client to rate overall menu satisfaction, one asking which dishes they want to confirm or remove, and one asking for any special dietary requirements or additional notes.\n\nSend an email to client@corporate.com with subject \"Catering Proposal for Team Building Event\" that summarizes the proposed menu and mentions that the Excel plan, Word proposal, and feedback form have been prepared.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete it directly in the main agent; do not dispatch sub-agents. Make one bounded category-discovery pass, select exactly eight suitable dishes covering appetizers, main courses, and at least one soup or dessert, and retrieve those eight recipe details with native-parallel calls. Freeze one eight-dish table and reuse it everywhere. Create `Catering_Plan.xlsx`, `Catering_Proposal.docx`, and the Form `Menu Approval Survey` as independent output branches. The workbook must use the exact two sheets and headers, literal numeric values, `Servings_For_30` values scaled to approximately 30, positive costs, and ingredient rows referencing the same dish names. Build the Word document with one bulk structured body containing the exact title, Executive Summary, Menu Overview, and Preparation Timeline and mentioning at least four exact selected dish names. Create the Form exactly once with these three explicit questions: `Rate the overall menu satisfaction from 1 to 5`; `Which dishes should we confirm or remove?`; and `List any special dietary requirements or additional notes`. Verify each deliverable once, then send exactly one email to `client@corporate.com` with subject `Catering Proposal for Team Building Event`.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_9",
+        "text": "You are gathering data for a corporate catering menu (30 people) from the HowToCook recipe database (Chinese recipes, MCP tools already connected).\n\nGOAL: Fetch full recipe details for 8 specific dishes and report back a CONDENSED, structured summary. Do NOT write any files — report everything in your final message.\n\nUse the MCP tool `mcp__howtocook__mcp_howtocook_getRecipeById` with fuzzy name queries for these 8 dishes, one call per dish:\n1. 拍黄瓜\n2. 凉拌豆腐\n3. 宫保鸡丁\n4. 红烧肉\n5. 可乐鸡翅\n6. 地三鲜\n7. 西红柿鸡蛋汤\n8. 提拉米苏\n\nFor each query the tool may return several matches — pick the entry whose `name` field is exactly \"X的做法\" where X matches the dish above (e.g., \"宫保鸡丁的做法\"). If an exact dish does not exist, report that clearly and list the closest match found.\n\nFor EACH of the 8 dishes, report:\n- recipe_name: the `name` field value (e.g., \"宫保鸡丁的做法\")\n- recipe_id: the `id` field value\n- difficulty: the 预估烹饪难度 star count from the description (e.g., ★★★)\n- estimated_total_time_minutes: your best estimate of prep+cook time for the stated default serving count, based on what the description/steps say (e.g., \"初学者只需要 30 分钟\" → 30). Give a single integer.\n- default_servings: number of servings the recipe's quantities are written for (often 1-2 people; infer from quantities or explicit \"份数\" mentions; state \"unclear\" if truly unclear).\n- ingredients: the complete ingredient list as a list of items \"ingredient_name: quantity unit\" — use ONLY the ingredient entries that have explicit quantities (e.g., \"豆腐 300克\", \"生抽 10ml\"). Skip entries with no quantity (e.g., just \"- 盐\" with no number) and skip equipment entries (锅、碗、打蛋器、烤箱 etc.). Consolidate duplicates.\n\nOUTPUT FORMAT (final message): for each dish a compact block like:\n---\nDISH: 宫保鸡丁的做法 | id: dishes-meat_dish-宫保鸡丁 | difficulty: ★★★ | time_min: 30 | default_servings: 2\nINGREDIENTS: 鸡胸肉 300克; 花生米 50克; 干辣椒 5克; ...\n---\n\nKeep it compact — no recipe steps, no descriptions, no images. Just the data blocks.\nFetch recipe details from HowToCook",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "howtocook"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

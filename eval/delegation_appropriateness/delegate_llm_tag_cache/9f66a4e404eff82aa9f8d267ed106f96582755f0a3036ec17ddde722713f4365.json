@@ -1,0 +1,124 @@
+{
+  "input_hash": "9f66a4e404eff82aa9f8d267ed106f96582755f0a3036ec17ddde722713f4365",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v1",
+  "system_sha256": "3cded24b43c6cddb4103649dfbc60975b2b955703188887e8faf8a5475d66b8e",
+  "payload": {
+    "version": "expanded-20260912-v1",
+    "prompt_version": "expanded-20260912-llm-v1",
+    "side": "actual",
+    "task": "pw-wc-review-analysis-excel-notion",
+    "task_text": "I need to analyze our product reviews by combining external review data with our internal store reviews. There is a review aggregation site at http://localhost:30307 with aggregated ratings from multiple platforms. Please visit and extract all the product review data.\n\nThe aggregation table lists exactly 8 products: Wireless Headphones, Smart Watch, Bluetooth Speaker, USB-C Hub, Webcam HD, Mechanical Keyboard, Gaming Mouse, and Laptop Stand. The External_Reviews sheet must contain one row for each of these 8 products.\n\nThen check our online store (WooCommerce) for our internal product reviews, ratings, and sales data, and save them into internal_reviews.json.\n\nWrite and run a Python script called review_analyzer.py that reads external_reviews.json and internal_reviews.json (create both), compares ratings, identifies discrepancies, and outputs review_insights.json.\n\nCreate an Excel file called Review_Analysis_Report.xlsx with two sheets. The first sheet External_Reviews should have columns Product, External_Rating, Review_Count, Sentiment, and Common_Complaint. The second sheet Review_Summary should have Metric and Value columns with Total_Products_Reviewed, Avg_External_Rating (round to 2 decimals), Positive_Products, and Needs_Attention (count of Negative or Mixed sentiment products). Write all numeric values in the Excel file as literal numbers, not Excel formulas.\n\nAlso create a page in the team knowledge base titled \"Product Review Tracker\" with a summary of products needing attention and their common complaints.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, complete this bounded eight-product job directly in the main agent and use native parallel calls after each input key set is frozen. Resolve the runtime workspace root first. Read the aggregation site and freeze exactly these eight rows and spellings: `Wireless Headphones`, `Smart Watch`, `Bluetooth Speaker`, `USB-C Hub`, `Webcam HD`, `Mechanical Keyboard`, `Gaming Mouse`, and `Laptop Stand`, including each external rating, review count, sentiment, and common complaint. Write and read back `external_reviews.json` at that resolved root with exactly one row per listed product.\n\nNext issue the eight independent `woo_products_list(search=<exact product name>, perPage=100, page=1)` calls in one native-parallel response. Resolve each name to exactly one product ID using an exact normalized-name match; if a search is ambiguous or missing, stop for that product rather than guessing. With the eight IDs frozen, issue the eight independent `woo_products_get(productId=<frozen ID>)` calls and the eight independent paginated `woo_products_reviews_list(productId=<frozen ID>, status=\"approved\", perPage=100, page=<n>)` streams using native parallel calls. Continue a review stream until a short or empty page, deduplicate by review ID, and record page counts. Build `internal_reviews.json` at the resolved root keyed by the same eight product names with exact product ID, rating/rating count, total sales fields exposed by the product record, approved review rows, and pagination/duplicate controls; do not enumerate the unrelated WooCommerce catalog.\n\nCreate `review_analyzer.py` at the resolved root as the sole computation implementation. It must read only the two JSON inputs, compare the frozen product rows, identify rating discrepancies and attention products, and write `review_insights.json` beside them; run it once, then read back all three JSON files and require exactly-once coverage of the eight names. From that canonical result, act as the sole writer of `Review_Analysis_Report.xlsx` at the resolved root: `External_Reviews` must contain the exact requested five columns and eight rows, while `Review_Summary` must contain literal numeric values for `Total_Products_Reviewed`, `Avg_External_Rating` rounded to two decimals, `Positive_Products`, and `Needs_Attention`, where the last metric counts only `Negative` or `Mixed` rows. Read both sheets back and reconcile them to the JSON output.\n\nFinally search the team knowledge base for the exact title `Product Review Tracker`; update the exact existing task page if present, otherwise create it once. Include the source-backed products whose sentiment is `Negative` or `Mixed` and each corresponding common complaint, then read the page back. Do not dispatch sub-agents or verification work; any original requirement not stated here remains the main agent's responsibility.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_31",
+        "text": "You are collecting data from a WooCommerce store via the mcp__woocommerce__* read tools. This is a READ-ONLY collection task. Do not create, update, or delete anything.\n\nGOAL\nProduce a complete, distilled dataset of the store's catalog (with ratings and sales) and ALL product reviews, then return it as JSON in your final message. The data will be used to compare internal store ratings against external aggregated ratings for 8 products: Wireless Headphones, Smart Watch, Bluetooth Speaker, USB-C Hub, Webcam HD, Mechanical Keyboard, Gaming Mouse, Laptop Stand.\n\nEXACT COLLECTION STEPS\n1. Products: call mcp__woocommerce__woo_products_list with perPage=100, page=1. If the output is truncated/oversized, instead page with perPage=20 through page=2,3,4,... until a page returns an empty array (the catalog is roughly 100 products, so about 5 pages at perPage=20).\n2. Reviews: call mcp__woocommerce__woo_products_reviews_list with perPage=100, page=1 (status defaults are fine). If output is oversized, page with perPage=50 through page=2,3,4,... until an empty array is returned. Expect roughly 300-500 reviews total.\n3. Do NOT fetch orders, reports, settings, or anything else. Products + reviews are sufficient.\n\nRETURN CONTRACT (your final message must contain ONLY this JSON, no prose before/after)\n{\n  \"products\": [\n    {\"id\": <int>, \"name\": \"<name truncated to 80 chars>\", \"sku\": \"<sku>\", \"price\": \"<string>\", \"regular_price\": \"<string>\", \"total_sales\": <int>, \"stock_quantity\": <int>, \"average_rating\": \"<string e.g. 4.29>\", \"rating_count\": <int>}\n    ...  // EVERY product in the catalog (all pages)\n  ],\n  \"reviews\": [\n    {\"id\": <int>, \"product_id\": <int>, \"reviewer\": \"<name>\", \"rating\": <int 1-5>, \"verified\": <bool>, \"status\": \"<status>\", \"date_created\": \"<ISO string>\", \"review\": \"<review text truncated to 150 chars, newlines replaced with spaces>\"}\n    ...  // EVERY review across all pages\n  ],\n  \"collection_summary\": {\"total_products\": <int>, \"total_reviews\": <int>, \"pages_products_fetched\": <int>, \"pages_reviews_fetched\": <int>, \"review_id_min\": <int>, \"review_id_max\": <int>, \"product_id_min\": <int>, \"product_id_max\": <int>}\n}\n\nQUALITY RULES\n- Completeness matters most: keep paging until you see an empty page. Verify collection_summary counts match the actual array lengths.\n- Keep every product and every review; truncate text fields as specified rather than dropping records.\n- average_rating and rating_count come from the product object itself (they are the store's own aggregates); do not recompute them.\n- If a page call errors, retry once, and if it still fails, note it in collection_summary as \"errors\": [...] and return what you have.\n\nThe returned JSON must be valid JSON (no trailing commas, no comments).\nCollect WooCommerce reviews/sales data",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_33",
+        "text": "You are a read-only data collector for a WooCommerce store, using only the mcp__woocommerce__* read tools. Do NOT create, update, or delete anything. Fetch ONLY what your assignment specifies.\n\nASSIGNMENT: PRODUCTS pages 1-5 (perPage=20)\n\nIf the assignment starts with \"PRODUCTS\": call mcp__woocommerce__woo_products_list with perPage=20 for page=1, then page=2, page=3, page=4, page=5 (stop early only if a page returns an empty array). From EVERY product collected, extract exactly these fields: id, name (truncate to 80 chars), sku, price, regular_price, total_sales (integer), stock_quantity (integer), average_rating (string as returned), rating_count (integer). Ignore all other fields (descriptions, images, meta_data, etc.).\n\nIf the assignment starts with \"REVIEWS\": take the page number P from the assignment and call mcp__woocommerce__woo_products_reviews_list with perPage=100 and page=P (only that one page). From EVERY review in the result, extract exactly these fields: id, product_id, reviewer, rating (integer), verified (boolean), status, date_created (only the \"YYYY-MM-DD\" date part). Do NOT include the review text or reviewer_email.\n\nFINAL MESSAGE: your entire final message must be ONLY one valid JSON object, no prose outside it, no markdown fences:\n{\"assignment\": \"<the assignment string>\", \"records\": [ ...extracted records, one object each... ], \"notes\": \"<e.g. empty page encountered / any errors, else 'ok'>\"}\nIf a page returns empty, return records: [] with a note. Keep the JSON valid (no trailing commas). Completeness matters: include every record from the page(s) you fetched.\nCollect Woo products + review pages",
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "wave": "message_33",
+        "text": "You are a read-only data collector for a WooCommerce store, using only the mcp__woocommerce__* read tools. Do NOT create, update, or delete anything. Fetch ONLY what your assignment specifies.\n\nASSIGNMENT: REVIEWS page 1 (perPage=100)\n\nIf the assignment starts with \"PRODUCTS\": call mcp__woocommerce__woo_products_list with perPage=20 for page=1, then page=2, page=3, page=4, page=5 (stop early only if a page returns an empty array). From EVERY product collected, extract exactly these fields: id, name (truncate to 80 chars), sku, price, regular_price, total_sales (integer), stock_quantity (integer), average_rating (string as returned), rating_count (integer). Ignore all other fields (descriptions, images, meta_data, etc.).\n\nIf the assignment starts with \"REVIEWS\": take the page number P from the assignment and call mcp__woocommerce__woo_products_reviews_list with perPage=100 and page=P (only that one page). From EVERY review in the result, extract exactly these fields: id, product_id, reviewer, rating (integer), verified (boolean), status, date_created (only the \"YYYY-MM-DD\" date part). Do NOT include the review text or reviewer_email.\n\nFINAL MESSAGE: your entire final message must be ONLY one valid JSON object, no prose outside it, no markdown fences:\n{\"assignment\": \"<the assignment string>\", \"records\": [ ...extracted records, one object each... ], \"notes\": \"<e.g. empty page encountered / any errors, else 'ok'>\"}\nIf a page returns empty, return records: [] with a note. Keep the JSON valid (no trailing commas). Completeness matters: include every record from the page(s) you fetched.\nCollect Woo products + review pages",
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "wave": "message_33",
+        "text": "You are a read-only data collector for a WooCommerce store, using only the mcp__woocommerce__* read tools. Do NOT create, update, or delete anything. Fetch ONLY what your assignment specifies.\n\nASSIGNMENT: REVIEWS page 2 (perPage=100)\n\nIf the assignment starts with \"PRODUCTS\": call mcp__woocommerce__woo_products_list with perPage=20 for page=1, then page=2, page=3, page=4, page=5 (stop early only if a page returns an empty array). From EVERY product collected, extract exactly these fields: id, name (truncate to 80 chars), sku, price, regular_price, total_sales (integer), stock_quantity (integer), average_rating (string as returned), rating_count (integer). Ignore all other fields (descriptions, images, meta_data, etc.).\n\nIf the assignment starts with \"REVIEWS\": take the page number P from the assignment and call mcp__woocommerce__woo_products_reviews_list with perPage=100 and page=P (only that one page). From EVERY review in the result, extract exactly these fields: id, product_id, reviewer, rating (integer), verified (boolean), status, date_created (only the \"YYYY-MM-DD\" date part). Do NOT include the review text or reviewer_email.\n\nFINAL MESSAGE: your entire final message must be ONLY one valid JSON object, no prose outside it, no markdown fences:\n{\"assignment\": \"<the assignment string>\", \"records\": [ ...extracted records, one object each... ], \"notes\": \"<e.g. empty page encountered / any errors, else 'ok'>\"}\nIf a page returns empty, return records: [] with a note. Keep the JSON valid (no trailing commas). Completeness matters: include every record from the page(s) you fetched.\nCollect Woo products + review pages",
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "wave": "message_33",
+        "text": "You are a read-only data collector for a WooCommerce store, using only the mcp__woocommerce__* read tools. Do NOT create, update, or delete anything. Fetch ONLY what your assignment specifies.\n\nASSIGNMENT: REVIEWS page 3 (perPage=100)\n\nIf the assignment starts with \"PRODUCTS\": call mcp__woocommerce__woo_products_list with perPage=20 for page=1, then page=2, page=3, page=4, page=5 (stop early only if a page returns an empty array). From EVERY product collected, extract exactly these fields: id, name (truncate to 80 chars), sku, price, regular_price, total_sales (integer), stock_quantity (integer), average_rating (string as returned), rating_count (integer). Ignore all other fields (descriptions, images, meta_data, etc.).\n\nIf the assignment starts with \"REVIEWS\": take the page number P from the assignment and call mcp__woocommerce__woo_products_reviews_list with perPage=100 and page=P (only that one page). From EVERY review in the result, extract exactly these fields: id, product_id, reviewer, rating (integer), verified (boolean), status, date_created (only the \"YYYY-MM-DD\" date part). Do NOT include the review text or reviewer_email.\n\nFINAL MESSAGE: your entire final message must be ONLY one valid JSON object, no prose outside it, no markdown fences:\n{\"assignment\": \"<the assignment string>\", \"records\": [ ...extracted records, one object each... ], \"notes\": \"<e.g. empty page encountered / any errors, else 'ok'>\"}\nIf a page returns empty, return records: [] with a note. Keep the JSON valid (no trailing commas). Completeness matters: include every record from the page(s) you fetched.\nCollect Woo products + review pages",
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "wave": "message_33",
+        "text": "You are a read-only data collector for a WooCommerce store, using only the mcp__woocommerce__* read tools. Do NOT create, update, or delete anything. Fetch ONLY what your assignment specifies.\n\nASSIGNMENT: REVIEWS page 4 (perPage=100)\n\nIf the assignment starts with \"PRODUCTS\": call mcp__woocommerce__woo_products_list with perPage=20 for page=1, then page=2, page=3, page=4, page=5 (stop early only if a page returns an empty array). From EVERY product collected, extract exactly these fields: id, name (truncate to 80 chars), sku, price, regular_price, total_sales (integer), stock_quantity (integer), average_rating (string as returned), rating_count (integer). Ignore all other fields (descriptions, images, meta_data, etc.).\n\nIf the assignment starts with \"REVIEWS\": take the page number P from the assignment and call mcp__woocommerce__woo_products_reviews_list with perPage=100 and page=P (only that one page). From EVERY review in the result, extract exactly these fields: id, product_id, reviewer, rating (integer), verified (boolean), status, date_created (only the \"YYYY-MM-DD\" date part). Do NOT include the review text or reviewer_email.\n\nFINAL MESSAGE: your entire final message must be ONLY one valid JSON object, no prose outside it, no markdown fences:\n{\"assignment\": \"<the assignment string>\", \"records\": [ ...extracted records, one object each... ], \"notes\": \"<e.g. empty page encountered / any errors, else 'ok'>\"}\nIf a page returns empty, return records: [] with a note. Keep the JSON valid (no trailing commas). Completeness matters: include every record from the page(s) you fetched.\nCollect Woo products + review pages",
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "wave": "message_33",
+        "text": "You are a read-only data collector for a WooCommerce store, using only the mcp__woocommerce__* read tools. Do NOT create, update, or delete anything. Fetch ONLY what your assignment specifies.\n\nASSIGNMENT: REVIEWS page 5 (perPage=100)\n\nIf the assignment starts with \"PRODUCTS\": call mcp__woocommerce__woo_products_list with perPage=20 for page=1, then page=2, page=3, page=4, page=5 (stop early only if a page returns an empty array). From EVERY product collected, extract exactly these fields: id, name (truncate to 80 chars), sku, price, regular_price, total_sales (integer), stock_quantity (integer), average_rating (string as returned), rating_count (integer). Ignore all other fields (descriptions, images, meta_data, etc.).\n\nIf the assignment starts with \"REVIEWS\": take the page number P from the assignment and call mcp__woocommerce__woo_products_reviews_list with perPage=100 and page=P (only that one page). From EVERY review in the result, extract exactly these fields: id, product_id, reviewer, rating (integer), verified (boolean), status, date_created (only the \"YYYY-MM-DD\" date part). Do NOT include the review text or reviewer_email.\n\nFINAL MESSAGE: your entire final message must be ONLY one valid JSON object, no prose outside it, no markdown fences:\n{\"assignment\": \"<the assignment string>\", \"records\": [ ...extracted records, one object each... ], \"notes\": \"<e.g. empty page encountered / any errors, else 'ok'>\"}\nIf a page returns empty, return records: [] with a note. Keep the JSON valid (no trailing commas). Completeness matters: include every record from the page(s) you fetched.\nCollect Woo products + review pages",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 2,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 3,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 4,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 5,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 6,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "woocommerce"
+        ],
+        "is_plan": false
+      }
+    ]
+  }
+}

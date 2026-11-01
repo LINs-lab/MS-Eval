@@ -1,0 +1,47 @@
+{
+  "input_hash": "27043fae5616c3fd7c471b4382221a0e6034c257857ac459fcb1d55f219715cc",
+  "reviewer": "deepseek-v4-flash",
+  "prompt_version": "expanded-20260912-llm-v2",
+  "system_sha256": "c5ed2666c888f317044a2b3e64f3dd23d3354782f19ce6321d48cfa441864deb",
+  "payload": {
+    "version": "expanded-20260912-v2",
+    "prompt_version": "expanded-20260912-llm-v2",
+    "side": "actual",
+    "task": "howtocook-workshop-materials",
+    "task_text": "Our company is organizing a team-building cooking workshop next month and I need you to prepare the materials. We want to feature three Chinese dishes that are relatively easy to make (rated as easy, i.e. a low difficulty score, in the recipe database), and cover different categories so we get some variety. Please search through the available recipe database to find three suitable dishes that meet these criteria.\n\nNote: write all document content in English (dish names, ingredients, cooking steps, tips, and the shopping list).\n\nOnce you have selected the three recipes, I need you to create three deliverables in the workspace.\n\nFirst, create a Word document called Workshop_Handbook.docx. This should serve as a detailed step-by-step cooking guide for participants. Start with a title \"Cooking Workshop Handbook\" as a top-level heading. Then for each of the three dishes, include a second-level heading with the dish name, followed by a paragraph listing all the required ingredients with quantities, and then another paragraph (or multiple paragraphs) walking through the cooking steps in order. At the end of the document, add a section called \"Tips and Notes\" with any general cooking advice that would help beginners.\n\nSecond, create a PowerPoint presentation called Workshop_Slides.pptx for the instructor to use during the workshop. The first slide should be a title slide with \"Team Cooking Workshop\" as the title. Then for each dish, create two slides: one slide with the dish name as the title and the ingredient list as the content, and a second slide with the dish name followed by \"Steps\" as the title and the cooking steps as bullet points. Finally add a closing slide with \"Enjoy Your Meal!\" as the title.\n\nThird, create a PDF file called Shopping_List.pdf in the workspace. This should be a consolidated shopping list that combines all ingredients from all three dishes, organized neatly so that someone from our procurement team can use it to go shopping. Group similar ingredients together if possible and include the total quantities needed. The document should have a clear title \"Shopping List for Cooking Workshop\" at the top.\n\nTask-Solving Rationable with Sub-task Decomposition:\nTo solve this task efficiently, the main agent must first query the exact `早餐`, `素菜`, and `主食` category listings in one native-parallel response, select one low-difficulty candidate ID from each category, and retrieve the three exact-ID recipe details in a second native-parallel response. Require three distinct IDs/categories and source-supported low difficulty, then freeze each recipe's English name, full translated ingredients with quantities, ordered translated steps, and beginner tips. The three independent deliverables can then be created in one wave.\n\n1. Wave 1 — dispatch exactly 3 coder sub-agents in parallel:\n\n   1. coder 0 (office-report-builder 0): One coder sub-agent owns Workshop_Handbook.docx and writes the exact title, one complete section for each of the three frozen dishes, ordered ingredients/steps, and Tips and Notes. Read it back and return its path and three-dish coverage checks.\n\n   2. coder 1 (office-report-builder 1): One coder sub-agent owns Workshop_Slides.pptx and creates exactly the title slide, two slides for each of the three frozen dishes, and the Enjoy Your Meal closing slide. Read it back and return its path, presentation ID, eight-slide count, titles, and dish coverage.\n\n   3. coder 2 (office-report-builder 2): One coder sub-agent owns Shopping_List.pdf and consolidates all ingredients from the same three frozen recipes in English with combined quantities and clear grouping. Read it back and return its path, title, ingredient coverage, and quantity controls.\n\nAfter Wave 1, the main agent must cross-check the same three dishes and ingredients across all deliverables and finish without another wave.\n",
+    "nodes": [
+      {
+        "id": 0,
+        "wave": "message_4",
+        "text": "Search the available HowToCook recipe database and select exactly three Chinese dishes suitable for a beginner team workshop. Requirements: all must be explicitly rated easy / low difficulty in the database, and must represent three different recipe categories. Retrieve complete details for each selected dish: original Chinese name and a natural English dish name, category, difficulty evidence/score, all ingredients with quantities, ordered cooking steps, and any useful beginner notes. Translate all recipe-facing content into English. Prefer straightforward dishes with unambiguous quantities so a consolidated shopping list can be computed. Return a compact, structured report; do not create files.\nSelect easy varied recipes",
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "wave": "message_8",
+        "text": "Create all three required workshop artifacts in this exact workspace and verify them: /workspace/dumps/kimi-code_gpt-5.6-sol/SingleUserTurn-howtocook-workshop-materials/workspace\n\nUse only English in every artifact. Base all quantities on one database batch of each recipe. Recipes:\n\n1) Microwave Poached Eggs (Breakfast; difficulty 1/5). Ingredients: eggs 2; room-temperature drinking water 35 ml; sesame oil 3 ml; salt 0.8 g. Steps: (1) Crack eggs into a small microwave-safe bowl; prick each yolk twice with a chopstick to prevent bursting. (2) Add water. (3) Add salt. (4) Add sesame oil. (5) Microwave on high 80 seconds. (6) Remove using cloth or oven mitt.\n2) Vermilion Bird Egg Soup (Soup; difficulty 1/5). Ingredients: egg 1; water 500 ml; white sugar 20 g (adjustable); sesame oil 2 ml. Steps: (1) Beat egg in heatproof bowl and stir in sesame oil. (2) Bring water to a full boil and immediately pour it into egg while boiling-hot. (3) Add sugar and stir.\n3) Chinese Smashed Cucumber Salad (Vegetarian Dish; difficulty 1/5). Ingredients: cucumber 200 g; vinegar 11.5 ml; soy sauce 7.5 ml; garlic 3 cloves; salt 0.6 g; sesame oil 7 ml; oyster sauce 5 ml. Steps: (1) Smash cucumber with flat side of cleaver or chef's knife, fingers clear, then cut into ~3 cm pieces. (2) Place in bowl. (3) Smash and finely mince garlic. (4) Add vinegar, soy sauce, salt, oyster sauce, garlic; mix and marinate 15 minutes. (5) Add sesame oil and mix.\n\nDeliverables:\nA. Workshop_Handbook.docx. Top-level heading exactly “Cooking Workshop Handbook”. For each recipe use a Heading 2 with its English name, then ingredient paragraph(s) listing every ingredient and exact quantity, then ordered cooking steps in paragraphs. End with Heading 2 exactly “Tips and Notes” and practical beginner advice, including microwave safety, hot bowl handling, boiling-water/heatproof-bowl safety, knife safety, mise en place, hygiene, and tasting/adjusting only where recipe permits. Make it polished and readable.\nB. Workshop_Slides.pptx. Exactly 8 slides: title slide title “Team Cooking Workshop”; then two slides per dish in the order above (ingredient slide title is exact dish name and content lists all ingredients/quantities; steps slide title is dish name + “ Steps” and steps are bullet points); closing slide title “Enjoy Your Meal!”. Ensure text fits and is legible.\nC. Shopping_List.pdf. Clear title exactly “Shopping List for Cooking Workshop”. Consolidate ingredients across all three one-batch recipes, grouping sensibly and showing total amounts: Eggs 3; Cucumber 200 g; Garlic 3 cloves; Drinking water 535 ml; Sesame oil 12 ml; Salt 1.4 g; White sugar 20 g; Vinegar 11.5 ml; Soy sauce 7.5 ml; Oyster sauce 5 ml. Note that totals cover one batch of each selected recipe and exclude water for washing. Use a neat procurement-friendly table or grouped list. If creating an intermediate DOCX for PDF conversion, remove it afterward so only requested outputs remain (aside from pre-existing files).\n\nAcceptance criteria: all three files exist under the exact names/paths, open successfully, have required structure and English content, and no required ingredient or step is omitted. Return paths plus verification findings (DOCX outline/content checks, PPTX slide count/titles/content check, PDF page count/text check).\nBuild workshop materials",
+        "is_plan": false
+      }
+    ]
+  },
+  "result": {
+    "tags": [
+      {
+        "id": 0,
+        "rw": "read",
+        "role": null,
+        "domains": [
+          "howtocook"
+        ],
+        "is_plan": false
+      },
+      {
+        "id": 1,
+        "rw": "write",
+        "role": "processor",
+        "domains": [],
+        "is_plan": false
+      }
+    ]
+  }
+}
