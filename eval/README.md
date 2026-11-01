@@ -14,7 +14,7 @@ Compute **Delegation Appropriateness (DA)** and **Orchestration Utilities (OU)**
 
 ## 1. Inputs
 
-The scripts read the [launcher](../toolathlon_gym/run_sh_eval/README.md) output as is, one directory per model and variant:
+The scripts read the [launcher](https://github.com/Danield21/toolathlon_gym/blob/main/run_sh_eval/README.md) output as is, one directory per model and variant:
 
 ```text
 results/MODEL/              # e.g. kimi-k3

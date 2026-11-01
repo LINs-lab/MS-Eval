@@ -49,7 +49,7 @@ A failed build leaves no partial bundle. To rebuild, pass a new `--output` direc
 
 ## Run
 
-Use `--backend enroot` with any preset in the [run guide](../toolathlon_gym/run_sh_eval/README.md):
+Use `--backend enroot` with any preset in the [run guide](https://github.com/Danield21/toolathlon_gym/blob/main/run_sh_eval/README.md):
 
 ```bash
 bash toolathlon_gym/run_sh_eval/kimi-k3/spec/run.sh --backend enroot

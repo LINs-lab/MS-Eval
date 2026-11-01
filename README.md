@@ -116,7 +116,7 @@ bash $P/spec/run.sh --backend $BACKEND             # MAD-SAE, 166 tasks
 bash $P/sa/run.sh --backend $BACKEND               # SA baseline, 166 tasks
 ```
 
-Results are saved under `results/$MODEL/spec/` and `results/$MODEL/sa/`. With Docker, you can try one task first by adding `--task canvas-course-comparison`. Other modes and options: [run guide](toolathlon_gym/run_sh_eval/README.md).
+Results are saved under `results/$MODEL/spec/` and `results/$MODEL/sa/`. With Docker, you can try one task first by adding `--task canvas-course-comparison`. Other modes and options: [run guide](https://github.com/Danield21/toolathlon_gym/blob/main/run_sh_eval/README.md).
 
 ### 3. Compute metrics
 
@@ -139,8 +139,8 @@ python3 -m eval.summarize --root results > results/metrics.md
 | [`data/`](data/README.md)                                     | 166 task documents and task categories                           |
 | [`eval/`](eval/README.md)                                     | DA / OU / MSQ evaluators and released results                    |
 | [`docker/`](docker/README.md), [`enroot/`](enroot/README.md) | Docker and Enroot runtime builds                                 |
-| [`toolathlon_gym/`](toolathlon_gym/run_sh_eval/README.md)     | Submodule: benchmark environment, MCP servers, and run launchers |
-| `kimi-code/`                                                 | Submodule: Kimi-Code agent harness                               |
+| [`toolathlon_gym/`](https://github.com/Danield21/toolathlon_gym/blob/main/run_sh_eval/README.md)     | Submodule: benchmark environment, MCP servers, and run launchers |
+| [`kimi-code/`](https://github.com/Danield21/kimi-code/tree/tool-result-persistence-fix) | Submodule: Kimi-Code agent harness                               |
 | [`visualize_script/`](visualize_script/README.md)             | Scripts for the paper figures                                    |
 | `assets/`                                                    | Figures and case visualizations                                  |
 | `results/`                                                   | Your runs and reports (git-ignored)                              |
@@ -149,14 +149,19 @@ python3 -m eval.summarize --root results > results/metrics.md
 
 MS-Eval builds on two open-source projects; we thank their authors for releasing them.
 
-- **[Kimi-Code](https://github.com/MoonshotAI/kimi-code)** (Moonshot AI, MIT License) is the agent framework under our harness; both the MAD-SAE and SA paradigms run on it. We use its development version at commit [`0b2e803d`](https://github.com/MoonshotAI/kimi-code/commit/0b2e803d5e71afaab45212bb2ee6117ecbf8bbc9) (2026-08-07, after v0.34.0), plus one patch that stores oversized tool outputs inside the task workspace. The pinned source is the [`kimi-code`](kimi-code) submodule.
+- **[Kimi-Code](https://github.com/MoonshotAI/kimi-code)** (Moonshot AI, MIT License) is the agent framework under our harness; both the MAD-SAE and SA paradigms run on it. We use its development version at commit [`0b2e803d`](https://github.com/MoonshotAI/kimi-code/commit/0b2e803d5e71afaab45212bb2ee6117ecbf8bbc9) (2026-08-07, after v0.34.0), plus one patch that stores oversized tool outputs inside the task workspace.
 - **[Toolathlon-Gym](https://github.com/eigent-ai/toolathlon_gym)** (Eigent AI, Apache License 2.0), an extension of [Toolathlon](https://github.com/hkust-nlp/Toolathlon) by HKUST-NLP, provides the tasks, MCP servers, and database. We started from its development version at commit [`45bbff8`](https://github.com/eigent-ai/toolathlon_gym/commit/45bbff81419fedbb6d5a2cb46029d2980a7c93c4) (2026-07-22) and revised it for the 166 MS-Eval tasks:
 
   - **Task requirements:** clarified the task descriptions of 120 tasks.
   - **Checklists:** revised the evaluation checks of 150 tasks, and the initial states or reference outputs of 61.
   - **MCP servers:** fixed and hardened 14 servers.
 
-  The revised version is the [`toolathlon_gym`](toolathlon_gym) submodule.
+Our modified versions are the two submodules of this repository, and `git clone --recurse-submodules` checks out the exact commits we evaluated. To use them on their own, take these branches:
+
+| Submodule | Repository | Branch |
+| --- | --- | --- |
+| `kimi-code/` | [Danield21/kimi-code](https://github.com/Danield21/kimi-code/tree/tool-result-persistence-fix) | **`tool-result-persistence-fix`** (not `main`, an older upstream snapshot without our patch) |
+| `toolathlon_gym/` | [Danield21/toolathlon_gym](https://github.com/Danield21/toolathlon_gym) | **`main`** |
 
 ## 📝 Citation
 

@@ -14,7 +14,7 @@
 
 ## 1. 输入
 
-脚本直接读取[启动脚本](../toolathlon_gym/run_sh_eval/README.zh-CN.md)的输出，每个模型的每种模式对应一个目录：
+脚本直接读取[启动脚本](https://github.com/Danield21/toolathlon_gym/blob/main/run_sh_eval/README.zh-CN.md)的输出，每个模型的每种模式对应一个目录：
 
 ```text
 results/MODEL/              # 如 kimi-k3

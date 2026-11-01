@@ -49,7 +49,7 @@ source .local/enroot/env.sh   # 每个运行 benchmark 的 shell 都需加载
 
 ## 运行
 
-在[运行指南](../toolathlon_gym/run_sh_eval/README.zh-CN.md)的任一预设中使用 `--backend enroot`：
+在[运行指南](https://github.com/Danield21/toolathlon_gym/blob/main/run_sh_eval/README.zh-CN.md)的任一预设中使用 `--backend enroot`：
 
 ```bash
 bash toolathlon_gym/run_sh_eval/kimi-k3/spec/run.sh --backend enroot

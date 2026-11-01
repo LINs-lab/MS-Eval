@@ -116,7 +116,7 @@ bash $P/spec/run.sh --backend $BACKEND             # MAD-SAE，166 个任务
 bash $P/sa/run.sh --backend $BACKEND               # SA 基线，166 个任务
 ```
 
-结果保存在 `results/$MODEL/spec/` 和 `results/$MODEL/sa/` 下。使用 Docker 时，可加 `--task canvas-course-comparison` 先试跑一个任务。其他模式与参数见[运行指南](toolathlon_gym/run_sh_eval/README.zh-CN.md)。
+结果保存在 `results/$MODEL/spec/` 和 `results/$MODEL/sa/` 下。使用 Docker 时，可加 `--task canvas-course-comparison` 先试跑一个任务。其他模式与参数见[运行指南](https://github.com/Danield21/toolathlon_gym/blob/main/run_sh_eval/README.zh-CN.md)。
 
 ### 3. 计算指标
 
@@ -139,8 +139,8 @@ python3 -m eval.summarize --root results > results/metrics.md
 | [`data/`](data/README.zh-CN.md)                                           | 166 个任务文档及任务分类                   |
 | [`eval/`](eval/README.zh-CN.md)                                           | DA / OU / MSQ 评测器与已发布结果           |
 | [`docker/`](docker/README.zh-CN.md)、[`enroot/`](enroot/README.zh-CN.md) | Docker 与 Enroot 两种运行环境的构建        |
-| [`toolathlon_gym/`](toolathlon_gym/run_sh_eval/README.zh-CN.md)           | 子模块：benchmark 环境、MCP 服务与启动脚本 |
-| `kimi-code/`                                                             | 子模块：Kimi-Code Agent 框架               |
+| [`toolathlon_gym/`](https://github.com/Danield21/toolathlon_gym/blob/main/run_sh_eval/README.zh-CN.md)           | 子模块：benchmark 环境、MCP 服务与启动脚本 |
+| [`kimi-code/`](https://github.com/Danield21/kimi-code/tree/tool-result-persistence-fix) | 子模块：Kimi-Code Agent 框架               |
 | [`visualize_script/`](visualize_script/README.zh-CN.md)                   | 论文图表绘制脚本                           |
 | `assets/`                                                                | 图片与案例可视化                           |
 | `results/`                                                               | 运行结果与报告（Git 忽略）                 |
@@ -149,14 +149,19 @@ python3 -m eval.summarize --root results > results/metrics.md
 
 MS-Eval 基于以下两个开源项目构建，感谢其作者的开源贡献。
 
-- **[Kimi-Code](https://github.com/MoonshotAI/kimi-code)**（Moonshot AI，MIT 许可证）：我们的 Harness 基于它构建，MAD-SAE 与 SA 两种范式均在其上运行。我们使用其开发版本 [`0b2e803d`](https://github.com/MoonshotAI/kimi-code/commit/0b2e803d5e71afaab45212bb2ee6117ecbf8bbc9)（2026-08-07，v0.34.0 之后），并加入一个补丁：将超长的工具输出保存在任务工作区内。锁定的源码见子模块 [`kimi-code`](kimi-code)。
+- **[Kimi-Code](https://github.com/MoonshotAI/kimi-code)**（Moonshot AI，MIT 许可证）：我们的 Harness 基于它构建，MAD-SAE 与 SA 两种范式均在其上运行。我们使用其开发版本 [`0b2e803d`](https://github.com/MoonshotAI/kimi-code/commit/0b2e803d5e71afaab45212bb2ee6117ecbf8bbc9)（2026-08-07，v0.34.0 之后），并加入一个补丁：将超长的工具输出保存在任务工作区内。
 - **[Toolathlon-Gym](https://github.com/eigent-ai/toolathlon_gym)**（Eigent AI，Apache License 2.0）：在 HKUST-NLP 的 [Toolathlon](https://github.com/hkust-nlp/Toolathlon) 基础上扩展而来，提供任务、MCP server 与数据库。我们以其开发版本 [`45bbff8`](https://github.com/eigent-ai/toolathlon_gym/commit/45bbff81419fedbb6d5a2cb46029d2980a7c93c4)（2026-07-22）为起点，针对 MS-Eval 的 166 个任务做了修订：
 
   - **题目要求**：澄清了 120 个任务的任务说明；
   - **Checklist 口径**：修订了 150 个任务的评分检查项，以及 61 个任务的初始状态或参考答案；
   - **MCP server**：修复并加固了 14 个 MCP server。
 
-  修订后的版本见子模块 [`toolathlon_gym`](toolathlon_gym)。
+修改后的两个版本即本仓库的两个子模块，`git clone --recurse-submodules` 会检出我们评测时使用的确切提交。如需单独使用，请选择以下分支：
+
+| 子模块 | 仓库 | 分支 |
+| --- | --- | --- |
+| `kimi-code/` | [Danield21/kimi-code](https://github.com/Danield21/kimi-code/tree/tool-result-persistence-fix) | **`tool-result-persistence-fix`**（不要用 `main`：它是较早的上游快照，不含我们的补丁） |
+| `toolathlon_gym/` | [Danield21/toolathlon_gym](https://github.com/Danield21/toolathlon_gym) | **`main`** |
 
 ## 📝 引用
 
