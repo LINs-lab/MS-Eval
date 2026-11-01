@@ -342,7 +342,7 @@ class WorkflowTests(unittest.TestCase):
             table = self.run_cli("eval/summarize.py", "--root", runs, cwd=root)
             self.assertIn(f"deepseek-v4-flash-0731/{mad_name}", table)
             self.assertNotIn(f"deepseek-v4-flash-0731/{sa_name}", table)
-            self.assertIn("0.00% (0/1)", table)
+            self.assertIn("0.0% (0/1)", table)
 
     def test_gt_export_records_relative_sources(self):
         with tempfile.TemporaryDirectory() as directory:

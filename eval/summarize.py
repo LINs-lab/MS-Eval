@@ -5,7 +5,8 @@ Read <root>/<model>/<variant>/summary.csv and each MAD experiment's DA outputs
 (summary.json and task_metrics.json). Use sa/ (or the paper-era single/) as the
 SA baseline.
 MSQ = LLM-reviewed hit F1 * (U_p + U_e + U_c) / 3. A missing LLM F1 leaves MSQ
-undefined. Historical LLM-reviewed reports remain readable."""
+undefined. Historical LLM-reviewed reports remain readable.
+All metrics are printed as percentages with one decimal, matching the paper."""
 from __future__ import annotations
 
 import argparse
@@ -85,10 +86,8 @@ def main():
     print("|" + "|".join(["---"] * len(cols)) + "|")
 
     def fmt_pct(x):
-        return "-" if x is None else f"{x*100:.2f}%"
-
-    def fmt4(x):
-        return "-" if x is None else f"{x:.4f}"
+        # One decimal as in the paper: the two-decimal value with its last digit dropped.
+        return "-" if x is None else f"{x*100:.2f}"[:-1] + "%"
 
     for model in models:
         mdir = args.root / model
@@ -140,21 +139,21 @@ def main():
                 ) else None
 
                 u_p_s = (
-                    f"{fmt4(util['U_p'])} "
+                    f"{fmt_pct(util['U_p'])} "
                     f"({util['mad_succ_cnt']}/{util['sa_succ_cnt']})"
                     if util["U_p"] is not None else "-"
                 )
                 u_e_s = (
-                    f"{fmt4(util['U_e'])} "
+                    f"{fmt_pct(util['U_e'])} "
                     f"({util['cs_mad']:.2f}/{util['cs_sa']:.2f})"
                     if util["U_e"] is not None else "-"
                 )
                 u_c_s = (
-                    f"{fmt4(util['U_c'])} "
+                    f"{fmt_pct(util['U_c'])} "
                     f"(${util['c_mad']:.4f}/${util['c_sa']:.4f})"
                     if util["U_c"] is not None else "-"
                 )
-                msq_s = fmt4(msq)
+                msq_s = fmt_pct(msq)
             else:
                 u_p_s = u_e_s = u_c_s = msq_s = "-"
 

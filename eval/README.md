@@ -55,10 +55,11 @@ Example row of `results/metrics.md`:
 
 | experiment | P_hit | R_hit | F1_hit | UDR | ODR | U_p | U_e | U_c | MSQ |
 |---|---|---|---|---|---|---|---|---|---|
-| kimi-k3/spec | 52.76% | 25.28% | 34.18% | 50.56% (45/89) | 16.88% (13/77) | 0.5647 (48/37) | 0.5038 (43.56/44.23) | 0.5096 ($4.4905/$4.6669) | 0.1798 |
+| kimi-k3/spec | 52.7% | 25.2% | 34.1% | 50.5% (45/89) | 16.8% (13/77) | 56.4% (48/37) | 50.3% (43.56/44.23) | 50.9% ($4.4905/$4.6669) | 17.9% |
 
+- All metrics are percentages with one decimal, matching the paper.
 - UDR and ODR: lower is better; parentheses give the task counts.
-- Hit scores and utilities: higher is better. A utility of **0.5 means parity** with SA; parentheses give MAD-SAE / SA successes, mean critical steps, and mean cost per task.
+- Hit scores and utilities: higher is better. A utility of **50% means parity** with SA; parentheses give MAD-SAE / SA successes, mean critical steps, and mean cost per task.
 - `MSQ = F1_hit × (U_p + U_e + U_c) / 3`.
 - Tasks without traces are excluded and reported as missing coverage. Undefined values appear as `-` (`null` in JSON, empty in CSV).
 
