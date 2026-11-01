@@ -20,11 +20,11 @@ Each [`oracle166/<task-id>.task.md`](oracle166/README.md) contains the task desc
 
 | [Delegation need](task_categories/cluster_by_delegation/README.md) | Tasks |
 | --- | ---: |
-| Delegation required ($\mathcal{D}_{\text{need}}$) | 89 |
+| Delegation required ($`\mathcal{D}_{\text{need}}`$) | 89 |
 | &nbsp;&nbsp;• Read-only | 22 |
 | &nbsp;&nbsp;• Writable | 23 |
 | &nbsp;&nbsp;• Read and write | 44 |
-| Delegation not required ($\mathcal{D}_{\text{no-need}}$) | 77 |
+| Delegation not required ($`\mathcal{D}_{\text{no-need}}`$) | 77 |
 
 | [Domain](task_categories/cluster_by_domain/README.md) | Tasks | Domain | Tasks |
 | --- | ---: | --- | ---: |

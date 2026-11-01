@@ -20,11 +20,11 @@ data/
 
 | [委派需求](task_categories/cluster_by_delegation/README.md) | 任务数 |
 | --- | ---: |
-| 需要委派（$\mathcal{D}_{\text{need}}$） | 89 |
+| 需要委派（$`\mathcal{D}_{\text{need}}`$） | 89 |
 | &nbsp;&nbsp;• 只读 | 22 |
 | &nbsp;&nbsp;• 写入 | 23 |
 | &nbsp;&nbsp;• 读写 | 44 |
-| 无需委派（$\mathcal{D}_{\text{no-need}}$） | 77 |
+| 无需委派（$`\mathcal{D}_{\text{no-need}}`$） | 77 |
 
 | [领域](task_categories/cluster_by_domain/README.md) | 任务数 | 领域 | 任务数 |
 | --- | ---: | --- | ---: |

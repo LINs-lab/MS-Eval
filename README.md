@@ -26,7 +26,7 @@ DA and OU are combined into a single index, **MAD-SAE Quality (MSQ)**: the avera
 
 | Component           | Description                                                                                                                                                                                                                                                                                                                         |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Benchmark** | 166 tasks from Toolathlon-Gym across 8 real-world working scenarios. Each task has a *Delegation Prior*: a golden plan of *when* to delegate, *which* sub-agent types to use, and *which* sub-tasks they handle. 89 tasks need delegation ($\mathcal{D}_{\text{need}}$) and 77 do not ($\mathcal{D}_{\text{no-need}}$). |
+| **Benchmark** | 166 tasks from Toolathlon-Gym across 8 real-world working scenarios. Each task has a *Delegation Prior*: a golden plan of *when* to delegate, *which* sub-agent types to use, and *which* sub-tasks they handle. 89 tasks need delegation ($`\mathcal{D}_{\text{need}}`$) and 77 do not ($`\mathcal{D}_{\text{no-need}}`$). |
 | **Harness**   | MAD-SAE and SA paradigms built on Kimi-Code, which supports sub-agents natively. Built-in skills are disabled, and the system prompt and tool access are fixed, so only the paradigm differs.                                                                                                                                       |
 | **Metrics**   | DA, OU, and MSQ, defined below.                                                                                                                                                                                                                                                                                                     |
 | **Runtime**   | One pinned environment, shipped as **Docker** images or an **Enroot** image for clusters without root access. Each task runs in its own container with a fresh database.                                                                                                                                                |
@@ -39,19 +39,19 @@ DA and OU are combined into a single index, **MAD-SAE Quality (MSQ)**: the avera
 
 | Metric                        | Meaning                                              | Definition                                                                                                                |
 | :---------------------------- | :--------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
-| **UDR ↓**              | Needed delegation was skipped                        | $\frac{\lvert\mathcal{D}_{\text{need}}\setminus\mathcal{D}_{\text{del}}\rvert}{\lvert\mathcal{D}_{\text{need}}\rvert}$  |
-| **ODR ↓**              | Unnecessary delegation occurred                      | $\frac{\lvert\mathcal{D}_{\text{no-need}}\cap\mathcal{D}_{\text{del}}\rvert}{\lvert\mathcal{D}_{\text{no-need}}\rvert}$ |
-| **P<sub>hit</sub> ↑**  | Precision of executed sub-agent units                | $\frac{\sum_t m_t}{\sum_t\lvert E_t\rvert}$                                                                             |
-| **R<sub>hit</sub> ↑**  | Recall of golden sub-agent units                     | $\frac{\sum_t m_t}{\sum_t\lvert G_t\rvert}$                                                                             |
-| **F1<sub>hit</sub> ↑** | Harmonic mean of P<sub>hit</sub> and R<sub>hit</sub> | $\frac{2P_{\text{hit}}R_{\text{hit}}}{P_{\text{hit}}+R_{\text{hit}}}$                                                   |
+| **UDR ↓**              | Needed delegation was skipped                        | $`\frac{\lvert\mathcal{D}_{\text{need}}\setminus\mathcal{D}_{\text{del}}\rvert}{\lvert\mathcal{D}_{\text{need}}\rvert}`$  |
+| **ODR ↓**              | Unnecessary delegation occurred                      | $`\frac{\lvert\mathcal{D}_{\text{no-need}}\cap\mathcal{D}_{\text{del}}\rvert}{\lvert\mathcal{D}_{\text{no-need}}\rvert}`$ |
+| **P<sub>hit</sub> ↑**  | Precision of executed sub-agent units                | $`\frac{\sum_t m_t}{\sum_t\lvert E_t\rvert}`$                                                                             |
+| **R<sub>hit</sub> ↑**  | Recall of golden sub-agent units                     | $`\frac{\sum_t m_t}{\sum_t\lvert G_t\rvert}`$                                                                             |
+| **F1<sub>hit</sub> ↑** | Harmonic mean of P<sub>hit</sub> and R<sub>hit</sub> | $`\frac{2P_{\text{hit}}R_{\text{hit}}}{P_{\text{hit}}+R_{\text{hit}}}`$                                                   |
 
 **Orchestration Utilities (OU)** compare MAD-SAE with the SA baseline. Each ranges from 0 to 1; **0.5 means parity**, and higher is better.
 
 | Metric                     | Meaning             | Definition                                                                                 | Tasks                            |
 | :------------------------- | :------------------ | :----------------------------------------------------------------------------------------- | :------------------------------- |
-| **U<sub>p</sub> ↑** | Performance utility | $\frac{\text{SR}_{\text{mad}}}{\text{SR}_{\text{mad}}+\text{SR}_{\text{sa}}}$            | $\mathcal{D}_{\text{del}}$     |
-| **U<sub>e</sub> ↑** | Efficiency utility  | $\frac{\text{Csteps}_{\text{sa}}}{\text{Csteps}_{\text{mad}}+\text{Csteps}_{\text{sa}}}$ | $\mathcal{D}_{\text{del}}^{+}$ |
-| **U<sub>c</sub> ↑** | Cost utility        | $\frac{\text{Cost}_{\text{sa}}}{\text{Cost}_{\text{mad}}+\text{Cost}_{\text{sa}}}$       | $\mathcal{D}_{\text{del}}^{+}$ |
+| **U<sub>p</sub> ↑** | Performance utility | $`\frac{\text{SR}_{\text{mad}}}{\text{SR}_{\text{mad}}+\text{SR}_{\text{sa}}}`$            | $`\mathcal{D}_{\text{del}}`$     |
+| **U<sub>e</sub> ↑** | Efficiency utility  | $`\frac{\text{Csteps}_{\text{sa}}}{\text{Csteps}_{\text{mad}}+\text{Csteps}_{\text{sa}}}`$ | $`\mathcal{D}_{\text{del}}^{+}`$ |
+| **U<sub>c</sub> ↑** | Cost utility        | $`\frac{\text{Cost}_{\text{sa}}}{\text{Cost}_{\text{mad}}+\text{Cost}_{\text{sa}}}`$       | $`\mathcal{D}_{\text{del}}^{+}`$ |
 
 **MAD-SAE Quality (MSQ) ↑** combines both, with equal utility weights:
 
@@ -59,8 +59,8 @@ $$
 \mathrm{MSQ}=F1_{\text{hit}}\cdot\frac{U_p+U_e+U_c}{3}
 $$
 
-- $\mathcal{D}_{\text{del}}$: tasks where the main agent invokes at least one non-planning sub-agent. $\mathcal{D}_{\text{del}}^{+}$: its successfully completed subset, since efficiency and cost only matter for solved tasks.
-- Hit scores: an LLM reviewer tags golden and executed sub-agents by function; tags are grouped into per-wave units and matched one-to-one by maximum bipartite matching. $G_t$ and $E_t$ are the golden and executed units of task $t$; $m_t$ is the number of matches.
+- $`\mathcal{D}_{\text{del}}`$: tasks where the main agent invokes at least one non-planning sub-agent. $`\mathcal{D}_{\text{del}}^{+}`$: its successfully completed subset, since efficiency and cost only matter for solved tasks.
+- Hit scores: an LLM reviewer tags golden and executed sub-agents by function; tags are grouped into per-wave units and matched one-to-one by maximum bipartite matching. $`G_t`$ and $`E_t`$ are the golden and executed units of task $`t`$; $`m_t`$ is the number of matches.
 
 <a id="results"></a>
 

@@ -26,7 +26,7 @@ DA 与 OU 合成为单一指标 **MAD-SAE Quality（MSQ）**：以委派适当�
 
 | 组成部分            | 说明                                                                                                                                                                                                                                                                                                       |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Benchmark** | 来自 Toolathlon-Gym 的 166 个任务，覆盖 8 类真实工作场景。每个任务配有*委派先验（Delegation Prior）*：一份金标准方案，规定*何时*委派、使用*哪些*类型的子 Agent、各自负责*哪些*子任务。其中 89 个任务需要委派（$\mathcal{D}_{\text{need}}$），77 个无需委派（$\mathcal{D}_{\text{no-need}}$）。 |
+| **Benchmark** | 来自 Toolathlon-Gym 的 166 个任务，覆盖 8 类真实工作场景。每个任务配有*委派先验（Delegation Prior）*：一份金标准方案，规定*何时*委派、使用*哪些*类型的子 Agent、各自负责*哪些*子任务。其中 89 个任务需要委派（$`\mathcal{D}_{\text{need}}`$），77 个无需委派（$`\mathcal{D}_{\text{no-need}}`$）。 |
 | **Harness**   | 基于原生支持子 Agent 的 Kimi-Code 构建 MAD-SAE 与 SA 两种范式。禁用内置 skills，并固定系统提示词与工具权限，确保两者仅在范式上不同。                                                                                                                                                                       |
 | **Metrics**   | DA、OU 与 MSQ，定义见下文。                                                                                                                                                                                                                                                                                |
 | **运行环境**  | 同一套锁定的依赖，提供 **Docker** 镜像和 **Enroot** 镜像两种方案，后者适用于无 root 权限的集群。每个任务在独立容器中运行，并使用全新的数据库。                                                                                                                                                 |
@@ -39,19 +39,19 @@ DA 与 OU 合成为单一指标 **MAD-SAE Quality（MSQ）**：以委派适当�
 
 | 指标                          | 含义                                          | 定义                                                                                                                      |
 | :---------------------------- | :-------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
-| **UDR ↓**              | 应委派却未委派                                | $\frac{\lvert\mathcal{D}_{\text{need}}\setminus\mathcal{D}_{\text{del}}\rvert}{\lvert\mathcal{D}_{\text{need}}\rvert}$  |
-| **ODR ↓**              | 不必委派却委派                                | $\frac{\lvert\mathcal{D}_{\text{no-need}}\cap\mathcal{D}_{\text{del}}\rvert}{\lvert\mathcal{D}_{\text{no-need}}\rvert}$ |
-| **P<sub>hit</sub> ↑**  | 实际子 Agent 单元的精确率                     | $\frac{\sum_t m_t}{\sum_t\lvert E_t\rvert}$                                                                             |
-| **R<sub>hit</sub> ↑**  | 金标准子 Agent 单元的召回率                   | $\frac{\sum_t m_t}{\sum_t\lvert G_t\rvert}$                                                                             |
-| **F1<sub>hit</sub> ↑** | P<sub>hit</sub> 与 R<sub>hit</sub> 的调和平均 | $\frac{2P_{\text{hit}}R_{\text{hit}}}{P_{\text{hit}}+R_{\text{hit}}}$                                                   |
+| **UDR ↓**              | 应委派却未委派                                | $`\frac{\lvert\mathcal{D}_{\text{need}}\setminus\mathcal{D}_{\text{del}}\rvert}{\lvert\mathcal{D}_{\text{need}}\rvert}`$  |
+| **ODR ↓**              | 不必委派却委派                                | $`\frac{\lvert\mathcal{D}_{\text{no-need}}\cap\mathcal{D}_{\text{del}}\rvert}{\lvert\mathcal{D}_{\text{no-need}}\rvert}`$ |
+| **P<sub>hit</sub> ↑**  | 实际子 Agent 单元的精确率                     | $`\frac{\sum_t m_t}{\sum_t\lvert E_t\rvert}`$                                                                             |
+| **R<sub>hit</sub> ↑**  | 金标准子 Agent 单元的召回率                   | $`\frac{\sum_t m_t}{\sum_t\lvert G_t\rvert}`$                                                                             |
+| **F1<sub>hit</sub> ↑** | P<sub>hit</sub> 与 R<sub>hit</sub> 的调和平均 | $`\frac{2P_{\text{hit}}R_{\text{hit}}}{P_{\text{hit}}+R_{\text{hit}}}`$                                                   |
 
 **编排效用（OU）** 将 MAD-SAE 与 SA 基线对比。各效用取值范围为 0 到 1，**0.5 表示持平**，越高越好。
 
 | 指标                       | 含义     | 定义                                                                                       | 任务集合                         |
 | :------------------------- | :------- | :----------------------------------------------------------------------------------------- | :------------------------------- |
-| **U<sub>p</sub> ↑** | 性能效用 | $\frac{\text{SR}_{\text{mad}}}{\text{SR}_{\text{mad}}+\text{SR}_{\text{sa}}}$            | $\mathcal{D}_{\text{del}}$     |
-| **U<sub>e</sub> ↑** | 效率效用 | $\frac{\text{Csteps}_{\text{sa}}}{\text{Csteps}_{\text{mad}}+\text{Csteps}_{\text{sa}}}$ | $\mathcal{D}_{\text{del}}^{+}$ |
-| **U<sub>c</sub> ↑** | 成本效用 | $\frac{\text{Cost}_{\text{sa}}}{\text{Cost}_{\text{mad}}+\text{Cost}_{\text{sa}}}$       | $\mathcal{D}_{\text{del}}^{+}$ |
+| **U<sub>p</sub> ↑** | 性能效用 | $`\frac{\text{SR}_{\text{mad}}}{\text{SR}_{\text{mad}}+\text{SR}_{\text{sa}}}`$            | $`\mathcal{D}_{\text{del}}`$     |
+| **U<sub>e</sub> ↑** | 效率效用 | $`\frac{\text{Csteps}_{\text{sa}}}{\text{Csteps}_{\text{mad}}+\text{Csteps}_{\text{sa}}}`$ | $`\mathcal{D}_{\text{del}}^{+}`$ |
+| **U<sub>c</sub> ↑** | 成本效用 | $`\frac{\text{Cost}_{\text{sa}}}{\text{Cost}_{\text{mad}}+\text{Cost}_{\text{sa}}}`$       | $`\mathcal{D}_{\text{del}}^{+}`$ |
 
 **MAD-SAE Quality（MSQ）↑** 综合二者，三项效用等权：
 
@@ -59,8 +59,8 @@ $$
 \mathrm{MSQ}=F1_{\text{hit}}\cdot\frac{U_p+U_e+U_c}{3}
 $$
 
-- $\mathcal{D}_{\text{del}}$：主 Agent 至少调用了一个非规划子 Agent 的任务。$\mathcal{D}_{\text{del}}^{+}$：其中成功完成的子集，因为效率与成本只对已解决的任务有意义。
-- 命中指标：由 LLM 审核模型按功能为金标准与实际子 Agent 打标签，按波次（wave）组成功能单元，再通过最大二分匹配一对一配对。$G_t$、$E_t$ 分别为任务 $t$ 的金标准与实际单元，$m_t$ 为匹配数。
+- $`\mathcal{D}_{\text{del}}`$：主 Agent 至少调用了一个非规划子 Agent 的任务。$`\mathcal{D}_{\text{del}}^{+}`$：其中成功完成的子集，因为效率与成本只对已解决的任务有意义。
+- 命中指标：由 LLM 审核模型按功能为金标准与实际子 Agent 打标签，按波次（wave）组成功能单元，再通过最大二分匹配一对一配对。$`G_t`$、$`E_t`$ 分别为任务 $`t`$ 的金标准与实际单元，$`m_t`$ 为匹配数。
 
 <a id="results"></a>
 
